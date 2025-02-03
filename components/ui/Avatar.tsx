@@ -17,6 +17,7 @@ export default function Avatar({
 }) {
     const supabase = createClient();
     const [avatarSrc, setAvatarSrc] = useState<string | null>(src);
+    // console.log("Avatar src:", avatarSrc);
 
     useEffect(() => {
         async function downloadImage(path: string) {
@@ -26,23 +27,23 @@ export default function Avatar({
                     .getPublicUrl(path);
 
                 setAvatarSrc(data.publicUrl);
-                extractColors(data.publicUrl)
-                    .then((colors) => {
-                        if (setCurrentColor) {
-                            const maxIntensityColor = colors.reduce(
-                                (prev, current) => {
-                                    const prevIntensity = prev.intensity;
-                                    const currentIntensity = current.intensity;
-                                    return currentIntensity > prevIntensity
-                                        ? current
-                                        : prev;
-                                }
-                            );
-                            setCurrentColor(maxIntensityColor.hex);
-                            console.log("Color:", maxIntensityColor.hex);
-                        }
-                    })
-                    .catch(console.error);
+                // extractColors(data.publicUrl)
+                //     .then((colors) => {
+                //         if (setCurrentColor) {
+                //             const maxIntensityColor = colors.reduce(
+                //                 (prev, current) => {
+                //                     const prevIntensity = prev.intensity;
+                //                     const currentIntensity = current.intensity;
+                //                     return currentIntensity > prevIntensity
+                //                         ? current
+                //                         : prev;
+                //                 }
+                //             );
+                //             setCurrentColor(maxIntensityColor.hex);
+                //             console.log("Color:", maxIntensityColor.hex);
+                //         }
+                //     })
+                //     .catch(console.error);
                 console.log("Downloaded image:", data);
             } catch (error) {
                 console.log("Error downloading image: ", error);

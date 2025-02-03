@@ -4,9 +4,12 @@ import { Suspense, useState, useEffect } from "react";
 import { FloatingIndicator, Tabs } from "@mantine/core";
 import classes from "./tabs.module.css";
 import { InvoicesMobileSkeleton } from "@/components/Skeletons";
+import UserCard from "../ui/UserCard";
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
+
+import { createClient } from "@/utils/supabase/client";
 
 function Results({
     query,
@@ -38,8 +41,8 @@ function Results({
             artists: [{ name: string }];
         }[]
     >([]);
-    const [selected, setSelected] = useState<
-        { id: string; image: string; name: string; type: string }[]
+    const [users, setUsers] = useState<
+        { id: string; avatar_url: string; name: string; username: string }[]
     >([]);
 
     useEffect(() => {
@@ -47,6 +50,19 @@ function Results({
             if (query == "") {
                 console.log("empty");
                 setArtistResults([]);
+            } else if (type === "user") {
+                const supabase = createClient();
+                const { data, error } = await supabase
+                    .from("profiles")
+                    .select("*")
+                    .or(`username.ilike.%${query}%, name.ilike.%${query}%`)
+                    .order("created_at", { ascending: true });
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log(data);
+                    setUsers(data);
+                }
             } else {
                 const response = await axios.post("/api/spot/search", {
                     q: query,
@@ -88,7 +104,9 @@ function Results({
                                 height={40}
                             />
                             <div className="flex flex-col">
-                                <h3 className="text-left font-semibold">{album.name}</h3>
+                                <h3 className="text-left font-semibold">
+                                    {album.name}
+                                </h3>
                                 <span className="text-sm text-neutral-400">
                                     {album.artists
                                         .map((artist) => artist.name)
@@ -111,9 +129,11 @@ function Results({
                                 width={40}
                                 height={40}
                             />
-                            
+
                             <div className="flex flex-col">
-                                <h3 className="text-left font-semibold">{track.name}</h3>
+                                <h3 className="text-left font-semibold">
+                                    {track.name}
+                                </h3>
                                 <span className="text-sm text-neutral-400">
                                     {track.artists
                                         .map((artist) => artist.name)
@@ -140,13 +160,52 @@ function Results({
                         </Link>
                     ))}
 
-                {albunsResults.length === 0 && (
+                {type === "user" &&
+                    users.map((user) => (
+                        <UserCard
+                            key={user.id}
+                            data={{
+                                avatar_url: user.avatar_url,
+                                name: user.name,
+                                username: user.username,
+                            }}
+                        />
+                    ))}
+
+                {type === "album" && albunsResults.length === 0 && (
                     <div className="flex flex-col items-center justify-center w-full ">
                         <h1 className="font-bold text-xl text-woodsmoke-300">
                             Nenhum resultado encontrado
                         </h1>
                     </div>
                 )}
+
+                {type === "track" && tracksResults.length === 0 && (
+                    <div className="flex flex-col items-center justify-center w-full ">
+                        <h1 className="font-bold text-xl text-woodsmoke-300">
+                            Nenhum resultado encontrado
+                        </h1>
+                    </div>
+                )}
+
+                {type === "artist" && artistResults.length === 0 && (
+                    <div className="flex flex-col items-center justify-center w-full ">
+                        <h1 className="font-bold text-xl text-woodsmoke-300">
+                            Nenhum resultado encontrado
+                        </h1>
+                    </div>
+                )}
+
+                {type === "user" && users.length === 0 && (
+                    <div className="flex flex-col items-center justify-center w-full ">
+                        <h1 className="font-bold text-xl text-woodsmoke-300">
+                            Nenhum resultado encontrado
+                        </h1>
+                    </div>
+
+                )}
+
+
             </div>
         </div>
     );
@@ -199,6 +258,13 @@ export default function ResultsPage({
                     >
                         Artistas
                     </Tabs.Tab>
+                    <Tabs.Tab
+                        value="4"
+                        ref={setControlRef("4")}
+                        className={classes.tab}
+                    >
+                        Usuários
+                    </Tabs.Tab>
                 </div>
 
                 <FloatingIndicator
@@ -247,7 +313,19 @@ export default function ResultsPage({
                     />
                 </Suspense>
             </Tabs.Panel>
-            {/* <Tabs.Panel value="3">Third tab content</Tabs.Panel> */}
+            <Tabs.Panel value="4">
+                <Suspense
+                    key={query + currentPage}
+                    fallback={<InvoicesMobileSkeleton />}
+                >
+                    <h1 className="font-bold text-2xl mb-2 px-4">Usuários</h1>
+                    <Results
+                        query={query}
+                        currentPage={currentPage}
+                        type="user"
+                    />
+                </Suspense>
+            </Tabs.Panel>
         </Tabs>
     );
 }

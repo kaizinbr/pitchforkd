@@ -2,19 +2,21 @@
 import { useState, useEffect } from "react";
 import { Avatar as UserAvatar } from "@mantine/core";
 import { createClient } from "@/utils/supabase/client";
+import { extractColors } from "extract-colors";
 
 export default function Avatar({
-    url,
+    src,
     size,
     className,
+    setCurrentColor,
 }: {
-    url: string | null;
+    src: string | null;
     size: number;
     className?: string;
+    setCurrentColor?: (color: string) => void;
 }) {
     const supabase = createClient();
-    const [avatarUrl, setAvatarUrl] = useState<string | null>(url);
-    // const [uploading, setUploading] = useState(false);
+    const [avatarSrc, setAvatarSrc] = useState<string | null>(src);
 
     useEffect(() => {
         async function downloadImage(path: string) {
@@ -22,23 +24,38 @@ export default function Avatar({
                 const { data } = supabase.storage
                     .from("avatars")
                     .getPublicUrl(path);
-                    
-                setAvatarUrl(data.publicUrl);
+
+                setAvatarSrc(data.publicUrl);
+                extractColors(data.publicUrl)
+                    .then((colors) => {
+                        if (setCurrentColor) {
+                            const maxIntensityColor = colors.reduce(
+                                (prev, current) => {
+                                    const prevIntensity = prev.intensity;
+                                    const currentIntensity = current.intensity;
+                                    return currentIntensity > prevIntensity
+                                        ? current
+                                        : prev;
+                                }
+                            );
+                            setCurrentColor(maxIntensityColor.hex);
+                            console.log("Color:", maxIntensityColor.hex);
+                        }
+                    })
+                    .catch(console.error);
                 console.log("Downloaded image:", data);
             } catch (error) {
                 console.log("Error downloading image: ", error);
             }
         }
 
-        if (url) downloadImage(url);
-    }, [url, supabase]);
+        if (src) downloadImage(src);
+    }, [src, supabase]);
 
-    // console.log(url);
     return (
-        // <Link href="/account">
 
         <UserAvatar
-            src={avatarUrl}
+            src={avatarSrc}
             alt="Avatar"
             className={`
                 ${className}
@@ -46,6 +63,5 @@ export default function Avatar({
             `}
             size={size}
         />
-        // </Link>
     );
 }

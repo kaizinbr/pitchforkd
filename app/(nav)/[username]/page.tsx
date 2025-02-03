@@ -22,15 +22,28 @@ export default async function Page({
         return <div>Error fetching user</div>;
     }
 
+    const { data: user, error: sessionsError } = await supabase.auth.getUser()
+
+    let isUser = false
+
+    if (data.length === 0) {
+        return <div>User not found</div>;
+    }
+
+    if (user && user.user) {
+        isUser = user.user.id === data[0].id;
+    }
+
+
     // console.log(data)
 
     return (
-        <div>
+        <div className="flex flex-col gap-4 items-center relative">
             {data.length > 0 ? (
-                <div>
-                    <Profile user={data[0]} />
-                    <UserRatings user={data[0]} />
-                </div>
+                <>
+                    <Profile user={data[0]} isUser={isUser} />
+                    {/* <UserRatings user={data[0]} /> */}
+                </>
 
             ) : (
                 <div>User not found</div>

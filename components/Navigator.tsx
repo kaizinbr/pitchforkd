@@ -33,7 +33,7 @@ export default function Navigator({ user }: { user: User | null }) {
 
             const { data, error, status } = await supabase
                 .from("profiles")
-                .select(`full_name, username, website, avatar_url`)
+                .select(`name, username, avatar_url`)
                 .eq("id", user?.id)
                 .single();
 
@@ -72,8 +72,8 @@ export default function Navigator({ user }: { user: User | null }) {
             >
                 <button>
                     <Link
-                        data-active={pathname === "/"}
-                        href={`/`}
+                        data-active={pathname === "/home"}
+                        href={`/home`}
                         className={`
                                 jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
                                 flex-col items-center gap-1 rounded-8 p-3
@@ -105,10 +105,10 @@ export default function Navigator({ user }: { user: User | null }) {
                 <button>
                     <Link
                         data-active={
-                            pathname === "/profile/me" ||
-                            pathname === `/profile${username}`
+                            pathname === "/me" ||
+                            pathname === `${username}`
                         }
-                        href={`/profile/me`}
+                        href={ username ? `/${username}` : "/me" }
                         className={`
                                 jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
                                 flex-col items-center gap-1 rounded-8 p-3
@@ -119,11 +119,10 @@ export default function Navigator({ user }: { user: User | null }) {
                             `}
                     >
                         {avatar_url ? (
-                            <Avatar size={24} url={avatar_url} />
+                            <Avatar size={24} src={avatar_url} />
                         ) : (
                             <TbUserFilled className="size-6" />
                         )}
-                        {/* <div className="text-12 font-600">Perfil</div> */}
                     </Link>
                 </button>
             </nav>

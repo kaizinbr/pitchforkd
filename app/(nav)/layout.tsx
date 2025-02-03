@@ -1,6 +1,3 @@
-import { EnvVarWarning } from "@/components/env-var-warning";
-import HeaderAuth from "@/components/header-auth";
-import { hasEnvVars } from "@/utils/supabase/check-env-vars";
 import "@/app/globals.css";
 import Navigator from "@/components/Navigator";
 import { createClient } from "@/utils/supabase/server";
@@ -29,7 +26,7 @@ export default async function RootLayout({
     return (
         <div className="flex-1 w-full flex flex-col items-center">
             <Navigator user={user} />
-            <div className="flex flex-col p-5 w-full">{children}</div>
+            <div className="flex flex-col w-full">{children}</div>
         </div>
     );
 }

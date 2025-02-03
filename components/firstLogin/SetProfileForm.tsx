@@ -171,7 +171,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                     >
                         <Avatar
                             uid={user?.id ?? null}
-                            url={avatar_url}
+                            src={avatar_url}
                             size={176}
                             onUpload={(url) => {
                                 setAvatarUrl(url);

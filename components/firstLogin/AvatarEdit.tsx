@@ -15,7 +15,7 @@ export default function Avatar({
     src: string | null;
     size: number;
     onUpload: (src: string) => void;
-    className: string;
+    className?: string;
 }) {
     const supabase = createClient();
     const [avatarSrc, setAvatarSrc] = useState<string | null>(src);

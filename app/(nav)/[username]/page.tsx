@@ -42,7 +42,7 @@ export default async function Page({
             {data.length > 0 ? (
                 <>
                     <Profile user={data[0]} isUser={isUser} />
-                    {/* <UserRatings user={data[0]} /> */}
+                    <UserRatings user={data[0]} />
                 </>
 
             ) : (

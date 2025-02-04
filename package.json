@@ -33,6 +33,7 @@
     "dayjs": "^1.11.13",
     "embla-carousel-react": "^8.5.2",
     "extract-colors": "^4.1.1",
+    "get-pixels": "^3.3.3",
     "lucide-react": "^0.468.0",
     "luxon": "^3.5.0",
     "next": "latest",

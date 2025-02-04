@@ -13,8 +13,7 @@ export default function Profile({
     user: any;
     isUser: boolean;
 }) {
-    console.log("sou eu?", isUser, user);
-    const [currentColor, setCurrentColor] = useState<string>("#");
+    const [currentColor, setCurrentColor] = useState<string>("#F17105");
 
     return (
         <>
@@ -30,18 +29,7 @@ export default function Profile({
             ></div>
             <div className="flex flex-col gap-4 items-center w-full">
                 <picture className="flex items-center justify-center mt-48">
-                    {/* {isUser ? (
-                        <AvatarEdit
-                            size={176}
-                            src={user.avatar_url}
-                            uid={null}
-                            onUpload={function (src: string): void {
-                                console.log("Function not implemented.");
-                            }}
-                        />
-                    ) : ( */}
-                    <Avatar size={120} src={user.avatar_url} />
-                    {/* )} */}
+                    <Avatar size={120} src={user.avatar_url} setCurrentColor={setCurrentColor} />
                 </picture>
                 <div className="flex flex-col items-center w-full px-5">
                     <h1 className="text-lg font-bold text-center">

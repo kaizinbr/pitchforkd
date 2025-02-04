@@ -119,7 +119,7 @@ export default function Navigator({ user }: { user: User | null }) {
                             `}
                     >
                         {avatar_url ? (
-                            <Avatar size={24} src={avatar_url} />
+                            <Avatar size={24} src={avatar_url} isIcon={true} />
                         ) : (
                             <TbUserFilled className="size-6" />
                         )}

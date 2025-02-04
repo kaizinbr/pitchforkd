@@ -1,3 +1,4 @@
+import AlbumCover from "@/components/user/album-cover";
 import { createClient } from "@/utils/supabase/server";
 
 
@@ -23,7 +24,12 @@ export default async function Page({
 
     const { data: albumData, error: albumError } = await supabase
         .from("ratings")
-        .select("*")
+        .select(
+            `*,
+            profiles(
+                *
+            )`
+        )
         .eq("album_id", id)
 
     if (albumError) {
@@ -34,8 +40,8 @@ export default async function Page({
     console.log(data, albumData);
 
     return (
-        <div>
-            Review de {username} para {id}
+        <div className="flex flex-col gap-4 items-center relative">
+            <AlbumCover album_id={id} />
         </div>
     );
 }

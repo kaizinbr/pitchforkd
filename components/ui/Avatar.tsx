@@ -9,15 +9,32 @@ export default function Avatar({
     size,
     className,
     setCurrentColor,
+    isIcon,
 }: {
     src: string | null;
     size: number;
     className?: string;
     setCurrentColor?: (color: string) => void;
+    isIcon?: boolean;
 }) {
     const supabase = createClient();
     const [avatarSrc, setAvatarSrc] = useState<string | null>(src);
     // console.log("Avatar src:", avatarSrc);
+
+    // no firefox, o extractColors funciona mas pode crashar na hora de pegar a cor de algumas fotos por motivos que eu desconheço
+    // aparentemente funcionar normal nos demais navegadores
+    // o erro é Uncaught DOMException: The operation is insecure.
+    function updateColor(colors: { hex: string; intensity: number }[]) {
+        if (setCurrentColor) {
+            const maxIntensityColor = colors.reduce((prev, current) => {
+                const prevIntensity = prev.intensity;
+                const currentIntensity = current.intensity;
+                return currentIntensity > prevIntensity ? current : prev;
+            });
+            setCurrentColor(maxIntensityColor.hex);
+            console.log("Color:", maxIntensityColor.hex);
+        }
+    }
 
     useEffect(() => {
         async function downloadImage(path: string) {
@@ -27,24 +44,20 @@ export default function Avatar({
                     .getPublicUrl(path);
 
                 setAvatarSrc(data.publicUrl);
-                // extractColors(data.publicUrl)
-                //     .then((colors) => {
-                //         if (setCurrentColor) {
-                //             const maxIntensityColor = colors.reduce(
-                //                 (prev, current) => {
-                //                     const prevIntensity = prev.intensity;
-                //                     const currentIntensity = current.intensity;
-                //                     return currentIntensity > prevIntensity
-                //                         ? current
-                //                         : prev;
-                //                 }
-                //             );
-                //             setCurrentColor(maxIntensityColor.hex);
-                //             console.log("Color:", maxIntensityColor.hex);
-                //         }
-                //     })
-                //     .catch(console.error);
-                console.log("Downloaded image:", data);
+                // console.log(data.publicUrl);
+                if (!isIcon) {
+                    try {
+                        extractColors(data.publicUrl)
+                            .then((colors) => {
+                                updateColor(colors);
+                            })
+                            .catch(console.error);
+                    } catch (error) {
+                        console.error("Error extracting colors:", error);
+                    }
+                }
+
+                // console.log("Downloaded image:", data);
             } catch (error) {
                 console.log("Error downloading image: ", error);
             }
@@ -54,7 +67,6 @@ export default function Avatar({
     }, [src, supabase]);
 
     return (
-
         <UserAvatar
             src={avatarSrc}
             alt="Avatar"

@@ -67,6 +67,7 @@ export default function ReviewCard({
     const [amIAuthor, setAmIAuthor] = useState<boolean>(false);
 
     const [album, setAlbum] = useState<any>();
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -75,6 +76,7 @@ export default function ReviewCard({
             );
             // console.log(response.data);
             setAlbum(response.data);
+            setLoading(false);
         };
 
         fetchData();

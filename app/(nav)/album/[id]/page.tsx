@@ -1,5 +1,4 @@
 import AlbumPage from "@/components/album/AlbumPage";
-import AlbumCover from "@/components/album/album-cover";
 import AlbumMain from "@/components/album/album-main";
 import { createClient } from "@/utils/supabase/server";
 

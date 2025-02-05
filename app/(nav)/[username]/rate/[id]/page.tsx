@@ -41,7 +41,7 @@ export default async function Page({
 
     return (
         <div className="flex flex-col gap-4 items-center relative">
-            <AlbumCover album_id={id} />
+            {/* <AlbumCover album_id={id} /> */}
         </div>
     );
 }

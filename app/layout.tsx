@@ -1,6 +1,7 @@
 import { Geist } from "next/font/google";
 import "@/app/globals.css";
 import "@mantine/core/styles.css";
+import '@mantine/carousel/styles.css';
 
 import {
     ColorSchemeScript,

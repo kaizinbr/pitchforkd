@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
+import { Slider, Chip, Textarea } from "@mantine/core";
+import classes from "./Rater.module.css";
 
 const Track = ({
     track,
@@ -12,6 +14,7 @@ const Track = ({
 }) => {
     const [value, setValue] = useState<number>(0);
     const [favorite, setFavorite] = useState<boolean>(false);
+    const [checked, setChecked] = useState(false);
 
     useEffect(() => {
         const rating = ratings.find((rating) => rating.id === track.id);
@@ -28,28 +31,65 @@ const Track = ({
         // console.log(favorite);
     };
 
+    const handleSliderChange = (newValue: number) => {
+        setValue(newValue);
+        onValueChange(track.id, newValue, favorite);
+    };
+
     return (
-        <div>
-            <h1>{track.name}</h1>
-            <h2>{track.artists[0].name}</h2>
-            <input
-                type="range"
-                min="0"
-                max="100"
-                step="5"
-                defaultValue={value}
-                onChange={handleChange}
-            />
-            <span>{value}</span>
-            <input
-                type="checkbox"
-                checked={favorite}
-                onChange={(e) => {
-                    setFavorite(e.target.checked);
-                    onValueChange(track.id, value, e.target.checked);
-                    console.log(favorite);
-                }}
-            />
+        <div
+            className={`
+            bg-neutral-700
+            p-4 gap-4
+            rounded-xl
+            flex flex-col items- justify-center
+        `}
+        >
+            <div className="flex flex-col">
+                <h1 className="font-bold">{track.name}</h1>
+            </div>
+            <div className="flex flex-col gap-4 w-full">
+                <Slider
+                    value={value}
+                    onChange={handleSliderChange}
+                    step={5}
+                    classNames={{
+                        root: classes.root,
+                        track: classes.track,
+                        bar: classes.bar,
+                        thumb: classes.thumb,
+                    }}
+                />
+                <div className="flex flex-row items-end">
+                    <input
+                        type="number"
+                        name="value"
+                        id="value"
+                        className={`
+                                bg-transparent outline-none
+                                font-bold max-w-[37px] text-xl
+                                
+                            `}
+                        value={value === 0 ? "" : value}
+                        max={100}
+                        min={0}
+                        placeholder="0"
+                        onChange={handleChange}
+                    />
+                    /100
+                </div>
+                <Chip
+                    checked={favorite}
+                    color="#fa805e"
+                    onChange={(checked) => {
+                        setFavorite(checked);
+                        onValueChange(track.id, value, checked);
+                        console.log(favorite);
+                    }}
+                >
+                    Favorita
+                </Chip>
+            </div>
         </div>
     );
 };
@@ -84,7 +124,6 @@ export default function Rater({
                 .select("ratings, review")
                 .eq("user_id", user.id)
                 .eq("album_id", albumId);
-
 
             if (error) {
                 console.error("Error fetching ratings", error);
@@ -140,7 +179,10 @@ export default function Rater({
             return;
         }
 
-        const cumulativeRating = ratings.reduce((acc, rating) => acc + rating.value, 0);
+        const cumulativeRating = ratings.reduce(
+            (acc, rating) => acc + rating.value,
+            0
+        );
         // console.log("Total", cumulativeRating);
         const parsedRatings = cumulativeRating / ratings.length;
         // console.log("Parsed", parsedRatings);
@@ -200,8 +242,7 @@ export default function Rater({
     };
 
     return (
-        <div>
-            <h2>Avalie as músicas</h2>
+        <div className=" w-full px-5">
             <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                 {tracks.map((track) => (
                     <Track
@@ -211,16 +252,20 @@ export default function Rater({
                         onValueChange={handleValueChange}
                     />
                 ))}
-                <textarea
-                    className={`
-                            bg-neutral-700
-                        `}
+                <Textarea
+                    label="Deixe sua avaliação"
+                    autosize
+                    minRows={2}
+                    maxRows={4}
                     name="review"
                     placeholder="Qual sua opinião sobre o álbum?"
+                    classNames={{
+                        input: "!bg-neutral-700 !text-white !border-neutral-700",
+                    }}
                     value={review}
                     onChange={(e) => setReview(e.target.value)}
                 />
-                <button type="submit">Save Ratings</button>
+                <button className="bg-orange-400 text-white font-bold rounded-xl py-3" type="submit">Salvar avaliação</button>
             </form>
         </div>
     );

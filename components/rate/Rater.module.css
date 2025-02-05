@@ -1,0 +1,14 @@
+.root {
+    height: 24px;
+}
+
+.track, .bar {
+    height: 24px;
+    background-color: #fa805e;
+}
+
+.thumb {
+    height: 32px;
+    width: 14px;
+    border-color: #fa805e;
+}

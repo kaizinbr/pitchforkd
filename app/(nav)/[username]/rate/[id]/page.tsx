@@ -1,4 +1,4 @@
-import AlbumCover from "@/components/user/album-cover";
+import AlbumCover from "@/components/album/album-cover";
 import { createClient } from "@/utils/supabase/server";
 
 

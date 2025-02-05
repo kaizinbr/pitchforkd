@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 import axios from "axios";
-import Link from "next/link";
-import Image from "next/image";
 import Rater from "./Rater";
+import AlbumCover from "../album/album-cover";
 
 export default function RatePage({ id }: { id: string }) {
     const [album, setAlbum] = useState<any>();
+    const [currentColor, setCurrentColor] = useState<string>("#4a6d73");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -19,22 +19,37 @@ export default function RatePage({ id }: { id: string }) {
     }, [id]);
 
     return (
-        <div>
+        <>
             {album && (
-                <div>
-                    <picture>
-                        <Image
-                            src={album.images[0].url}
-                            alt={album.name}
-                            width={400}
-                            height={400}
-                        />
-                    </picture>
-                    <div>Avaliando {album.name}</div>
-                    <div>Por {album.artists[0].name}</div>
+                <>
+                    <div
+                        className={`
+                        absolute h-[30rem] w-lvw -z-50 from-40 
+                        top-0
+                        transition-all duration-200 ease-in-out
+                    `}
+                        style={{
+                            backgroundImage: `linear-gradient(to bottom, ${currentColor}, transparent)`,
+                        }}
+                    ></div>
+                    <AlbumCover album={album} loading={false} />
+                    <div className="flex flex-col px-5 mb-6">
+                        <h2 className="font-bold">
+                            Você está avaliando {album.name}
+                        </h2>
+                        <p className="font-semibold">
+                            Por{" "}
+                            {album.artists.map((artist: any, index: number) => (
+                                <span key={artist.id}>
+                                    {artist.name}
+                                    {index < album.artists.length - 1 && ", "}
+                                </span>
+                            ))}
+                        </p>
+                    </div>
                     <Rater tracks={album.tracks.items} albumId={album.id} />
-                </div>
+                </>
             )}
-        </div>
+        </>
     );
 }

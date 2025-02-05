@@ -1,4 +1,5 @@
 import ReviewCard from "./review-card";
+import RatingCard from "../user/RatingCard";
 
 interface Reviews {
     id: number;
@@ -39,16 +40,24 @@ interface User {
 }
 
 export default function DisplayReviews({
-    reviews,
+    ratings,
 }: {
-    reviews: Review[] | null;
+    ratings: Review[] | null;
 }) {
-    console.log(reviews);
+    console.log(ratings);
     return (
-        <div className="flex flex-col gap-6 items-center w-full">
-            {reviews?.map((review) => (
-                <ReviewCard key={review.id} review={review} />
-            ))}
+        <div className="flex flex-col w-full p-5 gap-4">
+            <h2 className="text-xl font-bold">Reviews</h2>
+            <div
+                className={`
+                                    flex flex-col
+                                    w-full divide-y divide-neutral-800
+                                `}
+            >
+                {ratings?.map((rating) => (
+                    <RatingCard key={rating.id} review={rating} />
+                ))}
+            </div>
         </div>
     );
 }

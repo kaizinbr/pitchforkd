@@ -2,7 +2,7 @@ import { Geist } from "next/font/google";
 import "@/app/globals.css";
 import "@mantine/core/styles.css";
 import '@mantine/carousel/styles.css';
-
+import localFont from "next/font/local";
 import {
     ColorSchemeScript,
     MantineProvider,
@@ -24,6 +24,12 @@ const geistSans = Geist({
     subsets: ["latin"],
 });
 
+// Font files can be colocated inside of `app`
+const myFont = localFont({
+    src: "../public/fonts/font-1.ttf",
+    display: "swap",
+});
+
 export default function RootLayout({
     children,
 }: Readonly<{
@@ -32,7 +38,7 @@ export default function RootLayout({
     return (
         <html
             lang="pt-br"
-            className={geistSans.className}
+            className={myFont.className}
             // suppressHydrationWarning
             {...mantineHtmlProps}
         >

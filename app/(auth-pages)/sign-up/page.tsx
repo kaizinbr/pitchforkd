@@ -18,16 +18,16 @@ export default async function Signup(props: {
     }
 
     return (
-        <>
-            <form className="flex flex-col min-w-64 max-w-64 mx-auto">
-                <h1 className="text-2xl font-medium">Sign up</h1>
-                <p className="text-sm text text-foreground">
-                    Already have an account?{" "}
+        <div className="w-full min-h-screen p-5 flex justify-center items-center">
+            <form className="flex-1 flex flex-col min-w-64 rounded-2xl py-8 px-5 bg-neutral-700">
+            <h1 className="text-2xl font-bold">Cadastre-se</h1>
+                <p className="text-sm text text-neutral-300">
+                    Já tem uma conta?{" "}
                     <Link
-                        className="text-primary font-medium underline"
+                        className="text-neutral-300 font-medium underline"
                         href="/sign-in"
                     >
-                        Sign in
+                        Entre com sua conta
                     </Link>
                 </p>
                 <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
@@ -37,11 +37,11 @@ export default async function Signup(props: {
                         placeholder="you@example.com"
                         required
                     />
-                    <Label htmlFor="password">Password</Label>
+                    <Label htmlFor="password">Senha</Label>
                     <Input
                         type="password"
                         name="password"
-                        placeholder="Your password"
+                        placeholder="Sua senha"
                         minLength={6}
                         required
                     />
@@ -54,6 +54,6 @@ export default async function Signup(props: {
                     <FormMessage message={searchParams} />
                 </div>
             </form>
-        </>
+        </div>
     );
 }

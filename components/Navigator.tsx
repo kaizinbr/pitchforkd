@@ -46,8 +46,6 @@ export default function Navigator({ user }: { user: User | null }) {
                 setUsername(data.username);
                 setAvatarUrl(data.avatar_url);
             }
-
-            // console.log(data);
         } catch (error) {
             console.log("Error loading user data!");
         } 
@@ -75,11 +73,10 @@ export default function Navigator({ user }: { user: User | null }) {
                         data-active={pathname === "/home"}
                         href={`/home`}
                         className={`
-                                jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
+                                flex min-w-[70px] basis-0 cursor-pointer
                                 flex-col items-center gap-1 rounded-8 p-3
-                                text-woodsmoke-400 data-[active=true]:text-main-600
-                                selected:bg-woodsmoke-400 selected:text-gray-300
-                                hover:text-main-400
+                                data-[active=true]:text-orange-400
+                                hover:text-orange-400
                                 transition-all duration-200 ease-in-out
                             `}
                     >
@@ -91,11 +88,10 @@ export default function Navigator({ user }: { user: User | null }) {
                         data-active={pathname === "/search"}
                         href={`/search`}
                         className={`
-                                jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
+                                flex min-w-[70px] basis-0 cursor-pointer
                                 flex-col items-center gap-1 rounded-8 p-3
-                                text-woodsmoke-400 data-[active=true]:text-main-600
-                                selected:bg-woodsmoke-400 selected:text-gray-300
-                                hover:text-main-400
+                                data-[active=true]:text-orange-400
+                                hover:text-orange-400
                                 transition-all duration-200 ease-in-out
                             `}
                     >
@@ -110,11 +106,10 @@ export default function Navigator({ user }: { user: User | null }) {
                         }
                         href={ username ? `/${username}` : "/me" }
                         className={`
-                                jelly jelly-increased flex min-w-[70px] basis-0 cursor-pointer
+                                flex min-w-[70px] basis-0 cursor-pointer
                                 flex-col items-center gap-1 rounded-8 p-3
-                                text-woodsmoke-400 data-[active=true]:text-main-600
-                                selected:bg-woodsmoke-400 selected:text-gray-300
-                                hover:text-main-400
+                                data-[active=true]:text-orange-400
+                                hover:text-orange-400
                                 transition-all duration-200 ease-in-out
                             `}
                     >

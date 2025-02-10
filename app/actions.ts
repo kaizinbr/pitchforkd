@@ -15,7 +15,7 @@ export const signUpAction = async (formData: FormData) => {
         return encodedRedirect(
             "error",
             "/sign-up",
-            "Email and password are required"
+            "Preencha os campos de email e senha"
         );
     }
 
@@ -34,7 +34,7 @@ export const signUpAction = async (formData: FormData) => {
         return encodedRedirect(
             "success",
             "/sign-up",
-            "Thanks for signing up! Please check your email for a verification link."
+            "Deu certo, obirgado! Verifique seu email para confirmar sua conta"
         );
     }
 };
@@ -53,7 +53,7 @@ export const signInAction = async (formData: FormData) => {
         return encodedRedirect("error", "/sign-in", error.message);
     }
 
-    return redirect("/protected");
+    return redirect("/home");
 };
 
 export const forgotPasswordAction = async (formData: FormData) => {
@@ -66,7 +66,7 @@ export const forgotPasswordAction = async (formData: FormData) => {
         return encodedRedirect(
             "error",
             "/forgot-password",
-            "Email is required"
+            "Preencha o campo Email"
         );
     }
 
@@ -79,7 +79,7 @@ export const forgotPasswordAction = async (formData: FormData) => {
         return encodedRedirect(
             "error",
             "/forgot-password",
-            "Could not reset password"
+            "Erro ao enviar email de redefinição de senha"
         );
     }
 
@@ -90,7 +90,7 @@ export const forgotPasswordAction = async (formData: FormData) => {
     return encodedRedirect(
         "success",
         "/forgot-password",
-        "Check your email for a link to reset your password."
+        "Verifique seu email para redefinir sua senha"
     );
 };
 
@@ -104,7 +104,7 @@ export const resetPasswordAction = async (formData: FormData) => {
         encodedRedirect(
             "error",
             "/protected/reset-password",
-            "Password and confirm password are required"
+            "Preencha os campos de senha"
         );
     }
 
@@ -112,7 +112,7 @@ export const resetPasswordAction = async (formData: FormData) => {
         encodedRedirect(
             "error",
             "/protected/reset-password",
-            "Passwords do not match"
+            "As senhas não coincidem"
         );
     }
 
@@ -121,14 +121,24 @@ export const resetPasswordAction = async (formData: FormData) => {
     });
 
     if (error) {
-        encodedRedirect(
-            "error",
-            "/protected/reset-password",
-            "Password update failed"
-        );
+        // console.error(error);
+        if (error.code == "422") {
+            encodedRedirect(
+                "error",
+                "/protected/reset-password",
+                "Sua nova senha deve ser diferente da anterior"
+            );
+        } else {
+            encodedRedirect(
+                "error",
+                "/protected/reset-password",
+                "Falha ao redefinir senha, tente utilizar uma senha diferente da anterior"
+            );
+        }
+        
     }
 
-    encodedRedirect("success", "/protected/reset-password", "Password updated");
+    encodedRedirect("success", "/protected/reset-password", "Senha redefinida com sucesso");
 };
 
 export const signOutAction = async () => {

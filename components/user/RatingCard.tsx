@@ -87,7 +87,7 @@ export default function RatingCard({
                 `}
                 >
                     <Link
-                        href={`/${review.profiles.name}/rate/${review.album_id}`}
+                        href={`/${review.profiles.username}/rate/${review.album_id}`}
                         className="z-20"
                     >
                         <div className="flex flex-row items-center gap-2">

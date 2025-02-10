@@ -27,14 +27,14 @@ export default async function Signup(props: {
                         className="text-neutral-300 font-medium underline"
                         href="/sign-in"
                     >
-                        Entre com sua conta
+                        Entre por aqui
                     </Link>
                 </p>
                 <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
                     <Label htmlFor="email">Email</Label>
                     <Input
                         name="email"
-                        placeholder="you@example.com"
+                        placeholder="fimaocapitalismo@exemplo.com"
                         required
                     />
                     <Label htmlFor="password">Senha</Label>
@@ -47,9 +47,9 @@ export default async function Signup(props: {
                     />
                     <SubmitButton
                         formAction={signUpAction}
-                        pendingText="Signing up..."
+                        pendingText="Cadastrando..."
                     >
-                        Sign up
+                        Cadastrar
                     </SubmitButton>
                     <FormMessage message={searchParams} />
                 </div>

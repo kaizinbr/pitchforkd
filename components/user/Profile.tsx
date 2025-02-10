@@ -1,7 +1,7 @@
 "use client";
 
 import Avatar from "../ui/Avatar";
-import AvatarEdit from "../firstLogin/AvatarEdit";
+import { TbSettings2 } from "react-icons/tb";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -27,9 +27,16 @@ export default function Profile({
                     backgroundImage: `linear-gradient(to bottom, ${currentColor}, transparent)`,
                 }}
             ></div>
+            <Link href={`${user.username}/settings`} className="absolute top-4 right-4">
+                <TbSettings2 className="size-6" />
+            </Link>
             <div className="flex flex-col gap-4 items-center w-full">
                 <picture className="flex items-center justify-center mt-48">
-                    <Avatar size={120} src={user.avatar_url} setCurrentColor={setCurrentColor} />
+                    <Avatar
+                        size={120}
+                        src={user.avatar_url}
+                        setCurrentColor={setCurrentColor}
+                    />
                 </picture>
                 <div className="flex flex-col items-center w-full px-5">
                     <h1 className="text-lg font-bold text-center">
@@ -57,13 +64,6 @@ export default function Profile({
                             </Link>
                         </div>
                     )}
-                    {/* <p className="mb-2  text-center">
-                        {user.bio} Lorem ipsum dolor sit amet consectetur
-                        adipisicing elit. Expedita commodi ea iusto. Id expedita
-                        incidunt accusamus fugiat, cupiditate unde deleniti
-                        alias, quod a aspernatur repudiandae laboriosam ipsam
-                        iste corrupti voluptates.
-                    </p> */}
                 </div>
             </div>
         </>

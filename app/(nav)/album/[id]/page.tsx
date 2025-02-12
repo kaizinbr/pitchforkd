@@ -25,7 +25,7 @@ export default async function Page({
         return <div>Error fetching album</div>;
     }
 
-    console.log(data);
+    // console.log(data);
 
     return (
         <>

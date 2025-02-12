@@ -67,7 +67,7 @@ const Track = ({
                         id="value"
                         className={`
                                 bg-transparent outline-none
-                                font-bold max-w-[37px] text-xl
+                                font-bold text-xl
                                 
                             `}
                         value={value === 0 ? "" : value}
@@ -76,7 +76,6 @@ const Track = ({
                         placeholder="0"
                         onChange={handleChange}
                     />
-                    /100
                 </div>
                 <Chip
                     checked={favorite}
@@ -106,6 +105,8 @@ export default function Rater({
         { id: string; value: number; favorite: boolean }[]
     >([]);
     const [review, setReview] = useState<string>("");
+    const [total, setTotal] = useState<number>(0);
+    const [useMedia, setUseMedia] = useState<boolean>(false);
 
     useEffect(() => {
         // check if user already rated the album
@@ -121,7 +122,7 @@ export default function Rater({
 
             const { data, error } = await supabase
                 .from("ratings")
-                .select("ratings, review")
+                .select("ratings, review, total")
                 .eq("user_id", user.id)
                 .eq("album_id", albumId);
 
@@ -131,10 +132,11 @@ export default function Rater({
             }
 
             if (data.length > 0) {
-                const { ratings, review } = data[0];
-                // console.log(ratings)
+                const { ratings, review, total } = data[0];
+                console.log(total);
                 setRatings(ratings);
                 setReview(review);
+                setTotal(parseFloat(total.toFixed(2).replace(",", ".")));
             } else {
                 const initialRatings = tracks.map((track) => ({
                     id: track.id,
@@ -165,6 +167,7 @@ export default function Rater({
                 rating.id === id ? { ...rating, value, favorite } : rating
             )
         );
+        
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -183,9 +186,13 @@ export default function Rater({
             (acc, rating) => acc + rating.value,
             0
         );
-        // console.log("Total", cumulativeRating);
-        const parsedRatings = cumulativeRating / ratings.length;
-        // console.log("Parsed", parsedRatings);
+
+        let finalRating;
+        if (useMedia) {
+            finalRating = cumulativeRating / ratings.length;
+        } else {
+            finalRating = total;
+        }
 
         // verifica se o usuario já avaliou o album
         const { data: ratingsData, error: ratingsError } = await supabase
@@ -200,7 +207,7 @@ export default function Rater({
         }
 
         if (ratingsData.length > 0) {
-            console.log("User already rated this album");
+            console.log("User already rated this album", finalRating);
             const { data, error } = await supabase
                 .from("ratings")
                 .update([
@@ -209,7 +216,7 @@ export default function Rater({
                         user_id: user.id,
                         ratings,
                         review,
-                        total: parsedRatings,
+                        total: finalRating,
                     },
                 ])
                 .eq("user_id", user.id)
@@ -228,7 +235,7 @@ export default function Rater({
                     user_id: user.id,
                     ratings,
                     review,
-                    total: parsedRatings,
+                    total: finalRating,
                 },
             ]);
 
@@ -252,6 +259,48 @@ export default function Rater({
                         onValueChange={handleValueChange}
                     />
                 ))}
+                <div
+                    className={`
+                    bg-neutral-700
+                    p-4 gap-4
+                    rounded-xl
+                    flex flex-col items- justify-center
+                `}
+                >
+                    <h2 className="font-bold">Sua avaliação do álbum</h2>
+                    <input
+                        type="number"
+                        name="total"
+                        id="total"
+                        className={`
+                                bg-transparent outline-none
+                                font-bold w-full text-2xl
+                            `}
+                        value={total === 0 ? "" : total}
+                        max={100}
+                        min={0}
+                        placeholder="0"
+                        onChange={(e) => setTotal(Number(e.target.value))}
+                        disabled={useMedia}
+                    />
+
+                    <Chip
+                        checked={useMedia}
+                        color="#fa805e"
+                        onChange={(useMedia) => {
+                            setUseMedia(useMedia);
+                            setTotal(
+                                ratings.reduce(
+                                    (acc, rating) => acc + rating.value,
+                                    0
+                                ) / ratings.length
+                            );
+                            console.log(useMedia);
+                        }}
+                    >
+                        Usar média
+                    </Chip>
+                </div>
                 <Textarea
                     label="Deixe sua avaliação"
                     autosize
@@ -265,7 +314,12 @@ export default function Rater({
                     value={review}
                     onChange={(e) => setReview(e.target.value)}
                 />
-                <button className="bg-orange-400 text-white font-bold rounded-xl py-3" type="submit">Salvar avaliação</button>
+                <button
+                    className="bg-orange-400 text-white font-bold rounded-xl py-3"
+                    type="submit"
+                >
+                    Salvar avaliação
+                </button>
             </form>
         </div>
     );

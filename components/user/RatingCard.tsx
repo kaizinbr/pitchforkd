@@ -54,7 +54,7 @@ export default function RatingCard({
     edit,
 }: {
     review: Review;
-    edit?: Boolean;
+    edit?: boolean;
 }) {
     const [album, setAlbum] = useState<any>();
     const [loading, setLoading] = useState(true);

@@ -18,7 +18,7 @@ export default function AlbumCover({
             <div className="w-full my-16 flex justify-center items-center">
                 {loading ? (
                     <div className="size-64 rounded-xl bg-neutral-500"></div>
-                ) : album ? (
+                ) : (
                     <picture>
                         <Image
                             src={album.images[0]?.url}
@@ -28,9 +28,7 @@ export default function AlbumCover({
                             className="rounded-xl size-64 shadow-lg"
                         />
                     </picture>
-                ) : (
-                    <div>No album</div>
-                )}
+                ) }
             </div>
         </>
     );

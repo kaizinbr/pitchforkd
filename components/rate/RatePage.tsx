@@ -1,18 +1,42 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { extractColors } from "extract-colors";
 import axios from "axios";
 import Rater from "./Rater";
 import AlbumCover from "../album/album-cover";
 
 export default function RatePage({ id }: { id: string }) {
     const [album, setAlbum] = useState<any>();
+    const [loading, setLoading] = useState(true);
     const [currentColor, setCurrentColor] = useState<string>("#4a6d73");
+
+    // no firefox, o extractColors funciona mas pode crashar na hora de pegar a cor de algumas fotos por motivos que eu desconheço
+    // aparentemente funcionar normal nos demais navegadores
+    // o erro é Uncaught DOMException: The operation is insecure.
+    function updateColor(colors: { hex: string; intensity: number }[]) {
+        if (setCurrentColor) {
+            const maxIntensityColor = colors.reduce((prev, current) => {
+                const prevIntensity = prev.intensity;
+                const currentIntensity = current.intensity;
+                return currentIntensity > prevIntensity ? current : prev;
+            });
+            setCurrentColor(maxIntensityColor.hex);
+            console.log("Color:", maxIntensityColor.hex);
+        }
+    }
 
     useEffect(() => {
         const fetchData = async () => {
             const response = await axios.get(`/api/spot/album/${id}`);
+            console.log(response.data);
             setAlbum(response.data);
+            setLoading(false);
+            extractColors(response.data.images[0]?.url)
+                .then((colors) => {
+                    updateColor(colors);
+                })
+                .catch(console.error);
         };
 
         fetchData();
@@ -32,7 +56,7 @@ export default function RatePage({ id }: { id: string }) {
                             backgroundImage: `linear-gradient(to bottom, ${currentColor}, transparent)`,
                         }}
                     ></div>
-                    <AlbumCover album={album} loading={false} />
+                    <AlbumCover album={album} loading={loading} />
                     <div className="flex flex-col px-5 mb-6">
                         <h2 className="font-bold">
                             Você está avaliando {album.name}

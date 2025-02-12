@@ -1,5 +1,4 @@
 "use client";
-import getAlbumTime from "@/lib/utils/getAlbumTime";
 
 export default function AlbumTracks({
     album,
@@ -21,11 +20,14 @@ export default function AlbumTracks({
         <div className="w-full px-5">
             {loading ? (
                 <div className=""></div>
-            ) : album ? (
+            ) : discTracks ? (
                 <div className="flex flex-col gap-4">
                     {Object.values(discTracks).map(
                         (disc: any, index: number) => (
-                            <div className="flex flex-col gap-5 mt-5" key={index}>
+                            <div
+                                className="flex flex-col gap-5 mt-5"
+                                key={index}
+                            >
                                 {disc.length > 1 ? (
                                     <h2 className="text-lg font-bold">
                                         Disco {index + 1}
@@ -38,7 +40,9 @@ export default function AlbumTracks({
                                     >
                                         <div className="flex items-center gap-1">
                                             <div className="w-8 text-sm text-neutral-400">
-                                                <span>{track.track_number}</span>
+                                                <span>
+                                                    {track.track_number}
+                                                </span>
                                             </div>
                                             <div className="flex flex-col">
                                                 <h2 className="text-sm font-semibold">
@@ -73,7 +77,8 @@ export default function AlbumTracks({
                                                 )}
                                                 :
                                                 {Math.floor(
-                                                    (track.duration_ms % 60000) /
+                                                    (track.duration_ms %
+                                                        60000) /
                                                         1000
                                                 )
                                                     .toFixed(0)
@@ -86,9 +91,7 @@ export default function AlbumTracks({
                         )
                     )}
                 </div>
-            ) : (
-                <div>No album</div>
-            )}
+            ) : null}
         </div>
     );
 }

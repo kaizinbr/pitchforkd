@@ -12,10 +12,10 @@ export default function AlbumData({
         <div className="w-full px-5">
             {loading ? (
                 <div className=""></div>
-            ) : album ? (
+            ) : (
                 <div className="">
                     <h2 className="text-2xl font-bold">{album.name}</h2>
-                    <p className="font-semibold">
+                    <p className="font-semibold mb-4">
                         {album.artists.map((artist: any, index: number) => (
                             <span key={artist.id}>
                                 {artist.name}
@@ -29,16 +29,17 @@ export default function AlbumData({
                             "pt-BR"
                         )}
                     </p>
-                    <p className="text-sm text-neutral-400">
-                        {album.total_tracks} músicas
-                    </p>
-                    <p className="text-sm text-neutral-400">
-                        {getAlbumTime(album.tracks.items)}
+                    <p className="text-sm text-neutral-400 flex gap-1">
+                        <span>
+                            {album.total_tracks} músicas
+                        </span>
+                        •
+                        <span>
+                            {getAlbumTime(album.tracks.items)}
+                        </span>
                     </p>
                 </div>
-            ) : (
-                <div>No album</div>
-            )}
+            ) }
         </div>
     );
 }

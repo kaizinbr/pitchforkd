@@ -136,7 +136,7 @@ export default function Rater({
                 console.log(total);
                 setRatings(ratings);
                 setReview(review);
-                setTotal(parseFloat(total.toFixed(2).replace(",", ".")));
+                setTotal(parseFloat(total.toFixed(1).replace(",", ".")));
             } else {
                 const initialRatings = tracks.map((track) => ({
                     id: track.id,

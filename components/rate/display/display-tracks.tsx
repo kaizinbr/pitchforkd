@@ -2,16 +2,16 @@
 
 import { Rating } from "@/lib/utils/types";
 
-export default function AlbumTracksDisplay({
-    album,
+export default function tracksTracksDisplay({
+    tracks,
     loading,
-    ratings
+    ratings,
 }: {
-    album: any;
+    tracks: any;
     loading: boolean;
     ratings: Rating[];
 }) {
-    const discTracks = album.tracks.items.reduce((acc: any, track: any) => {
+    const discTracks = tracks.reduce((acc: any, track: any) => {
         if (!acc[track.disc_number]) {
             acc[track.disc_number] = [];
         }
@@ -21,7 +21,7 @@ export default function AlbumTracksDisplay({
     // console.log(discTracks);
 
     return (
-        <div className="w-full px-5">
+        <div className="w-full">
             {loading ? (
                 <div className=""></div>
             ) : discTracks ? (
@@ -30,16 +30,16 @@ export default function AlbumTracksDisplay({
                         (disc: any, index: number) => (
                             <div className="mt-5" key={index}>
                                 {disc.length > 1 ? (
-                                    <h2 className="text-lg font-bold">
+                                    <h2 className="text-lg font-bold w-full flex p-5">
                                         Disco {index + 1}
                                     </h2>
                                 ) : null}
                                 <table className="w-full text-sm text-left">
-                                    <thead className="text-xs text-neutral-500 uppercase bg-neutral-800">
+                                    <thead className="text-xs text-neutral-500 uppercase">
                                         <tr>
                                             <th
                                                 scope="col"
-                                                className="pl-4 py-3"
+                                                className="pl-5 py-3"
                                             >
                                                 #
                                             </th>
@@ -51,7 +51,7 @@ export default function AlbumTracksDisplay({
                                             </th>
                                             <th
                                                 scope="col"
-                                                className="px-4 py-3 text-end"
+                                                className="pr-5 pl-4 py-3 text-end"
                                             >
                                                 Nota
                                             </th>
@@ -62,9 +62,9 @@ export default function AlbumTracksDisplay({
                                             (track: any, index: number) => (
                                                 <tr
                                                     key={track.id}
-                                                    className="bg-neutral-900 border-b border-neutral-800"
+                                                    className="bg-transparent hover:bg-neutral-800 transition-all duration-200 ease-in-out"
                                                 >
-                                                    <td className="pl-4 py-4 text-neutral-400">
+                                                    <td className="pl-5 py-4 text-neutral-400">
                                                         {track.track_number}
                                                     </td>
                                                     <td className="px-2 py-4">
@@ -98,13 +98,15 @@ export default function AlbumTracksDisplay({
                                                             </p>
                                                         </div>
                                                     </td>
-                                                    <td className="px-4 py-4 text-end">
+                                                    <td className="px-4 pr-5 py-4 text-end font-bold">
                                                         <span>
-                                                            {ratings.find(
-                                                                (rating) =>
-                                                                    rating.id ===
-                                                                    track.id
-                                                            )?.value}
+                                                            {
+                                                                ratings.find(
+                                                                    (rating) =>
+                                                                        rating.id ===
+                                                                        track.id
+                                                                )?.value
+                                                            }
                                                         </span>
                                                     </td>
                                                 </tr>

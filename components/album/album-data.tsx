@@ -3,9 +3,11 @@ import getAlbumTime from "@/lib/utils/getAlbumTime";
 
 export default function AlbumData({
     album,
+    tracks,
     loading,
 }: {
     album: any;
+    tracks: any;
     loading: boolean;
 }) {
     return (
@@ -35,7 +37,7 @@ export default function AlbumData({
                         </span>
                         •
                         <span>
-                            {getAlbumTime(album.tracks.items)}
+                            {getAlbumTime(tracks)}
                         </span>
                     </p>
                 </div>

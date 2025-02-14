@@ -20,12 +20,12 @@ export default function UserRate({
                     <h2 className="text-xl font-bold">
                         Avaliação de {album.profiles.name}
                     </h2>
-                    <p className="text-3xl font-bold mb-4">{album.total.toFixed(2)}/100</p>
+                    <p className="text-3xl font-bold mb-4">{album.total.toFixed(1)}/100</p>
                     {album.review == "" ? (
                         <p className="text-lg">Sem review</p>
                     ) : (
                         <div className="w-full flex flex-row gap-3">
-                            <picture className="flex relative flex-col justify-center items-center size-8 rounded-full">
+                            <picture className="flex relative flex-col justify-center items-center size-8 rounded-full mt-3">
                                 <Avatar
                                     size={32}
                                     src={album.profiles.avatar_url}

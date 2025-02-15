@@ -240,7 +240,7 @@ export default function ResultsPage({
                     <Tabs.Tab
                         value="1"
                         ref={setControlRef("1")}
-                        className={`text-neutral-50 font-semibold ${classes.tab}`}
+                        className={`text-neutral-50 font-semibold relative  ${classes.tab}`}
                     >
                         Álbuns
                     </Tabs.Tab>

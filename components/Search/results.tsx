@@ -235,12 +235,12 @@ export default function ResultsPage({
             onChange={setValue}
             className="w-full"
         >
-            <Tabs.List ref={setRootRef} className={classes.list}>
+            <Tabs.List ref={setRootRef} className={`flex flex-row justify-center w-full ${classes.list}`}>
                 <div className="flex flex-row">
                     <Tabs.Tab
                         value="1"
                         ref={setControlRef("1")}
-                        className={classes.tab}
+                        className={`text-neutral-50 font-semibold ${classes.tab}`}
                     >
                         Álbuns
                     </Tabs.Tab>
@@ -270,7 +270,7 @@ export default function ResultsPage({
                 <FloatingIndicator
                     target={value ? controlsRefs[value] : null}
                     parent={rootRef}
-                    className={classes.indicator}
+                    className={`bg-orange-600 rounded-full`}
                 />
             </Tabs.List>
 

@@ -50,24 +50,23 @@ export default function Profile({
                     <p className="text-base font-semibold text-neutral-300 text-center">
                         @{user.username}
                     </p>
-                    <div className="flex flex-row gap-3">
+                    <div className="flex flex-row gap-1 text-xs font-semibold text-neutral-300 text-center">
                         {user.pronouns && (
-                            <p className="text-xs font-semibold text-neutral-300 text-center">
+                            <span className="">
                                 {user.pronouns}
-                            </p>
+                            </span>
                         )}
+                        <span>•</span>
                         {user.site && (
-                            <div className="flex flex-row text-xs text-woodsmoke-200 items-center gap-1">
                                 <Link
                                     href={`https://${user.site}`}
                                     className={`
-                                        text-sm font-semibold text-neutral-300 text-center underline
+                                         underline
                                     `}
                                     target="_blank"
                                 >
                                     {user.site || ""}
                                 </Link>
-                            </div>
                         )}
                     </div>
                 </div>

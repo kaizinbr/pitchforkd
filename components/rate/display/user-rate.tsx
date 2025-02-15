@@ -1,6 +1,7 @@
 "use client";
 import { AlbumRate, Review, Rating } from "@/lib/utils/types";
 import Avatar from "@/components/ui/Avatar";
+import formatRate from "@/lib/utils/formatRate";
 
 export default function UserRate({
     album,
@@ -18,7 +19,7 @@ export default function UserRate({
                     <h2 className="text-xl font-bold">
                         Avaliação de {album.profiles.name}
                     </h2>
-                    <p className="text-3xl font-bold mb-4">{album.total.toFixed(1)}/100</p>
+                    <p className="text-3xl font-bold mb-4">{formatRate(album.total)}</p>
                     {album.review == "" ? (
                         <p className="text-lg">Sem review</p>
                     ) : (

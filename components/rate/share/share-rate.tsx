@@ -12,8 +12,10 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
     const [tracks, setTracks] = useState<any>([]);
     const [loading, setLoading] = useState(true);
     const [currentColor, setCurrentColor] = useState<string>("#4a6d73");
+    const [colors, setColors] = useState<{ hex: string; intensity: number }[]>([]);
 
     function updateColor(colors: { hex: string; intensity: number }[]) {
+        setColors(colors);
         if (setCurrentColor) {
             const maxIntensityColor = colors.reduce((prev, current) => {
                 const prevIntensity = prev.intensity;
@@ -43,7 +45,8 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
         })
             .then((dataUrl) => {
                 const link = document.createElement("a");
-                link.download = `spotfaker-${rate.shorten}.png`;
+                const date = new Date().toISOString().replace(/[:.]/g, '-');
+                link.download = `rating-${rate.shorten}-${date}.png`;
                 link.href = dataUrl;
                 link.click();
             })
@@ -87,6 +90,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
             setLoading(false);
             extractColors(response.data.images[0]?.url)
                 .then((colors) => {
+                    console.log(colors);
                     updateColor(colors);
                 })
                 .catch(console.error);
@@ -99,27 +103,44 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
         <>
             {album && (
                 <>
-                    <div
-                        className={` 
-                        transition-all duration-500 text-white
-                        bg-black
-                        aspect-[9/16] w-8/12 rounded-xl 
-                        shadow-lg
-                        relative overflow-hidden
-                        flex flex-col items-center justify-center px-8
-                    `}
-                        ref={ref}
-                    >
-                        <Card
-                            currentColor={currentColor}
-                            album={album}
-                            rate={rate}
-                        />
+                    <div className={`
+                            rounded-xl overflow-hidden
+                            aspect-[9/16] w-8/12 mx-auto
+                        `}>
+                        <div
+                            className={`
+                            transition-all duration-500 text-white
+                            bg-black
+                            shadow-lg aspect-[9/16] w-full
+                            relative overflow-hidden
+                            flex flex-col items-center justify-center px-8
+                        `}
+                            ref={ref}
+                        >
+                            <Card
+                                currentColor={currentColor}
+                                album={album}
+                                rate={rate}
+                            />
+                        </div>
+                    </div>
+                    <div className="flex flex-row gap-2 w-full  justify-center">
+                        {colors.length > 0 && colors.map((color, index) => (
+                            <button
+                                key={index}
+                                className={`
+                                    w-8 h-8 rounded-xl
+                                    bg-[${color.hex}] cursor-pointer
+                                `}
+                                style={{backgroundColor: color.hex}}
+                                onClick={() => setCurrentColor(color.hex)}
+                            ></button>
+                        ))}
                     </div>
                     <button
                         className={`
-                            bg-orange-600 text-neutral-100 px-8 py-2 rounded-full border border-orenge-600
-                            transition duration-500
+                            bg-orange-600 text-neutral-100 px-8 py-2 rounded-full border border-orange-600
+                            transition duration-500 cursor-pointer
                             hover:bg-neutral-600
                         `}
                         onClick={async () => {

@@ -1,5 +1,6 @@
 import Avatar from "@/components/ui/Avatar";
 import Image from "next/image";
+import formatRate from "@/lib/utils/formatRate";
 
 export default function Card ({ currentColor, album, rate }: { currentColor: string; album: any; rate: any }) {
     return (
@@ -16,9 +17,9 @@ export default function Card ({ currentColor, album, rate }: { currentColor: str
             ></div>
             <div className="w-full relative mb-4 z-10">
                 <Avatar
-                    size={40}
+                    size={36}
                     src={rate.profiles.avatar_url}
-                    className={"size-10 absolute top-5 z-20 mx-auto"}
+                    className={"size-9 absolute top-[18px] z-20 mx-auto"}
                     isIcon
                 />
                 <Image
@@ -30,14 +31,14 @@ export default function Card ({ currentColor, album, rate }: { currentColor: str
                 />
             </div>
             <p className="text-xl font-bold mb-4 z-10">
-                {rate.total.toFixed(1)}/100
+                {formatRate(rate.total)}
             </p>
-            <p className="font-semibold text-sm text-center line-clamp-2 z-10">
+            <p className="font-semibold text-xs text-center max-w-full line-clamp-2 z-10">
                 {rate.profiles.name} avaliou{" "}
                 <span className="font-bold">{album.name}</span>
             </p>
 
-            <p className="text-xs text-neutral-300 text-center mt-4 z-10">
+            <p className="text-[10px] text-neutral-300 text-center mt-4 z-10">
                 Veja mais em letterfy.kaizin.com.br
             </p>
         </>

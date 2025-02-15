@@ -11,6 +11,7 @@ import { Review } from "@/lib/utils/types";
 import useToday from "@/hooks/today";
 import { getPastRelativeTime } from "@/lib/utils/time";
 import axios from "axios";
+import formatRate from "@/lib/utils/formatRate";
 
 interface Props {
     date: Date;
@@ -144,7 +145,7 @@ export default function RatingCard({
                                 `}
                             >
                                 <span className="text-neutral-100 text-xl font-bold">
-                                    {review.total.toFixed(1)}/100
+                                    {formatRate(review.total)}
                                 </span>
                                 {review.review && (
                                     <p className="text-neutral-100 text-sm line-clamp-4">

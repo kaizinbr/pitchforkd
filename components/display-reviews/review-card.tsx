@@ -10,6 +10,7 @@ import Avatar from "@/components/ui/Avatar";
 import useToday from "@/hooks/today";
 import { getPastRelativeTime } from "@/lib/utils/time";
 import axios from "axios";
+import formatRate from "@/lib/utils/formatRate";
 
 interface Props {
     date: Date;
@@ -141,7 +142,7 @@ export default function ReviewCard({
                             flex justify-center items-center p-3 gap-2
                         `}>
                         <span className="text-neutral-100 text-3xl font-bold">
-                            {review.total.toFixed(1)}/100
+                            {formatRate(review.total)}
                         </span>
                     </div>
                 </div>

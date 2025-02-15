@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { extractColors } from "extract-colors";
 import axios from "axios";
-import { toPng } from "html-to-image";
+import { toPng, getFontEmbedCSS } from "html-to-image";
 import { AlbumRate, Review } from "@/lib/utils/types";
 import Card from "./card";
 
@@ -27,10 +27,12 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
 
     const ref = useRef<HTMLDivElement>(null);
 
-    const onButtonClick = useCallback(() => {
+    const onButtonClick = useCallback(async () => {
         if (ref.current === null) {
+            console.error("Ref is null");
             return;
         }
+        // const fontEmbedCSS = await getFontEmbedCSS(ref.current);
 
         toPng(ref.current, {
             canvasWidth: 1080,
@@ -38,7 +40,11 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
             cacheBust: true,
             pixelRatio: 2,
             quality: 1,
-            style: { backdropFilter: "blur(64px)" },
+            // fontEmbedCSS,
+            style: {
+                fontFamily: 'Arial, sans-serif !important', // Ensure the font is specified
+            },
+            skipFonts: true,
         })
             .then((dataUrl) => {
                 const link = document.createElement("a");
@@ -98,19 +104,32 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
         <>
             {album && (
                 <>
-                    <Card
-                        currentColor={currentColor}
-                        album={album}
-                        rate={rate}
+                    <div
+                        className={` 
+                        transition-all duration-500 text-white
+                        aspect-[9/16] w-8/12 rounded-xl 
+                        shadow-lg
+                        relative overflow-hidden
+                        flex flex-col items-center justify-center px-8
+                    `}
                         ref={ref}
-                    />
+                    >
+                        <Card
+                            currentColor={currentColor}
+                            album={album}
+                            rate={rate}
+                        />
+                    </div>
                     <button
                         className={`
                             bg-orange-600 text-neutral-100 px-8 py-2 rounded-full border border-orenge-600
                             transition duration-500
                             hover:bg-neutral-600
                         `}
-                        onClick={onButtonClick}
+                        onClick={async () => {
+                            await onButtonClick();
+                        }
+                        }
                     >
                         Baixar
                     </button>

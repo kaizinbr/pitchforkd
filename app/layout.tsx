@@ -1,4 +1,4 @@
-import { Geist } from "next/font/google";
+import { Geist, Work_Sans } from "next/font/google";
 import "@/app/globals.css";
 import "@mantine/core/styles.css";
 import '@mantine/carousel/styles.css';
@@ -24,6 +24,11 @@ const geistSans = Geist({
     subsets: ["latin"],
 });
 
+const workSans = Work_Sans({
+    display: "swap",
+    subsets: ["latin"],
+});
+
 // Font files can be colocated inside of `app`
 const myFont = localFont({
     src: "../public/fonts/font-1.ttf",
@@ -38,14 +43,14 @@ export default function RootLayout({
     return (
         <html
             lang="pt-br"
-            className={myFont.className}
+            className={workSans.className}
             // suppressHydrationWarning
             {...mantineHtmlProps}
         >
             <head>
                 <ColorSchemeScript />
             </head>
-            <body className={myFont.className + ` bg-neutral-900 text-neutral-100`}>
+            <body className={workSans.className + ` bg-neutral-900 text-neutral-100`}>
                 <MantineProvider>
                     <main className="min-h-screen flex flex-col items-center">
                         <div className="flex flex-col w-full">

@@ -1,22 +1,9 @@
 import Avatar from "@/components/ui/Avatar";
 import Image from "next/image";
-import { forwardRef } from "react";
 
-
-
-
-const Card = forwardRef<HTMLDivElement, { currentColor: string; album: any; rate: any }>(
-    ({ currentColor, album, rate }, ref) => {
+export default function Card ({ currentColor, album, rate }: { currentColor: string; album: any; rate: any }) {
     return (
-        <div
-            className={` 
-                transition-all duration-500 text-white
-                aspect-[9/16] w-8/12 my-16 rounded-xl 
-                shadow-lg
-                relative overflow-hidden
-                flex flex-col items-center justify-center px-8
-            `}
-        >
+        <>
             <div
                 className={`
                         absolute h-full w-full -z-10 from-40 
@@ -53,8 +40,6 @@ const Card = forwardRef<HTMLDivElement, { currentColor: string; album: any; rate
             <p className="text-xs text-neutral-300 text-center mt-4">
                 Veja mais em letterfy.kaizin.com.br
             </p>
-        </div>
+        </>
     );
-})
-
-export default forwardRef(Card);
+}

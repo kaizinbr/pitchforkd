@@ -1,6 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@import "tailwindcss";
+
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
 
 @layer base {
     :root {
@@ -59,14 +62,6 @@
     }
 }
 
-@layer base {
-    * {
-        @apply border-border;
-    }
-    body {
-        @apply bg-background text-foreground;
-    }
-}
 
 @layer utilities {
     input[type="number"]::-webkit-inner-spin-button,
@@ -78,4 +73,9 @@
     input[type="number"] {
         -moz-appearance: textfield;
     }
+}
+
+
+body {
+    font-family: "Work Sans", serif;
 }

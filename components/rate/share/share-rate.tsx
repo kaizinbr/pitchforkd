@@ -32,7 +32,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
             console.error("Ref is null");
             return;
         }
-        // const fontEmbedCSS = await getFontEmbedCSS(ref.current);
+        const fontEmbedCSS = await getFontEmbedCSS(ref.current);
 
         toPng(ref.current, {
             canvasWidth: 1080,

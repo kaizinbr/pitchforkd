@@ -1,22 +1,13 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { extractColors } from "extract-colors";
 import axios from "axios";
-import AlbumCover from "@/components/album/album-cover";
-import AlbumData from "@/components/album/album-data";
+import { toPng } from "html-to-image";
 import { AlbumRate, Review } from "@/lib/utils/types";
-import UserRate from "./user-rate";
-import AlbumTracksDisplay from "./display-tracks";
-import ShareBtn from "./share-btn";
+import Card from "./card";
 
-export default function DisplayRate({
-    id,
-    rate,
-}: {
-    id?: string;
-    rate: Review;
-}) {
+export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
     const [album, setAlbum] = useState<any>();
     const [tracks, setTracks] = useState<any>([]);
     const [loading, setLoading] = useState(true);
@@ -34,9 +25,38 @@ export default function DisplayRate({
         }
     }
 
+    const ref = useRef<HTMLDivElement>(null);
+
+    const onButtonClick = useCallback(() => {
+        if (ref.current === null) {
+            return;
+        }
+
+        toPng(ref.current, {
+            canvasWidth: 1080,
+            canvasHeight: 1920,
+            cacheBust: true,
+            pixelRatio: 2,
+            quality: 1,
+            style: { backdropFilter: "blur(64px)" },
+        })
+            .then((dataUrl) => {
+                const link = document.createElement("a");
+                link.download = `spotfaker-${rate.shorten}.png`;
+                link.href = dataUrl;
+                link.click();
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [ref]);
+
     useEffect(() => {
         const fetchData = async () => {
-            const response = await axios.get(`/api/spot/album/${rate.album_id}`);
+            const response = await axios.get(
+                `/api/spot/album/${rate.album_id}`
+            );
             console.log(response.data);
             setAlbum(response.data);
             setTracks(response.data.tracks.items);
@@ -78,31 +98,29 @@ export default function DisplayRate({
         <>
             {album && (
                 <>
-                    <div
+                    <Card
+                        currentColor={currentColor}
+                        album={album}
+                        rate={rate}
+                        ref={ref}
+                    />
+                    <button
                         className={`
-                        absolute h-[30rem] w-lvw -z-50 from-40 
-                        top-0
-                        transition-all duration-200 ease-in-out
-                    `}
-                        style={{
-                            backgroundImage: `linear-gradient(to bottom, ${currentColor}, transparent)`,
-                        }}
-                    ></div>
-                    <AlbumCover album={album} loading={loading} />
+                            bg-orange-600 text-neutral-100 px-8 py-2 rounded-full border border-orenge-600
+                            transition duration-500
+                            hover:bg-neutral-600
+                        `}
+                        onClick={onButtonClick}
+                    >
+                        Baixar
+                    </button>
+                    {/* <AlbumCover album={album} loading={loading}
                     <AlbumData
                         album={album}
                         tracks={tracks}
                         loading={loading}
                     />
-                    <ShareBtn shorten={rate.shorten} />
-                    <UserRate album={rate} loading={loading} />
-                    {tracks.length > 0 ? (
-                        <AlbumTracksDisplay
-                            tracks={tracks}
-                            loading={loading}
-                            ratings={rate.ratings}
-                        />
-                    ) : null}
+                    <UserRate album={rate} loading={loading} /> */}
                 </>
             )}
         </>

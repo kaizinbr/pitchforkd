@@ -37,11 +37,11 @@ export default async function Page({
         return <div>Error fetching album</div>;
     }
 
-    // console.log(data, albumData);
+    console.log(data, albumData);
 
     return (
         <div className="flex flex-col gap-4 items-center relative">
-            <DisplayRate id={id} user={data[0]} rate={albumData[0]} />
+            <DisplayRate id={id} rate={albumData[0]} />
         </div>
     );
 }

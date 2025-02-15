@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Slider, Chip, Textarea } from "@mantine/core";
 import classes from "./Rater.module.css";
+import getShorten from "@/lib/utils/getShorten";
 
 const Track = ({
     track,
@@ -167,7 +168,6 @@ export default function Rater({
                 rating.id === id ? { ...rating, value, favorite } : rating
             )
         );
-        
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
@@ -236,6 +236,7 @@ export default function Rater({
                     ratings,
                     review,
                     total: finalRating,
+                    shorten: getShorten(),
                 },
             ]);
 

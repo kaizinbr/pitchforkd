@@ -27,3 +27,32 @@ export interface AlbumRate {
     total: number;
     profiles: Profile;
 }
+
+
+export interface Review {
+    id: string;
+    created_at: string;
+    user_id: string;
+    album_id: string;
+    review: string;
+    ratings: [
+        {
+            id: string;
+            value: number;
+            favorite: boolean;
+        },
+    ];
+    total: number;
+    profiles: User;
+    shorten: string;
+}
+
+export interface User {
+    id: string;
+    username: string;
+    name: string;
+    avatar_url: string;
+    site: string;
+    bio: string;
+    pronouns: string;
+}

@@ -50,25 +50,26 @@ export default function Profile({
                     <p className="text-base font-semibold text-neutral-300 text-center">
                         @{user.username}
                     </p>
-                    {user.pronouns && (
-                        <p className="text-sm font-semibold text-neutral-300 text-center">
-                            {user.pronouns}
-                        </p>
-                    )}
-
-                    {user.site && (
-                        <div className="flex flex-row text-sm text-woodsmoke-200 items-center gap-1">
-                            <Link
-                                href={`https://${user.site}`}
-                                className={`
-                                    text-sm font-semibold text-neutral-300 text-center underline
-                                `}
-                                target="_blank"
-                            >
-                                {user.site || ""}
-                            </Link>
-                        </div>
-                    )}
+                    <div className="flex flex-row gap-3">
+                        {user.pronouns && (
+                            <p className="text-xs font-semibold text-neutral-300 text-center">
+                                {user.pronouns}
+                            </p>
+                        )}
+                        {user.site && (
+                            <div className="flex flex-row text-xs text-woodsmoke-200 items-center gap-1">
+                                <Link
+                                    href={`https://${user.site}`}
+                                    className={`
+                                        text-sm font-semibold text-neutral-300 text-center underline
+                                    `}
+                                    target="_blank"
+                                >
+                                    {user.site || ""}
+                                </Link>
+                            </div>
+                        )}
+                    </div>
                 </div>
             </div>
         </>

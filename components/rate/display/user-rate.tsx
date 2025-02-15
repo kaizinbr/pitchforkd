@@ -1,14 +1,12 @@
 "use client";
-import { AlbumRate, Profile, Rating } from "@/lib/utils/types";
+import { AlbumRate, Review, Rating } from "@/lib/utils/types";
 import Avatar from "@/components/ui/Avatar";
 
 export default function UserRate({
     album,
-    user,
     loading,
 }: {
-    album: AlbumRate;
-    user: Profile;
+    album: Review;
     loading: boolean;
 }) {
     return (
@@ -30,6 +28,7 @@ export default function UserRate({
                                     size={32}
                                     src={album.profiles.avatar_url}
                                     className={"size-8"}
+                                    isIcon
                                 />
                             </picture>
                             <div className="p-4 w-full bg-neutral-800 rounded-xl">

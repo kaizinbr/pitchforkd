@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/components/ui/Avatar";
+import { Review } from "@/lib/utils/types";
 
 import useToday from "@/hooks/today";
 import { getPastRelativeTime } from "@/lib/utils/time";
@@ -22,32 +23,7 @@ function PastRelativeTime({ date }: Props) {
     return <>{relativeTime}</>;
 }
 
-interface Review {
-    id: string;
-    created_at: string;
-    user_id: string;
-    album_id: string;
-    review: string;
-    ratings: [
-        {
-            id: string;
-            value: number;
-            favorite: boolean;
-        },
-    ];
-    total: number;
-    profiles: User;
-}
 
-interface User {
-    id: string;
-    username: string;
-    name: string;
-    avatar_url: string;
-    site: string;
-    bio: string;
-    pronouns: string;
-}
 
 export default function RatingCard({
     review,
@@ -64,7 +40,6 @@ export default function RatingCard({
             const response = await axios.get(
                 `/api/spot/album/${review.album_id}`
             );
-            // console.log(response.data);
             setAlbum(response.data);
             setLoading(false);
         };
@@ -73,16 +48,16 @@ export default function RatingCard({
     }, [review.album_id]);
 
     return (
-        <div>
+        <>
             {loading ? (
                 <div
                     className={`
-                    flex flex-col 
-                    max-w-[600px] w-full
-                    transition-all duration-200 ease-in-out   
-                    overflow-hidden relative
-                    my-6
-            `}
+                        flex flex-col 
+                        max-w-[600px] w-full
+                        transition-all duration-200 ease-in-out   
+                        overflow-hidden relative
+                        p-5
+                `}
                 >
                     <div className="z-20">
                         <div className="flex flex-row items-center gap-2">
@@ -116,11 +91,13 @@ export default function RatingCard({
                         max-w-[600px] w-full
                         transition-all duration-200 ease-in-out   
                         overflow-hidden relative
-                        review-${review.id} my-6
+                        review-${review.id}
+                        p-5
+                        bg-transparent hover:bg-neutral-800
                 `}
                 >
                     <Link
-                        href={`/${review.profiles.username}/rate/${review.album_id}`}
+                        href={`/r/${review.shorten}`}
                         className="z-20"
                     >
                         <div className="flex flex-row items-start gap-2">
@@ -129,6 +106,7 @@ export default function RatingCard({
                                     size={32}
                                     src={review.profiles.avatar_url}
                                     className={"size-8"}
+                                    isIcon
                                 />
                             </div>
                             <div className="flex items-center justify-center flex-row gap-2">
@@ -147,7 +125,7 @@ export default function RatingCard({
                             </div>
                         </div>
 
-                        <div className="flex flex-row relative rounded-2xl my-3 overflow-hidden">
+                        <div className="flex flex-row relative my-3">
                             {album && (
                                 <picture className=" size-40">
                                     <Image
@@ -155,7 +133,7 @@ export default function RatingCard({
                                         alt={album.name}
                                         width={500}
                                         height={500}
-                                        className="object-cover size-40 max-h-[160px] rounded-xl"
+                                        className="object-cover size-40 max-h-[160px] rounded-lg"
                                     />
                                 </picture>
                             )}
@@ -190,6 +168,6 @@ export default function RatingCard({
             ) : (
                 <div>Album not found</div>
             )}
-        </div>
+        </>
     );
 }

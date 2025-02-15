@@ -36,12 +36,12 @@ export default function UserRatings({ user }: { user: any }) {
     }, []);
 
     return (
-        <div className="w-full p-5 flex flex-col gap-4">
+        <div className="w-full flex flex-col gap-4">
             {loading ? (
                 <div>Loading...</div>
             ) : ratings.length > 0 ? (
                 <>
-                    <h2 className="text-xl font-bold">Reviews</h2>
+                    <h2 className="text-xl font-bold flex px-5">Reviews</h2>
                     <div
                         className={`
                             flex flex-col

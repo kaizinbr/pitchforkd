@@ -6,6 +6,7 @@ import axios from "axios";
 import { toPng, getFontEmbedCSS } from "html-to-image";
 import { AlbumRate, Review } from "@/lib/utils/types";
 import Card from "./card";
+import CopyText from "./copy-text";
 
 export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
     const [album, setAlbum] = useState<any>();
@@ -150,13 +151,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
                     >
                         Baixar
                     </button>
-                    {/* <AlbumCover album={album} loading={loading}
-                    <AlbumData
-                        album={album}
-                        tracks={tracks}
-                        loading={loading}
-                    />
-                    <UserRate album={rate} loading={loading} /> */}
+                    <CopyText rate={rate} album={album} />
                 </>
             )}
         </>

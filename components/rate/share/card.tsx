@@ -1,8 +1,17 @@
 import Avatar from "@/components/ui/Avatar";
 import Image from "next/image";
 import formatRate from "@/lib/utils/formatRate";
+import { Album, Review } from "@/lib/utils/types";
 
-export default function Card ({ currentColor, album, rate }: { currentColor: string; album: any; rate: any }) {
+export default function Card({
+    currentColor,
+    album,
+    rate,
+}: {
+    currentColor: string;
+    album: Album;
+    rate: Review;
+}) {
     return (
         <>
             <div

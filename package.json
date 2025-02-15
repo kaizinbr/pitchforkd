@@ -35,7 +35,7 @@
         "embla-carousel-react": "^8.5.2",
         "extract-colors": "^4.1.1",
         "get-pixels": "^3.3.3",
-        "html-to-image": "^1.11.13",
+        "html-to-image": "^1.11.11",
         "html2canvas": "^1.4.1",
         "lucide-react": "^0.468.0",
         "luxon": "^3.5.0",

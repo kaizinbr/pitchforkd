@@ -40,11 +40,6 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
             cacheBust: true,
             pixelRatio: 2,
             quality: 1,
-            // fontEmbedCSS,
-            style: {
-                fontFamily: 'Arial, sans-serif !important', // Ensure the font is specified
-            },
-            skipFonts: true,
         })
             .then((dataUrl) => {
                 const link = document.createElement("a");
@@ -107,6 +102,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
                     <div
                         className={` 
                         transition-all duration-500 text-white
+                        bg-black
                         aspect-[9/16] w-8/12 rounded-xl 
                         shadow-lg
                         relative overflow-hidden

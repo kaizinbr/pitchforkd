@@ -6,7 +6,7 @@ export default function Card ({ currentColor, album, rate }: { currentColor: str
         <>
             <div
                 className={`
-                        absolute h-full w-full -z-10 from-40 
+                        absolute h-8/10 w-full z-0 from-40 
                         top-0
                         transition-all duration-200 ease-in-out
                     `}
@@ -14,7 +14,7 @@ export default function Card ({ currentColor, album, rate }: { currentColor: str
                     backgroundImage: `linear-gradient(to bottom, ${currentColor}, black)`,
                 }}
             ></div>
-            <div className="w-full relative mb-4">
+            <div className="w-full relative mb-4 z-10">
                 <Avatar
                     size={40}
                     src={rate.profiles.avatar_url}
@@ -29,15 +29,15 @@ export default function Card ({ currentColor, album, rate }: { currentColor: str
                     className="rounded-lg w-full shadow-lg relative z-0"
                 />
             </div>
-            <p className="text-xl font-bold mb-4">
+            <p className="text-xl font-bold mb-4 z-10">
                 {rate.total.toFixed(1)}/100
             </p>
-            <p className="font-semibold text-sm text-center line-clamp-2">
+            <p className="font-semibold text-sm text-center line-clamp-2 z-10">
                 {rate.profiles.name} avaliou{" "}
                 <span className="font-bold">{album.name}</span>
             </p>
 
-            <p className="text-xs text-neutral-300 text-center mt-4">
+            <p className="text-xs text-neutral-300 text-center mt-4 z-10">
                 Veja mais em letterfy.kaizin.com.br
             </p>
         </>

@@ -38,14 +38,13 @@ export default function RootLayout({
     return (
         <html
             lang="pt-br"
-            className={workSans.className}
-            // suppressHydrationWarning
+            className={myFont.className}
             {...mantineHtmlProps}
         >
             <head>
                 <ColorSchemeScript  />
             </head>
-            <body className={workSans.className + ` !bg-neutral-900 !text-neutral-100`}>
+            <body className={myFont.className + ` !bg-neutral-900 !text-neutral-100`}>
                 <MantineProvider defaultColorScheme="dark">
                     <main className="min-h-screen flex flex-col items-center">
                         <div className="flex flex-col w-full">

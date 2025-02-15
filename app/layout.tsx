@@ -1,4 +1,4 @@
-import { Geist, Work_Sans } from "next/font/google";
+import { Work_Sans } from "next/font/google";
 import "@/app/globals.css";
 import "@mantine/core/styles.css";
 import '@mantine/carousel/styles.css';
@@ -18,11 +18,6 @@ export const metadata = {
     title: "txt 4th gen leaders",
     description: "The fastest way to build apps with Next.js and Supabase",
 };
-
-const geistSans = Geist({
-    display: "swap",
-    subsets: ["latin"],
-});
 
 const workSans = Work_Sans({
     display: "swap",

@@ -34,7 +34,7 @@ export const signUpAction = async (formData: FormData) => {
         return encodedRedirect(
             "success",
             "/sign-up",
-            "Deu certo, obirgado! Verifique seu email para confirmar sua conta"
+            "Deu certo, obrigado! Verifique seu email para confirmar sua conta."
         );
     }
 };

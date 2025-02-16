@@ -22,6 +22,7 @@ export default function AlbumBtn({
                     fixed left-4 right-4
                     max-w-2xl mx-auto
                     ${scrollDirection > "down" ? "bottom-20" : "bottom-4"}
+                    md:bottom-4
                     transition-all duration-300
                 `}>
                     Avaliar álbum

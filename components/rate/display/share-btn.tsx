@@ -18,6 +18,7 @@ export default function ShareBtn({
                     bg-orange-400 text-white font-bold rounded-full
                     fixed right-4
                     ${scrollDirection > "down" ? "bottom-20" : "bottom-4"}
+                    md:bottom-4
                     transition-all duration-300
                 `}
         >

@@ -231,9 +231,9 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                             }
                             href={username ? `/${username}` : "/me"}
                             className={`
-                                flex min-w-[70px] basis-0 cursor-pointer
+                                flex basis-0 cursor-pointer
                                 flex-row items-center gap-2
-                                p-3 px-4
+                                py-3 pl-4
                                 data-[active=true]:text-orange-400
                                 hover:text-orange-400
                                 transition-all duration-200 ease-in-out

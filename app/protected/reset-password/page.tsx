@@ -9,8 +9,8 @@ export default async function ResetPassword(props: {
 }) {
     const searchParams = await props.searchParams;
     return (
-        <div className="w-full min-h-screen p-5 flex justify-center items-center">
-            <form className="flex-1 flex flex-col min-w-64 rounded-2xl py-8 px-5 bg-neutral-700 ">
+        <div className="w-full max-w-2xl min-h-screen p-5 flex justify-center items-center">
+            <form className="flex-1 flex flex-col min-w-64 rounded-2xl py-8 px-5 bg-neutral-800 ">
                 <h1 className="text-2xl font-bold">Redefinição de senha</h1>
                 <p className="text-sm text-neutral-300">
                     Preencha sua nova senha abaixo

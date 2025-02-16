@@ -48,6 +48,18 @@ export const updateSession = async (request: NextRequest) => {
             return NextResponse.redirect(new URL("/sign-in", request.url));
         }
 
+        if (request.nextUrl.pathname.includes("/edit") && user.error) {
+            return NextResponse.redirect(new URL("/sign-in", request.url));
+        }
+
+        if (request.nextUrl.pathname.includes("/share") && user.error) {
+            return NextResponse.redirect(new URL("/sign-in", request.url));
+        }
+
+        if (request.nextUrl.pathname.includes("/settings") && user.error) {
+            return NextResponse.redirect(new URL("/sign-in", request.url));
+        }
+
         if (request.nextUrl.pathname.includes("/home") && user.error) {
             return NextResponse.redirect(new URL("/sign-in", request.url));
         }

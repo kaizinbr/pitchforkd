@@ -2,16 +2,7 @@ import AccountForm from "./account-form";
 import { createClient } from "@/utils/supabase/server";
 
 
-export default async function Page({
-    params,
-}: {
-    params: Promise<{ username: string }>;
-}) {
-    const username = (await params).username;
-
-    const lowerCaseUsername = username.toLowerCase();
-
-
+export default async function Page() {
     const supabase = await createClient();
     const { data: user, error: sessionsError } = await supabase.auth.getUser()
 

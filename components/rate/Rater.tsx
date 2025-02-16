@@ -3,6 +3,9 @@ import { createClient } from "@/utils/supabase/client";
 import { Slider, Chip, Textarea } from "@mantine/core";
 import classes from "./Rater.module.css";
 import getShorten from "@/lib/utils/getShorten";
+import { useDisclosure } from "@mantine/hooks";
+import { Modal, Button } from "@mantine/core";
+import Link from "next/link";
 
 const Track = ({
     track,
@@ -86,6 +89,9 @@ const Track = ({
                         onValueChange(track.id, value, checked);
                         console.log(favorite);
                     }}
+                    classNames={{
+                        label: classes.label,
+                    }}
                 >
                     Favorita
                 </Chip>
@@ -107,7 +113,9 @@ export default function Rater({
     >([]);
     const [review, setReview] = useState<string>("");
     const [total, setTotal] = useState<number>(0);
-    const [useMedia, setUseMedia] = useState<boolean>(false);
+    const [shorten, setShorten] = useState<string>("");
+    const [useMedia, setUseMedia] = useState<boolean>(true);
+    const [opened, { open, close }] = useDisclosure(false);
 
     useEffect(() => {
         // check if user already rated the album
@@ -123,7 +131,7 @@ export default function Rater({
 
             const { data, error } = await supabase
                 .from("ratings")
-                .select("ratings, review, total")
+                .select("ratings, review, total, shorten")
                 .eq("user_id", user.id)
                 .eq("album_id", albumId);
 
@@ -137,6 +145,7 @@ export default function Rater({
                 console.log(total);
                 setRatings(ratings);
                 setReview(review);
+                setShorten(data[0].shorten);
                 setTotal(parseFloat(total.toFixed(1).replace(",", ".")));
             } else {
                 const initialRatings = tracks.map((track) => ({
@@ -228,7 +237,11 @@ export default function Rater({
             }
 
             console.log("Ratings updated", data);
+            open();
         } else {
+            const shortened = getShorten();
+            setShorten(shortened);
+
             const { data, error } = await supabase.from("ratings").insert([
                 {
                     album_id: albumId,
@@ -236,7 +249,7 @@ export default function Rater({
                     ratings,
                     review,
                     total: finalRating,
-                    shorten: getShorten(),
+                    shorten: shortened,
                 },
             ]);
 
@@ -246,82 +259,125 @@ export default function Rater({
             }
 
             console.log("Ratings saved", data);
+            open();
         }
     };
 
     return (
-        <div className=" w-full px-5">
-            <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-                {tracks.map((track) => (
-                    <Track
-                        key={track.id}
-                        track={track}
-                        ratings={ratings}
-                        onValueChange={handleValueChange}
-                    />
-                ))}
-                <div
-                    className={`
-                    bg-neutral-700
-                    p-4 gap-4
-                    rounded-xl
-                    flex flex-col items- justify-center
-                `}
-                >
-                    <h2 className="font-bold">Sua avaliação do álbum</h2>
-                    <input
-                        type="number"
-                        name="total"
-                        id="total"
-                        className={`
-                                bg-transparent outline-none
-                                font-bold w-full text-2xl
-                            `}
-                        value={total === 0 ? "" : total}
-                        max={100}
-                        min={0}
-                        placeholder="0"
-                        onChange={(e) => setTotal(Number(e.target.value))}
-                        disabled={useMedia}
-                    />
-
-                    <Chip
-                        checked={useMedia}
-                        color="#fa805e"
-                        onChange={(useMedia) => {
-                            setUseMedia(useMedia);
-                            setTotal(
-                                ratings.reduce(
-                                    (acc, rating) => acc + rating.value,
-                                    0
-                                ) / ratings.length
-                            );
-                            console.log(useMedia);
-                        }}
+        <>
+            <Modal
+                opened={opened}
+                onClose={close}
+                title=""
+                overlayProps={{
+                    backgroundOpacity: 0.55,
+                    blur: 3,
+                }}
+                centered
+                classNames={{
+                    root: "!z-[1999]",
+                    overlay: "!z-[1998]",
+                    inner: "!z-[1999]",
+                }}
+            >
+                <div className="w-full flex flex-col items-center gap-3">
+                    <h2 className="text-2xl font-bold">Avaliação salva!</h2>
+                    <button
+                        className="bg-orange-600 cursor-pointer text-white rounded-xl py-2 px-6"
+                        onClick={close}
                     >
-                        Usar média
-                    </Chip>
+                        Continuar avaliando
+                    </button>
+                    <Link
+                        href={`/r/${shorten}`}
+                        className="bg-orange-600 cursor-pointer text-white rounded-xl py-2 px-6"
+                    >
+                        Ver avaliação
+                    </Link>
+                    
+                    <Link
+                        href={`/r/${shorten}/share`}
+                        className="bg-orange-600 cursor-pointer text-white rounded-xl py-2 px-6"
+                    >
+                        Compartilhar avaliação
+                    </Link>
                 </div>
-                <Textarea
-                    label="Deixe sua avaliação"
-                    autosize
-                    minRows={2}
-                    maxRows={4}
-                    name="review"
-                    placeholder="Qual sua opinião sobre o álbum?"
-                    classNames={{
-                        input: "!bg-neutral-700 !text-white !border-neutral-700",
-                    }}
-                    value={review}
-                    onChange={(e) => setReview(e.target.value)}
-                />
-                <button
-                    className="bg-orange-400 text-white font-bold rounded-xl py-3"
-                    type="submit"
-                >
-                    Salvar avaliação
-                </button>
-            </form>
-        </div>
+            </Modal>
+            <div className=" w-full max-w-2xl px-5">
+                <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+                    {tracks.map((track) => (
+                        <Track
+                            key={track.id}
+                            track={track}
+                            ratings={ratings}
+                            onValueChange={handleValueChange}
+                        />
+                    ))}
+                    <div
+                        className={`
+                        bg-neutral-700
+                        p-4 gap-4
+                        rounded-xl
+                        flex flex-col items- justify-center
+                    `}
+                    >
+                        <h2 className="font-bold">Sua avaliação do álbum</h2>
+                        <input
+                            type="number"
+                            name="total"
+                            id="total"
+                            className={`
+                                    bg-transparent outline-none
+                                    font-bold w-full text-2xl
+                                `}
+                            value={total === 0 ? "" : total}
+                            max={100}
+                            min={0}
+                            placeholder="0"
+                            onChange={(e) => setTotal(Number(e.target.value))}
+                            disabled={useMedia}
+                        />
+                        <Chip
+                            checked={useMedia}
+                            color="#fa805e"
+                            onChange={(useMedia) => {
+                                setUseMedia(useMedia);
+                                setTotal(
+                                    ratings.reduce(
+                                        (acc, rating) => acc + rating.value,
+                                        0
+                                    ) / ratings.length
+                                );
+                                console.log(useMedia);
+                            }}
+                            classNames={{
+                                label: classes.label,
+                            }}
+                        >
+                            Usar média
+                        </Chip>
+                    </div>
+                    <Textarea
+                        label="Deixe sua avaliação"
+                        autosize
+                        minRows={5}
+                        maxRows={8}
+                        name="review"
+                        placeholder="Qual sua opinião sobre o álbum?"
+                        classNames={{
+                            input: "!bg-neutral-700 !text-white !border-neutral-700 !rounded-xl",
+                        }}
+                        value={review}
+                        onChange={(e) => setReview(e.target.value)}
+                    />
+                    <button
+                        className="bg-orange-600 cursor-pointer text-white font-bold rounded-xl py-3"
+                        type="submit"
+                    >
+                        Salvar avaliação
+                    </button>
+                </form>
+            </div>
+        </>
     );
 }

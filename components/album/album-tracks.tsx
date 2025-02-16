@@ -17,7 +17,7 @@ export default function tracksTracks({
     // console.log(discTracks);
 
     return (
-        <div className="w-full">
+        <div className="w-full max-w-2xl">
             {loading ? (
                 <div className=""></div>
             ) : discTracks ? (
@@ -58,7 +58,7 @@ export default function tracksTracks({
                                             (track: any, index: number) => (
                                                 <tr
                                                     key={track.id}
-                                                    className="bg-transparent hover:bg-neutral-800 transition-all duration-200 ease-in-out"
+                                                    className="bg-transparent hover:bg-neutral-800 md:rounded-xl transition-all duration-200 ease-in-out"
                                                 >
                                                     <td className="pl-5 py-4 text-neutral-400">
                                                         {track.track_number}

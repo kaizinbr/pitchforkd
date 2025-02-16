@@ -80,7 +80,7 @@ export default function UserRatings({ user }: { user: any }) {
     };
 
     return (
-        <div className="w-full flex flex-col gap-4">
+        <div className="w-full flex flex-col gap-4 max-w-2xl">
             {loading ? (
                 <RatingCardSkeletonList count={3} />
             ) : ratings.length > 0 ? (
@@ -89,7 +89,7 @@ export default function UserRatings({ user }: { user: any }) {
                     <div
                         className={`
                             flex flex-col
-                            w-full divide-y divide-neutral-800
+                            w-full
                         `}
                     >
                         {ratings.map((rating) => (

@@ -20,16 +20,7 @@ export default async function Signup(props: {
     return (
         <div className="w-full min-h-screen p-5 flex justify-center items-center">
             <form className="flex-1 flex flex-col min-w-64 rounded-2xl py-8 px-5 bg-neutral-700">
-            <h1 className="text-2xl font-bold">Cadastre-se</h1>
-                <p className="text-sm text text-neutral-300">
-                    Já tem uma conta?{" "}
-                    <Link
-                        className="text-neutral-300 font-medium underline"
-                        href="/sign-in"
-                    >
-                        Entre por aqui
-                    </Link>
-                </p>
+                <h1 className="text-2xl font-bold">Cadastre-se</h1>
                 <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
                     <Label htmlFor="email">Email</Label>
                     <Input
@@ -46,12 +37,22 @@ export default async function Signup(props: {
                         required
                     />
                     <SubmitButton
+                        className="rounded-xl bg-orange-600 hover:bg-orange-700 text-white font-semibold"
                         formAction={signUpAction}
                         pendingText="Cadastrando..."
                     >
                         Cadastrar
                     </SubmitButton>
                     <FormMessage message={searchParams} />
+                </div>
+                <div className="text-base text-neutral-300 flex items-center flex-col w-full gap-2 mt-6 font-semibold">
+                    <p className="">Já tem uma conta?</p>
+                    <Link
+                        href="/sign-in"
+                        className="w-full border border-neutral-600 rounded-xl p-2 text-center transition-all duration-200 hover:border-orange-600"
+                    >
+                        Entre por aqui
+                    </Link>
                 </div>
             </form>
         </div>

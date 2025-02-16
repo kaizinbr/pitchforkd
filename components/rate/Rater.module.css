@@ -7,8 +7,33 @@
     background-color: #fa805e;
 }
 
+.track::before {
+    background-color: #525252;
+}
+
 .thumb {
     height: 32px;
     width: 32px;
     border-color: #fa805e;
+    background-color: white;
+}
+
+.label {
+    font-size: 14px;
+    font-weight: bold;
+    margin-left: 8px;
+    background-color: #525252 !important;
+    transition: all 0.2s;
+}
+
+.label:hover {
+    background-color: #4a4a4a !important;
+}
+
+.label:where([data-checked]):hover {
+    background-color: #f88666 !important;
+}
+
+.label:where([data-checked]) {
+    background-color: #fa805e !important;
 }

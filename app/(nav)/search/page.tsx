@@ -16,7 +16,7 @@ export default async function Page(props: {
 
 
     return (
-        <div className="flex-1 w-full flex flex-col gap-8 items-center  mx-auto max-w-4xl p-5 mt-10">
+        <div className="flex-1 w-full flex flex-col gap-8 items-center  mx-auto max-w-4xl p-5 mt-16">
             <Search placeholder="Pesquisar..." />
             <Results query={query} currentPage={currentPage} />
         </div>

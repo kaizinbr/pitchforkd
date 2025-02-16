@@ -38,12 +38,12 @@ export default function DisplayReviews({
     };
 
     return (
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full max-w-2xl">
             <h2 className="text-xl font-bold flex px-5">Reviews</h2>
             <div
                 className={`
                     flex flex-col
-                    w-full divide-y divide-neutral-800
+                    w-full
                 `}
             >
                 {ratings?.map((rating) => (

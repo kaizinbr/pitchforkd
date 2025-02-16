@@ -19,7 +19,7 @@ export default async function Index() {
     // console.log(data);
 
     return (
-        <div className="w-full mt-12 px-3 mx-auto max-w-body-content">
+        <div className="w-full max-w-2xl mt-20 px-3 mx-auto">
             <div className="flex-1 w-full flex flex-col gap-8">
                 <h1 className="text-xl font-bold">Suas configurações</h1>
                 <div className="flex flex-col gap-4 bg-neutral-700 rounded-3xl px-6 py-4">
@@ -81,7 +81,7 @@ export default async function Index() {
                         <span className="">Excluir conta</span>
                     </p>
                     <button
-                        className="w-full gap-2 flex flex-row p-4 text-red-500 bg-transparent hover:bg-neutral-700 transition duration-200"
+                        className="w-full cursor-pointer gap-2 flex flex-row p-4 text-red-500 bg-transparent hover:bg-neutral-700 transition duration-200"
                         onClick={signOutAction}
                     >
                         <LogOut size={18} />

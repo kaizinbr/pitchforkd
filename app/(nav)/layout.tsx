@@ -1,5 +1,5 @@
 import "@/app/globals.css";
-import Navigator from "@/components/Navigator";
+import Navigator, { DesktopNavigator } from "@/components/Navigator";
 import { createClient } from "@/utils/supabase/server";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -26,6 +26,7 @@ export default async function RootLayout({
     return (
         <div className="flex-1 w-full flex flex-col items-center mb-20">
             <Navigator user={user} />
+            <DesktopNavigator user={user} />
             <div className="flex flex-col w-full">{children}</div>
         </div>
     );

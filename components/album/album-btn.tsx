@@ -20,6 +20,7 @@ export default function AlbumBtn({
                     flex justify-center items-center
                     bg-orange-400 text-white font-bold rounded-xl
                     fixed left-4 right-4
+                    max-w-2xl mx-auto
                     ${scrollDirection > "down" ? "bottom-20" : "bottom-4"}
                     transition-all duration-300
                 `}>

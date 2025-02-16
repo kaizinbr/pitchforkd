@@ -28,8 +28,8 @@ export default async function Page({
     // console.log(data);
 
     return (
-        <>
+        <div className="flex flex-col gap-4 items-center relative mb-16">
             <AlbumMain album_id={id} />
-        </>
+        </div>
     );
 }

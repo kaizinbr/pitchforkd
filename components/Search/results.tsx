@@ -10,7 +10,7 @@ import UserCard from "../ui/UserCard";
 import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
-import { Track, Album } from "@/lib/utils/types";
+import { Track, Album, User } from "@/lib/utils/types";
 
 import { createClient } from "@/utils/supabase/client";
 
@@ -30,17 +30,25 @@ function Results({
     >([]);
     const [tracksResults, setTracksResults] = useState<Track[]>([]);
     const [albunsResults, setAlbunsResults] = useState<Album[]>([]);
-    const [users, setUsers] = useState<
-        { id: string; avatar_url: string; name: string; username: string }[]
-    >([]);
+    const [users, setUsers] = useState<User[]>([]);
 
     useEffect(() => {
         const fetchInvoices = async () => {
+            const supabase = createClient();
+
             if (query == "") {
                 console.log("empty");
                 setArtistResults([]);
+                const { data, error } = await supabase
+                    .from("profiles")
+                    .select("*");
+                if (error) {
+                    console.log(error);
+                } else {
+                    setUsers(data);
+                }   
+                
             } else if (type === "user") {
-                const supabase = createClient();
                 const { data, error } = await supabase
                     .from("profiles")
                     .select("*")

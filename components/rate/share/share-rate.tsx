@@ -107,6 +107,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
                     <div className={`
                             rounded-xl overflow-hidden
                             aspect-[9/16] w-8/12 mx-auto
+                            max-w-[285px]
                         `}>
                         <div
                             className={`
@@ -125,7 +126,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
                             />
                         </div>
                     </div>
-                    <div className="flex flex-row gap-2 w-full  justify-center">
+                    <div className="flex flex-row gap-2 w-full max-w-2xl justify-center">
                         {colors.length > 0 && colors.map((color, index) => (
                             <button
                                 key={index}

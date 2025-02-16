@@ -11,7 +11,7 @@ export default function AlbumData({
     loading: boolean;
 }) {
     return (
-        <div className="w-full px-5">
+        <div className="w-full max-w-2xl px-5">
             {loading ? (
                 <div className=""></div>
             ) : (

@@ -21,7 +21,7 @@ export default function Profile({
         <>
             <div
                 className={`
-                        absolute h-[30rem] w-lvw -z-50 from-40 
+                        absolute h-[30rem] w-full -z-50 from-40 
                         top-0
                         transition-all duration-200 ease-in-out
                     `}
@@ -30,11 +30,11 @@ export default function Profile({
                 }}
             ></div>
             {isUser && (
-                <div className="absolute top-4 right-4 left-4 flex flex-row justify-end gap-3">
-                    <Link href={`${user.username}/edit`} className="">
+                <div className="absolute top-20 w-full max-w-2xl mx-auto flex flex-row justify-end gap-3">
+                    <Link href={`/edit`} className="">
                         <TbUserEdit className="size-6" />
                     </Link>
-                    <Link href={`${user.username}/settings`} className="">
+                    <Link href={`/settings`} className="">
                         <TbSettings2 className="size-6" />
                     </Link>
                 </div>

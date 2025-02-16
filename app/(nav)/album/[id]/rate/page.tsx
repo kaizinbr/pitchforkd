@@ -7,7 +7,7 @@ export default async function Page({
 }) {
     const id = (await params).id;
     return (
-        <div>
+        <div className="flex flex-col gap-4 items-center relative">
             <RatePage id={id} />
         </div>
     );

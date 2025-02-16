@@ -80,7 +80,7 @@ export default function DisplayRate({
                 <>
                     <div
                         className={`
-                        absolute h-[30rem] w-lvw -z-50 from-40 
+                        absolute h-[30rem] w-full -z-50 from-40 
                         top-0
                         transition-all duration-200 ease-in-out
                     `}

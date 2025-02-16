@@ -11,11 +11,21 @@ export default async function Page({
 
     const lowerCaseUsername = username.toLowerCase();
 
+
     const supabase = await createClient();
+    const { data: user, error: sessionsError } = await supabase.auth.getUser()
+
+
+
+    if (!user.user) {
+        console.error("User is not authenticated");
+        return <div>User is not authenticated</div>;
+    }
+
     const { data, error } = await supabase
         .from("profiles")
         .select("*")
-        .eq("lowercased_username", lowerCaseUsername);
+        .eq("id", user.user.id);
 
     if (error) {
         console.error("Error fetching user", error);

@@ -8,9 +8,11 @@ import Link from "next/link";
 
 export default function Profile({
     user,
+    reviewCount,
     isUser,
 }: {
     user: any;
+    reviewCount: number;
     isUser: boolean;
 }) {
     const [currentColor, setCurrentColor] = useState<string>("#F17105");
@@ -27,14 +29,16 @@ export default function Profile({
                     backgroundImage: `linear-gradient(to bottom, ${currentColor}, transparent)`,
                 }}
             ></div>
-            <div className="absolute top-4 right-4 left-4 flex flex-row justify-end gap-3">
-                <Link href={`${user.username}/edit`} className="">
-                    <TbUserEdit className="size-6" />
-                </Link>
-                <Link href={`${user.username}/settings`} className="">
-                    <TbSettings2 className="size-6" />
-                </Link>
-            </div>
+            {isUser && (
+                <div className="absolute top-4 right-4 left-4 flex flex-row justify-end gap-3">
+                    <Link href={`${user.username}/edit`} className="">
+                        <TbUserEdit className="size-6" />
+                    </Link>
+                    <Link href={`${user.username}/settings`} className="">
+                        <TbSettings2 className="size-6" />
+                    </Link>
+                </div>
+            )}
             <div className="flex flex-col gap-4 items-center w-full">
                 <picture className="flex items-center justify-center mt-48">
                     <Avatar
@@ -50,25 +54,28 @@ export default function Profile({
                     <p className="text-base font-semibold text-neutral-300 text-center">
                         @{user.username}
                     </p>
-                    <div className="flex flex-row gap-1 text-xs font-semibold text-neutral-300 text-center">
+                    {!user.pronouns && !user.site ? null : (
+                        <div className="flex flex-row gap-1 text-xs font-semibold text-neutral-300 text-center mt-1">
                         {user.pronouns && (
-                            <span className="">
-                                {user.pronouns}
-                            </span>
+                            <span className="">{user.pronouns}</span>
                         )}
-                        <span>•</span>
+                        {user.pronouns && user.site && <span>•</span>}
                         {user.site && (
-                                <Link
-                                    href={`https://${user.site}`}
-                                    className={`
+                            <Link
+                                href={`https://${user.site}`}
+                                className={`
                                          underline
                                     `}
-                                    target="_blank"
-                                >
-                                    {user.site || ""}
-                                </Link>
+                                target="_blank"
+                            >
+                                {user.site || ""}
+                            </Link>
                         )}
                     </div>
+                    )}
+                    <p className="text-xs font-semibold text-neutral-300 text-center mt-1">
+                        {reviewCount} avaliações
+                    </p>
                 </div>
             </div>
         </>

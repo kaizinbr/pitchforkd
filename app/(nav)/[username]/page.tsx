@@ -22,6 +22,17 @@ export default async function Page({
         return <div>Error fetching user</div>;
     }
 
+    const { data: reviewCount, error: reviewError } = await supabase
+        .from("ratings")
+        .select("id")
+        .eq("user_id", data[0].id);
+
+    if (reviewError) {
+        console.error("Error fetching reviews", reviewError);
+        return <div>Error fetching reviews</div>;
+    }
+
+
     const { data: user, error: sessionsError } = await supabase.auth.getUser()
 
     let isUser = false
@@ -39,14 +50,14 @@ export default async function Page({
 
     return (
         <div className="flex flex-col gap-4 items-center relative">
-            {data.length > 0 ? (
+            {data.length > 0 && reviewCount ? (
                 <>
-                    <Profile user={data[0]} isUser={isUser} />
+                    <Profile user={data[0]} isUser={isUser} reviewCount={reviewCount?.length} />
                     <UserRatings user={data[0]} />
                 </>
 
             ) : (
-                <div>User not found</div>
+                <div>User not foufffnd</div>
             )}
         </div>
     );

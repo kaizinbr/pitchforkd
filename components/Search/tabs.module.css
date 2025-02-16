@@ -8,8 +8,8 @@
     font-weight: 500;
     transition: color 100ms ease;
 
-    &[data-active] {
+    /* &[data-active] {
         color: var(--mantine-color-black);
-    }
+    } */
 
 }

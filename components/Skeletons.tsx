@@ -247,3 +247,53 @@ export function InvoicesTableSkeleton() {
         </div>
     );
 }
+
+export function RatingCardSkeleton() {
+    return (
+        <div
+            className={`
+                        flex flex-col 
+                        max-w-[600px] w-full
+                        transition-all duration-200 ease-in-out   
+                        overflow-hidden relative
+                        p-5
+                    `}
+        >
+            <div className="z-20">
+                <div className="flex flex-row items-center gap-2">
+                    <div className="flex relative flex-col justify-center items-center size-8 rounded-full">
+                        <div className={"size-8 rounded-full bg-neutral-600"} />
+                    </div>
+                </div>
+
+                <div className="flex flex-row relative rounded-2xl my-3 overflow-hidden">
+                    <div className="object-cover size-40 bg-neutral-600 max-h-[160px] rounded-xl" />
+                    <div
+                        className={`
+                                flex flex-col justify-start items-start px-3 gap-2
+                                w-[calc(100%-160px)]
+                            `}
+                    ></div>
+                </div>
+                <div className="flex items-center justify-start flex-row gap-2">
+                    <span className=" h-full flex items-center text-xs text-stone-400 "></span>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+export function RatingCardSkeletonList({ count }: { count: number }) {
+    return (
+        <div
+            className={`
+                flex flex-col
+                w-full divide-y divide-neutral-800
+            `}
+        >
+            {Array.from({ length: count }).map((_, index) => (
+                <RatingCardSkeleton key={index} />
+            ))}
+        </div>
+    );
+}

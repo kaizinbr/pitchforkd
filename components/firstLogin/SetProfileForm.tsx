@@ -36,8 +36,8 @@ export default function SetProfileForm({ user }: { user: User | null }) {
             return;
         }
 
-        if (e.target.value.length > 15) {
-            setMessage("O nome de usuário deve ter no máximo 15 caracteres");
+        if (e.target.value.length > 20) {
+            setMessage("O nome de usuário deve ter no máximo 20 caracteres");
             setCanUpdate(false);
             return;
         }

@@ -12,7 +12,7 @@ import classes from "./AcForm.module.css";
 export default function AccountForm({ profile }: { profile: any }) {
     const supabase = createClient();
     const [loading, setLoading] = useState(false);
-    const [ disabled, setDisabled ] = useState(false);
+    const [disabled, setDisabled] = useState(false);
     const [name, setName] = useState<string | null>(profile.name);
     const [username, setUsername] = useState<string | null>(profile.username);
     const [actualUsername, setActualUsername] = useState<string | null>(
@@ -190,7 +190,9 @@ export default function AccountForm({ profile }: { profile: any }) {
                                 onKeyUp={async (e) => {
                                     if (e.currentTarget.value.trim() === "") {
                                         setDisabled(true);
-                                        setMessage("Username não pode ser vazio");
+                                        setMessage(
+                                            "Username não pode ser vazio"
+                                        );
                                     } else if (
                                         await usernameAlreadyExists({
                                             username: e.currentTarget.value,
@@ -209,6 +211,11 @@ export default function AccountForm({ profile }: { profile: any }) {
                                         setDisabled(true);
                                         setMessage(
                                             "Username não pode conter caracteres especiais"
+                                        );
+                                    } else if (e.currentTarget.value.length > 20) {
+                                        setDisabled(true);
+                                        setMessage(
+                                            "O nome de usuário deve ter no máximo 20 caracteres"
                                         );
                                     } else {
                                         setDisabled(false);

@@ -114,7 +114,7 @@ export default function RatingCard({
                             <div className="flex items-center justify-center flex-row gap-2">
                                 <h2 className="text-sm text-neutral-100">
                                     <span className="">
-                                        {review.profiles.name} avaliou
+                                        {review.profiles.name || review.profiles.username} avaliou
                                     </span>{" "}
                                     <span className="font-semibold">
                                         {album && album.name}

@@ -176,7 +176,7 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                         flex flex-row items-center justify-evenly
                     `}
                     >
-                    <h2 className="font-bold uppercase mr-8 text-xl">logo</h2>
+                    <h2 className="font-bold mr-8 text-xl">Pitchforkd</h2>
                         <button>
                             <Link
                                 data-active={pathname === "/home"}

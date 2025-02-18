@@ -39,7 +39,7 @@ export default function DisplayReviews({
 
     return (
         <div className="flex flex-col w-full max-w-2xl">
-            <h2 className="text-xl font-bold flex px-5">Reviews</h2>
+            <h2 className="text-xl font-bold flex px-5 mb-3">Avaliações</h2>
             <div
                 className={`
                     flex flex-col

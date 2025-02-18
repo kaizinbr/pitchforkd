@@ -25,39 +25,6 @@ export default function AccountForm({ profile }: { profile: any }) {
     const [pronouns, setPronouns] = useState<string | null>(profile.pronouns);
     const [message, setMessage] = useState<string>("");
 
-    // const getProfile = useCallback(async () => {
-    //     try {
-    //         setLoading(true);
-
-    //         const { data, error, status } = await supabase
-    //             .from("profiles")
-    //             .select(`name, username, site, avatar_url, bio, pronouns`)
-    //             .eq("id", user?.id)
-    //             .single();
-
-    //         if (error && status !== 406) {
-    //             console.log(error);
-    //             throw error;
-    //         }
-
-    //         if (data) {
-    //             setName(data.name);
-    //             setUsername(data.username);
-    //             setSite(data.site);
-    //             setAvatarUrl(data.avatar_url);
-    //             setPronouns(data.pronouns);
-    //         }
-    //     } catch (error) {
-    //         alert("Error loading user data!");
-    //     } finally {
-    //         setLoading(false);
-    //     }
-    // }, [user, supabase]);
-
-    // useEffect(() => {
-    //     getProfile();
-    // }, [user, getProfile]);
-
     const router = useRouter();
     async function updateProfile({
         username,
@@ -97,7 +64,7 @@ export default function AccountForm({ profile }: { profile: any }) {
     }
 
     return (
-        <div className="form-widget flex flex-col justify-center w-full md:max-w-md md:w-2/5 pt-16 px-8 md:px-0 md:pl-16">
+        <div className="form-widget flex flex-col justify-center w-full max-w-md  pt-16 px-8 md:px-0 md:pl-16">
             <div
                 className={`
                     flex flex-col justify-start
@@ -212,8 +179,12 @@ export default function AccountForm({ profile }: { profile: any }) {
                                         setMessage(
                                             "Username não pode conter caracteres especiais"
                                         );
-                                    } else if (e.currentTarget.value.length > 20) {
+                                    } else if (
+                                        (e.target as HTMLInputElement).value
+                                            .length > 20
+                                    ) {
                                         setDisabled(true);
+                                        console.log("user too long");
                                         setMessage(
                                             "O nome de usuário deve ter no máximo 20 caracteres"
                                         );
@@ -277,7 +248,11 @@ export default function AccountForm({ profile }: { profile: any }) {
 
             <div className="flex w-full flex-row gap-4 mt-8">
                 <button
-                    className="w-full px-4 py-2 rounded-xl bg-orange-400 font-bold text-neutral-100"
+                    className={`
+                            w-full px-4 py-2 rounded-xl  font-bold text-neutral-100
+                            transition duration-200 ease-in-out
+                            ${disabled ? "bg-gray-400 cursor-not-allowed" : " bg-orange-400 cursor-pointer"}
+                        `}
                     onClick={() =>
                         updateProfile({
                             name,

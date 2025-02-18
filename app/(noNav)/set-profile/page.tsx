@@ -11,7 +11,7 @@ export default async function SetProfile() {
 
     return (
         <div className="flex flex-col min-h-screen">
-            <div className="flex flex-col w-full h-full m-auto justify-center items-center px-8 sm:max-w-md gap-2">
+            <div className="flex flex-col w-full h-full m-auto justify-center items-center px-8 max-w-md gap-2">
                 <SetProfileForm user={user} />
             </div>
         </div>

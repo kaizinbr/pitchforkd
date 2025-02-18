@@ -144,8 +144,8 @@ export default function SetProfileForm({ user }: { user: User | null }) {
             className={`
                         flex-1 flex flex-col w-full justify-center gap-2 
                         text-foreground 
-                        p-8 bg-neutral-700
-                        border border-neutral-700 rounded-2xl overflow-hidden
+                        p-8 bg-neutral-800
+                        border border-neutral-800 rounded-2xl overflow-hidden
                     `}
         >
             <div
@@ -195,7 +195,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                             col-span-6 lg:col-span-4
                             relative
                             w-full
-                            mt-8
+                            mt-8 mb-4
                             px-4
                         `}
             >
@@ -224,7 +224,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                                 className={`
                                                  rounded-lg
                                                 outline-none
-                                                bg-neutral-700 w-full
+                                                bg-neutral-800 w-full
                                                 transition duration-200 ease-in-out
                                                 text-3xl font-bold
                                             `}
@@ -241,7 +241,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                                 className={`
                                                 rounded-lg
                                                 outline-none
-                                                bg-neutral-700 w-full
+                                                bg-neutral-800 w-full
                                                 transition duration-200 ease-in-out
                                                 text-lg  font-medium
                                             `}
@@ -260,7 +260,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                                 className={`
                                                 rounded-lg
                                                 outline-none
-                                                bg-neutral-700 w-full
+                                                bg-neutral-800 w-full
                                                 transition duration-200 ease-in-out
                                                 text-lg  font-medium py-1
                                             `}
@@ -276,17 +276,17 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                                 className={`
                                                 rounded-lg
                                                 outline-none
-                                                bg-neutral-700 w-full
+                                                bg-neutral-800 w-full
                                                 transition duration-200 ease-in-out
                                                 text-lg  font-medium py-1
                                             `}
                             ></input>
                         </div>
-                        <div
+                        {/* <div
                             className={`
                     
                                         text-lg
-                                       bg-neutral-700 w-full
+                                       bg-neutral-800 w-full
                                     `}
                         >
                             <Textarea
@@ -303,14 +303,14 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                                 }}
                                 onChange={(e) => setBio(e.target.value)}
                             />
-                        </div>
+                        </div> */}
                     </form>
                     {/* </div> */}
                 </div>
             </div>
             <div className="flex w-full flex-row gap-4">
                 <button
-                    className="bg-neutral-200 rounded-lg px-4 py-2 text-neutral-800 font-bold"
+                    className="bg-neutral-200 rounded-xl px-4 py-2 text-neutral-800 font-bold"
                     onClick={() =>
                         updateProfile({
                             name: name,
@@ -327,7 +327,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                 </button>
                 <Link
                     href="/"
-                    className="bg-neutral-200 rounded-lg px-4 py-2 text-neutral-800 font-bold"
+                    className="bg-neutral-200 rounded-xl px-4 py-2 text-neutral-800 font-bold"
                 >
                     Continuar
                 </Link>

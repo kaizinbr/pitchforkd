@@ -106,7 +106,7 @@ export default function ReviewCard({
                     <div className="flex items-center justify-center flex-row gap-2">
                         <h2 className="text-sm text-neutral-100">
                             <span className="font-semibold">
-                                {review.profiles.name} avaliou
+                                {review.profiles.name || review.profiles.username} avaliou
                             </span>{" "}
                             <span className="font-bold">
                                 {album && album.name}

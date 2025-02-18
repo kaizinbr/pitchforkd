@@ -43,12 +43,12 @@ export default function Card({
                 {formatRate(rate.total)}
             </p>
             <p className="font-semibold text-xs text-center max-w-full line-clamp-2 z-10">
-                {rate.profiles.name} avaliou{" "}
+                {rate.profiles.name || rate.profiles.username} avaliou{" "}
                 <span className="font-bold">{album.name}</span>
             </p>
 
             <p className="text-[10px] text-neutral-300 text-center mt-4 z-10">
-                Veja mais em letterfy.kaizin.com.br
+                Veja mais em pitchforkd.me
             </p>
         </>
     );

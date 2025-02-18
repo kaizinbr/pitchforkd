@@ -1,5 +1,10 @@
 import RatePage from "@/components/rate/RatePage";
 
+export const metadata = {
+    title: "Avaliar álbum | Pitchforkd",
+    description: "Avalie álbuns de música e veja o que a comunidade acha deles",
+};
+
 export default async function Page({
     params,
 }: {

@@ -2,6 +2,11 @@ import AlbumPage from "@/components/album/AlbumPage";
 import AlbumMain from "@/components/album/album-main";
 import { createClient } from "@/utils/supabase/server";
 
+export const metadata = {
+    title: "Álbum | Pitchforkd",
+    description: "Avalie álbuns de música e veja o que a comunidade acha deles",
+};
+
 export default async function Page({
     params,
 }: {

@@ -3,6 +3,11 @@ import Link from "next/link";
 import { Trash, LockKeyhole, LogOut, Mail } from "lucide-react";
 import { signOutAction } from "@/app/actions";
 
+export const metadata = {
+    title: "Configurações | Pitchforkd",
+    description: "Avalie álbuns de música e veja o que a comunidade acha deles",
+};
+
 export default async function Index() {
     const supabase = await createClient();
 

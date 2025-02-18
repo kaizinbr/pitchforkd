@@ -1,5 +1,39 @@
 import { createClient } from "@/utils/supabase/server";
 import ShareRate from "@/components/rate/share/share-rate";
+import type { Metadata, ResolvingMetadata } from "next";
+
+type Props = {
+    params: Promise<{ shorten: string}>;
+};
+
+export async function generateMetadata(
+    { params }: Props,
+    parent: ResolvingMetadata
+): Promise<Metadata> {
+    const shorten = (await params).shorten;
+    const supabase = await createClient();
+    
+    const { data, error } = await supabase
+        .from("ratings")
+        .select(
+            `*,
+            profiles(
+                *
+            )`
+        )
+        .eq("shorten", shorten);
+
+    if (error) {
+        console.error("Error fetching user", error);
+    }
+
+    return {
+        title:
+            data && data.length > 0
+                ? `Compartilhar avaliação de ${data[0].profiles.name || data[0].profiles.username} | Pitchforkd`
+                : "Compartilhar avaliação | Pitchforkd",
+    };
+}
 
 export default async function Page({
     params,

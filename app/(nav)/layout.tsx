@@ -8,8 +8,8 @@ const defaultUrl = process.env.VERCEL_URL
 
 export const metadata = {
     metadataBase: new URL(defaultUrl),
-    title: "txt 4th gen leaders",
-    description: "The fastest way to build apps with Next.js and Supabase",
+    title: "Pitchforkd - Avalie álbuns de música",
+    description: "Avalie álbuns de música e veja o que a comunidade acha deles",
 };
 
 export default async function RootLayout({

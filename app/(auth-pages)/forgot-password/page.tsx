@@ -5,6 +5,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Link from "next/link";
 
+export const metadata = {
+    title: "Esqueci a senha | Pitchforkd",
+    description: "Avalie álbuns de música e veja o que a comunidade acha deles",
+};
+
 export default async function ForgotPassword(props: {
     searchParams: Promise<Message>;
 }) {

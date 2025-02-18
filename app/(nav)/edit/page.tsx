@@ -1,6 +1,11 @@
 import AccountForm from "./account-form";
 import { createClient } from "@/utils/supabase/server";
 
+export const metadata = {
+    title: "Editar perfil | Pitchforkd",
+    description: "Avalie álbuns de música e veja o que a comunidade acha deles",
+};
+
 
 export default async function Page() {
     const supabase = await createClient();

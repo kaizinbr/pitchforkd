@@ -2,6 +2,11 @@ import Search from "@/components/Search/search-bar";
 
 import Results from "@/components/Search/results";
 
+export const metadata = {
+    title: "Pesquisa | Pitchforkd",
+    description: "Avalie álbuns de música e veja o que a comunidade acha deles",
+};
+
 export default async function Page(props: {
     searchParams?: Promise<{
         query?: string;

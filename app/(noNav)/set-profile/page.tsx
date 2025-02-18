@@ -1,6 +1,11 @@
 import SetProfileForm from "@/components/firstLogin/SetProfileForm";
 import { createClient } from "@/utils/supabase/server";
 
+export const metadata = {
+    title: "Primeiro acesso | Pitchforkd",
+    description: "Avalie álbuns de música e veja o que a comunidade acha deles",
+};
+
 
 export default async function SetProfile() {
     const supabase = createClient();

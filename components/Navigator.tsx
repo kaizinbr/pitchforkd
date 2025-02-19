@@ -61,7 +61,7 @@ export default function Navigator({ user }: { user: User | null }) {
                     transition-all duration-300 z-[999]
                     left-0 flex w-full items-center justify-evenly
                     backdrop-blur-xl
-                    bg-bunker-900/70  
+                    bg-bunker-950/70  
                     px-6 py-1
                 `}
             >

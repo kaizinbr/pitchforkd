@@ -11,7 +11,7 @@ export default function CopyText({
 }) {
     return (
         <div className="w-full max-w-2xl px-5">
-            <div className="p-4 w-full bg-neutral-800 rounded-xl">
+            <div className="p-4 w-full bg-bunker-800 rounded-xl">
                 <p className="mb-3">Avaliação de {rate.profiles.name || rate.profiles.username}</p>
                 <p className="mb-3">
                     {album.name} – {album.artists[0].name} –{" "}
@@ -43,7 +43,7 @@ export default function CopyText({
                     </Link>
                 </p>
                 <button
-                    className="mt-4 p-2 bg-orange-500 text-white rounded-xl w-full cursor-pointer"
+                    className="mt-4 p-2 !font-semibold bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600  text-white rounded-xl w-full cursor-pointer"
                     onClick={() => {
                         const textToCopy = `Avaliação de ${rate.profiles.name || rate.profiles.username}\n\n${album.name} – ${album.artists[0].name} – ${formatRate(rate.total)}\n\n${rate.ratings
                             .map((rating, index) => {
@@ -61,7 +61,7 @@ export default function CopyText({
                         navigator.clipboard.writeText(textToCopy);
                     }}
                 >
-                    Copy to Clipboard
+                    Copiar
                 </button>
             </div>
         </div>

@@ -55,7 +55,7 @@ export default function Profile({
                         @{user.username}
                     </p>
                     {!user.pronouns && !user.site ? null : (
-                        <div className="flex flex-row gap-1 text-xs font-semibold text-neutral-300 text-center mt-1">
+                        <div className="flex flex-row gap-1 text-xs font-medium text-neutral-300 text-center mt-1">
                         {user.pronouns && (
                             <span className="">{user.pronouns}</span>
                         )}
@@ -73,7 +73,7 @@ export default function Profile({
                         )}
                     </div>
                     )}
-                    <p className="text-xs font-semibold text-neutral-300 text-center mt-1">
+                    <p className="text-xs font-medium text-neutral-300 text-center mt-1">
                         {reviewCount} avaliações
                     </p>
                 </div>

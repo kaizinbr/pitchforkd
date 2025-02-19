@@ -13,7 +13,9 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
     const [tracks, setTracks] = useState<any>([]);
     const [loading, setLoading] = useState(true);
     const [currentColor, setCurrentColor] = useState<string>("#4a6d73");
-    const [colors, setColors] = useState<{ hex: string; intensity: number }[]>([]);
+    const [colors, setColors] = useState<{ hex: string; intensity: number }[]>(
+        []
+    );
 
     function updateColor(colors: { hex: string; intensity: number }[]) {
         setColors(colors);
@@ -46,7 +48,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
         })
             .then((dataUrl) => {
                 const link = document.createElement("a");
-                const date = new Date().toISOString().replace(/[:.]/g, '-');
+                const date = new Date().toISOString().replace(/[:.]/g, "-");
                 link.download = `rating-${rate.shorten}-${date}.png`;
                 link.href = dataUrl;
                 link.click();
@@ -104,11 +106,13 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
         <>
             {album && (
                 <>
-                    <div className={`
+                    <div
+                        className={`
                             rounded-xl overflow-hidden
                             aspect-[9/16] w-8/12 mx-auto
                             max-w-[285px]
-                        `}>
+                        `}
+                    >
                         <div
                             className={`
                             transition-all duration-500 text-white
@@ -127,28 +131,31 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
                         </div>
                     </div>
                     <div className="flex flex-row gap-2 w-full max-w-2xl justify-center">
-                        {colors.length > 0 && colors.map((color, index) => (
-                            <button
-                                key={index}
-                                className={`
-                                    w-8 h-8 rounded-xl
+                        {colors.length > 0 &&
+                            colors.map((color, index) => (
+                                <button
+                                    key={index}
+                                    className={`
+                                    size-8 rounded-xl
                                     bg-[${color.hex}] cursor-pointer
                                 `}
-                                style={{backgroundColor: color.hex}}
-                                onClick={() => setCurrentColor(color.hex)}
-                            ></button>
-                        ))}
+                                    style={{ backgroundColor: color.hex }}
+                                    onClick={() => setCurrentColor(color.hex)}
+                                ></button>
+                            ))}
                     </div>
                     <button
                         className={`
-                            bg-orange-600 text-neutral-100 px-8 py-2 rounded-full border border-orange-600
-                            transition duration-500 cursor-pointer
-                            hover:bg-neutral-600
+                            py-2 cursor-pointer
+                            flex justify-center items-center
+                            bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600 
+                            text-white !font-semibold rounded-xl
+                            max-w-[285px] mx-auto w-full
+                            transition-all duration-300
                         `}
                         onClick={async () => {
                             await onButtonClick();
-                        }
-                        }
+                        }}
                     >
                         Baixar
                     </button>

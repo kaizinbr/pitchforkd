@@ -1,5 +1,7 @@
 "use client";
 
+import { BsExplicitFill } from "react-icons/bs";
+
 export default function tracksTracks({
     tracks,
     loading,
@@ -39,10 +41,7 @@ export default function tracksTracks({
                                             >
                                                 #
                                             </th>
-                                            <th
-                                                scope="col"
-                                                className="p-3"
-                                            >
+                                            <th scope="col" className="p-3">
                                                 Nome
                                             </th>
                                             <th
@@ -65,7 +64,10 @@ export default function tracksTracks({
                                                     </td>
                                                     <td className="px-3 py-4">
                                                         <div className="flex flex-col">
-                                                            <h2 className="text-sm font-semibold">
+                                                            <h2 className="text-sm font-semibold flex flex-row gap-1 items-center">
+                                                                {track.explicit ? (
+                                                                    <BsExplicitFill className="text-bunker-500 size-3" />
+                                                                ) : null}
                                                                 {track.name}
                                                             </h2>
                                                             <p className="text-xs text-bunker-300">
@@ -121,74 +123,7 @@ export default function tracksTracks({
                             </div>
                         )
                     )}
-                    {/* {Object.values(discTracks).map(
-                        (disc: any, index: number) => (
-                            <div
-                                className="flex flex-col gap-5 mt-5"
-                                key={index}
-                            >
-                                {disc.length > 1 ? (
-                                    <h2 className="text-lg font-bold">
-                                        Disco {index + 1}
-                                    </h2>
-                                ) : null}
-                                {disc.map((track: any, index: number) => (
-                                    <div
-                                        key={track.id}
-                                        className="flex items-center justify-between"
-                                    >
-                                        <div className="flex items-center gap-1">
-                                            <div className="w-8 text-sm text-bunker-300">
-                                                <span>
-                                                    {track.track_number}
-                                                </span>
-                                            </div>
-                                            <div className="flex flex-col">
-                                                <h2 className="text-sm font-semibold">
-                                                    {track.name}
-                                                </h2>
-                                                <p className="text-sm text-bunker-300">
-                                                    {track.artists.map(
-                                                        (
-                                                            artist: any,
-                                                            index: number
-                                                        ) => (
-                                                            <span
-                                                                key={artist.id}
-                                                            >
-                                                                {artist.name}
-                                                                {index <
-                                                                    track
-                                                                        .artists
-                                                                        .length -
-                                                                        1 &&
-                                                                    ", "}
-                                                            </span>
-                                                        )
-                                                    )}
-                                                </p>
-                                            </div>
-                                        </div>
-                                        <div className="text-sm ml-3 text-bunker-300">
-                                            <span>
-                                                {Math.floor(
-                                                    track.duration_ms / 60000
-                                                )}
-                                                :
-                                                {Math.floor(
-                                                    (track.duration_ms %
-                                                        60000) /
-                                                        1000
-                                                )
-                                                    .toFixed(0)
-                                                    .padStart(2, "0")}
-                                            </span>
-                                        </div>
-                                    </div>
-                                ))}
-                            </div>
-                        )
-                    )} */}
+                    
                 </div>
             ) : null}
         </div>

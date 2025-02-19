@@ -32,7 +32,7 @@ export default function UserRate({
                         <div className="w-full flex flex-row gap-3">
                             <Link
                                 href={`/${album.profiles.username}`}
-                                className="flex relative flex-col justify-center items-center size-8 rounded-full mt-3"
+                                className="flex relative flex-col justify-center items-center size-8 rounded-full mt-2"
                             >
                                 <Avatar
                                     size={32}
@@ -41,8 +41,8 @@ export default function UserRate({
                                     isIcon
                                 />
                             </Link>
-                            <div className="p-4 w-full bg-neutral-800 rounded-xl">
-                                <p className="text-base">{album.review}</p>
+                            <div className="p-4 w-full bg-bunker-800 rounded-xl text-sm">
+                                <p className="">{album.review}</p>
                             </div>
                         </div>
                     )}

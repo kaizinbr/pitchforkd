@@ -112,10 +112,7 @@ export default function AccountForm({ profile }: { profile: any }) {
             >
                 <div
                     className={`
-                            
-
                             flex flex-col justify-center lg:items-center
-                            
                             bg-default-fill
                             rounded-3xl w-full
                             gap-3
@@ -249,9 +246,9 @@ export default function AccountForm({ profile }: { profile: any }) {
             <div className="flex w-full flex-row gap-4 mt-8">
                 <button
                     className={`
-                            w-full px-4 py-2 rounded-xl  font-bold text-neutral-100
+                            w-full px-4 py-2 rounded-xl !font-semibold text-neutral-100
                             transition duration-200 ease-in-out
-                            ${disabled ? "bg-gray-400 cursor-not-allowed" : " bg-orange-400 cursor-pointer"}
+                            ${disabled ? "bg-gray-400 cursor-not-allowed" : " bg-green-pastel hover:bg-main-600 cursor-pointer"}
                         `}
                     onClick={() =>
                         updateProfile({

@@ -4,7 +4,6 @@ import { Suspense, useState, useEffect } from "react";
 import { FloatingIndicator, Tabs } from "@mantine/core";
 import classes from "./tabs.module.css";
 import { InvoicesMobileSkeleton } from "@/components/Skeletons";
-import { TbExplicit } from "react-icons/tb";
 import { BsExplicitFill } from "react-icons/bs";
 import UserCard from "../ui/UserCard";
 import axios from "axios";

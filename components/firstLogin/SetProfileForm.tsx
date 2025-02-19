@@ -144,8 +144,8 @@ export default function SetProfileForm({ user }: { user: User | null }) {
             className={`
                         flex-1 flex flex-col w-full justify-center gap-2 
                         text-foreground 
-                        p-8 bg-neutral-800
-                        border border-neutral-800 rounded-2xl overflow-hidden
+                        p-8 bg-bunker-800
+                        border border-bunker-800 rounded-2xl overflow-hidden
                     `}
         >
             <div
@@ -224,7 +224,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                                 className={`
                                                  rounded-lg
                                                 outline-none
-                                                bg-neutral-800 w-full
+                                                bg-bunker-800 w-full
                                                 transition duration-200 ease-in-out
                                                 text-3xl font-bold
                                             `}
@@ -241,7 +241,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                                 className={`
                                                 rounded-lg
                                                 outline-none
-                                                bg-neutral-800 w-full
+                                                bg-bunker-800 w-full
                                                 transition duration-200 ease-in-out
                                                 text-lg  font-medium
                                             `}
@@ -260,7 +260,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                                 className={`
                                                 rounded-lg
                                                 outline-none
-                                                bg-neutral-800 w-full
+                                                bg-bunker-800 w-full
                                                 transition duration-200 ease-in-out
                                                 text-lg  font-medium py-1
                                             `}
@@ -276,7 +276,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                                 className={`
                                                 rounded-lg
                                                 outline-none
-                                                bg-neutral-800 w-full
+                                                bg-bunker-800 w-full
                                                 transition duration-200 ease-in-out
                                                 text-lg  font-medium py-1
                                             `}
@@ -286,7 +286,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                             className={`
                     
                                         text-lg
-                                       bg-neutral-800 w-full
+                                       bg-bunker-800 w-full
                                     `}
                         >
                             <Textarea
@@ -310,7 +310,10 @@ export default function SetProfileForm({ user }: { user: User | null }) {
             </div>
             <div className="flex w-full flex-row gap-4">
                 <button
-                    className="bg-neutral-200 rounded-xl px-4 py-2 text-neutral-800 font-bold"
+                    className={`
+                             rounded-xl px-4 py-2 !font-semibold
+                             ${loading || message !== null || !canUpdate ? "bg-bunker-600 cursor-not-allowed" : "bg-blue-celestial cursor-pointer"}
+                        `}
                     onClick={() =>
                         updateProfile({
                             name: name,
@@ -327,7 +330,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                 </button>
                 <Link
                     href="/"
-                    className="bg-neutral-200 rounded-xl px-4 py-2 text-neutral-800 font-bold"
+                    className=" bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600  rounded-xl px-4 py-2 font-semibold"
                 >
                     Continuar
                 </Link>

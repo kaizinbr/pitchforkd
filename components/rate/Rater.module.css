@@ -4,7 +4,7 @@
 
 .track, .bar {
     height: 24px;
-    background-color: #fa805e;
+    background-color: #EE7000;
 }
 
 .track::before {
@@ -14,26 +14,26 @@
 .thumb {
     height: 32px;
     width: 32px;
-    border-color: #fa805e;
+    border-color: #EE7000;
     background-color: white;
 }
 
 .label {
     font-size: 14px;
-    font-weight: bold;
+    font-weight: 500;
     margin-left: 8px;
-    background-color: #525252 !important;
+    background-color: #2F3842 !important;
     transition: all 0.2s;
 }
 
 .label:hover {
-    background-color: #4a4a4a !important;
+    background-color: #3C4955 !important;
 }
 
 .label:where([data-checked]):hover {
-    background-color: #f88666 !important;
+    background-color: #209CE4 !important;
 }
 
 .label:where([data-checked]) {
-    background-color: #fa805e !important;
+    background-color: #209CE4 !important;
 }

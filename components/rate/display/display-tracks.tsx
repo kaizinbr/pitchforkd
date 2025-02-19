@@ -1,6 +1,7 @@
 "use client";
 
 import { Rating } from "@/lib/utils/types";
+import { BsExplicitFill } from "react-icons/bs";
 
 export default function tracksTracksDisplay({
     tracks,
@@ -35,7 +36,7 @@ export default function tracksTracksDisplay({
                                     </h2>
                                 ) : null}
                                 <table className="w-full text-sm text-left">
-                                    <thead className="text-xs text-neutral-500 uppercase">
+                                    <thead className="text-xs text-bunker-300 uppercase">
                                         <tr>
                                             <th
                                                 scope="col"
@@ -62,17 +63,20 @@ export default function tracksTracksDisplay({
                                             (track: any, index: number) => (
                                                 <tr
                                                     key={track.id}
-                                                    className="bg-transparent hover:bg-neutral-800 md:rounded-xl transition-all duration-200 ease-in-out"
+                                                    className="bg-transparent hover:bg-bunker-800 md:rounded-xl transition-all duration-200 ease-in-out"
                                                 >
-                                                    <td className="pl-5 py-4 text-neutral-400">
+                                                    <td className="pl-5 py-4 text-bunker-300">
                                                         {track.track_number}
                                                     </td>
                                                     <td className="px-2 py-4">
                                                         <div className="flex flex-col">
-                                                            <h2 className="text-sm font-semibold">
+                                                            <h2 className="text-sm font-semibold flex flex-row gap-1 items-center">
+                                                                {track.explicit ? (
+                                                                    <BsExplicitFill className="text-bunker-500 size-3" />
+                                                                ) : null}
                                                                 {track.name}
                                                             </h2>
-                                                            <p className="text-sm text-neutral-400">
+                                                            <p className="text-xs text-bunker-300">
                                                                 {track.artists.map(
                                                                     (
                                                                         artist: any,
@@ -98,7 +102,7 @@ export default function tracksTracksDisplay({
                                                             </p>
                                                         </div>
                                                     </td>
-                                                    <td className="px-4 pr-5 py-4 text-end font-bold">
+                                                    <td className="px-4 pr-5 py-4 text-end font-semibold">
                                                         <span>
                                                             {
                                                                 ratings.find(

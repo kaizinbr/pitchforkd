@@ -6,6 +6,7 @@ import getShorten from "@/lib/utils/getShorten";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal, Button } from "@mantine/core";
 import Link from "next/link";
+import useScrollDirection from "@/hooks/useScrollDirection";
 
 const Track = ({
     track,
@@ -50,7 +51,7 @@ const Track = ({
         `}
         >
             <div className="flex flex-col">
-                <h1 className="font-bold">{track.name}</h1>
+                <h1 className="font-medium">{track.name}</h1>
             </div>
             <div className="flex flex-col gap-4 w-full">
                 <Slider
@@ -71,7 +72,7 @@ const Track = ({
                         id="value"
                         className={`
                                 bg-transparent outline-none
-                                font-bold text-xl
+                                !font-bold text-xl
                                 
                             `}
                         value={value === 0 ? "" : value}
@@ -108,6 +109,7 @@ export default function Rater({
     albumId: string;
 }) {
     const supabase = createClient();
+    const scrollDirection = useScrollDirection();
     const [ratings, setRatings] = useState<
         { id: string; value: number; favorite: boolean }[]
     >([]);
@@ -176,6 +178,9 @@ export default function Rater({
             prevRatings.map((rating) =>
                 rating.id === id ? { ...rating, value, favorite } : rating
             )
+        );
+        setTotal(
+            ratings.reduce((acc, rating) => acc + rating.value, 0) / ratings.length
         );
     };
 
@@ -278,10 +283,12 @@ export default function Rater({
                     root: "!z-[1999]",
                     overlay: "!z-[1998]",
                     inner: "!z-[1999]",
+                    content: "!bg-bunker-800 !rounded-xl",
+                    header: "!bg-bunker-800 !rounded-xl",
                 }}
             >
-                <div className="w-full flex flex-col items-center gap-3">
-                    <h2 className="text-2xl font-bold">Avaliação salva!</h2>
+                <div className="w-full flex flex-col items-center gap-3 font-semibold">
+                    <h2 className="text-2xl">Avaliação salva!</h2>
                     <button
                         className="bg-green-pastel cursor-pointer text-white rounded-xl py-2 px-6"
                         onClick={close}
@@ -303,7 +310,7 @@ export default function Rater({
                     </Link>
                 </div>
             </Modal>
-            <div className=" w-full max-w-2xl px-5">
+            <div className=" w-full max-w-2xl px-5 pb-8">
                 <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                     {tracks.map((track) => (
                         <Track
@@ -315,20 +322,20 @@ export default function Rater({
                     ))}
                     <div
                         className={`
-                        bg-bunker-700
+                        bg-bunker-800
                         p-4 gap-4
                         rounded-xl
                         flex flex-col items- justify-center
                     `}
                     >
-                        <h2 className="font-bold">Sua avaliação do álbum</h2>
+                        <h2 className="font-medium">Sua avaliação do álbum</h2>
                         <input
                             type="number"
                             name="total"
                             id="total"
                             className={`
                                     bg-transparent outline-none
-                                    font-bold w-full text-2xl
+                                    !font-semibold w-full text-2xl
                                 `}
                             value={total === 0 ? "" : total}
                             max={100}
@@ -365,13 +372,24 @@ export default function Rater({
                         name="review"
                         placeholder="Qual sua opinião sobre o álbum?"
                         classNames={{
-                            input: "!bg-neutral-700 !text-white !border-neutral-700 !rounded-xl",
+                            input: "!bg-bunker-800 !text-white !border-bunker-800 !rounded-xl",
                         }}
                         value={review}
                         onChange={(e) => setReview(e.target.value)}
                     />
                     <button
-                        className="bg-orange-600 cursor-pointer text-white font-bold rounded-xl py-3"
+                        className={`
+                            py-3
+                            flex justify-center items-center
+                            bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600 
+                            text-white !font-semibold rounded-xl
+                            fixed left-4 right-4
+                            max-w-2xl mx-auto
+                            ${scrollDirection > "down" ? "bottom-20" : "bottom-4"}
+                            md:bottom-4 cursor-pointer
+                            transition-all duration-300
+                            z-[500]
+                        `} 
                         type="submit"
                     >
                         Salvar avaliação

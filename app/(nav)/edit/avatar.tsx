@@ -78,7 +78,7 @@ export default function Avatar({
                 <picture
                     className={`
                         flex flex-row justify-center items-center
-                        bg-neutral-800 rounded-full overflow-hidden
+                        bg-bunker-800 rounded-full overflow-hidden
                         w-48 h-48
                         
                     `}
@@ -118,7 +118,7 @@ export default function Avatar({
                     ) : (
                         ""
                     )}
-                    <div className="button primary block bg-orange-300 p-3 rounded-full absolute right-2 bottom-2 z-20">
+                    <div className="button primary block bg-orange-safety p-3 rounded-full absolute right-2 bottom-2 z-20">
                         <Pen size={14} className="" />
                     </div>
                 </label>

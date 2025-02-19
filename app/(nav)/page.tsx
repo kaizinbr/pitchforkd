@@ -8,13 +8,20 @@ export default async function Home() {
                     <h1 className="text-xl font-semibold text-center">
                         Comece a avaliar seus álbuns favoritos!
                     </h1>
-                    <div className="flex gap-2">
-                        <button className="py-2 px-4 rounded-xl border-2 border-orange-600">
-                            <Link href="/sign-in">Entrar</Link>
-                        </button>
-                        <button className="py-2 px-4 rounded-xl bg-orange-600 border-2 border-orange-600">
-                            <Link href="/sign-up">Cadastrar</Link>
-                        </button>
+                    <div className="flex gap-2 flex-col">
+
+                        <Link
+                            className="py-2 px-8 rounded-xl text-lg text-center font-semibold bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600 transition-all duration-200"
+                            href="/sign-up"
+                        >
+                            Cadastrar
+                        </Link>
+                        <Link
+                            className="py-2 px-8 rounded-xl text-lg text-center font-semibold border-2 border-main-500 hover:bg-main-600 hover:border-main-600 transition-all duration-200"
+                            href="/sign-in"
+                        >
+                            Entrar
+                        </Link>
                     </div>
                 </div>
             </main>

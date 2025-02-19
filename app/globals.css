@@ -1,6 +1,27 @@
 @import "tailwindcss";
 
-@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap");
+@import url("../public/fonts/font/stylesheet.css");
+
+@theme {
+    --color-main-500: oklch(64.58% 0.212469 143.5329);
+    --color-main-600: oklch(60.39% 0.198088 143.626);
+    --color-background: oklch(20.66% 0.0101 248.31);
+    --color-bunker-50: #f3f6f8;
+    --color-bunker-100: #e2e9eb;
+    --color-bunker-200: #c7d4da;
+    --color-bunker-300: #a1b6bf;
+    --color-bunker-400: #728e9e;
+    --color-bunker-500: #577283;
+    --color-bunker-600: #4b606f;
+    --color-bunker-700: #2F3842;
+    --color-bunker-800: #21282E;
+    --color-bunker-900: #21282E;
+    --color-bunker-950: oklch(20.66% 0.0101 248.31);
+    --color-orange-safety: oklch(68.42% 0.180984 49.9568);
+    --color-green-pastel: oklch(64.58% 0.212469 143.5329);
+    --color-blue-celestial: oklch(66.31% 0.1467 241.4);
+}
 
 @layer base {
     :root {
@@ -59,7 +80,6 @@
     }
 }
 
-
 @layer utilities {
     input[type="number"]::-webkit-inner-spin-button,
     input[type="number"]::-webkit-outer-spin-button {
@@ -72,8 +92,7 @@
     }
 }
 
-
 body {
     @apply bg-neutral-900 text-neutral-100;
-    font-family: "Work Sans", serif;
+    font-family: 'Graphik' !important;
 }

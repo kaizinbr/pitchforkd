@@ -97,11 +97,11 @@ export default function RatingCard({
                         overflow-hidden relative
                         review-${review.id}
                         md:rounded-2xl
-                        bg-transparent hover:bg-neutral-800
+                        bg-transparent hover:bg-bunker-800
                         z-20
                 `}
                 >
-                    <div className="z-20 size-full border-b border-neutral-800 p-5 ">
+                    <div className="z-20 size-full border-b border-bunker-800 p-5 ">
                         <div className="flex flex-row items-start gap-2">
                             <div className="flex relative flex-col justify-center items-center size-8 rounded-full">
                                 <Avatar

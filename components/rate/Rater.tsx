@@ -43,7 +43,7 @@ const Track = ({
     return (
         <div
             className={`
-            bg-neutral-700
+            bg-bunker-800
             p-4 gap-4
             rounded-xl
             flex flex-col items- justify-center
@@ -283,21 +283,21 @@ export default function Rater({
                 <div className="w-full flex flex-col items-center gap-3">
                     <h2 className="text-2xl font-bold">Avaliação salva!</h2>
                     <button
-                        className="bg-orange-600 cursor-pointer text-white rounded-xl py-2 px-6"
+                        className="bg-green-pastel cursor-pointer text-white rounded-xl py-2 px-6"
                         onClick={close}
                     >
                         Continuar avaliando
                     </button>
                     <Link
                         href={`/r/${shorten}`}
-                        className="bg-orange-600 cursor-pointer text-white rounded-xl py-2 px-6"
+                        className="bg-orange-safety cursor-pointer text-white rounded-xl py-2 px-6"
                     >
                         Ver avaliação
                     </Link>
                     
                     <Link
                         href={`/r/${shorten}/share`}
-                        className="bg-orange-600 cursor-pointer text-white rounded-xl py-2 px-6"
+                        className="bg-blue-celestial cursor-pointer text-white rounded-xl py-2 px-6"
                     >
                         Compartilhar avaliação
                     </Link>
@@ -315,7 +315,7 @@ export default function Rater({
                     ))}
                     <div
                         className={`
-                        bg-neutral-700
+                        bg-bunker-700
                         p-4 gap-4
                         rounded-xl
                         flex flex-col items- justify-center

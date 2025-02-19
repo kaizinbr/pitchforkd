@@ -61,7 +61,7 @@ export default function Navigator({ user }: { user: User | null }) {
                     transition-all duration-300 z-[999]
                     left-0 flex w-full items-center justify-evenly
                     backdrop-blur-xl
-                    bg-neutral-900/70  
+                    bg-bunker-900/70  
                     px-6 py-1
                 `}
             >
@@ -72,8 +72,8 @@ export default function Navigator({ user }: { user: User | null }) {
                         className={`
                                 flex min-w-[70px] basis-0 cursor-pointer
                                 flex-col items-center gap-1 rounded-8 p-3
-                                data-[active=true]:text-orange-400
-                                hover:text-orange-400
+                                data-[active=true]:text-green-pastel
+                                hover:text-green-pastel
                                 transition-all duration-200 ease-in-out
                             `}
                     >
@@ -87,8 +87,8 @@ export default function Navigator({ user }: { user: User | null }) {
                         className={`
                                 flex min-w-[70px] basis-0 cursor-pointer
                                 flex-col items-center gap-1 rounded-8 p-3
-                                data-[active=true]:text-orange-400
-                                hover:text-orange-400
+                                data-[active=true]:text-orange-safety
+                                hover:text-orange-safety
                                 transition-all duration-200 ease-in-out
                             `}
                     >
@@ -104,8 +104,8 @@ export default function Navigator({ user }: { user: User | null }) {
                         className={`
                                 flex min-w-[70px] basis-0 cursor-pointer
                                 flex-col items-center gap-1 rounded-8 p-3
-                                data-[active=true]:text-orange-400
-                                hover:text-orange-400
+                                data-[active=true]:text-blue-celestial
+                                hover:text-blue-celestial
                                 transition-all duration-200 ease-in-out
                             `}
                     >
@@ -166,7 +166,7 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                     transition-all duration-300 z-[999]
                     left-0 flex w-full items-center justify-evenly
                     backdrop-blur-xl
-                    bg-neutral-900/70 h-16
+                    bg-bunker-950/70 h-16
                     px-6 py-1
                 `}
             >
@@ -184,8 +184,8 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                                 className={`
                                     flex  basis-0 cursor-pointer
                                     flex-col items-center gap-1 rounded-8 p-3
-                                    data-[active=true]:text-orange-400
-                                    hover:text-orange-400
+                                    data-[active=true]:text-green-pastel
+                                    hover:text-green-pastel
                                     transition-all duration-200 ease-in-out
                                 `}
                             >
@@ -199,8 +199,8 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                                 className={`
                                     flex  basis-0 cursor-pointer
                                     flex-col items-center gap-1 rounded-8 p-3
-                                    data-[active=true]:text-orange-400
-                                    hover:text-orange-400
+                                    data-[active=true]:text-orange-safety
+                                    hover:text-orange-safety
                                     transition-all duration-200 ease-in-out
                                 `}
                             >
@@ -214,8 +214,8 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                                 className={`
                                     flex  basis-0 cursor-pointer
                                     flex-col items-center gap-1 rounded-8 p-3
-                                    data-[active=true]:text-orange-400
-                                    hover:text-orange-400
+                                    data-[active=true]:text-blue-celestial
+                                    hover:text-blue-celestial
                                     transition-all duration-200 ease-in-out
                                 `}
                             >
@@ -234,8 +234,8 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                                 flex basis-0 cursor-pointer
                                 flex-row items-center gap-2
                                 py-3 pl-4
-                                data-[active=true]:text-orange-400
-                                hover:text-orange-400
+                                data-[active=true]:text-green-pastel
+                                hover:text-green-pastel
                                 transition-all duration-200 ease-in-out
                             `}
                         >

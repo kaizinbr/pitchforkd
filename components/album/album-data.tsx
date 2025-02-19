@@ -17,7 +17,7 @@ export default function AlbumData({
             ) : (
                 <div className="">
                     <h2 className="text-2xl font-bold">{album.name}</h2>
-                    <p className="font-semibold mb-4">
+                    <p className="font-medium mb-4">
                         {album.artists.map((artist: any, index: number) => (
                             <span key={artist.id}>
                                 {artist.name}
@@ -25,13 +25,13 @@ export default function AlbumData({
                             </span>
                         ))}
                     </p>
-                    <p className="text-sm text-neutral-400">
+                    <p className="text-sm text-bunker-300">
                         Lançado em{" "}
                         {new Date(album.release_date).toLocaleDateString(
                             "pt-BR"
                         )}
                     </p>
-                    <p className="text-sm text-neutral-400 flex gap-1">
+                    <p className="text-sm text-bunker-300 flex gap-1">
                         <span>
                             {album.total_tracks} músicas
                         </span>

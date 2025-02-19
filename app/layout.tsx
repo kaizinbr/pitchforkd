@@ -44,7 +44,7 @@ export default function RootLayout({
             <head>
                 <ColorSchemeScript  />
             </head>
-            <body className={myFont.className + ` !bg-neutral-900 !text-neutral-100`}>
+            <body className={` !bg-bunker-950 !text-neutral-100`}>
                 <MantineProvider defaultColorScheme="dark">
                     <main className="min-h-screen flex flex-col items-center">
                         <div className="flex flex-col items-center w-full">

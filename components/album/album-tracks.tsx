@@ -31,7 +31,7 @@ export default function tracksTracks({
                                     </h2>
                                 ) : null}
                                 <table className="w-full text-sm text-left">
-                                    <thead className="text-xs text-neutral-500 uppercase">
+                                    <thead className="text-xs text-bunker-400 uppercase">
                                         <tr>
                                             <th
                                                 scope="col"
@@ -58,9 +58,9 @@ export default function tracksTracks({
                                             (track: any, index: number) => (
                                                 <tr
                                                     key={track.id}
-                                                    className="bg-transparent hover:bg-neutral-800 md:rounded-xl transition-all duration-200 ease-in-out"
+                                                    className="bg-transparent hover:bg-bunker-800 md:rounded-xl transition-all duration-200 ease-in-out"
                                                 >
-                                                    <td className="pl-5 py-4 text-neutral-400">
+                                                    <td className="pl-5 py-4 text-bunker-300">
                                                         {track.track_number}
                                                     </td>
                                                     <td className="px-3 py-4">
@@ -68,7 +68,7 @@ export default function tracksTracks({
                                                             <h2 className="text-sm font-semibold">
                                                                 {track.name}
                                                             </h2>
-                                                            <p className="text-sm text-neutral-400">
+                                                            <p className="text-xs text-bunker-300">
                                                                 {track.artists.map(
                                                                     (
                                                                         artist: any,
@@ -94,7 +94,7 @@ export default function tracksTracks({
                                                             </p>
                                                         </div>
                                                     </td>
-                                                    <td className="px-4 pr-5 py-4 text-end text-neutral-400">
+                                                    <td className="px-4 pr-5 py-4 text-end text-bunker-300">
                                                         <span>
                                                             {Math.floor(
                                                                 track.duration_ms /
@@ -138,7 +138,7 @@ export default function tracksTracks({
                                         className="flex items-center justify-between"
                                     >
                                         <div className="flex items-center gap-1">
-                                            <div className="w-8 text-sm text-neutral-400">
+                                            <div className="w-8 text-sm text-bunker-300">
                                                 <span>
                                                     {track.track_number}
                                                 </span>
@@ -147,7 +147,7 @@ export default function tracksTracks({
                                                 <h2 className="text-sm font-semibold">
                                                     {track.name}
                                                 </h2>
-                                                <p className="text-sm text-neutral-400">
+                                                <p className="text-sm text-bunker-300">
                                                     {track.artists.map(
                                                         (
                                                             artist: any,
@@ -169,7 +169,7 @@ export default function tracksTracks({
                                                 </p>
                                             </div>
                                         </div>
-                                        <div className="text-sm ml-3 text-neutral-400">
+                                        <div className="text-sm ml-3 text-bunker-300">
                                             <span>
                                                 {Math.floor(
                                                     track.duration_ms / 60000

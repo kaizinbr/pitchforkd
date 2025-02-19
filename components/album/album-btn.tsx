@@ -18,7 +18,8 @@ export default function AlbumBtn({
                 <Link href={`/album/${album.id}/rate`} className={`
                     py-3
                     flex justify-center items-center
-                    bg-orange-400 text-white font-bold rounded-xl
+                    bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600 
+                    text-white font-semibold rounded-xl
                     fixed left-4 right-4
                     max-w-2xl mx-auto
                     ${scrollDirection > "down" ? "bottom-20" : "bottom-4"}

@@ -14,7 +14,7 @@ export default function AlbumCover({
             
             <div className="w-full my-16 md:mt-32 flex justify-center items-center">
                 {loading ? (
-                    <div className="size-64 rounded-xl bg-neutral-500"></div>
+                    <div className="size-64 rounded-xl bg-bunker-500"></div>
                 ) : (
                     <picture>
                         <Image

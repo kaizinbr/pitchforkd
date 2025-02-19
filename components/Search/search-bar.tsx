@@ -32,8 +32,8 @@ export default function Search({ placeholder }: { placeholder: string }) {
             </label>
             <input
                 className={`
-                        peer block w-full rounded-full bg-neutral-700 border border-neutral-600/50 
-                        py-[9px] pl-12 text-sm outline-2 placeholder:text-gray-500 outline-none
+                        peer block w-full rounded-full bg-bunker-700 border border-bunker-600/50 
+                        py-[9px] pl-12 text-sm outline-2 placeholder:text-bunker-500 outline-none
                     `}
                 placeholder={placeholder}
                 onChange={(e) => {

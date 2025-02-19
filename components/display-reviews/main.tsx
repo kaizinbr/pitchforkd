@@ -54,9 +54,12 @@ export default function DisplayReviews({
                 <button
                     onClick={handleLoadMore}
                     className={`
-                        flex justify-center items-center py-2 mx-5 rounded-xl 
-                        bg-orange-600 hover:bg-orange-400 transition-all duration-200 cursor-pointer 
-                        text-white font-bold
+                        flex justify-center items-center py-2 mx-5 
+                        rounded-xl text-center !font-medium 
+                        bg-main-500 border-2 border-main-500 
+                        hover:bg-main-600 hover:border-main-600 
+                        cursor-pointer mt-6
+                        transition-all duration-200
                     `}
             >
                     Carregar mais

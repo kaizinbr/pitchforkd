@@ -133,3 +133,15 @@ export interface Copyright {
 export interface ExternalIds {
     upc: string;
 }
+
+export interface Notification {
+    id: string;
+    rating_id: string;
+    type: string | null;
+    seen: boolean;
+    created_at: string;
+    sender_id: string;
+    user_id: string;
+    profiles: Profile;
+    ratings: Review;
+}

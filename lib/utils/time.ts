@@ -35,15 +35,19 @@ export function getPastRelativeTime(date: Date, today: Date): string {
     const diffMonths = Math.floor(diffDays / 30);
     const diffYears = Math.floor(diffMonths / 12);
 
-    if (diffYears === 1) return "Ano passado";
-    if (diffYears > 0)
-        return `${diffYears} ano${diffYears > 1 ? "s" : ""} atrás`;
-    if (diffMonths === 1) return "Mês passado";
-    if (diffMonths > 0)
-        return `${diffMonths} mes${diffMonths > 1 ? "es" : ""} atrás`;
-    if (diffWeeks === 1) return "Semana passada";
-    if (diffWeeks > 0)
-        return `${diffWeeks} semana${diffWeeks > 1 ? "s" : ""} atrás`;
+    // if (diffYears === 1) return "Ano passado";
+    // if (diffYears > 0)
+    //     return `${diffYears} ano${diffYears > 1 ? "s" : ""} atrás`;
+    // if (diffMonths === 1) return "Mês passado";
+    // if (diffMonths > 0)
+    //     return `${diffMonths} mes${diffMonths > 1 ? "es" : ""} atrás`;
+    // if (diffWeeks === 1) return "Semana passada";
+    // if (diffWeeks > 0)
+    //     return `${diffWeeks} semana${diffWeeks > 1 ? "s" : ""} atrás`;
+
+
+    if (diffDays >= 2) return formatTimeAsDate(date); 
+
     if (diffDays === 1) return "Ontem";
     if (diffDays > 0) return `${diffDays} dia${diffDays > 1 ? "s" : ""} atrás`;
     if (diffHours > 0)

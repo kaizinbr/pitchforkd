@@ -27,7 +27,7 @@ export default async function Index() {
         <div className="w-full max-w-2xl mt-20 px-3 mx-auto">
             <div className="flex-1 w-full flex flex-col gap-8">
                 <h1 className="text-xl font-bold">Suas configurações</h1>
-                <div className="flex flex-col gap-4 bg-neutral-700 rounded-3xl px-6 py-4">
+                <div className="flex flex-col gap-4 bg-bunker-700 rounded-3xl px-6 py-4">
                     <div className="flex flex-col">
                         <div className="flex flex-col gap-2">
                             <span className="text-base">

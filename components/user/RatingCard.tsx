@@ -3,15 +3,16 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState, useMemo, useCallback } from "react";
+import { useEffect, useState, useMemo, useCallback, use } from "react";
 import { Skeleton } from "@mantine/core";
 import Avatar from "@/components/ui/Avatar";
 import { Review } from "@/lib/utils/types";
-
+import { createClient } from "@/utils/supabase/client";
 import useToday from "@/hooks/today";
 import { getPastRelativeTime } from "@/lib/utils/time";
 import axios from "axios";
 import formatRate from "@/lib/utils/formatRate";
+import LikeBtn from "./like-btn";
 
 interface Props {
     date: Date;
@@ -31,8 +32,39 @@ export default function RatingCard({
     review: Review;
     edit?: boolean;
 }) {
+    const supabase = createClient();
     const [album, setAlbum] = useState<any>();
     const [loading, setLoading] = useState(true);
+    const [liked, setLiked] = useState(false);
+
+    useEffect(() => {
+        const verifyLike = async () => {
+            const {
+                data: { user },
+            } = await supabase.auth.getUser();
+            if (!user) {
+                console.error("User not logged in");
+                return;
+            }
+
+            const { data, error } = await supabase
+                .from("likes")
+                .select("*")
+                .eq("user_id", user.id)
+                .eq("rating_id", review.id);
+
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            if (data.length) {
+                setLiked(true);
+            }
+        };
+
+        verifyLike();
+    }, [review.id]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -88,8 +120,7 @@ export default function RatingCard({
                     </div>
                 </div>
             ) : album ? (
-                <Link
-                    href={`/r/${review.shorten}`}
+                <div
                     className={`
                         flex flex-col 
                         max-w-2xl w-full
@@ -101,72 +132,87 @@ export default function RatingCard({
                         z-20
                 `}
                 >
-                    <div className="z-20 size-full border-b border-bunker-800 p-5 ">
-                        <div className="flex flex-row items-start gap-2">
-                            <div className="flex relative flex-col justify-center items-center size-8 rounded-full">
-                                <Avatar
-                                    size={32}
-                                    src={review.profiles.avatar_url}
-                                    className={"size-8"}
-                                    isIcon
-                                />
-                            </div>
-                            <div className="flex items-center justify-center flex-row gap-2">
-                                <h2 className="text-sm text-neutral-100">
-                                    <span className="">
-                                        {review.profiles.name || review.profiles.username} avaliou
-                                    </span>{" "}
-                                    <span className="font-semibold">
-                                        {album && album.name}
-                                    </span>{" "}
-                                    <span className="">de</span>{" "}
-                                    <span className="font-semibold">
-                                        {album && album.artists[0].name}
-                                    </span>
-                                </h2>
-                            </div>
-                        </div>
-
-                        <div className="flex flex-row relative my-3">
-                            {album && (
-                                <picture className=" size-40">
-                                    <Image
-                                        src={album.images[0].url}
-                                        alt={album.name}
-                                        width={500}
-                                        height={500}
-                                        className="object-cover size-40 max-h-[160px] rounded-lg"
+                    <div className="z-20 size-full border-b border-bunker-800 p-5 relative">
+                        <Link
+                            href={`/r/${review.shorten}`}
+                            className={`
+                            flex flex-col *:w-full
+                            `}
+                        >
+                            <div className="flex flex-row items-start gap-2">
+                                <div className="flex relative flex-col justify-center items-center size-8 rounded-full">
+                                    <Avatar
+                                        size={32}
+                                        src={review.profiles.avatar_url}
+                                        className={"size-8"}
+                                        isIcon
                                     />
-                                </picture>
-                            )}
-                            <div
-                                className={`
-                                    flex flex-col justify-start items-start px-3 gap-2
-                                    w-[calc(100%-160px)]
-                                `}
-                            >
-                                <span className="text-neutral-100 text-xl font-bold">
-                                    {formatRate(review.total)}
-                                </span>
-                                {review.review && (
-                                    <p className="text-neutral-100 text-sm line-clamp-4">
-                                        {review.review}
-                                    </p>
+                                </div>
+                                <div className="flex items-center justify-center flex-row gap-2">
+                                    <h2 className="text-sm text-neutral-100">
+                                        <span className="">
+                                            {review.profiles.name ||
+                                                review.profiles.username}{" "}
+                                            avaliou
+                                        </span>{" "}
+                                        <span className="font-semibold">
+                                            {album && album.name}
+                                        </span>{" "}
+                                        <span className="">de</span>{" "}
+                                        <span className="font-semibold">
+                                            {album && album.artists[0].name}
+                                        </span>
+                                    </h2>
+                                </div>
+                            </div>
+                            <div className="flex flex-row relative my-3">
+                                {album && (
+                                    <picture className=" size-40">
+                                        <Image
+                                            src={album.images[0].url}
+                                            alt={album.name}
+                                            width={500}
+                                            height={500}
+                                            className="object-cover size-40 max-h-[160px] rounded-lg"
+                                        />
+                                    </picture>
                                 )}
-                                <span className="text-neutral-300 text-sm">
-                                    {review.ratings.length} músicas
+                                <div
+                                    className={`
+                                        flex flex-col justify-start items-start px-3 gap-2
+                                        w-[calc(100%-160px)]
+                                    `}
+                                >
+                                    <span className="text-neutral-100 text-xl font-bold">
+                                        {formatRate(review.total)}
+                                    </span>
+                                    {review.review && (
+                                        <p className="text-neutral-100 text-sm line-clamp-4">
+                                            {review.review}
+                                        </p>
+                                    )}
+                                    <span className="text-neutral-300 text-sm">
+                                        {review.ratings.length} músicas
+                                    </span>
+                                </div>
+                            </div>
+                            <div className="flex items-center justify-between flex-row gap-2">
+                                <span className=" h-full flex items-center text-xs text-bunker-400 ">
+                                    <PastRelativeTime
+                                        date={new Date(review.created_at)}
+                                    />
                                 </span>
                             </div>
-                        </div>
-                        <div className="flex items-center justify-start flex-row gap-2">
-                            <span className=" h-full flex items-center text-xs text-stone-400 ">
-                                <PastRelativeTime
-                                    date={new Date(review.created_at)}
-                                />
-                            </span>
-                        </div>
+                        </Link>
+                        <LikeBtn
+                            rating_id={review.id}
+                            owner_id={review.user_id}
+                            liked={liked}
+                            setLiked={setLiked}
+                            className="absolute bottom-5 right-5"
+                        />
                     </div>
-                </Link>
+                </div>
             ) : (
                 <div>Album not found</div>
             )}

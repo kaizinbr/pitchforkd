@@ -10,7 +10,7 @@ import { createClient } from "@/utils/supabase/client";
 import {
     TbUserFilled,
     TbSettings2,
-    TbFolderFilled,
+    TbBellFilled,
     TbPlus,
 } from "react-icons/tb";
 
@@ -97,6 +97,21 @@ export default function Navigator({ user }: { user: User | null }) {
                 </button>
                 <button>
                     <Link
+                        data-active={pathname === "/notifications"}
+                        href={`/notifications`}
+                        className={`
+                                flex min-w-[70px] basis-0 cursor-pointer
+                                flex-col items-center gap-1 rounded-8 p-3
+                                data-[active=true]:text-blue-celestial
+                                hover:text-blue-celestial
+                                transition-all duration-200 ease-in-out
+                            `}
+                    >
+                        <TbBellFilled className="size-6" />
+                    </Link>
+                </button>
+                <button>
+                    <Link
                         data-active={
                             pathname === "/me" || pathname === `${username}`
                         }
@@ -176,7 +191,12 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                         flex flex-row items-center justify-evenly
                     `}
                     >
-                    <Link href={`https://pitchforkd.me/`} className="font-bold mr-8 text-xl">Pitchforkd</Link>
+                        <Link
+                            href={`https://pitchforkd.me/`}
+                            className="font-bold mr-8 text-xl"
+                        >
+                            Pitchforkd
+                        </Link>
                         <button>
                             <Link
                                 data-active={pathname === "/home"}
@@ -209,17 +229,17 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                         </button>
                         <button>
                             <Link
-                                data-active={pathname === "/settings"}
-                                href={`/settings`}
+                                data-active={pathname === "/notifications"}
+                                href={`/notifications`}
                                 className={`
-                                    flex  basis-0 cursor-pointer
+                                    flex cursor-pointer
                                     flex-col items-center gap-1 rounded-8 p-3
                                     data-[active=true]:text-blue-celestial
                                     hover:text-blue-celestial
                                     transition-all duration-200 ease-in-out
                                 `}
                             >
-                                <Icon type="settings" className="h-5" />
+                                <TbBellFilled className="size-6" />
                             </Link>
                         </button>
                     </div>

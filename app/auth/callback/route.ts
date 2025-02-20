@@ -18,24 +18,6 @@ export async function GET(request: Request) {
         const {
             data: { user },
         } = await supabase.auth.getUser();
-
-        const tempUsername = generateUsername("", 0, 15);
-        const tempName = generateUsername("", 0, 15);
-        console.log("Your temporary data:", tempUsername, tempName);
-
-        const { data, error } = await supabase
-            .from("profiles")
-            .insert({
-                id: user!.id,
-                username: tempUsername,
-                name: tempName,
-            })
-
-        if (error) {
-            console.log(error);
-        }
-
-        console.log(data);
     }
 
     if (redirectTo) {

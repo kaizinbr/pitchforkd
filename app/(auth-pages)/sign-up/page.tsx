@@ -27,6 +27,12 @@ export default async function Signup(props: {
             <form className="flex-1 flex flex-col min-w-64 rounded-2xl py-8 px-5 bg-bunker-800">
                 <h1 className="text-2xl font-bold">Cadastre-se</h1>
                 <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
+                    <Label htmlFor="nome">Nome</Label>
+                    <Input
+                        name="nome"
+                        placeholder="Karl Marx da Silva"
+                        required
+                    />
                     <Label htmlFor="email">Email</Label>
                     <Input
                         name="email"

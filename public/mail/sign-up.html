@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirme sua conta</title>
+    <style>
+        body {
+            color: #f0f0f0;
+            background-color: #14181c;
+            margin: 0;
+            padding: 0;
+            font-family: helvetica, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        h2 {
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        p {
+            font-size: 16px;
+            text-align: center;
+        }
+
+        p.token {
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+            color: #f0f0f0;
+            background-color: #333;
+            padding: 10px 24px;
+            border-radius: 12px;
+            max-width: fit-content;
+        }
+        p a {
+            color: #f0f0f0;
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>Confirme sua conta</h2>
+    <p>Insira o código abaixo para confirmar sua conta</p>
+
+    <p class="token">
+        <a href="{{ .RedirectTo }}/auth/confirm?token_hash={{ .TokenHash }}&type=email">Confirmar email</a>
+    </p>
+
+    <!-- <p><a href="{{ .ConfirmationURL }}">Confirmar email</a></p> -->
+</body>
+
+</html>

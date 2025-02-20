@@ -4,8 +4,10 @@ import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
+import { generateFromEmail, generateUsername } from "unique-username-generator";
 
 export const signUpAction = async (formData: FormData) => {
+    const nome = formData.get("nome")?.toString();
     const email = formData.get("email")?.toString();
     const password = formData.get("password")?.toString();
     const supabase = await createClient();
@@ -20,13 +22,37 @@ export const signUpAction = async (formData: FormData) => {
         );
     }
 
-    const { error } = await supabase.auth.signUp({
+    const {
+        data: { user },
+        error,
+    } = await supabase.auth.signUp({
         email,
         password,
         options: {
-            emailRedirectTo: `${origin}/auth/callback`,
+            emailRedirectTo: `${origin}`,
+            data: {
+                name: nome,
+            }
         },
     });
+
+    // define dados temporarios de perfil para evitar erros pela expiração do link de confirmação
+    const tempUsername = generateUsername("", 0, 15);
+    const tempName = generateUsername("", 0, 15);
+    console.log("Your temporary data:", tempUsername, tempName);
+
+    const { data, error: setProfileError } = await supabase
+        .from("profiles")
+        .insert({
+            id: user!.id,
+            username: tempUsername,
+            lowercased_username: tempUsername,
+            name: nome,
+        });
+
+    if (setProfileError) {
+        console.log(setProfileError);
+    }
 
     if (error) {
         console.error(error.code + " " + error.message);
@@ -136,10 +162,13 @@ export const resetPasswordAction = async (formData: FormData) => {
                 "Falha ao redefinir senha, tente utilizar uma senha diferente da anterior"
             );
         }
-        
     }
 
-    encodedRedirect("success", "/protected/reset-password", "Senha redefinida com sucesso");
+    encodedRedirect(
+        "success",
+        "/protected/reset-password",
+        "Senha redefinida com sucesso"
+    );
 };
 
 export const signOutAction = async () => {

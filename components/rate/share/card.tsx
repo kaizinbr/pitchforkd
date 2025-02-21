@@ -39,10 +39,10 @@ export default function Card({
                     className="rounded-lg w-full shadow-lg relative z-0"
                 />
             </div>
-            <p className="text-xl font-bold mb-4 z-10">
+            <p className="text-xl !font-bold mb-4 z-10">
                 {formatRate(rate.total)}
             </p>
-            <p className="font-medium text-xs text-center max-w-full line-clamp-2 z-10">
+            <p className=" text-xs text-center max-w-full line-clamp-2 z-10">
                 {rate.profiles.name || rate.profiles.username} avaliou{" "}
                 <span className="!font-bold">{album.name}</span>
             </p>

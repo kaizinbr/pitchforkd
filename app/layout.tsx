@@ -8,6 +8,7 @@ import {
     MantineProvider,
     mantineHtmlProps,
 } from "@mantine/core";
+import Footer from "@/components/footer";
 
 const defaultUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
@@ -50,6 +51,7 @@ export default function RootLayout({
                         <div className="flex flex-col items-center w-full">
                             {children}
                         </div>
+                        <Footer />
                     </main>
                 </MantineProvider>
             </body>

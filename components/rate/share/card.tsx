@@ -44,7 +44,7 @@ export default function Card({
             </p>
             <p className="font-medium text-xs text-center max-w-full line-clamp-2 z-10">
                 {rate.profiles.name || rate.profiles.username} avaliou{" "}
-                <span className="font-semibold">{album.name}</span>
+                <span className="!font-bold">{album.name}</span>
             </p>
 
             <p className="text-[10px] text-bunker-300 text-center mt-4 z-10">

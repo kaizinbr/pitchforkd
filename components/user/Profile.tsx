@@ -30,7 +30,7 @@ export default function Profile({
                 }}
             ></div>
             {isUser && (
-                <div className="absolute top-20 w-full max-w-2xl mx-auto flex flex-row justify-end gap-3 p-5 md:p-0">
+                <div className="absolute top-0 md:top-20 w-full max-w-2xl mx-auto flex flex-row justify-end gap-3 p-5 md:p-0">
                     <Link href={`/edit`} className="">
                         <TbUserEdit className="size-6" />
                     </Link>

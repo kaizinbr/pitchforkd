@@ -4,7 +4,7 @@ import { Slider, Chip, Textarea } from "@mantine/core";
 import classes from "./Rater.module.css";
 import getShorten from "@/lib/utils/getShorten";
 import { useDisclosure } from "@mantine/hooks";
-import { Modal, Button } from "@mantine/core";
+import { Modal } from "@mantine/core";
 import Link from "next/link";
 import useScrollDirection from "@/hooks/useScrollDirection";
 

@@ -9,6 +9,8 @@ import { AlbumRate, Review } from "@/lib/utils/types";
 import UserRate from "./user-rate";
 import AlbumTracksDisplay from "./display-tracks";
 import ShareBtn from "./share-btn";
+import Link from "next/link";
+import DeleteBtn from "./options";
 
 export default function DisplayRate({
     id,
@@ -36,7 +38,9 @@ export default function DisplayRate({
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await axios.get(`/api/spot/album/${rate.album_id}`);
+            const response = await axios.get(
+                `/api/spot/album/${rate.album_id}`
+            );
             console.log(response.data);
             setAlbum(response.data);
             setTracks(response.data.tracks.items);
@@ -94,6 +98,7 @@ export default function DisplayRate({
                         tracks={tracks}
                         loading={loading}
                     />
+                    <DeleteBtn shorten={rate.shorten} />
                     <ShareBtn shorten={rate.shorten} />
                     <UserRate album={rate} loading={loading} />
                     {tracks.length > 0 ? (
@@ -103,6 +108,23 @@ export default function DisplayRate({
                             ratings={rate.ratings}
                         />
                     ) : null}
+                    <div className="w-full px-5">
+                        <Link
+                            href={`/album/${album.id}`}
+                            className={`
+                                py-3
+                                flex justify-center items-center
+                                bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600
+                                text-white font-semibold rounded-xl
+                                w-full
+                                max-w-2xl mx-auto
+                                cursor-pointer
+                                transition-all duration-300
+                            `}
+                        >
+                            Ver álbum
+                        </Link>
+                    </div>
                 </>
             )}
         </>

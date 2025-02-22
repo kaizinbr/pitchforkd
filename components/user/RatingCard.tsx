@@ -13,6 +13,8 @@ import { getPastRelativeTime } from "@/lib/utils/time";
 import axios from "axios";
 import formatRate from "@/lib/utils/formatRate";
 import LikeBtn from "./like-btn";
+import { TbDots } from "react-icons/tb";
+import Options from "../rate/display/options";
 
 interface Props {
     date: Date;
@@ -124,15 +126,19 @@ export default function RatingCard({
                     className={`
                         flex flex-col 
                         max-w-2xl w-full
-                        transition-all duration-200 ease-in-out   
                         overflow-hidden relative
                         review-${review.id}
-                        md:rounded-2xl
-                        bg-transparent hover:bg-bunker-800
                         z-20
                 `}
                 >
-                    <div className="z-20 size-full border-b border-bunker-800 p-5 relative">
+                    <div
+                        className={`
+                            z-20 size-full bor border-bunker-800 p-4 relative
+                            md:rounded-2xl
+                            bg-transparent hover:bg-bunker-800
+                            transition-all duration-200 ease-in-out   
+                        `}
+                    >
                         <Link
                             href={`/r/${review.shorten}`}
                             className={`
@@ -148,7 +154,7 @@ export default function RatingCard({
                                         isIcon
                                     />
                                 </div>
-                                <div className="flex items-center justify-center flex-row gap-2">
+                                <div className="flex items-start justify-center flex-row gap-2">
                                     <h2 className="text-sm text-neutral-100">
                                         <span className="">
                                             {review.profiles.name ||

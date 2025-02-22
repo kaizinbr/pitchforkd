@@ -26,10 +26,10 @@ const workSans = Work_Sans({
 });
 
 // Font files can be colocated inside of `app`
-const myFont = localFont({
-    src: "../public/fonts/font-1.ttf",
-    display: "swap",
-});
+// const myFont = localFont({
+//     src: "../public/fonts/font-1.ttf",
+//     display: "swap",
+// });
 
 export default function RootLayout({
     children,
@@ -39,13 +39,13 @@ export default function RootLayout({
     return (
         <html
             lang="pt-br"
-            className={myFont.className}
+            // className={myFont.className}
             {...mantineHtmlProps}
         >
             <head>
                 <ColorSchemeScript  />
             </head>
-            <body className={` !bg-bunker-950 !text-neutral-100`}>
+            <body className={` !bg-bunker-950 !text-neutral-100 fontGraphik`}>
                 <MantineProvider defaultColorScheme="dark">
                     <main className="min-h-screen flex flex-col items-center">
                         <div className="flex flex-col items-center w-full">

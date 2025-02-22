@@ -1,4 +1,3 @@
-import { Share } from "lucide-react";
 import Link from "next/link";
 import useScrollDirection from "@/hooks/useScrollDirection";
 import Icon from "@/components/ui/Icon";
@@ -20,6 +19,7 @@ export default function ShareBtn({
                     ${scrollDirection > "down" ? "bottom-20" : "bottom-4"}
                     md:bottom-4
                     transition-all duration-300
+                    shadow-md
                 `}
         >
             <Icon type="share" className="cursor-pointer size-6"/>

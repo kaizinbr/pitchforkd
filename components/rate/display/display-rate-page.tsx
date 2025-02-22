@@ -11,6 +11,7 @@ import AlbumTracksDisplay from "./display-tracks";
 import ShareBtn from "./share-btn";
 import Link from "next/link";
 import DeleteBtn from "./options";
+import { createClient } from "@/utils/supabase/client";
 
 export default function DisplayRate({
     id,
@@ -19,9 +20,12 @@ export default function DisplayRate({
     id?: string;
     rate: Review;
 }) {
+    const supabase = createClient();
+
     const [album, setAlbum] = useState<any>();
     const [tracks, setTracks] = useState<any>([]);
     const [loading, setLoading] = useState(true);
+    const [canDelete, setCanDelete] = useState(false);
     const [currentColor, setCurrentColor] = useState<string>("#4a6d73");
 
     function updateColor(colors: { hex: string; intensity: number }[]) {
@@ -75,7 +79,30 @@ export default function DisplayRate({
                 .catch(console.error);
         };
 
+        const fetchUser = async () => {
+            const {
+                data: { user }, error
+            } = await supabase.auth.getUser();
+    
+            if (!user) {
+                console.error("User not logged in");
+                return;
+            } 
+
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            console.log(user.id, rate.profiles.id)
+
+            if (user.id === rate.profiles.id) {
+                setCanDelete(true);
+            }
+        }
+
         fetchData();
+        fetchUser();
     }, [id]);
 
     return (
@@ -98,7 +125,9 @@ export default function DisplayRate({
                         tracks={tracks}
                         loading={loading}
                     />
-                    <DeleteBtn shorten={rate.shorten} />
+                    {canDelete ? (
+                        <DeleteBtn id={rate.id} />
+                    ) : null}
                     <ShareBtn shorten={rate.shorten} />
                     <UserRate album={rate} loading={loading} />
                     {tracks.length > 0 ? (

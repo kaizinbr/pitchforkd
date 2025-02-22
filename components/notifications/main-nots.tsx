@@ -82,7 +82,7 @@ function NotificationCard({ notification }: { notification: Notification }) {
                         curtiu o seu review de{" "}
                         {album && (
                             <Link
-                                href={`/album/${album.id}`}
+                                href={`/r/${notification.ratings.shorten}`}
                                 className="font-semibold"
                             >
                                 {album && album.name}
@@ -139,6 +139,8 @@ export default function NotsPage() {
                 console.error(error);
                 return;
             }
+
+            console.log(data)
 
             setNotifications(data);
             setLoading(false);

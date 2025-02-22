@@ -24,7 +24,7 @@ export default async function RootLayout({
     } = await supabase.auth.getUser();
 
     return (
-        <div className="flex-1 w-full flex flex-col items-center mb-20">
+        <div className="flex-1 w-full flex flex-col items-center mb-20 min-h-screen">
             <Navigator user={user} />
             <DesktopNavigator user={user} />
             <div className="flex flex-col w-full">{children}</div>

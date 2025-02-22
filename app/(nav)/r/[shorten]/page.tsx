@@ -57,14 +57,27 @@ export default async function Page({
 
     if (albumError) {
         console.error("Error fetching album", albumError);
-        return <div>Error fetching album</div>;
+        return (
+            <div className="h-full min-h-screen w-full flex">
+                    <div className="flex-1 flex items-center justify-center">
+                        <div className="text-2xl">Avaliação não encontrada</div>
+                    </div>
+                </div>
+        );
     }
-
-    // console.log(data, albumData);
-
+    
     return (
         <div className="flex flex-col gap-4 items-center relative">
-            <DisplayRate rate={data[0]} />
+            {data.length > 0 ? (
+                <DisplayRate rate={data[0]} />
+            ) : (
+                <div className="h-full min-h-screen w-full flex">
+                    <div className="flex-1 flex items-center justify-center">
+                        <div className="text-2xl">Avaliação não encontrada</div>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }

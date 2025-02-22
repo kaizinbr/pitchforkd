@@ -1,12 +1,41 @@
 import { useDisclosure } from "@mantine/hooks";
 import { Modal, Button } from "@mantine/core";
-import Link from "next/link";
+import { createClient } from "@/utils/supabase/client";
 import useScrollDirection from "@/hooks/useScrollDirection";
 import Icon from "@/components/ui/Icon";
+import { LoadingSm } from "@/components/tutorial/loading";
+import { useState } from "react";
+import { useRouter } from 'next/navigation'
 
-export default function DeleteBtn({ shorten }: { shorten: string }) {
+export default function DeleteBtn({ id }: { id: string }) {
+    const supabase = createClient();
+    const router = useRouter()
     const scrollDirection = useScrollDirection();
+
     const [opened, { open, close }] = useDisclosure(false);
+    const [loading, setLoading] = useState(false);
+
+    async function handleDelete(id: string) {
+        setLoading(true);   
+        console.log("Deleting:", id);
+
+        const response = await supabase.from("ratings").delete().eq("id", id);
+
+        console.log(response);
+
+        if (response.error) {
+            console.error(response.error);
+            return;
+        }
+
+        if (response.status == 204) {
+            console.log("deletado com sucesso!");
+            router.push('/me')
+        }
+
+        setLoading(false);
+    }
+
     return (
         <>
             <Modal
@@ -26,6 +55,11 @@ export default function DeleteBtn({ shorten }: { shorten: string }) {
                 }}
                 withCloseButton={false}
             >
+                {loading && (
+                    <div className="left-0 right-0 top-0 bottom-0 bg-black/60 flex items-center justify-center absolute">
+                        <LoadingSm />
+                    </div>
+                )}
                 <div className="w-full flex flex-row flex-wrap items-center justify-center gap-3 font-semibold py-6">
                     <h2 className="text-xl w-full text-center">
                         Deseja excluir review?
@@ -38,7 +72,7 @@ export default function DeleteBtn({ shorten }: { shorten: string }) {
                     </button>
                     <button
                         className="bg-red-500 cursor-pointer text-white rounded-xl py-2 px-6"
-                        onClick={close}
+                        onClick={() => handleDelete(id)}
                     >
                         Excluir
                     </button>
@@ -64,13 +98,13 @@ export default function DeleteBtn({ shorten }: { shorten: string }) {
 
 // export default function Options({
 //     user,
-//     shorten,
+//     id,
 //     rating_id,
 //     owner_id,
 //     className,
 // }: {
 //     user?: User;
-//     shorten: string;
+//     id: string;
 //     rating_id: string;
 //     owner_id: string;
 //     className?: string;

@@ -70,29 +70,33 @@ function NotificationCard({ notification }: { notification: Notification }) {
                     className={"size-8"}
                     isIcon
                 />
-                <div>
-                    <p className="text-sm">
-                        <Link
-                            href={`/${notification.profiles.username}`}
-                            className="font-semibold"
-                        >
-                            {notification.profiles.name ||
-                                notification.profiles.username}
-                        </Link>{" "}
-                        curtiu o seu review de{" "}
-                        {album && (
+                <div className="w-[calc(100%-48px)]">
+                    {album ? (
+                        <p className="text-sm">
                             <Link
-                                href={`/r/${notification.ratings.shorten}`}
+                                href={`/${notification.profiles.username}`}
                                 className="font-semibold"
                             >
-                                {album && album.name}
-                            </Link>
-                        )}{" "}
-                        de{" "}
-                        <span className="font-semibold">
-                            {album && album.artists[0].name}
-                        </span>
-                    </p>
+                                {notification.profiles.name ||
+                                    notification.profiles.username}
+                            </Link>{" "}
+                            curtiu o seu review de{" "}
+                            {album && (
+                                <Link
+                                    href={`/r/${notification.ratings.shorten}`}
+                                    className="font-semibold"
+                                >
+                                    {album && album.name}
+                                </Link>
+                            )}{" "}
+                            de{" "}
+                            <span className="font-semibold">
+                                {album && album.artists[0].name}
+                            </span>
+                        </p>
+                    ) : (
+                        <Skeleton height={8} radius="xl" />
+                    )}
                     <span className="text-bunker-300 text-xs">
                         <PastRelativeTime
                             date={new Date(notification.created_at)}
@@ -140,7 +144,7 @@ export default function NotsPage() {
                 return;
             }
 
-            console.log(data)
+            console.log(data);
 
             setNotifications(data);
             setLoading(false);

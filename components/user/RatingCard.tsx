@@ -20,7 +20,7 @@ interface Props {
     date: Date;
 }
 
-function PastRelativeTime({ date }: Props) {
+export function PastRelativeTime({ date }: Props) {
     const today = useToday();
     const relativeTime = getPastRelativeTime(date, today);
 
@@ -95,7 +95,7 @@ export default function RatingCard({
                     <div className="z-20">
                         <div className="flex flex-row items-center gap-2">
                             <Skeleton height={32} circle />
-                            <div className="flex w-full items-start justify-center flex-col gap-2">
+                            <div className="flex w-[calc(100%-40px)] items-start justify-center flex-col gap-2">
                                 <Skeleton height={8} radius="xl" />
                                 <Skeleton height={8} radius="xl" width="70%" />
                             </div>

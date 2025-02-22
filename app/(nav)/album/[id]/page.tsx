@@ -33,7 +33,7 @@ export default async function Page({
     // console.log(data);
 
     return (
-        <div className="flex flex-col gap-4 items-center relative mb-16">
+        <div className="flex flex-col gap-4 items-center relative">
             <AlbumMain album_id={id} />
         </div>
     );

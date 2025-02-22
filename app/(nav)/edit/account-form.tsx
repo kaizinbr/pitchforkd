@@ -130,6 +130,7 @@ export default function AccountForm({ profile }: { profile: any }) {
                                 value={name || ""}
                                 onChange={(e) => setName(e.target.value)}
                                 placeholder="Seu Nome..."
+                                maxLength={20}
                                 className={`
                                          rounded-lg
                                         outline-none
@@ -192,6 +193,7 @@ export default function AccountForm({ profile }: { profile: any }) {
                                 }}
                                 onChange={(e) => setUsername(e.target.value)}
                                 placeholder="Seu Username..."
+                                maxLength={20}
                                 className={`
                                         rounded-lg
                                         outline-none
@@ -213,6 +215,7 @@ export default function AccountForm({ profile }: { profile: any }) {
                                 value={site || ""}
                                 onChange={(e) => setSite(e.target.value)}
                                 placeholder="Site"
+                                maxLength={20}
                                 className={`
                                         rounded-lg
                                         outline-none
@@ -230,6 +233,7 @@ export default function AccountForm({ profile }: { profile: any }) {
                                 value={pronouns || ""}
                                 onChange={(e) => setPronouns(e.target.value)}
                                 placeholder="Pronomes"
+                                maxLength={15}
                                 className={`
                                         rounded-lg
                                         outline-none

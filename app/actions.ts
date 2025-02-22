@@ -4,7 +4,8 @@ import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import { generateFromEmail, generateUsername } from "unique-username-generator";
+
+import { fakerPT_BR } from "@faker-js/faker";
 
 export const signUpAction = async (formData: FormData) => {
     const nome = formData.get("nome")?.toString();
@@ -12,7 +13,7 @@ export const signUpAction = async (formData: FormData) => {
     const password = formData.get("password")?.toString();
     const supabase = await createClient();
     const origin = (await headers()).get("origin");
-    console.log(origin);
+    // console.log(origin);
 
     if (!email || !password) {
         return encodedRedirect(
@@ -21,6 +22,8 @@ export const signUpAction = async (formData: FormData) => {
             "Preencha os campos de email e senha"
         );
     }
+
+    // const emailExists = await supabase.auth.user
 
     const {
         data: { user },
@@ -32,36 +35,54 @@ export const signUpAction = async (formData: FormData) => {
             emailRedirectTo: `${origin}`,
             data: {
                 name: nome,
-            }
+            },
         },
     });
 
+    if (error) {
+        if (error.code === "user_already_exists") {
+            return encodedRedirect(
+                "error",
+                "/sign-up",
+                "Esse e-mail já está registrado, tente redefinir sua senha"
+            );
+        } else {
+            console.error(error.code + " " + error.message);
+            return encodedRedirect("error", "/sign-up", error.message);
+        }
+    }
+
+    console.log("user", user);
+
     // define dados temporarios de perfil para evitar erros pela expiração do link de confirmação
-    const tempUsername = generateUsername("", 0, 15);
-    const tempName = generateUsername("", 0, 15);
-    console.log("Your temporary data:", tempUsername, tempName);
+    // fakerPT_BR.internet.username({ firstName: 'kaio', lastName: 'nunes'})
+    const animal = fakerPT_BR.animal.type();
+    const tempUsername = fakerPT_BR.internet.username({
+        firstName: nome?.substring(0, 10),
+        lastName: animal,
+    });
+
+    // const tempName = generateUsername("", 0, 15);
+    // console.log("username temporario:", tempUsername);
+    const lowercased_username = tempUsername.toLowerCase();
 
     const { data, error: setProfileError } = await supabase
         .from("profiles")
         .insert({
             id: user!.id,
             username: tempUsername,
-            lowercased_username: tempUsername,
+            lowercased_username,
             name: nome,
+            public: false,
         });
 
     if (setProfileError) {
-        console.log(setProfileError);
-    }
-
-    if (error) {
-        console.error(error.code + " " + error.message);
-        return encodedRedirect("error", "/sign-up", error.message);
+        console.error(setProfileError.code + " " + setProfileError.message);
     } else {
         return encodedRedirect(
             "success",
             "/sign-up",
-            "Deu certo, obrigado! Verifique seu email para confirmar sua conta."
+            "Deu certo, obrigado! Verifique seu email para confirmar sua conta"
         );
     }
 };
@@ -77,7 +98,16 @@ export const signInAction = async (formData: FormData) => {
     });
 
     if (error) {
-        return encodedRedirect("error", "/sign-in", error.message);
+        if (error.code === "invalid_credentials") {
+            return encodedRedirect(
+                "error",
+                "/sign-in",
+                "Credenciais inválidas, verifique as informações e tente novamente"
+            );
+        } else {
+            console.error(error.code + " " + error.message);
+            return encodedRedirect("error", "/sign-in", error.message);
+        }
     }
 
     return redirect("/home");
@@ -98,11 +128,11 @@ export const forgotPasswordAction = async (formData: FormData) => {
     }
 
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: `${origin}/auth/callback?redirect_to=/protected/reset-password`,
+        redirectTo: `${origin}`,
     });
 
     if (error) {
-        console.error(error.message);
+        console.error(error.code + " " + error.message);
         return encodedRedirect(
             "error",
             "/forgot-password",

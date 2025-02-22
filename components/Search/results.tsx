@@ -40,7 +40,9 @@ function Results({
                 setArtistResults([]);
                 const { data, error } = await supabase
                     .from("profiles")
-                    .select("*");
+                    .select("*")
+                    .eq("public", true)
+                    .order("created_at", { ascending: false });
                 if (error) {
                     console.log(error);
                 } else {
@@ -52,6 +54,7 @@ function Results({
                     .from("profiles")
                     .select("*")
                     .or(`username.ilike.%${query}%, name.ilike.%${query}%`)
+                    .eq("public", true)
                     .order("created_at", { ascending: true });
                 if (error) {
                     console.log(error);

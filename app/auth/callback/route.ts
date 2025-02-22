@@ -12,12 +12,17 @@ export async function GET(request: Request) {
     const origin = requestUrl.origin;
     const redirectTo = requestUrl.searchParams.get("redirect_to")?.toString();
 
+    console.log("code", code);
+    console.log("redirect_to", redirectTo);
+
+
     if (code) {
         const supabase = await createClient();
         await supabase.auth.exchangeCodeForSession(code);
         const {
             data: { user },
         } = await supabase.auth.getUser();
+        console.log("user", user);
     }
 
     if (redirectTo) {
@@ -25,5 +30,5 @@ export async function GET(request: Request) {
     }
 
     // URL to redirect to after sign up process completes
-    return NextResponse.redirect(`${origin}/set-profile`);
+    return NextResponse.redirect(`${origin}/protected/reset-password`);
 }

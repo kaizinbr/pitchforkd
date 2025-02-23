@@ -2,15 +2,15 @@
 
 import React, { useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
-import { EmblaCarouselType, EmblaOptionsType } from "embla-carousel";
+import { EmblaCarouselType } from "embla-carousel";
 import Image from "next/image";
+import Link from "next/link";
 import Autoplay from "embla-carousel-autoplay";
 import {
     PrevButton,
     NextButton,
     usePrevNextButtons,
 } from "./EmblaCarouselArrowButtons";
-import { text } from "stream/consumers";
 
 const ImageCarousel = () => {
     const [emblaRef, emblaApi] = useEmblaCarousel(
@@ -41,24 +41,8 @@ const ImageCarousel = () => {
         onNextButtonClick,
     } = usePrevNextButtons(emblaApi, onNavButtonClick);
 
-    const images = [
-        "https://i.scdn.co/image/ab67616d0000b273e4f5675b69f75a4ff99302f0",
-        "https://i.scdn.co/image/ab67616d0000b2739538990ec50c597ab78adfcf",
-        "https://i.scdn.co/image/ab67616d0000b2732a40dc3ee1fc592ec0dce3a5",
-        "https://i.scdn.co/image/ab67616d0000b2731fcabc8a98dd45fac3daf6ac",
-    ];
-
     const data = [
         {
-            title: "I Did: Bloom (Deluxe)",
-            artist: "Yves",
-            src: "https://i.scdn.co/image/ab67616d0000b2731fcabc8a98dd45fac3daf6ac",
-            from: "#85446E",
-            to: "#170D15",
-            text: "text-white",
-            album_id: "2haRGdLvimDfNlDBW1LAt1",
-        },
-        {
             title: "The Star Chapter: SANCTUARY",
             artist: "TOMORROW X TOGETHER",
             src: "https://i.scdn.co/image/ab67616d0000b273b612b8d797e8e3ec375ca60d",
@@ -68,6 +52,24 @@ const ImageCarousel = () => {
             album_id: "72JboNccBYyXR676YNfcYE",
         },
         {
+            title: "Abracadabra",
+            artist: "Lady Gaga",
+            src: "https://i.scdn.co/image/ab67616d0000b27325304f6dc9dea023ce4b985c",
+            from: "#343434",
+            to: "#ADADAD",
+            text: "text-white",
+            album_id: "2I6LyArz82waG94e9V5B9d",
+        },
+        {
+            title: "minisode 3: TOMORROW",
+            artist: "TOMORROW X TOGETHER",
+            src: "https://i.scdn.co/image/ab67616d0000b27303c996028737858321d2ffe0",
+            from: "#FE552A",
+            to: "#FA9579",
+            text: "text-white",
+            album_id: "0mDwrOXZHN1lgCNeBvkBbj",
+        },
+        {
             title: "I Did: Bloom (Deluxe)",
             artist: "Yves",
             src: "https://i.scdn.co/image/ab67616d0000b2731fcabc8a98dd45fac3daf6ac",
@@ -77,13 +79,22 @@ const ImageCarousel = () => {
             album_id: "2haRGdLvimDfNlDBW1LAt1",
         },
         {
-            title: "The Star Chapter: SANCTUARY",
-            artist: "TOMORROW X TOGETHER",
-            src: "https://i.scdn.co/image/ab67616d0000b273b612b8d797e8e3ec375ca60d",
-            from: "#384A7C",
-            to: "#C6AAC3",
+            title: "ExtraL (feat. Doechii)",
+            artist: "JENNIE, Doechii",
+            src: "https://i.scdn.co/image/ab67616d0000b2734ddd2d60547b0ef37062c2fb",
+            from: "#541E42",
+            to: "#B37165",
             text: "text-white",
-            album_id: "72JboNccBYyXR676YNfcYE",
+            album_id: "4EBFO1svuZ9BMyO78JZ9zr",
+        },
+        {
+            title: "What A Devastating Turn of Events",
+            artist: "Rachel Chinouriri",
+            src: "https://i.scdn.co/image/ab67616d0000b273e4f5675b69f75a4ff99302f0",
+            from: "#A7A3B5",
+            to: "#2E272D",
+            text: "text-white",
+            album_id: "1Td1oiZTQFYR7N1QX00uhr",
         },
     ];
     return (
@@ -91,39 +102,16 @@ const ImageCarousel = () => {
             <div className="embla__container">
                 {data.map((image, index) => (
                     <div key={index} className="embla__slide">
-                        {/* <div
+                        <Link
+                            href={`/album/${image.album_id}`}
+                            
                             className={`
-                                        flex flex-col rounded-3xl p-8 gap-1
-                                        bg-gradient-to-br from-[#85446E] to-[#170D15] text-white
-                                        shadow-inner text-center
-                                        w-full max-w-[422px] md:max-w-[750px] lg:max-w-[1000px]
-                                    `}
-                        >
-                            <h2 className="font-semibold text-xl">
-                                Avalie Glow Up
-                            </h2>
-                            <picture
-                                className={`
-                                                w-full h-auto rounded-xl overflow-hidden
-                                                md:max-w-64
-                                            `}
-                            >
-                                <Image
-                                    src={typeof image === "string" ? image : ""}
-                                    alt={`Slide ${index + 1}`}
-                                    className="embla__slide__img"
-                                    height={256}
-                                    width={256}
-                                />
-                            </picture>
-                        </div> */}
-                        <div
-                            className={`
-                                        flex md:flex-row flex-col-reverse
+                                        flex md:flex-row flex-col-reverse 
                                         rounded-3xl p-8 gap-3
                                         bg-gradient-to-br from-[${image.from}] to-[${image.to}] ${image.text}
-                                        shadow-inner text-center
+                                        shadow-inner 
                                         w-full max-w-[422px] md:max-w-[750px] lg:max-w-[1000px]
+                                        max-[485px]:h-[485px]
                                     `}
                             style={{backgroundImage: `linear-gradient(to bottom right, ${image.from}, ${image.to})`}}
                         >
@@ -145,20 +133,20 @@ const ImageCarousel = () => {
                                     width={256}
                                 />
                             </picture>
-                            <div className="flex flex-col gap-2 items-start justify-center pt-8">
+                            <div className="flex flex-col items-start justify-center pt-8 md:pt-0">
                                 <span className="text-sm text-bunker-200">Outras pessoas avaliaram:</span>
-                                <h2 className="font-bold text-xl">
+                                <h2 className="font-bold text-lg md:text-2xl">
                                     {image.title}
                                 </h2>
-                                <h3 className="font-semibold text-lg">
+                                <h3 className="font-semibold text-base md:text-lg">
                                     {image.artist}
                                 </h3>
                             </div>
-                        </div>
+                        </Link>
                     </div>
                 ))}
             </div>
-            <div className="embla__controls">
+            <div className="embla__controls max-w-2xl mx-auto justify-end pr-5 md:pr-0">
                 <div className="embla__buttons">
                     <PrevButton
                         onClick={onPrevButtonClick}

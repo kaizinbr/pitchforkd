@@ -1,5 +1,7 @@
 import { createClient } from "@/utils/supabase/server";
 import DisplayReviews from "@/components/display-reviews/main";
+import ImageCarousel from "@/components/carousel/carousel";
+import Link from "next/link";
 
 export default async function Home() {
     const supabase = createClient();
@@ -22,9 +24,7 @@ export default async function Home() {
         return <div>Error fetching reviews</div>;
     }
 
-    const { data: dataLength, error: errorLength } = await (
-        await supabase
-    )
+    const { data: dataLength, error: errorLength } = await (await supabase)
         .from("ratings")
         .select(
             `*,
@@ -40,10 +40,14 @@ export default async function Home() {
 
     return (
         <>
-            <main className="flex-1 flex flex-col gap-6 pt-16 h-lvh justify-center items-center w-full">
-                <h1 className="text-xl font-semibold text-center">
-                    Comece a avaliar seus álbuns favoritos!
-                </h1>
+            <main className="flex-1 flex flex-col gap-6 pt-8 md:pt-20 h-lvh justify-center items-center w-full">
+                <Link
+                    href={`https://pitchforkd.me/`}
+                    className="font-bold mb-4 pl-5 text-xl md:hidden w-full text-start"
+                >
+                    Pitchforkd
+                </Link>
+                <ImageCarousel />
                 {data && dataLength ? (
                     <DisplayReviews
                         ratings={data}

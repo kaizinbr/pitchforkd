@@ -10,7 +10,6 @@ import axios from "axios";
 import Link from "next/link";
 import Image from "next/image";
 import { Track, Album, User } from "@/lib/utils/types";
-
 import { createClient } from "@/utils/supabase/client";
 
 function Results({

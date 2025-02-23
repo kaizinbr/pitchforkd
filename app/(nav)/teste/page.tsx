@@ -1,5 +1,4 @@
 import ImageCarousel from "@/components/carousel/carousel";
-import EmblaCarousel from "@/components/carousel/embla-carousel";
 import { EmblaOptionsType } from "embla-carousel";
 
 const OPTIONS: EmblaOptionsType = { loop: true };
@@ -15,9 +14,8 @@ const images = [
 export default function Page() {
     return (
         <div className="w-full min-h-screen flex flex-col items-center justify-center pt-20 gap-8">
-            <h1>Teste</h1>
+            
             <ImageCarousel />
-            <EmblaCarousel slides={images} options={OPTIONS} />
         </div>
     );
 }

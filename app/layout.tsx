@@ -1,5 +1,6 @@
 import { Work_Sans } from "next/font/google";
 import "@/app/globals.css";
+import "@/app/embla.css";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import localFont from "next/font/local";

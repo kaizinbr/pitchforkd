@@ -1,3 +1,4 @@
+import useToday from "@/hooks/today";
 import { DateTime, Interval } from "luxon";
 
 export function getFutureRelativeTime(date: Date, today: Date): string {
@@ -55,6 +56,14 @@ export function getPastRelativeTime(date: Date, today: Date): string {
     if (diffMinutes > 0)
         return `${diffMinutes} minuto${diffMinutes > 1 ? "s" : ""} atrás`;
     return "Agora";
+}
+
+export function displayPastRelativeTime( date : Date) {
+    const today = useToday();
+    const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    const relativeTime = getPastRelativeTime(localDate, today);
+
+    return `${relativeTime}`;
 }
 
 export function getShortPastRelativeTime(date: Date, today: Date): string {

@@ -32,16 +32,11 @@ export default function AlbumData({
                         )}
                     </p>
                     <p className="text-sm text-bunker-300 flex gap-1">
-                        <span>
-                            {album.total_tracks} músicas
-                        </span>
-                        •
-                        <span>
-                            {getAlbumTime(tracks)}
-                        </span>
+                        <span>{album.total_tracks} músicas</span>•
+                        <span>{getAlbumTime(tracks)}</span>
                     </p>
                 </div>
-            ) }
+            )}
         </div>
     );
 }

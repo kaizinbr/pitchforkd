@@ -6,22 +6,10 @@ import Link from "next/link";
 import { useEffect, useState, useMemo, useCallback } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/components/ui/Avatar";
-
-import useToday from "@/hooks/today";
-import { getPastRelativeTime } from "@/lib/utils/time";
+import { getPastRelativeTime, displayPastRelativeTime } from "@/lib/utils/time";
 import axios from "axios";
 import formatRate from "@/lib/utils/formatRate";
 
-interface Props {
-    date: Date;
-}
-
-function PastRelativeTime({ date }: Props) {
-    const today = useToday();
-    const relativeTime = getPastRelativeTime(date, today);
-
-    return <>{relativeTime}</>;
-}
 
 interface Review {
     id: string;
@@ -148,7 +136,7 @@ export default function ReviewCard({
                 </div>
                 <div className="flex items-center justify-start flex-row px-3 pb-3 gap-2">
                     <span className=" h-full flex items-center text-xs text-stone-400 ">
-                        <PastRelativeTime date={new Date(review.created_at)} />
+                    {displayPastRelativeTime(new Date(review.created_at))}
                     </span>
                 </div>
             </Link>

@@ -15,7 +15,7 @@ export default function ShareBtn({
                     p-3
                     flex justify-center items-center
                     bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600  text-white font-bold rounded-full
-                    fixed right-4
+                    fixed right-20
                     ${scrollDirection > "down" ? "bottom-20" : "bottom-4"}
                     md:bottom-4
                     transition-all duration-300

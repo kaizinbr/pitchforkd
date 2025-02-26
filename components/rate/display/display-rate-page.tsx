@@ -12,6 +12,8 @@ import ShareBtn from "./share-btn";
 import Link from "next/link";
 import DeleteBtn from "./options";
 import { createClient } from "@/utils/supabase/client";
+import LikeBtn from "@/components/user/like-btn";
+import useScrollDirection from "@/hooks/useScrollDirection";
 
 export default function DisplayRate({
     id,
@@ -21,11 +23,13 @@ export default function DisplayRate({
     rate: Review;
 }) {
     const supabase = createClient();
+    const scrollDirection = useScrollDirection();
 
     const [album, setAlbum] = useState<any>();
     const [tracks, setTracks] = useState<any>([]);
     const [loading, setLoading] = useState(true);
     const [canDelete, setCanDelete] = useState(false);
+    const [liked, setLiked] = useState(false);
     const [currentColor, setCurrentColor] = useState<string>("#4a6d73");
 
     function updateColor(colors: { hex: string; intensity: number }[]) {
@@ -81,26 +85,53 @@ export default function DisplayRate({
 
         const fetchUser = async () => {
             const {
-                data: { user }, error
+                data: { user },
+                error,
             } = await supabase.auth.getUser();
-    
+
             if (!user) {
                 console.error("User not logged in");
                 return;
-            } 
+            }
 
             if (error) {
                 console.error(error);
                 return;
             }
 
-            console.log(user.id, rate.profiles.id)
+            console.log(user.id, rate.profiles.id);
 
             if (user.id === rate.profiles.id) {
                 setCanDelete(true);
             }
-        }
+        };
 
+        const verifyLike = async () => {
+            const {
+                data: { user },
+            } = await supabase.auth.getUser();
+            if (!user) {
+                console.error("User not logged in");
+                return;
+            }
+
+            const { data, error } = await supabase
+                .from("likes")
+                .select("*")
+                .eq("user_id", user.id)
+                .eq("rating_id", rate.id);
+
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            if (data.length) {
+                setLiked(true);
+            }
+        };
+
+        verifyLike();
         fetchData();
         fetchUser();
     }, [id]);
@@ -125,10 +156,27 @@ export default function DisplayRate({
                         tracks={tracks}
                         loading={loading}
                     />
-                    {canDelete ? (
-                        <DeleteBtn id={rate.id} />
-                    ) : null}
+                    {canDelete ? <DeleteBtn id={rate.id} /> : null}
                     <ShareBtn shorten={rate.shorten} />
+                    <LikeBtn
+                        rating_id={rate.id}
+                        owner_id={rate.user_id}
+                        liked={liked}
+                        setLiked={setLiked}
+                        type={"rounded"}
+                        className={`
+                            p-3
+                            flex justify-center items-center
+                            bg-blue-celestial border-2 border-blue-celestial hover:bg-blue-celestial hover:border-blue-celestial  
+                            ${liked ? "text-red-500" : "!text-white"}
+                            rounded-full
+                            fixed right-4
+                            ${scrollDirection > "down" ? "bottom-20" : "bottom-4"}
+                            md:bottom-4
+                            transition-all duration-300
+                            shadow-md
+                        `}
+                    />
                     <UserRate album={rate} loading={loading} />
                     {tracks.length > 0 ? (
                         <AlbumTracksDisplay

@@ -5,20 +5,8 @@ import { createClient } from "@/utils/supabase/client";
 import Avatar from "@/components/ui/Avatar";
 import { Notification } from "@/lib/utils/types";
 import { Skeleton } from "@mantine/core";
-import { getPastRelativeTime } from "@/lib/utils/time";
+import { getPastRelativeTime, displayPastRelativeTime } from "@/lib/utils/time";
 import axios from "axios";
-import useToday from "@/hooks/today";
-
-interface Props {
-    date: Date;
-}
-
-function PastRelativeTime({ date }: Props) {
-    const today = useToday();
-    const relativeTime = getPastRelativeTime(date, today);
-
-    return <>{relativeTime}</>;
-}
 
 function NotificationCard({ notification }: { notification: Notification }) {
     const [saw, setSaw] = useState(notification.seen);
@@ -98,9 +86,8 @@ function NotificationCard({ notification }: { notification: Notification }) {
                         <Skeleton height={8} radius="xl" />
                     )}
                     <span className="text-bunker-300 text-xs">
-                        <PastRelativeTime
-                            date={new Date(notification.created_at)}
-                        />
+                       {displayPastRelativeTime(new Date(notification.created_at))}
+                        
                     </span>
                 </div>
             </div>

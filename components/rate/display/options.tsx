@@ -1,5 +1,5 @@
 import { useDisclosure } from "@mantine/hooks";
-import { Modal, Button } from "@mantine/core";
+import { Modal } from "@mantine/core";
 import { createClient } from "@/utils/supabase/client";
 import useScrollDirection from "@/hooks/useScrollDirection";
 import Icon from "@/components/ui/Icon";
@@ -84,7 +84,7 @@ export default function DeleteBtn({ id }: { id: string }) {
                     p-3
                     flex justify-center items-center
                     bg-orange-safety border-2 border-orange-safety   text-white font-bold rounded-full
-                    fixed right-20
+                    fixed right-36
                     ${scrollDirection > "down" ? "bottom-20" : "bottom-4"}
                     md:bottom-4 shadow-md cursor-pointer
                     transition-all duration-300
@@ -95,123 +95,3 @@ export default function DeleteBtn({ id }: { id: string }) {
         </>
     );
 }
-
-// export default function Options({
-//     user,
-//     id,
-//     rating_id,
-//     owner_id,
-//     className,
-// }: {
-//     user?: User;
-//     id: string;
-//     rating_id: string;
-//     owner_id: string;
-//     className?: string;
-// }) {
-//     async function handleLike({
-//         rating_id,
-//         owner_id,
-//     }: {
-//         rating_id: string;
-//         owner_id: string;
-//     }) {
-//         const supabase = createClient();
-
-//         const {
-//             data: { user },
-//         } = await supabase.auth.getUser();
-
-//         if (!user) {
-//             console.error("User not logged in");
-//             return;
-//         }
-
-//         const { data, error } = await supabase
-//             .from("likes")
-//             .select("*")
-//             .eq("user_id", user.id)
-//             .eq("rating_id", rating_id);
-
-//         if (error) {
-//             console.error(error);
-//             return;
-//         }
-
-//         if (data.length) {
-//             await supabase
-//                 .from("likes")
-//                 .delete()
-//                 .eq("user_id", user.id)
-//                 .eq("rating_id", rating_id);
-
-//             await supabase
-//                 .from("notifications")
-//                 .delete()
-//                 .eq("user_id", owner_id)
-//                 .eq("sender_id", user.id)
-//                 .eq("rating_id", rating_id);
-
-//             // setLiked(false);
-//         } else {
-//             await supabase.from("likes").insert([
-//                 {
-//                     user_id: user.id,
-//                     user_profile: user.id,
-//                     rating_id: rating_id,
-//                 },
-//             ]);
-
-//             await supabase.from("notifications").insert([
-//                 {
-//                     user_id: owner_id,
-//                     sender_id: user.id,
-//                     rating_id: rating_id,
-//                 },
-//             ]);
-
-//             // setLiked(true);
-//         }
-//     }
-
-//     return (
-//         <Menu
-//             shadow="md"
-//             width={200}
-//             position="bottom-end"
-//             classNames={{
-//                 dropdown: "!bg-bunker-800 !border-bunker-700 !rounded-xl",
-//                 item: "!hover:bg-bunker-700 transition-all duration-200",
-//                 label: "text-white",
-//             }}
-//         >
-//             <Menu.Target>
-//                 <button className="flex items-center justify-center size-6 absolute top-5 right-5">
-//                     <TbDotsVertical />
-//                 </button>
-//             </Menu.Target>
-
-//             <Menu.Dropdown>
-//                 {/* <Menu.Label>Application</Menu.Label> */}
-//                 <Menu.Item>Editar</Menu.Item>
-//                 <Menu.Item>Compartilhar</Menu.Item>
-//                 <Menu.Item>Ver autor</Menu.Item>
-//                 <Menu.Item>Search</Menu.Item>
-//             </Menu.Dropdown>
-//         </Menu>
-//         // <button
-//         //     onClick={() => handleLike({rating_id, owner_id})}
-//         //     className={`
-//         //         flex items-center justify-center z-50 cursor-pointer
-//         //         transition-all duration-200 ease-in-out
-//         //         ${size === "sm" ? "h-6 w-6" : "size-6"}
-//         //         ${className}
-//         //     `}
-//         // >
-//         //     <Icon type="heart" className={`
-//         //             transition-all duration-200 ease-in-out
-//         //             ${liked ? "text-red-500" : "text-gray-500"}
-//         //         `} />
-//         // </button>
-//     );
-// }

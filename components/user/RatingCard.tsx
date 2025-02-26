@@ -8,24 +8,10 @@ import { Skeleton } from "@mantine/core";
 import Avatar from "@/components/ui/Avatar";
 import { Review } from "@/lib/utils/types";
 import { createClient } from "@/utils/supabase/client";
-import useToday from "@/hooks/today";
-import { getPastRelativeTime } from "@/lib/utils/time";
+import { getPastRelativeTime, displayPastRelativeTime } from "@/lib/utils/time";
 import axios from "axios";
 import formatRate from "@/lib/utils/formatRate";
 import LikeBtn from "./like-btn";
-import { TbDots } from "react-icons/tb";
-import Options from "../rate/display/options";
-
-interface Props {
-    date: Date;
-}
-
-export function PastRelativeTime({ date }: Props) {
-    const today = useToday();
-    const relativeTime = getPastRelativeTime(date, today);
-
-    return <>{relativeTime}</>;
-}
 
 export default function RatingCard({
     review,
@@ -204,9 +190,9 @@ export default function RatingCard({
                             </div>
                             <div className="flex items-center justify-between flex-row gap-2">
                                 <span className=" h-full flex items-center text-xs text-bunker-400 ">
-                                    <PastRelativeTime
-                                        date={new Date(review.created_at)}
-                                    />
+                                    {displayPastRelativeTime(
+                                        new Date(review.created_at)
+                                    )}
                                 </span>
                             </div>
                         </Link>

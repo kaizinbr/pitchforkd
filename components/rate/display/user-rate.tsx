@@ -3,8 +3,7 @@ import { AlbumRate, Review, Rating } from "@/lib/utils/types";
 import Avatar from "@/components/ui/Avatar";
 import formatRate from "@/lib/utils/formatRate";
 import Link from "next/link";
-
-import { PastRelativeTime } from "@/components/user/RatingCard";
+import { displayPastRelativeTime } from "@/lib/utils/time";
 
 export default function UserRate({
     album,
@@ -25,11 +24,15 @@ export default function UserRate({
                             {album.profiles.name || album.profiles.username}
                         </Link>
                     </h2>
-                    <p className="text-3xl font-bold mb-4">
+                    <p className="text-3xl font-bold">
                         {formatRate(album.total)}
                     </p>
                     {album.review == "" ? (
-                        <p className="text-lg">Sem review</p>
+                        <p className="text-bunker-300 text-sm">
+                            {displayPastRelativeTime(
+                                new Date(album.created_at)
+                            )}
+                        </p>
                     ) : (
                         <div className="p-4 w-full flex flex-col gap-3 bg-bunker-800 rounded-xl">
                             <div className="w-full flex flex-row gap-2 items-center">
@@ -66,13 +69,19 @@ export default function UserRate({
                                 </div>
                             </div>
                             <div className="w-full text-sm">
-                                <p className="">{album.review}</p>
+                                {album.review
+                                    .split("\n")
+                                    .map((paragraph, index) => (
+                                        <p key={index} className="mb-1">
+                                            {paragraph}
+                                        </p>
+                                    ))}
                             </div>
                             <div className="flex items-center justify-between flex-row gap-2">
                                 <span className=" h-full flex items-center text-xs text-bunker-400 ">
-                                    <PastRelativeTime
-                                        date={new Date(album.created_at)}
-                                    />
+                                    {displayPastRelativeTime(
+                                        new Date(album.created_at)
+                                    )}
                                 </span>
                             </div>
                         </div>

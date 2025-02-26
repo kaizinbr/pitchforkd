@@ -27,7 +27,7 @@ export default function AlbumData({
                     </p>
                     <p className="text-sm text-bunker-300">
                         Lançado em{" "}
-                        {new Date(album.release_date).toLocaleDateString(
+                        {new Date(album.release_date + "T00:00:00").toLocaleDateString(
                             "pt-BR"
                         )}
                     </p>

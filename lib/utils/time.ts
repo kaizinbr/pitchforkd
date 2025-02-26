@@ -61,7 +61,10 @@ export function getPastRelativeTime(date: Date, today: Date): string {
 export function displayPastRelativeTime( date : Date) {
     const today = useToday();
     const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-    const relativeTime = getPastRelativeTime(localDate, today);
+    const relativeTime = getPastRelativeTime(date, today);
+    // console.log("relativeTime", relativeTime);  
+    // console.log("localDate", localDate);
+    // console.log("today", today);
 
     return `${relativeTime}`;
 }

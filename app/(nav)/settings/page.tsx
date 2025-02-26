@@ -42,8 +42,8 @@ export default async function Index() {
                                     <>
                                         Criado em:{" "}
                                         {new Date(
-                                            user?.identities[0]!.created_at ?? 0
-                                        ).toLocaleDateString()}
+                                            user?.identities[0]!.created_at + "T00:00:00"
+                                        ).toLocaleDateString("pt-BR")}
                                     </>
                                 )}
                             </span>

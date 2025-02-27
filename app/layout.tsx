@@ -3,6 +3,7 @@ import "@/app/globals.css";
 import "@/app/embla.css";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
+import '@mantine/tiptap/styles.css';
 import localFont from "next/font/local";
 import {
     ColorSchemeScript,

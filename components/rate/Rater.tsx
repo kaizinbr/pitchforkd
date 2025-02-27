@@ -7,6 +7,14 @@ import { useDisclosure } from "@mantine/hooks";
 import { Modal } from "@mantine/core";
 import Link from "next/link";
 import useScrollDirection from "@/hooks/useScrollDirection";
+import TextareaEditor from "./textarea-editor";
+
+import Underline from "@tiptap/extension-underline";
+import { useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import { RichTextEditor } from "@mantine/tiptap";
+
+const content = "<p>Subtle rich text editor variant</p>";
 
 const Track = ({
     track,
@@ -180,7 +188,8 @@ export default function Rater({
             )
         );
         setTotal(
-            ratings.reduce((acc, rating) => acc + rating.value, 0) / ratings.length
+            ratings.reduce((acc, rating) => acc + rating.value, 0) /
+                ratings.length
         );
     };
 
@@ -222,6 +231,14 @@ export default function Rater({
 
         if (ratingsData.length > 0) {
             console.log("User already rated this album", finalRating);
+
+
+            const rawText = editor!.getText({ blockSeparator: '\n\n' });
+            console.log(rawText);
+
+            const content = editor!.getJSON();
+            console.log(content);
+
             const { data, error } = await supabase
                 .from("ratings")
                 .update([
@@ -229,7 +246,8 @@ export default function Rater({
                         album_id: albumId,
                         user_id: user.id,
                         ratings,
-                        review,
+                        review: rawText,
+                        content,
                         total: finalRating,
                     },
                 ])
@@ -247,12 +265,19 @@ export default function Rater({
             const shortened = getShorten();
             setShorten(shortened);
 
+            const rawText = editor!.getText({ blockSeparator: '\n\n' });
+            console.log(rawText);
+
+            const content = editor!.getJSON();
+            console.log(content);
+
             const { data, error } = await supabase.from("ratings").insert([
                 {
                     album_id: albumId,
                     user_id: user.id,
                     ratings,
-                    review,
+                    review: rawText,
+                    content,
                     total: finalRating,
                     shorten: shortened,
                 },
@@ -267,6 +292,11 @@ export default function Rater({
             open();
         }
     };
+
+    const editor = useEditor({
+        extensions: [StarterKit, Underline],
+        content,
+    });
 
     return (
         <>
@@ -301,7 +331,7 @@ export default function Rater({
                     >
                         Ver avaliação
                     </Link>
-                    
+
                     <Link
                         href={`/r/${shorten}/share`}
                         className="bg-blue-celestial cursor-pointer text-white rounded-xl py-2 px-6"
@@ -364,7 +394,7 @@ export default function Rater({
                             Usar média
                         </Chip>
                     </div>
-                    <Textarea
+                    {/* <Textarea
                         label="Deixe sua avaliação"
                         autosize
                         minRows={5}
@@ -376,7 +406,20 @@ export default function Rater({
                         }}
                         value={review}
                         onChange={(e) => setReview(e.target.value)}
-                    />
+                    /> */}
+                    <TextareaEditor editor={editor} />
+                    <button
+                        type="button"
+                        onClick={() => {
+                            if (editor) {
+                                console.log(editor.getHTML());
+                                console.log(editor.getText({ blockSeparator: '\n\n' }));
+                                console.log(editor.getJSON());
+                            }
+                        }}
+                    >
+                        clique
+                    </button>
                     <button
                         className={`
                             py-3
@@ -389,7 +432,7 @@ export default function Rater({
                             md:bottom-4 cursor-pointer
                             transition-all duration-300
                             z-[500]
-                        `} 
+                        `}
                         type="submit"
                     >
                         Salvar avaliação

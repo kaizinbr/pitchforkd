@@ -132,6 +132,7 @@ export default function Navigator({ user }: { user: User | null }) {
                                 hover:text-blue-celestial
                                 transition-all duration-200 ease-in-out
                             `}
+                            onClick={() => setHasNotifications(false)}
                     >
                         <Indicator
                             inline

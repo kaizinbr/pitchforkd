@@ -9,6 +9,8 @@ export default function LikeBtn({
     type,
     size,
     className,
+    totalLikes,
+    setTotalLikes,
 }: {
     liked: boolean;
     setLiked: React.Dispatch<React.SetStateAction<boolean>>;
@@ -17,6 +19,8 @@ export default function LikeBtn({
     type?: string;
     size?: string;
     className?: string;
+    totalLikes?: number;
+    setTotalLikes?: React.Dispatch<React.SetStateAction<number>>;
 }) {
     async function handleLike({ rating_id, owner_id }: { rating_id: string; owner_id: string }) {
         const supabase = createClient();
@@ -57,6 +61,10 @@ export default function LikeBtn({
             
 
             setLiked(false);
+
+            if (totalLikes && setTotalLikes) {
+                setTotalLikes(totalLikes - 1);
+            }
         } else {
             await supabase.from("likes").insert([
                 {
@@ -77,6 +85,10 @@ export default function LikeBtn({
             ]);
 
             setLiked(true);
+
+            if (totalLikes && setTotalLikes) {
+                setTotalLikes(totalLikes + 1);
+            }
         }
     }
 

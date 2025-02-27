@@ -12,6 +12,8 @@ import Image from "next/image";
 import { Track, Album, User } from "@/lib/utils/types";
 import { createClient } from "@/utils/supabase/client";
 
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
+
 function Results({
     query,
     currentPage,
@@ -212,12 +214,17 @@ function Results({
 export default function ResultsPage({
     query,
     currentPage,
+    tab
 }: {
     query: string;
     currentPage: number;
+    tab: string;
 }) {
+    const searchParams = useSearchParams();
+    const { replace } = useRouter();
+    const pathname = usePathname();
     const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
-    const [value, setValue] = useState<string | null>("1");
+    const [value, setValue] = useState<string | null>(tab);
     const [controlsRefs, setControlsRefs] = useState<
         Record<string, HTMLButtonElement | null>
     >({});
@@ -226,11 +233,33 @@ export default function ResultsPage({
         setControlsRefs(controlsRefs);
     };
 
+    const handleSearch = (term: string) => {
+        console.log(`Searching... ${term}`);
+
+        const params = new URLSearchParams(searchParams);
+
+        if (term) {
+            params.set("tab", term);
+        } else {
+            params.delete("tab");
+        }
+        replace(`${pathname}?${params.toString()}`);
+    }
+
+    function handleValue (value: string) {
+        setValue(value);
+        handleSearch(value);
+    }
+
     return (
         <Tabs
             variant="none"
             value={value}
-            onChange={setValue}
+            onChange={(val) => {
+                if (val) {
+                    handleValue(val);
+                }
+            }}
             className="w-full"
         >
             <Tabs.List

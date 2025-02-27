@@ -30,6 +30,7 @@ export default function DisplayRate({
     const [loading, setLoading] = useState(true);
     const [canDelete, setCanDelete] = useState(false);
     const [liked, setLiked] = useState(false);
+    const [totalLikes, setTotalLikes] = useState(0);
     const [currentColor, setCurrentColor] = useState<string>("#4a6d73");
 
     function updateColor(colors: { hex: string; intensity: number }[]) {
@@ -131,7 +132,22 @@ export default function DisplayRate({
             }
         };
 
+        const getLikes = async () => {
+            const { data, error } = await supabase
+                .from("likes")
+                .select("*")
+                .eq("rating_id", rate.id);
+
+            if (error) {
+                console.error(error);
+                return;
+            }
+
+            setTotalLikes(data.length);
+        }
+
         verifyLike();
+        getLikes();
         fetchData();
         fetchUser();
     }, [id]);
@@ -163,6 +179,8 @@ export default function DisplayRate({
                         owner_id={rate.user_id}
                         liked={liked}
                         setLiked={setLiked}
+                        totalLikes={totalLikes}
+                        setTotalLikes={setTotalLikes}
                         type={"rounded"}
                         className={`
                             p-3
@@ -177,7 +195,7 @@ export default function DisplayRate({
                             shadow-md
                         `}
                     />
-                    <UserRate album={rate} loading={loading} />
+                    <UserRate album={rate} loading={loading} likes={totalLikes} />
                     {tracks.length > 0 ? (
                         <AlbumTracksDisplay
                             tracks={tracks}

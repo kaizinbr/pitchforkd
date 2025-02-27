@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-
+import { Indicator } from "@mantine/core";
 import Avatar from "@/components/ui/Avatar";
 import Icon from "@/components/ui/Icon";
 import { useState, useCallback, useEffect, useRef } from "react";
@@ -24,6 +24,7 @@ export default function Navigator({ user }: { user: User | null }) {
 
     const [username, setUsername] = useState<string | null>(null);
     const [avatar_url, setAvatarUrl] = useState<string | null>(null);
+    const [hasNotifications, setHasNotifications] = useState<boolean>(false);
     const scrollDirection = useScrollDirection();
 
     const getProfile = useCallback(async () => {
@@ -51,6 +52,31 @@ export default function Navigator({ user }: { user: User | null }) {
     useEffect(() => {
         getProfile();
     }, [user, getProfile]);
+
+    const [localNotifications, setLocalNotifications] = useState<any[]>([]);
+
+    useEffect(() => {
+        supabase
+            .channel("notifications")
+            .on(
+                "postgres_changes",
+                { event: "INSERT", schema: "public", table: "notifications" },
+                (payload) => {
+                    const notification = payload.new;
+
+                    if (notification.sender_id === user!.id) {
+                        setLocalNotifications([
+                            ...localNotifications,
+                            notification,
+                        ]);
+                        setHasNotifications(true);
+                        console.log("New notification", payload);
+                    }
+                        console.log(notification.sender_id, user!.id);
+                }
+            )
+            .subscribe();
+    }, []);
 
     return (
         <div className="relative md:hidden">
@@ -107,7 +133,17 @@ export default function Navigator({ user }: { user: User | null }) {
                                 transition-all duration-200 ease-in-out
                             `}
                     >
-                        <TbBellFilled className="size-6" />
+                        <Indicator
+                            inline
+                            size={12}
+                            offset={7}
+                            position="top-end"
+                            color="#00ac1c"
+                            withBorder
+                            disabled={!hasNotifications}
+                        >
+                            <TbBellFilled className="size-6" />
+                        </Indicator>
                     </Link>
                 </button>
                 <button>

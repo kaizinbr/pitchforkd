@@ -45,6 +45,8 @@ export default async function Page({
 
     const supabase = await createClient();
 
+    // if (supabase !== )
+
     const { data, error: albumError } = await supabase
         .from("ratings")
         .select(

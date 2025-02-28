@@ -166,7 +166,7 @@ export default function Rater({
                     favorite: false,
                 }));
                 setRatings(initialRatings);
-                setContent("");
+                setContent("<p></p>");
             }
         };
 

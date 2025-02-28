@@ -12,9 +12,6 @@ import TextareaEditor from "./textarea-editor";
 import Underline from "@tiptap/extension-underline";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { RichTextEditor } from "@mantine/tiptap";
-
-const content = "<p>Subtle rich text editor variant</p>";
 
 const Track = ({
     track,
@@ -126,6 +123,10 @@ export default function Rater({
     const [shorten, setShorten] = useState<string>("");
     const [useMedia, setUseMedia] = useState<boolean>(true);
     const [opened, { open, close }] = useDisclosure(false);
+    const [content, setContent] = useState<any>(null);
+
+    const [rawText, setRawText] = useState<string>("");
+    const [jsonContent, setJsonContent] = useState<any>(null);
 
     useEffect(() => {
         // check if user already rated the album
@@ -141,7 +142,7 @@ export default function Rater({
 
             const { data, error } = await supabase
                 .from("ratings")
-                .select("ratings, review, total, shorten")
+                .select("ratings, review, total, shorten, content")
                 .eq("user_id", user.id)
                 .eq("album_id", albumId);
 
@@ -152,7 +153,8 @@ export default function Rater({
 
             if (data.length > 0) {
                 const { ratings, review, total } = data[0];
-                console.log(total);
+                setContent(data[0].content);
+                console.log(data[0].content);
                 setRatings(ratings);
                 setReview(review);
                 setShorten(data[0].shorten);
@@ -164,17 +166,11 @@ export default function Rater({
                     favorite: false,
                 }));
                 setRatings(initialRatings);
+                setContent("");
             }
         };
 
         fetchRatings();
-
-        // const initialRatings = tracks.map((track) => ({
-        //     id: track.id,
-        //     value: 0,
-        //     favorite: false,
-        // }));
-        // setRatings(initialRatings);
     }, [tracks]);
 
     const handleValueChange = (
@@ -232,13 +228,6 @@ export default function Rater({
         if (ratingsData.length > 0) {
             console.log("User already rated this album", finalRating);
 
-
-            const rawText = editor!.getText({ blockSeparator: '\n\n' });
-            console.log(rawText);
-
-            const content = editor!.getJSON();
-            console.log(content);
-
             const { data, error } = await supabase
                 .from("ratings")
                 .update([
@@ -247,7 +236,7 @@ export default function Rater({
                         user_id: user.id,
                         ratings,
                         review: rawText,
-                        content,
+                        content: jsonContent,
                         total: finalRating,
                     },
                 ])
@@ -263,13 +252,6 @@ export default function Rater({
             open();
         } else {
             const shortened = getShorten();
-            setShorten(shortened);
-
-            const rawText = editor!.getText({ blockSeparator: '\n\n' });
-            console.log(rawText);
-
-            const content = editor!.getJSON();
-            console.log(content);
 
             const { data, error } = await supabase.from("ratings").insert([
                 {
@@ -277,7 +259,7 @@ export default function Rater({
                     user_id: user.id,
                     ratings,
                     review: rawText,
-                    content,
+                    content: jsonContent,
                     total: finalRating,
                     shorten: shortened,
                 },
@@ -292,11 +274,6 @@ export default function Rater({
             open();
         }
     };
-
-    const editor = useEditor({
-        extensions: [StarterKit, Underline],
-        content,
-    });
 
     return (
         <>
@@ -394,32 +371,18 @@ export default function Rater({
                             Usar média
                         </Chip>
                     </div>
-                    {/* <Textarea
-                        label="Deixe sua avaliação"
-                        autosize
-                        minRows={5}
-                        maxRows={8}
-                        name="review"
-                        placeholder="Qual sua opinião sobre o álbum?"
-                        classNames={{
-                            input: "!bg-bunker-800 !text-white !border-bunker-800 !rounded-xl",
-                        }}
-                        value={review}
-                        onChange={(e) => setReview(e.target.value)}
-                    /> */}
-                    <TextareaEditor editor={editor} />
-                    <button
-                        type="button"
-                        onClick={() => {
-                            if (editor) {
-                                console.log(editor.getHTML());
-                                console.log(editor.getText({ blockSeparator: '\n\n' }));
-                                console.log(editor.getJSON());
-                            }
-                        }}
-                    >
-                        clique
-                    </button>
+                    <div className="flex flex-col gap-2 mt-3">
+                        <h1 className="font-medium">
+                            Deixe sua avaliação aqui
+                        </h1>
+                        {content && (
+                            <TextareaEditor
+                                content={content}
+                                setRawText={setRawText}
+                                setJsonContent={setJsonContent}
+                            />
+                        )}
+                    </div>
                     <button
                         className={`
                             py-3

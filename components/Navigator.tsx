@@ -64,7 +64,7 @@ export default function Navigator({ user }: { user: User | null }) {
                 (payload) => {
                     const notification = payload.new;
 
-                    if (notification.sender_id === user!.id) {
+                    if (notification.user_id === user!.id) {
                         setLocalNotifications([
                             ...localNotifications,
                             notification,

@@ -19,7 +19,7 @@ export default function ShareBtn({
                     ${scrollDirection > "down" ? "bottom-20" : "bottom-4"}
                     md:bottom-4
                     transition-all duration-300
-                    shadow-md
+                    shadow-md z-40
                 `}
         >
             <Icon type="share" className="cursor-pointer size-6"/>

@@ -44,6 +44,10 @@ export interface Review {
     total: number;
     profiles: User;
     shorten: string;
+    content: {
+        type: string;
+        content: [];
+    }
 }
 
 export interface User {

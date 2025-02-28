@@ -195,7 +195,7 @@ export default function DisplayRate({
                             shadow-md
                         `}
                     />
-                    <UserRate album={rate} loading={loading} likes={totalLikes} />
+                    <UserRate review={rate} loading={loading} likes={totalLikes} />
                     {tracks.length > 0 ? (
                         <AlbumTracksDisplay
                             tracks={tracks}

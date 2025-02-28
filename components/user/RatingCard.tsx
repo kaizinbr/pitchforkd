@@ -8,10 +8,16 @@ import { Skeleton } from "@mantine/core";
 import Avatar from "@/components/ui/Avatar";
 import { Review } from "@/lib/utils/types";
 import { createClient } from "@/utils/supabase/client";
-import { getPastRelativeTime, displayPastRelativeTime } from "@/lib/utils/time";
+import { displayPastRelativeTime } from "@/lib/utils/time";
 import axios from "axios";
 import formatRate from "@/lib/utils/formatRate";
 import LikeBtn from "./like-btn";
+
+import Underline from "@tiptap/extension-underline";
+import { useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import TextareaDisplay from "../textaera-content";
+
 
 export default function RatingCard({
     review,
@@ -24,6 +30,13 @@ export default function RatingCard({
     const [album, setAlbum] = useState<any>();
     const [loading, setLoading] = useState(true);
     const [liked, setLiked] = useState(false);
+
+    const editor = useEditor({
+        extensions: [StarterKit, Underline],
+        content: review.content,
+        editable: false,
+        immediatelyRender: false,
+    });
 
     useEffect(() => {
         const verifyLike = async () => {
@@ -178,11 +191,11 @@ export default function RatingCard({
                                     <span className="text-neutral-100 text-xl font-bold">
                                         {formatRate(review.total)}
                                     </span>
-                                    {review.review && (
-                                        <p className="text-neutral-100 text-sm line-clamp-4">
-                                            {review.review}
-                                        </p>
+
+                                    {review.content && (
+                                        <TextareaDisplay editor={editor} lineClamp={4}/>
                                     )}
+
                                     <span className="text-neutral-300 text-sm">
                                         {review.ratings.length} músicas
                                     </span>

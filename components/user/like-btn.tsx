@@ -86,7 +86,7 @@ export default function LikeBtn({
 
             setLiked(true);
 
-            if (totalLikes && setTotalLikes) {
+            if (totalLikes !== undefined && setTotalLikes) {
                 setTotalLikes(totalLikes + 1);
             }
         }

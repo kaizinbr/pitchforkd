@@ -88,6 +88,7 @@ export default function DeleteBtn({ id }: { id: string }) {
                     ${scrollDirection > "down" ? "bottom-20" : "bottom-4"}
                     md:bottom-4 shadow-md cursor-pointer
                     transition-all duration-300
+                    z-40
                 `}
             >
                 <Icon type="trash" className="cursor-pointer size-6" />

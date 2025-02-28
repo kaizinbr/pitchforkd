@@ -130,11 +130,15 @@ body {
     font-family: "Graphik" !important;
 }
 
+.display-contents .ProseMirror {
+    padding: 0 !important;
+    line-clamp: 4;
+}
 
-
-
-
-
+.display-contents .ProseMirror p {
+    overflow-wrap: break-word;
+    text-wrap: wrap;
+}
 
 /* LOADER */
 
@@ -161,4 +165,23 @@ body {
     stroke-linecap: round;
     transform-origin: center;
     @apply stroke-main-600;
+}
+
+/* Character count */
+.character-count {
+    align-items: center;
+    color: var(--color-bunker-300);
+    display: flex;
+    font-size: 0.75rem;
+    gap: 0.5rem;
+    margin: 1.5rem;
+
+    svg {
+        color: var(--color-main-500);
+    }
+
+    &--warning,
+    &--warning svg {
+        color: var(--color-orange-safety);
+    }
 }

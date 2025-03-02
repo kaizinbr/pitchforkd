@@ -1,8 +1,9 @@
-import { signUpAction } from "@/app/actions";
+import { signUpAction, signUpWithGoogle } from "@/app/actions";
 import { FormMessage, Message } from "@/components/form-message";
 import { SubmitButton } from "@/components/submit-button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { BsGoogle } from "react-icons/bs";
 import Link from "next/link";
 
 export const metadata = {
@@ -56,6 +57,20 @@ export default async function Signup(props: {
                     </SubmitButton>
                     <FormMessage message={searchParams} />
                 </div>
+                <button
+                    type="button"
+                    onClick={signUpWithGoogle}
+                    className={`
+                        w-full mt-3
+                        border border-bunker-600 rounded-xl
+                        p-2 text-center transition-all duration-200
+                        hover:border-main-600 cursor-pointer
+                        flex items-center justify-center
+                    `}
+                >
+                    <BsGoogle className="size-5 mr-3" />
+                    Criar conta com Google
+                </button>
                 <div className="text-base text-neutral-300 flex items-center flex-col w-full gap-2 mt-6 font-medium">
                     <p className="">Já tem uma conta?</p>
                     <Link

@@ -2,10 +2,86 @@
 
 import { encodedRedirect } from "@/utils/utils";
 import { createClient } from "@/utils/supabase/server";
+import supabaseAdmin from "@/utils/supabase/admin";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-
 import { fakerPT_BR } from "@faker-js/faker";
+
+export async function checkUserProvider(email: string) {
+    if (!email) return { error: "Email é obrigatório" };
+
+    // Listar usuários no Supabase
+    const { data, error } = await supabaseAdmin.auth.admin.listUsers();
+
+    if (error) return { error: "Erro ao buscar usuários" };
+
+    // Encontrar o usuário pelo email
+    const user = data.users.find((user) => user.email === email);
+    if (!user) return { error: "Usuário não encontrado" };
+
+    // Verificar se o usuário foi criado via Google
+    const isGoogleUser = user.app_metadata?.provider === "google";
+
+    return { isGoogleUser };
+}
+
+export async function signUpWithGoogle() {
+    const origin = (await headers()).get("origin");
+    const supabase = await createClient();
+
+    const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+            redirectTo: `${origin}/auth/callback/google`,
+        },
+    });
+
+    if (error) {
+        if (error.code === "invalid_credentials") {
+            return encodedRedirect(
+                "error",
+                "/sign-in",
+                "Credenciais inválidas, verifique as informações e tente novamente"
+            );
+        } else {
+            console.error(error.code + " " + error.message);
+            return encodedRedirect("error", "/sign-in", error.message);
+        }
+    }
+
+    if (data.url) {
+        redirect(data.url); // use the redirect API for your server framework
+    }
+}
+
+export async function signInWithGoogle() {
+    const origin = (await headers()).get("origin");
+    const supabase = await createClient();
+
+    const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: "google",
+        options: {
+            redirectTo: `${origin}/auth/callback/google`,
+        },
+    });
+
+    if (error) {
+        if (error.code === "invalid_credentials") {
+            return encodedRedirect(
+                "error",
+                "/sign-in",
+                "Credenciais inválidas, verifique as informações e tente novamente"
+            );
+        } else {
+            console.error(error.code + " " + error.message);
+            return encodedRedirect("error", "/sign-in", error.message);
+        }
+    }
+
+    if (data.url) {
+        redirect(data.url); // use the redirect API for your server framework
+    }
+}
 
 export const signUpAction = async (formData: FormData) => {
     const nome = formData.get("nome")?.toString();
@@ -92,18 +168,29 @@ export const signInAction = async (formData: FormData) => {
     const password = formData.get("password") as string;
     const supabase = await createClient();
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
     });
 
     if (error) {
         if (error.code === "invalid_credentials") {
-            return encodedRedirect(
-                "error",
-                "/sign-in",
-                "Credenciais inválidas, verifique as informações e tente novamente"
-            );
+            const isGoogleUser = await checkUserProvider(email)
+
+            if (isGoogleUser) {
+                return encodedRedirect(
+                    "error",
+                    "/sign-in",
+                    "Parece que você se cadastrou com o Google, tente fazer login com o Google ou redefinir sua senha"
+                );
+            } else {
+                console.error(error.code + " " + error.message);
+                return encodedRedirect(
+                    "error",
+                    "/sign-in",
+                    "Credenciais inválidas, verifique as informações e tente novamente"
+                );
+            }
         } else {
             console.error(error.code + " " + error.message);
             return encodedRedirect("error", "/sign-in", error.message);

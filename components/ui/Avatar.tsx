@@ -19,11 +19,8 @@ export default function Avatar({
 }) {
     const supabase = createClient();
     const [avatarSrc, setAvatarSrc] = useState<string | null>(src);
-    // console.log("Avatar src:", avatarSrc);
+    console.log("Avatar src:", avatarSrc);
 
-    // no firefox, o extractColors funciona mas pode crashar na hora de pegar a cor de algumas fotos por motivos que eu desconheço
-    // aparentemente funcionar normal nos demais navegadores
-    // o erro é Uncaught DOMException: The operation is insecure.
     function updateColor(colors: { hex: string; intensity: number }[]) {
         if (setCurrentColor) {
             const maxIntensityColor = colors.reduce((prev, current) => {
@@ -39,6 +36,23 @@ export default function Avatar({
     useEffect(() => {
         async function downloadImage(path: string) {
             try {
+
+                if (path.startsWith("https")) {
+                    setAvatarSrc(path);
+                    if (!isIcon) {
+                        try {
+                            extractColors(path)
+                                .then((colors) => {
+                                    updateColor(colors);
+                                })
+                                .catch(console.error);
+                        } catch (error) {
+                            console.error("Error extracting colors:", error);
+                        }
+                    }
+                    return;
+                }
+
                 const { data } = supabase.storage
                     .from("avatars")
                     .getPublicUrl(path);

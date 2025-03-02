@@ -25,6 +25,12 @@ export default function Avatar({
     useEffect(() => {
         async function downloadImage(path: string) {
             try {
+
+                if (path.startsWith("https")) {
+                    setAvatarUrl(path);
+                    return;
+                }
+
                 const { data, error } = await supabase.storage
                     .from("avatars")
                     .download(path);

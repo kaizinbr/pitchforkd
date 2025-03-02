@@ -24,6 +24,11 @@ export default function Avatar({
     useEffect(() => {
         async function downloadImage(path: string) {
             try {
+                if (path.startsWith("https")) {
+                    setAvatarSrc(path);
+                    return;
+                }
+
                 const { data, error } = await supabase.storage
                     .from("avatars")
                     .download(path);
@@ -120,10 +125,12 @@ export default function Avatar({
                     htmlFor="single"
                 >
                     {uploading ? (
-                        <div className={`
+                        <div
+                            className={`
                             size-44 flex rounded-full justify-center items-center bg-black/40
                             ${className}
-                        `}>
+                        `}
+                        >
                             Uploading ...
                         </div>
                     ) : (

@@ -40,6 +40,7 @@
         "embla-carousel-react": "^8.5.2",
         "extract-colors": "^4.1.1",
         "get-pixels": "^3.3.3",
+        "google-one-tap": "^1.0.6",
         "html-to-image": "^1.11.11",
         "html2canvas": "^1.4.1",
         "lucide-react": "^0.468.0",

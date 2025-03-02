@@ -166,7 +166,9 @@ export default function Rater({
                     favorite: false,
                 }));
                 setRatings(initialRatings);
-                setContent("");
+                setContent(
+
+{"type": "doc", "content": [{"type": "paragraph", "content": [{"text": "", "type": "text"}]}]});
             }
         };
 

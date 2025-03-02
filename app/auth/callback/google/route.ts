@@ -52,7 +52,7 @@ export async function GET(request: Request) {
                 lowercased_username,
                 name: user?.user_metadata.full_name,
                 avatar_url: user?.user_metadata.avatar_url,
-                public: false,
+                public: true,
             });
 
         console.log(setProfileError);

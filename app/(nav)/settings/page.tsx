@@ -42,7 +42,7 @@ export default async function Index() {
                                     <>
                                         Criado em:{" "}
                                         {new Date(
-                                            user?.identities[0]!.created_at + "T00:00:00"
+                                            user?.created_at ?? ""
                                         ).toLocaleDateString("pt-BR")}
                                     </>
                                 )}
@@ -50,12 +50,12 @@ export default async function Index() {
                         </div>
                     </div>
                 </div>
-                <div className="w-full flex flex-col divide-y divide-neutral-600">
+                <div className="w-full flex flex-col divide-y divide-bunker-700">
                     <Link
                         href="/protected/reset-password"
                         className={`
                                     w-full gap-2 flex flex-row p-4 
-                                    bg-transparent hover:bg-neutral-700 
+                                    bg-transparent hover:bg-bunker-700 
                                     transition duration-200
                                 `}
                     >
@@ -67,8 +67,8 @@ export default async function Index() {
                         // href="/update-email"
                         className={`
                                     w-full gap-2 flex flex-row p-4 
-                                    bg-transparent hover:bg-neutral-700 
-                                    transition duration-200 cursor-not-allowed text-neutral-400
+                                    bg-transparent hover:bg-bunker-700 
+                                    transition duration-200 cursor-not-allowed text-bunker-400
                                 `}
                     >
                         <Mail size={18} />
@@ -78,15 +78,15 @@ export default async function Index() {
                         // href="/profile/settings/account"
                         className={`
                                     w-full gap-2 flex flex-row p-4 
-                                    bg-transparent hover:bg-neutral-700 
-                                    transition duration-200 cursor-not-allowed  text-neutral-400
+                                    bg-transparent hover:bg-bunker-700 
+                                    transition duration-200 cursor-not-allowed  text-bunker-400
                                 `}
                     >
                         <Trash size={18} />
                         <span className="">Excluir conta</span>
                     </p>
                     <button
-                        className="w-full cursor-pointer gap-2 flex flex-row p-4 text-red-500 bg-transparent hover:bg-neutral-700 transition duration-200"
+                        className="w-full cursor-pointer gap-2 flex flex-row p-4 text-red-500 bg-transparent hover:bg-bunker-700 transition duration-200"
                         onClick={signOutAction}
                     >
                         <LogOut size={18} />

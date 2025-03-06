@@ -126,7 +126,20 @@ export default function Rater({
     const [content, setContent] = useState<any>(null);
 
     const [rawText, setRawText] = useState<string>("");
-    const [jsonContent, setJsonContent] = useState<any>(null);
+    const [jsonContent, setJsonContent] = useState<any>({
+        type: "doc",
+        content: [
+            {
+                type: "paragraph",
+                content: [
+                    {
+                        text: "",
+                        type: "text",
+                    },
+                ],
+            },
+        ],
+    });
 
     useEffect(() => {
         // check if user already rated the album
@@ -166,9 +179,15 @@ export default function Rater({
                     favorite: false,
                 }));
                 setRatings(initialRatings);
-                setContent(
-
-{"type": "doc", "content": [{"type": "paragraph", "content": [{"text": "", "type": "text"}]}]});
+                setContent({
+                    type: "doc",
+                    content: [
+                        {
+                            type: "paragraph",
+                            content: [{ text: "", type: "text" }],
+                        },
+                    ],
+                });
             }
         };
 

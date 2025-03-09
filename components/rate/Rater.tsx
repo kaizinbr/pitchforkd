@@ -9,10 +9,6 @@ import Link from "next/link";
 import useScrollDirection from "@/hooks/useScrollDirection";
 import TextareaEditor from "./textarea-editor";
 
-import Underline from "@tiptap/extension-underline";
-import { useEditor } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-
 const Track = ({
     track,
     onValueChange,

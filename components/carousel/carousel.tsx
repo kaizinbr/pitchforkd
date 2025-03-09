@@ -43,6 +43,33 @@ const ImageCarousel = () => {
 
     const data = [
         {
+            title: "Ruby",
+            artist: "JENNIE",
+            src: "https://i.scdn.co/image/ab67616d0000b2735a43918ea90bf1e44b7bdcfd",
+            from: "#090E0E",
+            to: "#E30806",
+            text: "text-white",
+            album_id: "1vWMw6pu3err6qqZzI3RhH",
+        },
+        {
+            title: "Alter Ego",
+            artist: "LISA",
+            src: "https://i.scdn.co/image/ab67616d0000b2738034090e4afb5b053cd3e067",
+            from: "#0A1017",
+            to: "#B86937",
+            text: "text-white",
+            album_id: "5eoWRkeplmcCL97afSMJVm",
+        },
+        {
+            title: "MAYHEM",
+            artist: "Lady Gaga",
+            src: "https://i.scdn.co/image/ab67616d0000b273b0860cf0a98e09663c82290c",
+            from: "#343434",
+            to: "#ADADAD",
+            text: "text-white",
+            album_id: "2MHUaRi9OCyTN02SoyRRBJ",
+        },
+        {
             title: "The Star Chapter: SANCTUARY",
             artist: "TOMORROW X TOGETHER",
             src: "https://i.scdn.co/image/ab67616d0000b273b612b8d797e8e3ec375ca60d",
@@ -50,15 +77,6 @@ const ImageCarousel = () => {
             to: "#C6AAC3",
             text: "text-white",
             album_id: "72JboNccBYyXR676YNfcYE",
-        },
-        {
-            title: "Abracadabra",
-            artist: "Lady Gaga",
-            src: "https://i.scdn.co/image/ab67616d0000b27325304f6dc9dea023ce4b985c",
-            from: "#343434",
-            to: "#ADADAD",
-            text: "text-white",
-            album_id: "2I6LyArz82waG94e9V5B9d",
         },
         {
             title: "minisode 3: TOMORROW",
@@ -77,15 +95,6 @@ const ImageCarousel = () => {
             to: "#170D15",
             text: "text-white",
             album_id: "2haRGdLvimDfNlDBW1LAt1",
-        },
-        {
-            title: "ExtraL (feat. Doechii)",
-            artist: "JENNIE, Doechii",
-            src: "https://i.scdn.co/image/ab67616d0000b2734ddd2d60547b0ef37062c2fb",
-            from: "#541E42",
-            to: "#B37165",
-            text: "text-white",
-            album_id: "4EBFO1svuZ9BMyO78JZ9zr",
         },
         {
             title: "What A Devastating Turn of Events",

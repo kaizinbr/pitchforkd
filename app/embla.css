@@ -126,6 +126,7 @@ body {
     overflow: hidden;
     user-select: none;
 }
+
 .embla__slide__img {
     width: 100%;
 }
@@ -168,6 +169,18 @@ body {
 .embla__button__svg {
     width: 35%;
     height: 35%;
+}
+
+.embla__slide__fav {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 84px;
+    max-width: 84px;
+    padding: 0 6px;
+    overflow: hidden;
+    user-select: none;
 }
 
 @media (max-width: 768px) {

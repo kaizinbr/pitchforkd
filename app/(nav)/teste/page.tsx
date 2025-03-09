@@ -1,5 +1,6 @@
 import ImageCarousel from "@/components/carousel/carousel";
 import { EmblaOptionsType } from "embla-carousel";
+import FavoritesImageCarousel from "@/components/carousel/favorites-carousel";
 
 const OPTIONS: EmblaOptionsType = { loop: true };
 const SLIDE_COUNT = 5;
@@ -15,7 +16,7 @@ export default function Page() {
     return (
         <div className="w-full min-h-screen flex flex-col items-center justify-center pt-20 gap-8">
             
-            <ImageCarousel />
+            <FavoritesImageCarousel />
         </div>
     );
 }

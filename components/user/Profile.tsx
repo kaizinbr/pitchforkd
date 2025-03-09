@@ -26,7 +26,7 @@ export default function Profile({
                         transition-all duration-200 ease-in-out
                     `}
                 style={{
-                    backgroundImage: `linear-gradient(to bottom, ${currentColor}, transparent)`,
+                    backgroundImage: `linear-gradient(to bottom, ${currentColor}80, transparent)`,
                 }}
             ></div>
             {isUser && (
@@ -39,15 +39,15 @@ export default function Profile({
                     </Link>
                 </div>
             )}
-            <div className="flex flex-col gap-4 items-center w-full">
-                <picture className="flex items-center justify-center mt-48">
+            <div className="flex flex-row gap-4 items-center w-full mt-18 md:mt-28 px-5  max-w-2xl">
+                <picture className="flex items-center justify-center">
                     <Avatar
                         size={120}
                         src={user.avatar_url}
                         setCurrentColor={setCurrentColor}
                     />
                 </picture>
-                <div className="flex flex-col items-center w-full px-5">
+                <div className="flex flex-col items-start w-full">
                     <h1 className="text-lg font-bold text-center">
                         {user.name}
                     </h1>

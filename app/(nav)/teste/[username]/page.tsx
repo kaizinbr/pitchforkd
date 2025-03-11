@@ -102,7 +102,7 @@ export default async function Page({
                         isUser={isUser}
                         reviewCount={reviewCount?.length}
                     />
-                    <Favorites favorites={data[0].favorites} reviewCount={reviewCount?.length} isUser={isUser} />
+                    <Favorites favorites={data[0].favorites} isUser={isUser} />
                     <UserRatings user={data[0]} />
                 </>
             ) : (

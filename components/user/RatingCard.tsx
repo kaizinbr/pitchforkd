@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useEffect, useState, useMemo, useCallback, use } from "react";
 import { Skeleton } from "@mantine/core";
 import Avatar from "@/components/ui/Avatar";
-import { Review } from "@/lib/utils/types";
+import { Review, Content } from "@/lib/utils/types";
 import { createClient } from "@/utils/supabase/client";
 import { displayPastRelativeTime } from "@/lib/utils/time";
 import axios from "axios";
@@ -17,7 +17,6 @@ import Underline from "@tiptap/extension-underline";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextareaDisplay from "../textaera-content";
-
 
 export default function RatingCard({
     review,
@@ -31,9 +30,18 @@ export default function RatingCard({
     const [loading, setLoading] = useState(true);
     const [liked, setLiked] = useState(false);
 
+    const content =
+        review.content &&
+        (review.content as Content).content.length > 0 &&
+        (review.content as Content).content[0]?.content[0].text === ""
+            ? ""
+            : review.content;
+
+    // console.log(content);
+
     const editor = useEditor({
         extensions: [StarterKit, Underline],
-        content: review.content,
+        content: content,
         editable: false,
         immediatelyRender: false,
     });
@@ -193,11 +201,15 @@ export default function RatingCard({
                                     </span>
 
                                     {review.content && (
-                                        <TextareaDisplay editor={editor} lineClamp={4}/>
+                                        <TextareaDisplay
+                                            editor={editor}
+                                            lineClamp={4}
+                                        />
                                     )}
 
-                                    <span className="text-neutral-300 text-sm">
+                                    <span className="text-neutral-300 text-xs">
                                         {review.ratings.length} músicas
+                                        avaliadas
                                     </span>
                                 </div>
                             </div>

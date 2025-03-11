@@ -161,14 +161,18 @@ export default function Rater({
             }
 
             if (data.length > 0) {
+                // ja avaliou
                 const { ratings, review, total } = data[0];
                 setContent(data[0].content);
-                console.log(data[0].content);
+                setJsonContent(data[0].content);
+
                 setRatings(ratings);
                 setReview(review);
+                setRawText(review);
                 setShorten(data[0].shorten);
                 setTotal(parseFloat(total.toFixed(1).replace(",", ".")));
             } else {
+                //nao avaliou
                 const initialRatings = tracks.map((track) => ({
                     id: track.id,
                     value: 0,
@@ -269,6 +273,7 @@ export default function Rater({
             open();
         } else {
             const shortened = getShorten();
+            setShorten(shortened);
 
             const { data, error } = await supabase.from("ratings").insert([
                 {

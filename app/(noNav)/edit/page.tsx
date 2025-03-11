@@ -1,3 +1,4 @@
+import Edit from "@/components/user/edit/edit-page";
 import AccountForm from "./account-form";
 import { createClient } from "@/utils/supabase/server";
 
@@ -29,9 +30,10 @@ export default async function Page() {
     }
 
     return (
-        <div className="flex flex-col gap-4 items-center relative">
+        <div className="flex flex-col gap-4 items-center relative w-full pb-8">
             {data.length > 0 ? (
-                <AccountForm profile={data[0]} />
+                // <AccountForm profile={data[0]} />
+                <Edit profile={data[0]} />
             ) : (
                 <div>User not found</div>
             )}

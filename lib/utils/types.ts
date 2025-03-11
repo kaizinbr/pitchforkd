@@ -201,3 +201,24 @@ export interface SupaUser {
     updated_at: string;
     is_anonymous: boolean;
 }
+
+
+interface Mark {
+    type: 'bold' | 'italic' | 'underline' | 'strike';
+}
+
+interface TextContent {
+    text: string;
+    type: 'text';
+    marks?: Mark[];
+}
+
+interface Paragraph {
+    type: 'paragraph';
+    content: TextContent[];
+}
+
+export interface Content {
+    type: 'doc';
+    content: Paragraph[];
+}

@@ -70,6 +70,7 @@ export default function UserRatings({ user }: { user: any }) {
                     *
                 )`
             )
+            .eq("user_id", user.id)
             .order("created_at", { ascending: false })
             .range(offset, offset + 29);
 

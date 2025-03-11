@@ -7,7 +7,9 @@ import Image from "next/image";
 import React, { useCallback } from "react";
 import useEmblaCarousel from "embla-carousel-react";
 
-function ArtistsList({ artists }: { artists: any[] }) {
+import { Plus } from "lucide-react";
+
+function ArtistsList({ artists, isUser }: { artists: any[]; isUser: boolean }) {
     const [emblaRef, emblaApi] = useEmblaCarousel({
         loop: false,
         align: "start",
@@ -36,6 +38,14 @@ function ArtistsList({ artists }: { artists: any[] }) {
                         ))}
                     </div>
                 </div>
+            ) : isUser ? (
+                <div className="flex items-center justify-start mt-4 w-full min-h-18">
+                    <Link href="/edit">
+                        <div className="flex flex-col items-center justify-center gap-2 size-18 rounded-lg bg-bunker-600 text-white cursor-pointer p-4">
+                            <Plus size={24} />
+                        </div>
+                    </Link>
+                </div>
             ) : (
                 <div className="flex items-center justify-center w-full min-h-18">
                     <span className="text-bunker-300 text-sm">
@@ -47,7 +57,7 @@ function ArtistsList({ artists }: { artists: any[] }) {
     );
 }
 
-function AlbunsList({ album }: { album: any[] }) {
+function AlbunsList({ album, isUser }: { album: any[]; isUser: boolean }) {
     const [emblaRef, emblaApi] = useEmblaCarousel({
         loop: false,
         align: "start",
@@ -77,6 +87,14 @@ function AlbunsList({ album }: { album: any[] }) {
                         ))}
                     </div>
                 </div>
+            ) : isUser ? (
+                <div className="flex items-center justify-start mt-4 w-full min-h-18">
+                    <Link href="/edit">
+                        <div className="flex flex-col items-center justify-center gap-2 size-18 rounded-lg bg-bunker-600 text-white cursor-pointer p-4">
+                            <Plus size={24} />
+                        </div>
+                    </Link>
+                </div>
             ) : (
                 <div className="flex items-center justify-center w-full min-h-18">
                     <span className="text-bunker-300 text-sm">
@@ -90,11 +108,9 @@ function AlbunsList({ album }: { album: any[] }) {
 
 export default function Favorites({
     favorites,
-    reviewCount,
     isUser,
 }: {
     favorites: any;
-    reviewCount: number;
     isUser: boolean;
 }) {
     const albuns = [
@@ -184,11 +200,14 @@ export default function Favorites({
                 </div>
 
                 <Tabs.Panel value="artist">
-                    <ArtistsList artists={favorites[0].artists} />
+                    <ArtistsList
+                        isUser={isUser}
+                        artists={favorites[0].artists}
+                    />
                 </Tabs.Panel>
 
                 <Tabs.Panel value="album">
-                    <AlbunsList album={favorites[0].albuns} />
+                    <AlbunsList isUser={isUser} album={favorites[0].albuns} />
                 </Tabs.Panel>
             </Tabs>
         </>

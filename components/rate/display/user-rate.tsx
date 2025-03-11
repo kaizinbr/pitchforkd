@@ -83,7 +83,7 @@ export default function UserRate({
                                 </div>
                             </div>
                             <div className="w-full text-sm z-10">
-                                <TextareaDisplay editor={editor} />
+                                <TextareaDisplay editor={editor} uneditable={true} />
                             </div>
                             <div className="flex items-center justify-start flex-row gap-1 text-xs text-bunker-400 ">
                                 <span className=" h-full flex items-center">

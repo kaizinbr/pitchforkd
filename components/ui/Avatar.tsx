@@ -19,7 +19,7 @@ export default function Avatar({
 }) {
     const supabase = createClient();
     const [avatarSrc, setAvatarSrc] = useState<string | null>(src);
-    console.log("Avatar src:", avatarSrc);
+    // console.log("Avatar src:", avatarSrc);
 
     function updateColor(colors: { hex: string; intensity: number }[]) {
         if (setCurrentColor) {

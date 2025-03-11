@@ -62,47 +62,7 @@ const FavoritesImageCarousel = () => {
                     id: "6UZ0ba50XreR4TM8u322gs",
                     src: "https://i.scdn.co/image/ab6761610000f1789e33dd3ae51452774a133e1f",
                     name: "JISOO",
-                },
-                {
-                    id: "250b0Wlc5Vk0CoUsaCY84M",
-                    src: "https://i.scdn.co/image/ab6761610000e5eba8e3627e392a1d8f539cb575",
-                    name: "JENNIE",
-                },
-                {
-                    id: "5L1lO4eRHmJ7a0Q6csE5cT",
-                    src: "https://i.scdn.co/image/ab6761610000f1785cd3b3af8b72e32be78571ec",
-                    name: "LISA",
-                },
-                {
-                    id: "3eVa5w3URK5duf6eyVDbu9",
-                    src: "https://i.scdn.co/image/ab6761610000f178727a1f1f508238a20ac9fdbf",
-                    name: "ROSÉ",
-                },
-                {
-                    id: "6UZ0ba50XreR4TM8u322gs",
-                    src: "https://i.scdn.co/image/ab6761610000f1789e33dd3ae51452774a133e1f",
-                    name: "JISOO",
-                },
-                {
-                    id: "250b0Wlc5Vk0CoUsaCY84M",
-                    src: "https://i.scdn.co/image/ab6761610000e5eba8e3627e392a1d8f539cb575",
-                    name: "JENNIE",
-                },
-                {
-                    id: "5L1lO4eRHmJ7a0Q6csE5cT",
-                    src: "https://i.scdn.co/image/ab6761610000f1785cd3b3af8b72e32be78571ec",
-                    name: "LISA",
-                },
-                {
-                    id: "3eVa5w3URK5duf6eyVDbu9",
-                    src: "https://i.scdn.co/image/ab6761610000f178727a1f1f508238a20ac9fdbf",
-                    name: "ROSÉ",
-                },
-                {
-                    id: "6UZ0ba50XreR4TM8u322gs",
-                    src: "https://i.scdn.co/image/ab6761610000f1789e33dd3ae51452774a133e1f",
-                    name: "JISOO",
-                },
+                }
             ],
         },
     ];

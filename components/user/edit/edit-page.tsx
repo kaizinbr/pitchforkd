@@ -1,13 +1,12 @@
 "use client";
 import { useCallback, useEffect, useState, ChangeEvent } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { type User } from "@supabase/supabase-js";
+import Link from "next/link";
 import Avatar from "./editable-avatar";
 import usernameAlreadyExists from "@/lib/utils/usernameAlreadyExists";
 import containsSpecialChars from "@/lib/utils/containsSpecialChars";
 import { useRouter } from "next/navigation";
-
-import classes from "./AcForm.module.css";
+import Image from "next/image";
 
 export default function Edit({ profile }: { profile: any }) {
     const supabase = createClient();
@@ -63,8 +62,12 @@ export default function Edit({ profile }: { profile: any }) {
         }
     }
 
+    const album = profile.favorites[0].albuns;
+    const artists = profile.favorites[0].artists;
+
     return (
         <div className="form-widget flex flex-col justify-center w-full px-5 max-w-2xl pt-16 md:px-0 md:pl-16 relative">
+            {/* FOTO DE PERFIL */}
             <div
                 className={`
                     flex flex-col justify-start
@@ -98,7 +101,7 @@ export default function Edit({ profile }: { profile: any }) {
                     </div>
                 </div>
             </div>
-
+            {/* FORMULARIO DE DADOS DE USUARIO */}
             <form
                 className={`
                     profile  
@@ -170,7 +173,9 @@ export default function Edit({ profile }: { profile: any }) {
                                     setMessage("Username não pode ser vazio");
                                 } else if (e.currentTarget.value.length < 3) {
                                     setDisabled(true);
-                                    setMessage("Username deve ter pelo menos 3 caracteres");
+                                    setMessage(
+                                        "Username deve ter pelo menos 3 caracteres"
+                                    );
                                 } else if (
                                     await usernameAlreadyExists({
                                         username: e.currentTarget.value,
@@ -276,9 +281,75 @@ export default function Edit({ profile }: { profile: any }) {
                     ></input>
                 </div>
             </form>
+            {/* FAVORITOS */}
+            <div className="flex flex-col w-full gap-3 mt-8">
+                <h1 className="text-lg font-semibold">Favoritos</h1>
+                <Link href={"/edit/albuns"} className="flex flex-col gap-2 rounded-2xl p-5 bg-bunker-800">
+                    <h3 className="text-sm">Editar álbums</h3>
+                    <>
+                        {album.length > 0 ? (
+                            <div className="w-full overflow-clip">
+                                <div className="embla__container">
+                                    {album.map((item: any, index: any) => (
+                                        <div
+                                            key={index}
+                                            className="flex flex-col items-center size-18 embla__slide__fav"
+                                        >
+                                            <Image
+                                                src={item.src}
+                                                alt={item.title}
+                                                width={80}
+                                                height={80}
+                                                className="w-full h-full object-cover rounded-sm"
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="flex items-center justify-center w-full min-h-18">
+                                <span className="text-bunker-300 text-sm">
+                                    Nada por aqui ainda...
+                                </span>
+                            </div>
+                        )}
+                    </>
+                </Link>
+                <Link href={"/edit/artists"} className="flex flex-col gap-2 rounded-2xl p-5 bg-bunker-800">
+                    <h3 className="text-sm">Editar artistas</h3>
+                    <>
+                        {artists.length > 0 ? (
+                            <div className="w-full overflow-clip">
+                                <div className="embla__container">
+                                    {artists.map((item: any, index: any) => (
+                                        <div
+                                            key={index}
+                                            className="flex flex-col items-center size-18 embla__slide__fav"
+                                        >
+                                            <Image
+                                                src={item.src}
+                                                alt={item.title}
+                                                width={80}
+                                                height={80}
+                                                className="size-full object-cover rounded-full"
+                                            />
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="flex items-center justify-center w-full min-h-18">
+                                <span className="text-bunker-300 text-sm">
+                                    Nada por aqui ainda...
+                                </span>
+                            </div>
+                        )}
+                        </>
+                </Link>
+            </div>
 
-                <button
-                    className={`
+            <button
+                className={`
                             py-3
                             flex justify-center items-center
                             text-white !font-semibold rounded-xl
@@ -289,20 +360,19 @@ export default function Edit({ profile }: { profile: any }) {
                             z-[500]
                             ${disabled ? "bg-gray-400 cursor-not-allowed" : " bg-green-pastel hover:bg-main-600 cursor-pointer"}
                         `}
-                    onClick={() =>
-                        updateProfile({
-                            name,
-                            username,
-                            site,
-                            avatar_url,
-                            pronouns,
-                        })
-                    }
-                    disabled={disabled}
-                >
-                    {loading ? "Salvando..." : "Salvar"}
-                </button>
-        
+                onClick={() =>
+                    updateProfile({
+                        name,
+                        username,
+                        site,
+                        avatar_url,
+                        pronouns,
+                    })
+                }
+                disabled={disabled}
+            >
+                {loading ? "Salvando..." : "Salvar"}
+            </button>
         </div>
     );
 }

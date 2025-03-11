@@ -183,6 +183,10 @@ body {
     user-select: none;
 }
 
+.embla__slide__fav:first-child {
+    padding-left: 0;
+}
+
 @media (max-width: 768px) {
     .embla__slide {
         max-width: 422px;

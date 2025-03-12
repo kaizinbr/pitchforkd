@@ -185,6 +185,8 @@ body {
 
 .embla__slide__fav:first-child {
     padding-left: 0;
+    width: 78px;
+    max-width: 78px;
 }
 
 @media (max-width: 768px) {

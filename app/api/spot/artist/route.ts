@@ -24,9 +24,7 @@ const getAccessToken = async () => {
     );
     // console.log(response.data);
 
-    (await
-        // console.log(response.data);
-        cookies()).set('spotify_token', response.data.access_token, { path: '/', maxAge: 3600, sameSite: 'lax'})
+    (await cookies()).set('spotify_token', response.data.access_token, { path: '/', maxAge: 3600, sameSite: 'lax'})
 
     return response.data.access_token;
 };
@@ -34,15 +32,16 @@ const getAccessToken = async () => {
 
 export async function POST(req: Request) {
     const reqBody = await req.json();
-    const search = reqBody?.search ?? "";
+    const query = reqBody?.q ?? "";
     const type = reqBody?.type ?? "artist";
-    console.log(search, type);
-    const cookieStore = await cookies()
-    const hasCookie = cookieStore.has('spotify_token')
+    console.log(query, type);
+
+    const cookieStore = await cookies();
+    const hasCookie = cookieStore.has('spotify_token');
     let token = hasCookie ? cookieStore.get('spotify_token')!.value : await getAccessToken();
 
     const response = await axios.get(
-        `https://api.spotify.com/v1/search?q=${search}&type=${type}&limit=10`,
+        `https://api.spotify.com/v1/search?q=${query}&type=artist&limit=20`,
         {
             headers: {
                 Authorization: `Bearer ${token}`,

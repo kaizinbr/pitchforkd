@@ -32,7 +32,7 @@ function ArtistsList({ artists, isUser }: { artists: any[]; isUser: boolean }) {
                                     alt={item.name}
                                     width={80}
                                     height={80}
-                                    className="w-full h-full object-cover rounded-full"
+                                    className="size-18 object-cover rounded-full"
                                 />
                             </div>
                         ))}
@@ -81,7 +81,7 @@ function AlbunsList({ album, isUser }: { album: any[]; isUser: boolean }) {
                                     alt={item.title}
                                     width={80}
                                     height={80}
-                                    className="w-full h-full object-cover rounded-sm"
+                                    className="size-18 object-cover rounded-sm"
                                 />
                             </Link>
                         ))}

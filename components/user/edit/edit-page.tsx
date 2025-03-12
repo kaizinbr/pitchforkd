@@ -66,7 +66,7 @@ export default function Edit({ profile }: { profile: any }) {
     const artists = profile.favorites[0].artists;
 
     return (
-        <div className="form-widget flex flex-col justify-center w-full px-5 max-w-2xl pt-16 md:px-0 md:pl-16 relative">
+        <div className="form-widget flex flex-col justify-center w-full px-5 max-w-2xl pt-16 md:px-0 relative">
             {/* FOTO DE PERFIL */}
             <div
                 className={`
@@ -300,7 +300,7 @@ export default function Edit({ profile }: { profile: any }) {
                                                 alt={item.title}
                                                 width={80}
                                                 height={80}
-                                                className="w-full h-full object-cover rounded-sm"
+                                                className="size-18 object-cover rounded-sm"
                                             />
                                         </div>
                                     ))}
@@ -331,7 +331,7 @@ export default function Edit({ profile }: { profile: any }) {
                                                 alt={item.title}
                                                 width={80}
                                                 height={80}
-                                                className="size-full object-cover rounded-full"
+                                                className="size-18 object-cover rounded-full"
                                             />
                                         </div>
                                     ))}
@@ -350,10 +350,10 @@ export default function Edit({ profile }: { profile: any }) {
 
             <button
                 className={`
-                            py-3
+                            py-2 px-6
                             flex justify-center items-center
-                            text-white !font-semibold rounded-xl
-                            fixed left-4 right-4
+                            text-white text-sm !font-semibold rounded-xl
+                            fixed right-4
                             max-w-2xl mx-auto top-4
                             cursor-pointer
                             transition-all duration-300

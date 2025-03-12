@@ -1,5 +1,5 @@
 import Edit from "@/components/user/edit/edit-page";
-import EditAlbuns from "@/components/user/edit/albuns/edit-albuns-page";
+import EditArtists from "@/components/user/edit/artists/edit-artists-page";
 import { createClient } from "@/utils/supabase/server";
 
 export const metadata = {
@@ -30,7 +30,7 @@ export default async function Page() {
     return (
         <div className="flex flex-col gap-4 items-center relative w-full pb-8">
             {data.length > 0 ? (
-                <EditAlbuns profile={data[0]} />
+                <EditArtists profile={data[0]} />
             ) : (
                 <div>User not found</div>
             )}

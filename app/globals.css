@@ -19,6 +19,7 @@
     --color-orange-safety: oklch(68.42% 0.180984 49.9568);
     --color-green-pastel: oklch(64.58% 0.212469 143.5329);
     --color-blue-celestial: oklch(66.31% 0.1467 241.4);
+    --icon: 30.6%
 }
 
 @layer base {

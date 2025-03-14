@@ -37,8 +37,8 @@ export default function Search({ data, setData }: { data: any; setData: any }) {
         <div className="flex flex-col w-full">
             <input
                 className={`
-                    peer block w-full rounded-full bg-bunker-700 border border-bunker-600/50
-                    py-[9px] pl-12 text-sm outline-2 placeholder:text-bunker-500 outline-none
+                    peer block w-full rounded-xl bg-bunker-700 border border-bunker-700
+                    px-3 py-2 text-sm outline-2 placeholder:text-bunker-500 outline-none
                 `}
                 onChange={(e) => {
                     handleSearch(e.target.value);

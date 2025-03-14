@@ -31,7 +31,7 @@ export default function TextareaDisplay({
         return null;
     }
 
-    console.log(content)
+    // console.log(content)
 
     if (
         content &&

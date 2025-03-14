@@ -4,12 +4,15 @@ import "@/app/embla.css";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import '@mantine/tiptap/styles.css';
+import '@mantine/notifications/styles.css';
 import localFont from "next/font/local";
 import {
     ColorSchemeScript,
     MantineProvider,
     mantineHtmlProps,
 } from "@mantine/core";
+import { Notifications } from '@mantine/notifications';
+
 import Footer from "@/components/footer";
 
 const defaultUrl = process.env.VERCEL_URL
@@ -144,6 +147,7 @@ export default function RootLayout({
             </head>
             <body className={ graphik.className + ` !bg-bunker-950 !text-neutral-100 fontGraphik`}>
                 <MantineProvider defaultColorScheme="dark">
+                <Notifications />
                     <main className="min-h-screen flex flex-col items-center">
                         <div className="flex flex-col items-center w-full">
                             {children}

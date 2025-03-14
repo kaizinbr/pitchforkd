@@ -86,7 +86,7 @@ export default function Avatar({
             alt="Avatar"
             className={`
                 ${className}
-                size-6 !rounded-[2.3rem] text-woodsmoke-700
+                size-6 !rounded-(--icon) text-woodsmoke-700
             `}
             size={size}
         />

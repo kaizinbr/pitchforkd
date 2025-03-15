@@ -53,7 +53,7 @@ export default function Search({ data, setData }: { data: any; setData: any }) {
                             key={album.id}
                             className="cursor-pointer flex flex-row items-center gap-3 p-2 rounded-xl hover:bg-bunker-800 bg-transparent transition-all duration-300 w-full"
                             onClick={() => {
-                                console.log(album);
+                                // console.log(album);
                                 if (data.length < 10 && !data.some((item: any) => item.id === album.id)) {
                                     setData([
                                         ...data,

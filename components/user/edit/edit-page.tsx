@@ -2,11 +2,11 @@
 import { useCallback, useEffect, useState, ChangeEvent } from "react";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
-import Avatar from "./editable-avatar";
 import usernameAlreadyExists from "@/lib/utils/usernameAlreadyExists";
 import containsSpecialChars from "@/lib/utils/containsSpecialChars";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
+import EditPfp from "@/components/user/edit/edit-pfp";
 
 export default function Edit({ profile }: { profile: any }) {
     const supabase = createClient();
@@ -68,39 +68,8 @@ export default function Edit({ profile }: { profile: any }) {
     return (
         <div className="form-widget flex flex-col justify-center w-full px-5 max-w-2xl pt-16 md:px-0 relative">
             {/* FOTO DE PERFIL */}
-            <div
-                className={`
-                    flex flex-col justify-start
-                    w-full
-                `}
-            >
-                <div
-                    className={`
-                        bgPfp flex flex-col justify-end items-start relative
-                        h-56 w-full
-                    `}
-                >
-                    <div
-                        className={`
-                    
-                        flex flex-row justify-start items-center
-                        gap-3 pt-8 px-4 w-full h-56
-                        bg-gradient-to- from-transparent to-black/45 from-40% 
-                        z-30
-                    `}
-                    >
-                        <Avatar
-                            uid={profile?.id ?? null}
-                            url={avatar_url}
-                            size={192}
-                            username={username}
-                            onUpload={(url) => {
-                                setAvatarUrl(url);
-                            }}
-                        />
-                    </div>
-                </div>
-            </div>
+            <EditPfp avatar_url={avatar_url!} setAvatarUrl={setAvatarUrl} />
+
             {/* FORMULARIO DE DADOS DE USUARIO */}
             <form
                 className={`
@@ -284,7 +253,10 @@ export default function Edit({ profile }: { profile: any }) {
             {/* FAVORITOS */}
             <div className="flex flex-col w-full gap-3 mt-8">
                 <h1 className="text-lg font-semibold">Favoritos</h1>
-                <Link href={"/edit/albuns"} className="flex flex-col gap-2 rounded-2xl p-5 bg-bunker-800">
+                <Link
+                    href={"/edit/albuns"}
+                    className="flex flex-col gap-2 rounded-2xl p-5 bg-bunker-800"
+                >
                     <h3 className="text-sm">Editar álbums</h3>
                     <>
                         {album.length > 0 ? (
@@ -297,7 +269,7 @@ export default function Edit({ profile }: { profile: any }) {
                                         >
                                             <Image
                                                 src={item.src}
-                                                alt={item.title}
+                                                alt={item.title || "imagem"}
                                                 width={80}
                                                 height={80}
                                                 className="size-18 object-cover rounded-sm"
@@ -315,7 +287,10 @@ export default function Edit({ profile }: { profile: any }) {
                         )}
                     </>
                 </Link>
-                <Link href={"/edit/artists"} className="flex flex-col gap-2 rounded-2xl p-5 bg-bunker-800">
+                <Link
+                    href={"/edit/artists"}
+                    className="flex flex-col gap-2 rounded-2xl p-5 bg-bunker-800"
+                >
                     <h3 className="text-sm">Editar artistas</h3>
                     <>
                         {artists.length > 0 ? (
@@ -328,7 +303,7 @@ export default function Edit({ profile }: { profile: any }) {
                                         >
                                             <Image
                                                 src={item.src}
-                                                alt={item.title}
+                                                alt={item.title || "imagem"}
                                                 width={80}
                                                 height={80}
                                                 className="size-18 object-cover rounded-full"
@@ -344,7 +319,7 @@ export default function Edit({ profile }: { profile: any }) {
                                 </span>
                             </div>
                         )}
-                        </>
+                    </>
                 </Link>
             </div>
 

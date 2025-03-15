@@ -186,3 +186,12 @@ body {
         color: var(--color-orange-safety);
     }
 }
+
+
+/* .reactEasyCrop_Container {
+    max-width: 640px;
+    max-height: 640px;
+    margin: auto;
+    width: 100%;
+    aspect-ratio: 1 / 1;
+} */

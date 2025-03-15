@@ -105,7 +105,6 @@ export default function Avatar({
             ) : (
                 <Ava2
                     size={size}
-                    radius="xl"
                     src={avatarUrl}
                     className="rounded-full"
                     alt="Avatar"

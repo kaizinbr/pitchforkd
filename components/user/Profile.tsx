@@ -1,6 +1,6 @@
 "use client";
 
-import Avatar from "../ui/Avatar";
+import Avatar from "@/components/ui/Avatar";
 import { TbSettings2, TbUserEdit } from "react-icons/tb";
 
 import { useState, useEffect } from "react";

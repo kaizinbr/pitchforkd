@@ -4,10 +4,8 @@ import { useCallback, useEffect, useState, ChangeEvent } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 
-import { AlignJustify, X } from "lucide-react";
+import { notifications } from "@mantine/notifications";
 import * as React from "react";
-import { useRaisedShadow } from "./use-raised-shadow";
-import { ReorderIcon } from "./Icon";
 
 import { Item } from "./Item";
 import Search from "./Search";
@@ -27,7 +25,6 @@ export default function EditAlbuns({ profile }: { profile: any }) {
     const [loading, setLoading] = useState(false);
     const [disabled, setDisabled] = useState(false);
 
-    
     const [albuns, setAlbuns] = useState<
         {
             id: string;
@@ -40,7 +37,7 @@ export default function EditAlbuns({ profile }: { profile: any }) {
 
     const router = useRouter();
     async function saveFavorites({
-        albuns
+        albuns,
     }: {
         albuns: {
             id: string;
@@ -65,7 +62,7 @@ export default function EditAlbuns({ profile }: { profile: any }) {
             setLoading(false);
         }
     }
-    
+
     return (
         <div className="form-widget flex flex-col justify-center w-full px-5 max-w-2xl pt-20 md:px-0 md:pl-16 relative">
             <button
@@ -80,11 +77,20 @@ export default function EditAlbuns({ profile }: { profile: any }) {
                             z-[500]
                             ${disabled ? "bg-gray-400 cursor-not-allowed" : " bg-green-pastel hover:bg-main-600 cursor-pointer"}
                         `}
-                onClick={() =>
+                onClick={() => {
                     saveFavorites({
                         albuns,
-                    })
-                }
+                    });
+
+                    notifications.show({
+                        // title: "Default notification",
+                        message: "Músicas favoritas salvas com sucesso! 🌟",
+                        radius: "lg",
+                        color: "#00ac1c",
+                        autoClose: 7000,
+                        style: { backgroundColor: "#2f3842" },
+                    });
+                }}
                 disabled={disabled}
             >
                 {loading ? "Salvando..." : "Salvar"}
@@ -99,7 +105,12 @@ export default function EditAlbuns({ profile }: { profile: any }) {
                 className="mt-8 flex flex-col gap-2 mb-4 w-full"
             >
                 {albuns.map((album: Album, index: number) => (
-                    <Item key={album.id} Album={album} index={index} setData={setAlbuns} />
+                    <Item
+                        key={album.id}
+                        Album={album}
+                        index={index}
+                        setData={setAlbuns}
+                    />
                 ))}
             </Reorder.Group>
         </div>

@@ -36,8 +36,8 @@ export default function Search({ data, setData }: { data: any; setData: any }) {
         <div className="flex flex-col w-full">
             <input
                 className={`
-                    peer block w-full rounded-full bg-bunker-700 border border-bunker-600/50
-                    py-[9px] pl-12 text-sm outline-2 placeholder:text-bunker-500 outline-none
+                    peer block w-full rounded-xl bg-bunker-700 border border-bunker-700
+                    px-3 py-2 text-sm outline-2 placeholder:text-bunker-500 outline-none
                 `}
                 onChange={(e) => {
                     handleSearch(e.target.value);
@@ -52,7 +52,7 @@ export default function Search({ data, setData }: { data: any; setData: any }) {
                             key={album.id}
                             className="cursor-pointer flex flex-row items-center gap-3 p-2 rounded-xl hover:bg-bunker-800 bg-transparent transition-all duration-300 w-full"
                             onClick={() => {
-                                console.log(album);
+                                // console.log(album);
                                 if (data.length < 10 && !data.some((item: any) => item.id === album.id)) {
                                     setData([
                                         ...data,

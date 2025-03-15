@@ -53,6 +53,22 @@ export default function Avatar({
                     return;
                 }
 
+                if (path.startsWith("data:image")) {
+                    setAvatarSrc(path);
+                    if (!isIcon) {
+                        try {
+                            extractColors(path)
+                                .then((colors) => {
+                                    updateColor(colors);
+                                })
+                                .catch(console.error);
+                        } catch (error) {
+                            console.error("Error extracting colors:", error);
+                        }
+                    }
+                    return;
+                }
+
                 const { data } = supabase.storage
                     .from("avatars")
                     .getPublicUrl(path);

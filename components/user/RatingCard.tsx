@@ -3,7 +3,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState, useMemo, useCallback, use } from "react";
+import { useEffect, useState } from "react";
 import { Skeleton } from "@mantine/core";
 import Avatar from "@/components/ui/Avatar";
 import { Review, Content } from "@/lib/utils/types";
@@ -12,6 +12,7 @@ import { displayPastRelativeTime } from "@/lib/utils/time";
 import axios from "axios";
 import formatRate from "@/lib/utils/formatRate";
 import LikeBtn from "./like-btn";
+import { TbRosetteDiscountCheckFilled } from "react-icons/tb";
 
 import Underline from "@tiptap/extension-underline";
 import { useEditor } from "@tiptap/react";

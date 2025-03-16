@@ -126,7 +126,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
                             <Card
                                 currentColor={currentColor}
                                 album={album}
-                                rate={rate}
+                                review={rate}
                             />
                         </div>
                     </div>

@@ -80,6 +80,7 @@ export default function EditArtists({ profile }: { profile: any }) {
                         message: "Artistas favoritos salvos com sucesso! 🌟",
                         radius: "lg",
                         color: "#00ac1c",
+                        position: "top-right",
                         autoClose: 7000,
                         style: { backgroundColor: "#2f3842" },
                     });

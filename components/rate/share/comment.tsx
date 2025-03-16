@@ -11,7 +11,7 @@ import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextareaDisplay from "@/components/textaera-content";
 
-export default function UserRate({
+export default function Comment({
     review,
     loading,
     likes,
@@ -28,57 +28,43 @@ export default function UserRate({
     });
 
     return (
-        <div className="w-full max-w-2xl px-5">
+        <div className="w-full max-w-2xl z-10">
             {loading ? (
                 <div className=""></div>
             ) : (
-                <div className="flex flex-col gap-2 items-">
-                    <h2 className="text-xl font-bold">
-                        Avaliação de{" "}
-                        <Link href={`/${review.profiles.username}`}>
-                            {review.profiles.name || review.profiles.username}
-                        </Link>
-                    </h2>
-                    <p className="text-3xl font-bold">
-                        {formatRate(review.total)}
-                    </p>
+                <div className="flex flex-col gap-2 w-full">
+                    
                     {review.review == "" ? (
-                        <p className="text-bunker-300 text-sm">
+                        <p className="text-bunker-300 text-center text-[10px]">
                             {displayPastRelativeTime(
                                 new Date(review.created_at)
                             )}
                         </p>
                     ) : (
-                        <div className="p-3 w-full flex flex-col gap-3 bg-bunker-800 rounded-xl">
-                            <div className="w-full flex flex-row gap-2 items-center">
-                                <Link
-                                    href={`/${review.profiles.username}`}
-                                    className="flex relative flex-col justify-center items-center size-10 rounded-full"
-                                >
+                        <div className="p-2 w-full flex flex-col  bg-bunker-950 rounded-xl">
+                            <div className="w-full flex flex-row gap-2 items-center mb-1.5">
+                                <div className="flex relative flex-col justify-center items-center size-6">
                                     <Avatar
-                                        size={40}
+                                        size={24}
                                         src={review.profiles.avatar_url}
-                                        className={"size-10"}
+                                        className={"size-6"}
                                         isIcon
                                     />
-                                </Link>
+                                </div>
                                 <div className="flex flex-col items-start justify-center">
-                                    <Link
-                                        href={`/${review.profiles.username}`}
-                                        className="flex flex-row justify-start items-center gap-2 text-sm"
-                                    >
+                                    <div className="flex flex-row justify-start items-center gap-1 max-h-3 text-[10px]">
                                         <p className=" font-medium flex flex-row items-center gap-1">
                                             {review.profiles.name}
                                             {review.profiles.verified && (
-                                                <TbRosetteDiscountCheckFilled className="size-4 text-main-500" />
+                                                <TbRosetteDiscountCheckFilled className="size-3 text-main-500" />
                                             )}
                                         </p>
-                                        <p className="text-bunker-300 text-xs">
+                                        <p className="text-bunker-300 text-[8px]">
                                             @{review.profiles.username}
                                         </p>
-                                    </Link>
+                                    </div>
                                     {review.profiles.pronouns && (
-                                        <div className="flex flex-row justify-start items-center text-xs gap-2 text-bunker-400">
+                                        <div className="flex flex-row justify-start items-center text-[8px] max-h-3 text-bunker-400">
                                             <p className=" font-semibold">
                                                 {review.profiles.pronouns}
                                             </p>
@@ -86,23 +72,19 @@ export default function UserRate({
                                     )}
                                 </div>
                             </div>
-                            <div className="w-full text-sm z-10">
+                            <div className="w-full !text-[10px] z-10">
                                 <TextareaDisplay
                                     editor={editor}
                                     uneditable={true}
+                                    isShare={true}
+                                    lineClamp={3}
                                 />
                             </div>
-                            <div className="flex items-center justify-start flex-row gap-1 text-xs text-bunker-400 ">
+                            <div className="flex items-center justify-start flex-row gap-1 text-[8px] text-bunker-400 ">
                                 <span className=" h-full flex items-center">
                                     {displayPastRelativeTime(
                                         new Date(review.created_at)
                                     )}
-                                </span>
-                                <span className="">•</span>
-                                <span>
-                                    {likes === 1
-                                        ? "1 curtida"
-                                        : `${likes} curtidas`}
                                 </span>
                             </div>
                         </div>

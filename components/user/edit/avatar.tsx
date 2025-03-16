@@ -26,7 +26,7 @@ export default function Avatar({
         async function downloadImage(path: string) {
             try {
 
-                console.log(path)
+                // console.log(path)
 
                 if (path.startsWith("https")) {
                     setAvatarUrl(path);

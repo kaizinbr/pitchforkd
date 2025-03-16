@@ -171,6 +171,7 @@ function Results({
                                 avatar_url: user.avatar_url,
                                 name: user.name,
                                 username: user.username,
+                                verified: user.verified,
                             }}
                         />
                     ))}

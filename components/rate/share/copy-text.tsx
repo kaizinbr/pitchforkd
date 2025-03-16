@@ -1,6 +1,7 @@
 import { Review, Album, Track } from "@/lib/utils/types";
 import formatRate from "@/lib/utils/formatRate";
 import Link from "next/link";
+import { notifications } from "@mantine/notifications";
 
 export default function CopyText({
     rate,
@@ -11,8 +12,10 @@ export default function CopyText({
 }) {
     return (
         <div className="w-full max-w-2xl px-5">
-            <div className="p-4 w-full bg-bunker-800 rounded-xl">
-                <p className="mb-3">Avaliação de {rate.profiles.name || rate.profiles.username}</p>
+            <div className="p-4 w-full bg-bunker-800 rounded-xl text-sm">
+                <p className="mb-3">
+                    Avaliação de {rate.profiles.name || rate.profiles.username}
+                </p>
                 <p className="mb-3">
                     {album.name} – {album.artists[0].name} –{" "}
                     {formatRate(rate.total)}
@@ -38,7 +41,10 @@ export default function CopyText({
                 )}
                 <p className="mt-3">
                     Veja mais em{" "}
-                    <Link href={`https://pitchforkd.me/r/${rate.shorten}`} target="_blank">
+                    <Link
+                        href={`https://pitchforkd.me/r/${rate.shorten}`}
+                        target="_blank"
+                    >
                         pitchforkd.me/r/{rate.shorten}
                     </Link>
                 </p>
@@ -59,6 +65,16 @@ export default function CopyText({
                             )}${rate.review ? `\n\nComentários: ${rate.review}` : ""}
                             \nVeja mais em https://pitchforkd.me/r/${rate.shorten}`;
                         navigator.clipboard.writeText(textToCopy);
+
+                        notifications.show({
+                            // title: "Default notification",
+                            message: "Copiado com sucesso!",
+                            radius: "lg",
+                            color: "#00ac1c",
+                            autoClose: 7000,
+                            position: "top-right",
+                            style: { backgroundColor: "#2f3842", zIndex: 1000 },
+                        });
                     }}
                 >
                     Copiar

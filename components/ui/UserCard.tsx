@@ -1,5 +1,6 @@
 import Avatar from "@/components/ui/Avatar";
 import Link from "next/link";
+import { TbRosetteDiscountCheckFilled } from "react-icons/tb";
 
 export default function UserCard({
     data,
@@ -27,7 +28,12 @@ export default function UserCard({
             </div>
             <div className="flex flex-row items-center justify-between">
                 <div className="flex flex-col">
-                    <h3 className="font-bold text-base">{data.name}</h3>
+                    <h3 className="font-bold text-base flex flex-row items-center gap-1">
+                        {data.name}{" "}
+                        {data.verified && (
+                            <TbRosetteDiscountCheckFilled className="size-5 text-main-500" />
+                        )}
+                    </h3>
                     <div className="text-sm text-bunker-300">
                         @{data.username}
                     </div>

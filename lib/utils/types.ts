@@ -58,6 +58,7 @@ export interface User {
     site: string;
     bio: string;
     pronouns: string;
+    verified: boolean;
 }
 
 export interface Album {

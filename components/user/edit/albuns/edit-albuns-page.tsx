@@ -84,9 +84,10 @@ export default function EditAlbuns({ profile }: { profile: any }) {
 
                     notifications.show({
                         // title: "Default notification",
-                        message: "Músicas favoritas salvas com sucesso! 🌟",
+                        message: "Álbuns favoritos salvos com sucesso! 🌟",
                         radius: "lg",
                         color: "#00ac1c",
+                        position: "top-right",
                         autoClose: 7000,
                         style: { backgroundColor: "#2f3842" },
                     });

@@ -1,7 +1,7 @@
 "use client";
 
 import Avatar from "@/components/ui/Avatar";
-import { TbSettings2, TbUserEdit } from "react-icons/tb";
+import { TbSettings2, TbUserEdit, TbRosetteDiscountCheckFilled } from "react-icons/tb";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -48,8 +48,8 @@ export default function Profile({
                     />
                 </picture>
                 <div className="flex flex-col items-start w-full">
-                    <h1 className="text-lg font-bold text-center">
-                        {user.name}
+                    <h1 className="text-lg font-bold text-center flex flex-row items-center gap-1">
+                        {user.name} {user.verified && <TbRosetteDiscountCheckFilled className="size-5 text-main-500" />}
                     </h1>
                     <p className="text-base font-semibold text-neutral-300 text-center">
                         @{user.username}

@@ -147,7 +147,9 @@ export default function RootLayout({
             </head>
             <body className={ graphik.className + ` !bg-bunker-950 !text-neutral-100 fontGraphik`}>
                 <MantineProvider defaultColorScheme="dark">
-                <Notifications />
+                <Notifications classNames={{
+                    root: "!z-[1000]",
+                }} />
                     <main className="min-h-screen flex flex-col items-center">
                         <div className="flex flex-col items-center w-full">
                             {children}

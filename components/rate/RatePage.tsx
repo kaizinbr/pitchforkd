@@ -55,13 +55,13 @@ export default function RatePage({ id }: { id: string }) {
                     ></div>
                     <AlbumCover album={album} loading={loading} />
                     <div className="flex flex-col px-5 mb-6 w-full max-w-2xl">
-                        <h2 className="font-semibold">
-                            Você está avaliando {album.name}
+                        <h2>
+                            Você está avaliando <span  className="font-semibold">{album.name}</span>
                         </h2>
-                        <p className="font-medium">
+                        <p >
                             Por{" "}
                             {album.artists.map((artist: any, index: number) => (
-                                <span key={artist.id}>
+                                <span key={artist.id} className="font-medium">
                                     {artist.name}
                                     {index < album.artists.length - 1 && ", "}
                                 </span>

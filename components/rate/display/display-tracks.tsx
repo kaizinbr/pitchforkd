@@ -65,7 +65,7 @@ export default function tracksTracksDisplay({
                                                     key={track.id}
                                                     className="bg-transparent hover:bg-bunker-800 md:rounded-xl transition-all duration-200 ease-in-out"
                                                 >
-                                                    <td className="pl-5 py-4 text-bunker-300">
+                                                    <td className="pl-5 py-4 text-bunker-300 text-xs">
                                                         {track.track_number}
                                                     </td>
                                                     <td className="px-2 py-4">

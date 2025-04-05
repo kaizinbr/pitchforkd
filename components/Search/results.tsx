@@ -178,7 +178,7 @@ function Results({
 
                 {type === "album" && albunsResults.length === 0 && (
                     <div className="flex flex-col items-center justify-center w-full ">
-                        <h1 className="font-bold text-xl text-bunker-300">
+                        <h1 className=" text-sm text-bunker-300">
                             Nenhum resultado encontrado
                         </h1>
                     </div>
@@ -186,7 +186,7 @@ function Results({
 
                 {type === "track" && tracksResults.length === 0 && (
                     <div className="flex flex-col items-center justify-center w-full ">
-                        <h1 className="font-bold text-xl text-bunker-300">
+                        <h1 className=" text-sm text-bunker-300">
                             Nenhum resultado encontrado
                         </h1>
                     </div>
@@ -194,7 +194,7 @@ function Results({
 
                 {/* {type === "artist" && artistResults.length === 0 && (
                     <div className="flex flex-col items-center justify-center w-full ">
-                        <h1 className="font-bold text-xl text-bunker-300">
+                        <h1 className=" text-sm text-bunker-300">
                             Nenhum resultado encontrado
                         </h1>
                     </div>
@@ -202,7 +202,7 @@ function Results({
 
                 {type === "user" && users.length === 0 && (
                     <div className="flex flex-col items-center justify-center w-full ">
-                        <h1 className="font-bold text-xl text-bunker-300">
+                        <h1 className=" text-sm text-bunker-300">
                             Nenhum resultado encontrado
                         </h1>
                     </div>

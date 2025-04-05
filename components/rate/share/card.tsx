@@ -44,9 +44,12 @@ export default function Card({
             <p className="text-xl !font-bold mb-3 z-10">
                 {formatRate(review.total)}
             </p>
-            <p className=" text-[10px] text-center mb-4 max-w-full line-clamp-2 z-10">
+            <p className=" text-[10px] text-center mb-1 max-w-full line-clamp-2 z-10">
                 {review.profiles.name || review.profiles.username} avaliou{" "}
                 <span className="!font-bold">{album.name}</span>
+            </p>
+            <p className=" text-[10px] text-center mb-4 max-w-full line-clamp-2 z-10 text-bunker-300">
+                Por <span className="!font-bold">{album.artists[0].name}</span>
             </p>
             {/* <Comment review={review} loading={false} likes={0} /> */}
 

@@ -147,7 +147,7 @@ const ImageCarousel = () => {
                                 <h2 className="font-bold text-lg md:text-2xl">
                                     {image.title}
                                 </h2>
-                                <h3 className="font-semibold text-base md:text-lg">
+                                <h3 className="text-base md:text-lg">
                                     {image.artist}
                                 </h3>
                             </div>

@@ -27,7 +27,13 @@ export default function Footer() {
                     href="/about#privacidade"
                     className="hover:underline transition-all duration-200"
                 >
-                    Políticas de privacidade/LGPD
+                    Políticas de privacidade
+                </Link>
+                <Link
+                    href="/about#privacidade"
+                    className="hover:underline transition-all duration-200"
+                >
+                    LGPD
                 </Link>
                 <Link
                     href="/about#relatar"
@@ -47,10 +53,10 @@ export default function Footer() {
                 Spotify.
             </p>
             <p>
-                Este site não possui filização com a empresa Spotify, tampouco
+                Este site não possui filiação com as empresas Spotify ou Letterboxd, tampouco
                 utiliza as informações dispostas para fins comerciais.
             </p>
-            <p>© 2025 - Feito por <Link href={'https://kaizin.com.br'} target="_blank" className="underline">Kaizin</Link> </p>
+            <p>© 2025 - Feito por <Link href={'https://kaizin.work'} target="_blank" className="underline">Kaizin</Link> </p>
         </footer>
     );
 }

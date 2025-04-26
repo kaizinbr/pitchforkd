@@ -9,14 +9,28 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { createClient } from "@/utils/supabase/client";
 import {
     TbUserFilled,
-    TbSettings2,
     TbBellFilled,
-    TbPlus,
 } from "react-icons/tb";
+import localFont from "next/font/local";
 
 import useScrollDirection from "@/hooks/useScrollDirection";
 
 import { type User } from "@supabase/supabase-js";
+
+const FFDisplay = localFont({
+    src: [
+        {
+            path: "../public/fonts/p/FeatureFlatDisplay-Bold-Web.woff2",
+            weight: "bold",
+            style: "normal",
+        },
+        {
+            path: "../public/fonts/p/FeatureFlatDisplay-BoldItalic-Web.woff2",
+            weight: "bold",
+            style: "italic",
+        },
+    ],
+});
 
 export default function Navigator({ user }: { user: User | null }) {
     const pathname = usePathname();
@@ -230,7 +244,7 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                     >
                         <Link
                             href={`https://pitchforkd.me/`}
-                            className="font-bold mr-8 text-xl"
+                            className={FFDisplay.className + ` font-bold mr-8 text-xl`}
                         >
                             Pitchforkd
                         </Link>

@@ -30,12 +30,6 @@ const workSans = Work_Sans({
     subsets: ["latin"],
 });
 
-// Font files can be colocated inside of `app`
-// const myFont = localFont({
-//     src: "../public/fonts/font-1.ttf",
-//     display: "swap",
-// });
-
 const graphik = localFont({
     src: [
         {
@@ -131,6 +125,116 @@ const graphik = localFont({
     ],
 });
 
+const walsheim = localFont({
+    src: [
+        {
+            path: "../public/fonts/walsheim/GT-Walsheim-LC-Ultra-Light.woff2",
+            weight: "100",
+            style: "normal",
+        },
+        {
+            path: "../public/fonts/walsheim/GT-Walsheim-LC-Ultra-Light-Oblique.woff2",
+            weight: "100",
+            style: "italic",
+        },
+        {
+            path: "../public/fonts/walsheim/GT-Walsheim-LC-Thin.woff2",
+            weight: "200",
+            style: "normal",
+        },
+        {
+            path: "../public/fonts/walsheim/GT-Walsheim-LC-Thin-Oblique.woff2",
+            weight: "200",
+            style: "italic",
+        },
+        {
+            path: "../public/fonts/walsheim/GT-Walsheim-LC-Light.woff2",
+            weight: "300",
+            style: "normal",
+        },
+        {
+            path: "../public/fonts/walsheim/GT-Walsheim-LC-Light-Oblique.woff2",
+            weight: "300",
+            style: "italic",
+        },
+        {
+            path: "../public/fonts/walsheim/GT-Walsheim-LC-Regular.woff2",
+            weight: "400",
+            style: "normal",
+        },
+        {
+            path: "../public/fonts/walsheim/GT-Walsheim-LC-Regular-Oblique.woff2",
+            weight: "400",
+            style: "italic",
+        },
+        {
+            path: "../public/fonts/walsheim/GT-Walsheim-LC-Medium.woff2",
+            weight: "500",
+            style: "normal",
+        },
+        {
+            path: "../public/fonts/walsheim/GT-Walsheim-LC-Medium-Oblique.woff2",
+            weight: "500",
+            style: "italic",
+        },
+        {
+            path: "../public/fonts/walsheim/GT-Walsheim-LC-Bold.woff2",
+            weight: "700",
+            style: "normal",
+        },
+        {
+            path: "../public/fonts/walsheim/GT-Walsheim-LC-Bold-Oblique.woff2",
+            weight: "700",
+            style: "italic",
+        },
+        {
+            path: "../public/fonts/walsheim/GT-Walsheim-LC-Black.woff2",
+            weight: "800",
+            style: "normal",
+        },
+        {
+            path: "../public/fonts/walsheim/GT-Walsheim-LC-Black-Oblique.woff2",
+            weight: "800",
+            style: "italic",
+        },
+        {
+            path: "../public/fonts/walsheim/GT-Walsheim-LC-Ultra-Bold.woff2",
+            weight: "900",
+            style: "normal",
+        },
+        {
+            path: "../public/fonts/walsheim/GT-Walsheim-LC-Ultra-Bold-Oblique.woff2",
+            weight: "900",
+            style: "italic",
+        },
+    ],
+});
+
+const walfork = localFont({
+    src: [
+        {
+            path: "../public/fonts/p/Walfork-Demi.woff", //public\fonts\p\Walfork-Demi.woff
+            weight: "bold",
+            style: "normal",
+        },
+        {
+            path: "../public/fonts/p/Walfork-DemiOblique.woff",
+            weight: "bold",
+            style: "italic",
+        },
+        {
+            path: "../public/fonts/p/Walfork-Regular.woff",
+            weight: "200",
+            style: "normal",
+        },
+        {
+            path: "../public/fonts/p/Walfork-RegularOblique.woff",
+            weight: "200",
+            style: "italic",
+        },
+    ],
+});
+
 export default function RootLayout({
     children,
 }: Readonly<{
@@ -139,13 +243,13 @@ export default function RootLayout({
     return (
         <html
             lang="pt-br"
-            className={graphik.className}
+            className={walsheim.className}
             {...mantineHtmlProps}
         >
             <head>
                 <ColorSchemeScript />
             </head>
-            <body className={ graphik.className + ` !bg-bunker-950 !text-neutral-100 fontGraphik`}>
+            <body className={ walsheim.className + ` !bg-bunker-950 !text-neutral-100 `}>
                 <MantineProvider defaultColorScheme="dark">
                 <Notifications classNames={{
                     root: "!z-[1000]",

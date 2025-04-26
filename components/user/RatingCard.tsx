@@ -38,8 +38,6 @@ export default function RatingCard({
             ? ""
             : review.content;
 
-    // console.log(content);
-
     const editor = useEditor({
         extensions: [StarterKit, Underline],
         content: content,
@@ -169,11 +167,11 @@ export default function RatingCard({
                                                 review.profiles.username}{" "}
                                             avaliou
                                         </span>{" "}
-                                        <span className="font-semibold">
+                                        <span className="font-bold">
                                             {album && album.name}
                                         </span>{" "}
                                         <span className="">de</span>{" "}
-                                        <span className="font-semibold">
+                                        <span className="font-bold">
                                             {album && album.artists[0].name}
                                         </span>
                                     </h2>
@@ -197,7 +195,7 @@ export default function RatingCard({
                                         w-[calc(100%-160px)]
                                     `}
                                 >
-                                    <span className="text-neutral-100 text-xl font-bold">
+                                    <span className="text-neutral-100 text-xl font-extrabold">
                                         {formatRate(review.total)}
                                     </span>
 

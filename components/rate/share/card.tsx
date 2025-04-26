@@ -41,7 +41,7 @@ export default function Card({
                     className="rounded-lg max-w-full w-38 shadow-xl relative z-0 mx-auto"
                 />
             </div>
-            <p className="text-xl !font-bold mb-3 z-10">
+            <p className="text-xl !font-extrabold mb-3 z-10">
                 {formatRate(review.total)}
             </p>
             <p className=" text-[10px] text-center mb-1 max-w-full line-clamp-2 z-10">
@@ -49,11 +49,10 @@ export default function Card({
                 <span className="!font-bold">{album.name}</span>
             </p>
             <p className=" text-[10px] text-center mb-4 max-w-full line-clamp-2 z-10 text-bunker-300">
-                Por <span className="!font-bold">{album.artists[0].name}</span>
+                De <span className="!font-bold">{album.artists[0].name}</span>
             </p>
-            {/* <Comment review={review} loading={false} likes={0} /> */}
 
-            <p className="text-[8px] text-bunker-300 text-center z-10">
+            <p className="text-[8px] text-bunker-300 text-center z-10 font-light">
                 Veja mais em pitchforkd.me
             </p>
         </>

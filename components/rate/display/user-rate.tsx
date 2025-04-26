@@ -33,13 +33,13 @@ export default function UserRate({
                 <div className=""></div>
             ) : (
                 <div className="flex flex-col gap-2 items-">
-                    <h2 className="text-xl font-bold">
+                    <h2 className="text-xl font-medium">
                         Avaliação de{" "}
-                        <Link href={`/${review.profiles.username}`}>
+                        <Link className="font-bold" href={`/${review.profiles.username}`}>
                             {review.profiles.name || review.profiles.username}
                         </Link>
                     </h2>
-                    <p className="text-3xl font-bold">
+                    <p className="text-3xl font-extrabold">
                         {formatRate(review.total)}
                     </p>
                     {review.review == "" ? (

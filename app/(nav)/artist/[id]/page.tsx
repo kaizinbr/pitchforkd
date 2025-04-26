@@ -1,4 +1,4 @@
-import AlbumPage from "@/components/album/AlbumPage";
+import ArtistPage from "@/components/artist/artist-page";
 
 export default async function Page({
     params,
@@ -8,7 +8,7 @@ export default async function Page({
     const id = (await params).id;
     return (
         <div>
-            <AlbumPage id={id} />
+            <ArtistPage id={id} />
         </div>
     );
 }

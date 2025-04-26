@@ -390,7 +390,7 @@ export default function Rater({
                                 label: classes.label,
                             }}
                         >
-                            Usar média
+                            Automático
                         </Chip>
                     </div>
                     <div className="flex flex-col gap-2 mt-3">

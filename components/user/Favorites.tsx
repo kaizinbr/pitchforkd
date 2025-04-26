@@ -23,9 +23,10 @@ function ArtistsList({ artists, isUser }: { artists: any[]; isUser: boolean }) {
                 <div className="embla mt-4" ref={emblaRef}>
                     <div className="embla__container">
                         {artists.map((item, index) => (
-                            <div
+                            <Link
                                 key={index}
                                 className="flex flex-col items-center size-18 embla__slide__fav"
+                                href={`/artist/${item.id}`}
                             >
                                 <Image
                                     src={item.src}
@@ -34,7 +35,7 @@ function ArtistsList({ artists, isUser }: { artists: any[]; isUser: boolean }) {
                                     height={80}
                                     className="size-18 object-cover rounded-full"
                                 />
-                            </div>
+                            </Link>
                         ))}
                     </div>
                 </div>

@@ -1,5 +1,6 @@
 "use client";
 import getAlbumTime from "@/lib/utils/getAlbumTime";
+import Link from "next/link";
 
 export default function AlbumData({
     album,
@@ -19,10 +20,10 @@ export default function AlbumData({
                     <h2 className="text-2xl font-bold">{album.name}</h2>
                     <p className="font-medium mb-4">
                         {album.artists.map((artist: any, index: number) => (
-                            <span key={artist.id}>
+                            <Link href={`/artist/${artist.id}`} key={artist.id}>
                                 {artist.name}
                                 {index < album.artists.length - 1 && ", "}
-                            </span>
+                            </Link>
                         ))}
                     </p>
                     <p className="text-sm text-bunker-300">

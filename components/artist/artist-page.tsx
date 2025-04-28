@@ -5,6 +5,7 @@ import axios from "axios";
 import { extractColors } from "extract-colors";
 import Image from "next/image";
 import ArtistImage from "@/components/artist/artist-image";
+import ArtistAlbuns from "@/components/artist/artist-albuns";
 
 export default function ArtistPage({ id }: { id: string }) {
     const [artist, setArtist] = useState<any>();
@@ -53,24 +54,26 @@ export default function ArtistPage({ id }: { id: string }) {
                 }}
             ></div>
             <ArtistImage artist={artist} loading={loading} />
-            <div className="w-full">
-                <h1 className="text-2xl font-bold flex px-5 mb-3">
+            <div className="w-full max-w-2xl px-5 mx-auto">
+                <h1 className="text-2xl font-bold flex mb-3">
                     {loading ? "Carregando..." : artist?.name}
                 </h1>
                 {loading ? null : (
-                    <div className="flex flex-col px-5 mb-3">
-                        <div className="flex flex-col gap-1">
-                            <div className="text-sm font-medium text-bunker-400">
+                    <div className="flex flex-col mb-3">
+                        <p className="flex flex-col gap-1">
+                            <span className="text-sm font-medium text-bunker-400">
                                 Popularidade: {artist?.popularity}
-                            </div>
-                            <div className="text-sm font-medium text-bunker-400">
+                            </span>
+                            <span className="text-sm font-medium text-bunker-400">
                                 Seguidores:{" "}
                                 {artist?.followers.total.toLocaleString()}
-                            </div>
-                        </div>
+                            </span>
+                        </p>
                     </div>
                 )}
+
             </div>
+                <ArtistAlbuns id={id} />
         </>
     );
 }

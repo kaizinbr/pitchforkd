@@ -159,7 +159,7 @@ function Results({
                                 width={40}
                                 height={40}
                             />
-                            <p className="ml-3 text-left">{artist.name}</p>
+                            <p className="ml-3 text-left  font-semibold">{artist.name}</p>
                         </Link>
                     ))}
 
@@ -192,13 +192,13 @@ function Results({
                     </div>
                 )}
 
-                {/* {type === "artist" && artistResults.length === 0 && (
+                {type === "artist" && artistResults.length === 0 && (
                     <div className="flex flex-col items-center justify-center w-full ">
                         <h1 className=" text-sm text-bunker-300">
                             Nenhum resultado encontrado
                         </h1>
                     </div>
-                )} */}
+                )}
 
                 {type === "user" && users.length === 0 && (
                     <div className="flex flex-col items-center justify-center w-full ">
@@ -287,6 +287,13 @@ export default function ResultsPage({
                         ref={setControlRef("3")}
                         className={classes.tab}
                     >
+                        Artistas
+                    </Tabs.Tab>
+                    <Tabs.Tab
+                        value="4"
+                        ref={setControlRef("4")}
+                        className={classes.tab}
+                    >
                         Usuários
                     </Tabs.Tab>
                 </div>
@@ -325,6 +332,19 @@ export default function ResultsPage({
                 </Suspense>
             </Tabs.Panel>
             <Tabs.Panel value="3">
+                <Suspense
+                    key={query + currentPage}
+                    fallback={<InvoicesMobileSkeleton />}
+                >
+                    <h1 className="font-bold text-xl mb-2">Artistas</h1>
+                    <Results
+                        query={query}
+                        currentPage={currentPage}
+                        type="artist"
+                    />
+                </Suspense>
+            </Tabs.Panel>
+            <Tabs.Panel value="4">
                 <Suspense
                     key={query + currentPage}
                     fallback={<InvoicesMobileSkeleton />}

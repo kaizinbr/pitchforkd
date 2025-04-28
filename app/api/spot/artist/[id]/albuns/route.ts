@@ -51,7 +51,7 @@ export async function GET(
         : await getAccessToken();
 
     const response = await axios.get(
-        `https://api.spotify.com/v1/albums/${id}/tracks?offset=${offset}&limit=50`,
+        `https://api.spotify.com/v1/artists/${id}/albums?offset=${offset}&limit=30`,
         {
             headers: {
                 Authorization: `Bearer ${token}`,

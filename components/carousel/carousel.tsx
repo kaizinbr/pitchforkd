@@ -43,6 +43,24 @@ const ImageCarousel = () => {
 
     const data = [
         {
+            title: "Only cry in the rain",
+            artist: "CHUU",
+            src: "https://i.scdn.co/image/ab67616d0000b2733533ec688f7b48a135fd1e47",
+            from: "#1B3955",
+            to: "#A8B8C4",
+            text: "text-white",
+            album_id: "5BenIQ2E8TFdZoAtPjUP9a",
+        },
+        {
+            title: "Love Language",
+            artist: "TOMORROW X TOGETHER",
+            src: "/lovelanguage.webp",
+            from: "#D40507",
+            to: "#E7CDC0",
+            text: "text-white",
+            album_id: "72JboNccBYyXR676YNfcYE",
+        },
+        {
             title: "Ruby",
             artist: "JENNIE",
             src: "https://i.scdn.co/image/ab67616d0000b2735a43918ea90bf1e44b7bdcfd",

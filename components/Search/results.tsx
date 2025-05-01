@@ -11,6 +11,9 @@ import Link from "next/link";
 import Image from "next/image";
 import { Track, Album, User } from "@/lib/utils/types";
 import { createClient } from "@/utils/supabase/client";
+import { Loader } from "@mantine/core";
+
+import { Skeleton } from "@mantine/core";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
@@ -23,7 +26,9 @@ function Results({
     currentPage: number;
     type: string;
 }) {
+    const supabase = createClient();
     const [invoices, setInvoices] = useState<any>([]);
+    const [loading, setLoading] = useState(false);
 
     const [artistResults, setArtistResults] = useState<
         { id: string; images: [any]; name: string }[]
@@ -34,8 +39,7 @@ function Results({
 
     useEffect(() => {
         const fetchInvoices = async () => {
-            const supabase = createClient();
-
+            setLoading(true);
             if (query == "") {
                 console.log("empty");
                 setArtistResults([]);
@@ -48,8 +52,8 @@ function Results({
                     console.log(error);
                 } else {
                     setUsers(data);
-                }   
-                
+                }
+                setLoading(false);
             } else if (type === "user") {
                 const { data, error } = await supabase
                     .from("profiles")
@@ -63,6 +67,7 @@ function Results({
                     console.log(data);
                     setUsers(data);
                 }
+                setLoading(false);
             } else {
                 const response = await axios.post("/api/spot/search", {
                     q: query,
@@ -80,10 +85,12 @@ function Results({
                 if (data.albums) {
                     setAlbunsResults(data.albums.items);
                 }
+                setLoading(false);
             }
         };
-
+        console.log("aaa");
         fetchInvoices();
+        console.log("a2222aa");
     }, [query, currentPage, type]);
 
     return (
@@ -115,6 +122,7 @@ function Results({
                             </div>
                         </Link>
                     ))}
+
                 {type === "track" &&
                     tracksResults.map((track) => (
                         <Link
@@ -159,7 +167,9 @@ function Results({
                                 width={40}
                                 height={40}
                             />
-                            <p className="ml-3 text-left  font-semibold">{artist.name}</p>
+                            <p className="ml-3 text-left  font-semibold">
+                                {artist.name}
+                            </p>
                         </Link>
                     ))}
 
@@ -176,7 +186,7 @@ function Results({
                         />
                     ))}
 
-                {type === "album" && albunsResults.length === 0 && (
+                {type === "album" && albunsResults.length === 0 && !loading && (
                     <div className="flex flex-col items-center justify-center w-full ">
                         <h1 className=" text-sm text-bunker-300">
                             Nenhum resultado encontrado
@@ -184,7 +194,7 @@ function Results({
                     </div>
                 )}
 
-                {type === "track" && tracksResults.length === 0 && (
+                {type === "track" && tracksResults.length === 0 && !loading && (
                     <div className="flex flex-col items-center justify-center w-full ">
                         <h1 className=" text-sm text-bunker-300">
                             Nenhum resultado encontrado
@@ -192,7 +202,7 @@ function Results({
                     </div>
                 )}
 
-                {type === "artist" && artistResults.length === 0 && (
+                {type === "artist" && artistResults.length === 0 && !loading && (
                     <div className="flex flex-col items-center justify-center w-full ">
                         <h1 className=" text-sm text-bunker-300">
                             Nenhum resultado encontrado
@@ -200,12 +210,56 @@ function Results({
                     </div>
                 )}
 
-                {type === "user" && users.length === 0 && (
+                {type === "user" && users.length === 0 && !loading && (
                     <div className="flex flex-col items-center justify-center w-full ">
                         <h1 className=" text-sm text-bunker-300">
                             Nenhum resultado encontrado
                         </h1>
                     </div>
+                )}
+
+                {loading && (
+                    <>
+                        <div
+                            className={`
+                                                
+                        max-w-2xl w-full
+                        flex flex-row items-center rounded-xl gap-3 p-2
+                    `}
+                        >
+                            <Skeleton height={40} width={40} radius="lg" />
+                            <div className="flex w-[calc(100%-40px)] items-start justify-center flex-col gap-2">
+                                <Skeleton height={8} radius="xl" width="60%" />
+                                <Skeleton height={8} radius="xl" width="40%" />
+                            </div>
+                        </div>
+                        <div
+                            className={`
+                                                
+                        max-w-2xl w-full
+                        flex flex-row items-center rounded-xl gap-3 p-2
+                    `}
+                        >
+                            <Skeleton height={40} width={40} radius="lg" />
+                            <div className="flex w-[calc(100%-40px)] items-start justify-center flex-col gap-2">
+                                <Skeleton height={8} radius="xl" width="60%" />
+                                <Skeleton height={8} radius="xl" width="40%" />
+                            </div>
+                        </div>
+                        <div
+                            className={`
+                                                
+                        max-w-2xl w-full
+                        flex flex-row items-center rounded-xl gap-3 p-2
+                    `}
+                        >
+                            <Skeleton height={40} width={40} radius="lg" />
+                            <div className="flex w-[calc(100%-40px)] items-start justify-center flex-col gap-2">
+                                <Skeleton height={8} radius="xl" width="60%" />
+                                <Skeleton height={8} radius="xl" width="40%" />
+                            </div>
+                        </div>
+                    </>
                 )}
             </div>
         </div>
@@ -215,7 +269,7 @@ function Results({
 export default function ResultsPage({
     query,
     currentPage,
-    tab
+    tab,
 }: {
     query: string;
     currentPage: number;
@@ -245,9 +299,9 @@ export default function ResultsPage({
             params.delete("tab");
         }
         replace(`${pathname}?${params.toString()}`);
-    }
+    };
 
-    function handleValue (value: string) {
+    function handleValue(value: string) {
         setValue(value);
         handleSearch(value);
     }

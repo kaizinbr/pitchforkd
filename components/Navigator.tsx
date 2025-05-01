@@ -102,7 +102,7 @@ export default function Navigator({ user }: { user: User | null }) {
                     left-0 flex w-full items-center justify-evenly
                     backdrop-blur-xl
                     bg-bunker-950/70  
-                    px-6 py-1
+                    
                 `}
             >
                 <button>

@@ -12,7 +12,6 @@ import { displayPastRelativeTime } from "@/lib/utils/time";
 import axios from "axios";
 import formatRate from "@/lib/utils/formatRate";
 import LikeBtn from "./like-btn";
-import { TbRosetteDiscountCheckFilled } from "react-icons/tb";
 
 import Underline from "@tiptap/extension-underline";
 import { useEditor } from "@tiptap/react";

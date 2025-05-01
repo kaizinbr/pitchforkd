@@ -16,13 +16,13 @@ export default function ArtistImage({
                 {loading ? (
                     <div className="size-64 rounded-full bg-bunker-500"></div>
                 ) : (
-                    <picture>
+                    <picture className="rounded-full size-64 shadow-lg overflow-hidden">
                         <Image
                             src={artist.images[0]?.url}
                             alt={artist.name}
                             width={256}
                             height={256}
-                            className="rounded-full size-64 shadow-lg"
+                            className="w-full"
                         />
                     </picture>
                 ) }

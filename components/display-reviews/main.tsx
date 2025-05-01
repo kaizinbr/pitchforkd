@@ -3,6 +3,7 @@ import RatingCard from "../user/RatingCard";
 import { useState } from "react";
 import { Review } from "@/lib/utils/types";
 import { createClient } from "@/utils/supabase/client";
+import { Loader } from "@mantine/core";
 
 export default function DisplayReviews({
     ratings,
@@ -14,10 +15,13 @@ export default function DisplayReviews({
     console.log(ratingsLength);
     const supabase = createClient();
     const [offset, setOffset] = useState(30);
+    const [loading, setLoading] = useState(false);
 
     const ratingsList = ratings;
 
     const handleLoadMore = async () => {
+        if (loading) return;
+        setLoading(true);
         const { data, error } = await (
             await supabase
         )
@@ -34,6 +38,7 @@ export default function DisplayReviews({
         setOffset(offset + 30);
         if (ratingsList && data) {
             ratingsList.push(...data);
+            setLoading(false);
         }
     };
 
@@ -54,15 +59,21 @@ export default function DisplayReviews({
                 <button
                     onClick={handleLoadMore}
                     className={`
-                        flex justify-center items-center py-2 mx-5 
+                        flex justify-center items-center 
+                        py-2 mx-4 md:mx-0 mt-6
                         rounded-xl text-center !font-medium 
                         bg-main-500 border-2 border-main-500 
                         hover:bg-main-600 hover:border-main-600 
-                        cursor-pointer mt-6
+                        cursor-pointer 
                         transition-all duration-200
                     `}
-            >
-                    Carregar mais
+                >
+                    {/* Mais Avaliações */}
+                    {loading ? (
+                        <Loader size={24.8} color="white" />
+                    ) : (
+                        "Mais Avaliações"
+                    )}
                 </button>
             )}
         </div>

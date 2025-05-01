@@ -3,15 +3,15 @@ import "@/app/globals.css";
 import "@/app/embla.css";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
-import '@mantine/tiptap/styles.css';
-import '@mantine/notifications/styles.css';
+import "@mantine/tiptap/styles.css";
+import "@mantine/notifications/styles.css";
 import localFont from "next/font/local";
 import {
     ColorSchemeScript,
     MantineProvider,
     mantineHtmlProps,
 } from "@mantine/core";
-import { Notifications } from '@mantine/notifications';
+import { Notifications } from "@mantine/notifications";
 
 import Footer from "@/components/footer";
 
@@ -241,19 +241,21 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html
-            lang="pt-br"
-            className={walsheim.className}
-            {...mantineHtmlProps}
-        >
+        <html lang="pt-br" className={walsheim.className} {...mantineHtmlProps}>
             <head>
                 <ColorSchemeScript />
             </head>
-            <body className={ walsheim.className + ` !bg-bunker-950 !text-neutral-100 `}>
+            <body
+                className={
+                    walsheim.className + ` !bg-bunker-950 !text-neutral-100 `
+                }
+            >
                 <MantineProvider defaultColorScheme="dark">
-                <Notifications classNames={{
-                    root: "!z-[1000]",
-                }} />
+                    <Notifications
+                        classNames={{
+                            root: "!z-[1000]",
+                        }}
+                    />
                     <main className="min-h-screen flex flex-col items-center">
                         <div className="flex flex-col items-center w-full">
                             {children}

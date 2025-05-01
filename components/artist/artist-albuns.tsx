@@ -7,6 +7,7 @@ import axios from "axios";
 import Image from "next/image";
 import Link from "next/link";
 import Masonry from "@mui/lab/Masonry";
+import { Skeleton } from "@mantine/core";
 
 export default function ArtistAlbuns({ id }: { id: any }) {
     const [albuns, setalbuns] = useState<any[]>([]);
@@ -56,11 +57,101 @@ export default function ArtistAlbuns({ id }: { id: any }) {
 
     return (
         <div className="w-full flex flex-col gap-4 max-w-2xl mt-10 mx-auto">
+            <h2 className="font-semibold flex px-5">Álbuns</h2>
             {loading ? (
-                <RatingCardSkeletonList count={3} />
+                <Masonry
+                    columns={{ xs: 2, md: 3 }}
+                    spacing={2}
+                    className={`
+                    
+                    w-full px-3 !m-0
+                `}
+                >
+                    <div
+                            className={`
+                                p-4 flex flex-col items-start
+                                bg-bunker-800 rounded-xl 
+                            `}
+                        >
+                            <Skeleton
+                                height={"auto"}
+                                radius="md"
+                                className="!bg-bunker-800 aspect-square mb-3"
+                            />
+
+                            <Skeleton
+                                height={6}
+                                radius="xl"
+                                width="20%"
+                                className="mb-2"
+                            />
+                            <Skeleton height={11} radius="xl" className="mb-2" />
+                            <Skeleton height={11} radius="xl" width="60%" />
+                        </div>
+                        <div
+                            className={`
+                                p-4 flex flex-col items-start
+                                bg-bunker-800 rounded-xl 
+                            `}
+                        >
+                            <Skeleton
+                                height={"auto"}
+                                radius="md"
+                                className="!bg-bunker-800 aspect-square mb-3"
+                            />
+
+                            <Skeleton
+                                height={6}
+                                radius="xl"
+                                width="20%"
+                                className="mb-2"
+                            />
+                            <Skeleton height={11} radius="xl" width="60%" />
+                        </div>
+                        <div
+                            className={`
+                                p-4 flex flex-col items-start
+                                bg-bunker-800 rounded-xl 
+                            `}
+                        >
+                            <Skeleton
+                                height={"auto"}
+                                radius="md"
+                                className="!bg-bunker-800 aspect-square mb-3"
+                            />
+
+                            <Skeleton
+                                height={6}
+                                radius="xl"
+                                width="20%"
+                                className="mb-2"
+                            />
+                            <Skeleton height={11} radius="xl" width="60%" />
+                        </div>
+                        <div
+                            className={`
+                                p-4 flex flex-col items-start
+                                bg-bunker-800 rounded-xl 
+                            `}
+                        >
+                            <Skeleton
+                                height={"auto"}
+                                radius="md"
+                                className="!bg-bunker-800 aspect-square mb-3"
+                            />
+
+                            <Skeleton
+                                height={6}
+                                radius="xl"
+                                width="20%"
+                                className="mb-2"
+                            />
+                            <Skeleton height={11} radius="xl" className="mb-2" />
+                            <Skeleton height={11} radius="xl" width="60%" />
+                        </div>
+                </Masonry>
             ) : albuns.length > 0 ? (
                 <>
-                    <h2 className="font-semibold flex px-5">Álbuns</h2>
                     <Masonry
                         columns={{ xs: 2, md: 3 }}
                         spacing={2}
@@ -69,6 +160,7 @@ export default function ArtistAlbuns({ id }: { id: any }) {
                             w-full px-3 !m-0
                         `}
                     >
+                        
                         {albuns.map((album) => (
                             <Link
                                 href={`/album/${album.id}`}

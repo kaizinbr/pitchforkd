@@ -8,6 +8,9 @@ import { Modal } from "@mantine/core";
 import Link from "next/link";
 import useScrollDirection from "@/hooks/useScrollDirection";
 import TextareaEditor from "./textarea-editor";
+import StepperTest from "@/components/rate/stepper";
+
+import { Album } from "@/lib/utils/types";
 
 const Track = ({
     track,
@@ -20,7 +23,6 @@ const Track = ({
 }) => {
     const [value, setValue] = useState<number>(0);
     const [favorite, setFavorite] = useState<boolean>(false);
-    const [checked, setChecked] = useState(false);
 
     useEffect(() => {
         const rating = ratings.find((rating) => rating.id === track.id);
@@ -47,7 +49,7 @@ const Track = ({
             className={`
             bg-bunker-800
             p-4 gap-4
-            rounded-xl
+            rounded-xl w-full
             flex flex-col items- justify-center
         `}
         >
@@ -102,18 +104,19 @@ const Track = ({
     );
 };
 
-export default function Rater({
-    tracks,
-    albumId,
-}: {
-    tracks: any[];
-    albumId: string;
-}) {
+export { Track };
+
+export default function Rater({ album }: { album: Album }) {
     const supabase = createClient();
+    const tracks = album.tracks.items;
+
     const scrollDirection = useScrollDirection();
     const [ratings, setRatings] = useState<
         { id: string; value: number; favorite: boolean }[]
     >([]);
+
+    const [onTracks, setOnTracks] = useState<boolean>(true);
+
     const [review, setReview] = useState<string>("");
     const [total, setTotal] = useState<number>(0);
     const [shorten, setShorten] = useState<string>("");
@@ -153,7 +156,7 @@ export default function Rater({
                 .from("ratings")
                 .select("ratings, review, total, shorten, content")
                 .eq("user_id", user.id)
-                .eq("album_id", albumId);
+                .eq("album_id", album.id);
 
             if (error) {
                 console.error("Error fetching ratings", error);
@@ -239,7 +242,7 @@ export default function Rater({
             .from("ratings")
             .select("id")
             .eq("user_id", user.id)
-            .eq("album_id", albumId);
+            .eq("album_id", album.id);
 
         if (ratingsError) {
             console.error("Error fetching ratings", ratingsError);
@@ -253,16 +256,17 @@ export default function Rater({
                 .from("ratings")
                 .update([
                     {
-                        album_id: albumId,
+                        album_id: album.id,
                         user_id: user.id,
                         ratings,
                         review: rawText,
                         content: jsonContent,
                         total: finalRating,
+                        is_published: true,
                     },
                 ])
                 .eq("user_id", user.id)
-                .eq("album_id", albumId);
+                .eq("album_id", album.id);
 
             if (error) {
                 console.error("Error saving ratings", error);
@@ -277,13 +281,14 @@ export default function Rater({
 
             const { data, error } = await supabase.from("ratings").insert([
                 {
-                    album_id: albumId,
+                    album_id: album.id,
                     user_id: user.id,
                     ratings,
                     review: rawText,
                     content: jsonContent,
                     total: finalRating,
                     shorten: shortened,
+                    is_published: true,
                 },
             ]);
 
@@ -295,6 +300,10 @@ export default function Rater({
             console.log("Ratings saved", data);
             open();
         }
+        //limpar o session e evitar conflito
+                                tracks.forEach((track) => {
+                                    sessionStorage.removeItem(track.id);
+                                });
     };
 
     return (
@@ -339,8 +348,124 @@ export default function Rater({
                     </Link>
                 </div>
             </Modal>
-            <div className=" w-full max-w-2xl px-5 pb-8">
-                <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
+            <div className=" w-full max-w-2xl px-5 pb-8 bg-bunker-800 p-4 gap-4 rounded-xl">
+                {onTracks ? (
+                    <StepperTest
+                        album={album}
+                        onRate={() => console.log("Rated")}
+                        setOnTracks={setOnTracks}
+                        setFinalRatings={setRatings}
+                        setFinalTotal={setTotal}
+                    />
+                ) : (
+                    <div className="flex flex-col gap-4 w-full">
+                        <div
+                            className={`
+                        bg-bunker-800
+                         gap-2
+                        rounded-xl
+                        flex flex-col items- justify-center
+                    `}
+                        >
+                            <h2 className="font-medium">Total do álbum</h2>
+                            <input
+                                type="number"
+                                name="total"
+                                id="total"
+                                className={`
+                                    bg-transparent outline-none
+                                    !font-semibold w-full text-2xl
+                                `}
+                                value={total === 0 ? "" : total}
+                                max={100}
+                                min={0}
+                                placeholder="0"
+                                onChange={(e) =>
+                                    setTotal(Number(e.target.value))
+                                }
+                                disabled={useMedia}
+                            />
+                            <Chip
+                                checked={useMedia}
+                                color="#fa805e"
+                                onChange={(useMedia) => {
+                                    setUseMedia(useMedia);
+                                    setTotal(
+                                        ratings.reduce(
+                                            (acc, rating) => acc + rating.value,
+                                            0
+                                        ) / ratings.length
+                                    );
+                                    console.log(useMedia);
+                                }}
+                                classNames={{
+                                    label: classes.label,
+                                }}
+                            >
+                                Automático
+                            </Chip>
+                        </div>
+                        <div className="flex flex-col gap-2 mt-3">
+                            {content && (
+                                <TextareaEditor
+                                    content={content}
+                                    setRawText={setRawText}
+                                    setJsonContent={setJsonContent}
+                                />
+                            )}
+                        </div>
+                        <div className="flex flex-row w-full gap-4 justify-end">
+                            <button
+                                className={`
+                                py-2 px-3
+                                flex justify-center items-center
+                                bg-bunker-700 hover:bg-bunker-700/80
+                                text-white !font-semibold rounded-xl
+                                cursor-pointer
+                                transition-all duration-300
+                                z-[500]
+                            `}
+                                type="button"
+                                onClick={() => {
+                                    setOnTracks(true);
+                                }}
+                            >
+                                Voltar
+                            </button>
+                            {/* <button
+                                className={`
+                                py-2 px-3
+                                flex justify-center items-center
+                                bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600
+                                text-white !font-semibold rounded-xl
+                                cursor-pointer
+                                transition-all duration-300
+                                z-[500]
+                            `}
+                                type="submit"
+                            >
+                                Salvar rascunho
+                            </button> */}
+                            <button
+                                className={`
+                                py-2 px-3
+                                flex justify-center items-center
+                                bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600
+                                text-white !font-semibold rounded-xl
+                                cursor-pointer
+                                transition-all duration-300
+                                z-[500]
+                            `}
+                                type="button"
+                                onClick={handleSubmit}
+                            >
+                                Publicar
+                            </button>
+                        </div>
+                    </div>
+                )}
+
+                {/* <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
                     {tracks.map((track) => (
                         <Track
                             key={track.id}
@@ -422,7 +547,7 @@ export default function Rater({
                     >
                         Salvar avaliação
                     </button>
-                </form>
+                </form> */}
             </div>
         </>
     );

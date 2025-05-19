@@ -21,6 +21,7 @@ export async function generateMetadata(
                 *
             )`
         )
+        .eq("is_published", true)
         .eq("shorten", shorten);
 
     if (error) {
@@ -55,6 +56,7 @@ export default async function Page({
                 *
             )`
         )
+        .eq("is_published", true)
         .eq("shorten", shorten);
 
     if (albumError) {

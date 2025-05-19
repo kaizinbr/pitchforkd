@@ -59,9 +59,9 @@ export default function TextareaEditor({
             variant="subtle"
             classNames={{
                 toolbar:
-                    "!border-b !bg-bunker-800 !text-white !border-bunker-700 !rounded-t-xl",
-                root: "!bg-bunker-800 !text-white !border-bunker-800 !rounded-xl",
-                content: "!bg-bunker-800 ",
+                    "!border-b !bg-bunker-700 !text-white !border-bunker-600 !rounded-t-xl",
+                root: "!bg-bunker-700 !text-white !border-bunker-700 !rounded-xl",
+                content: "!bg-bunker-700 ",
                 controlsGroup: "!gap-2 !bg-transparent",
                 control:
                     "!bg-transparent !text-white !rounded-lg transition-all duration-200 hover:!bg-bunker-700 hover:!text-white data-[active=true]:!bg-bunker-600",

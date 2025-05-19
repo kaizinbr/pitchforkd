@@ -77,6 +77,7 @@ export default async function Page({
             const { data: reviewCount2, error: reviewError } = await supabase
                 .from("ratings")
                 .select("id")
+                .eq("is_published", true)
                 .eq("user_id", data[0].id);
 
             if (reviewError) {

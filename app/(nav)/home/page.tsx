@@ -16,6 +16,7 @@ export default async function Home() {
                 *
             )`
         )
+        .eq("is_published", true)
         .order("created_at", { ascending: false })
         .range(0, 29);
 
@@ -31,7 +32,8 @@ export default async function Home() {
             profiles(
                 *
             )`
-        );
+        )
+        .eq("is_published", true);
 
     if (error) {
         console.error("Error fetching reviews", error);

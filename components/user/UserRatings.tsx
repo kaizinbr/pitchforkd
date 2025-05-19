@@ -23,6 +23,7 @@ export default function UserRatings({ user }: { user: any }) {
                         *
                     )`
                 )
+        .eq("is_published", true)
                 .eq("user_id", user.id)
                 .order("created_at", { ascending: false })
                 .range(0, 29);
@@ -39,6 +40,7 @@ export default function UserRatings({ user }: { user: any }) {
                     *
                 )`
                 )
+        .eq("is_published", true)
                 .eq("user_id", user.id);
 
             if (totalError) {
@@ -70,6 +72,7 @@ export default function UserRatings({ user }: { user: any }) {
                     *
                 )`
             )
+        .eq("is_published", true)
             .eq("user_id", user.id)
             .order("created_at", { ascending: false })
             .range(offset, offset + 29);

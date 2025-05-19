@@ -201,6 +201,7 @@ export default function DisplayRate({
                             tracks={tracks}
                             loading={loading}
                             ratings={rate.ratings}
+                            rate={rate}
                         />
                     ) : null}
                     <div className="w-full px-5">

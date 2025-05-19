@@ -2,6 +2,7 @@ export interface Rating {
     id: string;
     value: number;
     favorite: boolean;
+    comment: string;
 }
 
 export interface Profile {
@@ -33,14 +34,8 @@ export interface Review {
     created_at: string;
     user_id: string;
     album_id: string;
-    review: string;
-    ratings: [
-        {
-            id: string;
-            value: number;
-            favorite: boolean;
-        },
-    ];
+    review: string;    
+    ratings: Rating[];
     total: number;
     profiles: User;
     shorten: string;

@@ -5,23 +5,24 @@ import { extractColors } from "extract-colors";
 import axios from "axios";
 import Rater from "./Rater";
 import AlbumCover from "../album/album-cover";
+import { Album } from "@/lib/utils/types";
 
 export default function RatePage({ id }: { id: string }) {
-    const [album, setAlbum] = useState<any>();
+    const [album, setAlbum] = useState<Album>();
     const [loading, setLoading] = useState(true);
     const [currentColor, setCurrentColor] = useState<string>("#4a6d73");
     
-    function updateColor(colors: { hex: string; intensity: number }[]) {
-        if (setCurrentColor) {
-            const maxIntensityColor = colors.reduce((prev, current) => {
-                const prevIntensity = prev.intensity;
-                const currentIntensity = current.intensity;
-                return currentIntensity > prevIntensity ? current : prev;
-            });
-            setCurrentColor(maxIntensityColor.hex);
-            console.log("Color:", maxIntensityColor.hex);
-        }
-    }
+    // function updateColor(colors: { hex: string; intensity: number }[]) {
+    //     if (setCurrentColor) {
+    //         const maxIntensityColor = colors.reduce((prev, current) => {
+    //             const prevIntensity = prev.intensity;
+    //             const currentIntensity = current.intensity;
+    //             return currentIntensity > prevIntensity ? current : prev;
+    //         });
+    //         setCurrentColor(maxIntensityColor.hex);
+    //         console.log("Color:", maxIntensityColor.hex);
+    //     }
+    // }
 
     useEffect(() => {
         const fetchData = async () => {
@@ -29,32 +30,21 @@ export default function RatePage({ id }: { id: string }) {
             console.log(response.data);
             setAlbum(response.data);
             setLoading(false);
-            extractColors(response.data.images[0]?.url)
-                .then((colors) => {
-                    updateColor(colors);
-                })
-                .catch(console.error);
+        //     extractColors(response.data.images[0]?.url)
+        //         .then((colors) => {
+        //             updateColor(colors);
+        //         })
+        //         .catch(console.error);
         };
 
         fetchData();
-    }, [id]);
+    }, []);
 
     return (
         <>
             {album && (
                 <>
-                    <div
-                        className={`
-                        absolute h-[30rem] w-full -z-50 from-40 
-                        top-0
-                        transition-all duration-200 ease-in-out
-                    `}
-                        style={{
-                            backgroundImage: `linear-gradient(to bottom, ${currentColor}, transparent)`,
-                        }}
-                    ></div>
-                    <AlbumCover album={album} loading={loading} />
-                    <div className="flex flex-col px-5 mb-6 w-full max-w-2xl">
+                    <div className="flex flex-col  mb-6 w-full max-w-2xl mt-20">
                         <h2>
                             Você está avaliando <span  className="font-semibold">{album.name}</span>
                         </h2>
@@ -68,7 +58,7 @@ export default function RatePage({ id }: { id: string }) {
                             ))}
                         </p>
                     </div>
-                    <Rater tracks={album.tracks.items} albumId={album.id} />
+                    <Rater album={album} />
                 </>
             )}
         </>

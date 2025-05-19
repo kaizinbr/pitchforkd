@@ -29,6 +29,7 @@ export default async function Page({
                 *
             )`
         )
+        .eq("is_published", true)
         .eq("album_id", id)
         .eq("user_id", data[0].id);
 

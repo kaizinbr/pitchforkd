@@ -32,6 +32,7 @@ export default function DisplayReviews({
                     *
                 )`
             )
+        .eq("is_published", true)
             .order("created_at", { ascending: false })
             .range(offset, offset + 29);
 

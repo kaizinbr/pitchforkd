@@ -80,7 +80,7 @@ const Track = ({
                 <Slider
                     value={value}
                     onChange={handleSliderChange}
-                    step={5}
+                    step={1}
                     classNames={{
                         root: classes.root,
                         track: classes.track,

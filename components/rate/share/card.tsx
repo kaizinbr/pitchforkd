@@ -41,7 +41,7 @@ export default function Card({
                     className="rounded-lg max-w-full w-38 shadow-xl relative mx-auto z-10"
                 />
                             <div className="absolute w-full  -z-10  top-[28px]">
-                                <div className="size-38 blur-[100px] mx-auto max-w-full"
+                                <div className="size-44 blur-[80px] mx-auto max-w-full"
                                 style={{
                                 backgroundColor: currentColor,
                                                         }}></div>

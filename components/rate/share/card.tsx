@@ -16,7 +16,7 @@ export default function Card({
     // console.log(review)
     return (
         <>
-            <div
+            {/* <div
                 className={`
                         absolute h-8/10 w-full z-0 from-40 
                         top-0
@@ -25,7 +25,7 @@ export default function Card({
                 style={{
                     backgroundImage: `linear-gradient(to bottom, ${currentColor}, black)`,
                 }}
-            ></div>
+            ></div> */}
             <div className="w-full relative mb-3 z-10">
                 <Avatar
                     size={28}
@@ -38,8 +38,14 @@ export default function Card({
                     alt={album.name}
                     width={152}
                     height={152}
-                    className="rounded-lg max-w-full w-38 shadow-xl relative z-0 mx-auto"
+                    className="rounded-lg max-w-full w-38 shadow-xl relative mx-auto z-10"
                 />
+                            <div className="absolute w-full  -z-10  top-[28px]">
+                                <div className="size-38 blur-[100px] mx-auto max-w-full"
+                                style={{
+                                backgroundColor: currentColor,
+                                                        }}></div>
+                            </div>
             </div>
             <p className="text-xl !font-extrabold mb-3 z-10">
                 {formatRate(review.total)}

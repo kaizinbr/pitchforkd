@@ -355,7 +355,7 @@ export default function ResultsPage({
                 <FloatingIndicator
                     target={value ? controlsRefs[value] : null}
                     parent={rootRef}
-                    className={`bg-orange-safety rounded-full`}
+                    className={`bg-persian-blue-500 rounded-full`}
                 />
             </Tabs.List>
 

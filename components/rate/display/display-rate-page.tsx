@@ -163,9 +163,17 @@ export default function DisplayRate({
                         transition-all duration-200 ease-in-out
                     `}
                         style={{
-                            backgroundImage: `linear-gradient(to bottom, ${currentColor}, transparent)`,
+                            // backgroundImage: `linear-gradient(to bottom, ${currentColor}, transparent)`,
                         }}
-                    ></div>
+                    >
+                        <div className="size-full my-8 md:mt-16 flex justify-center items-start">
+                            <div className="size-80 blur-[100px]"
+                            style={{
+                            // backgroundImage: `linear-gradient(to bottom, ${currentColor}, transparent)`,
+                            backgroundColor: currentColor,
+                        }}></div>
+                        </div>
+                    </div>
                     <AlbumCover album={album} loading={loading} />
                     <AlbumData
                         album={album}
@@ -185,7 +193,7 @@ export default function DisplayRate({
                         className={`
                             p-3
                             flex justify-center items-center
-                            bg-blue-celestial border-2 border-blue-celestial hover:bg-blue-celestial hover:border-blue-celestial  
+                            bg-persian-blue-400 border-2 border-persian-blue-400 hover:bg-persian-blue-500 hover:border-persian-blue-500  
                             ${liked ? "text-red-500" : "!text-white"}
                             rounded-full
                             fixed right-4

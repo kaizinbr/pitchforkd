@@ -112,8 +112,8 @@ export default function Navigator({ user }: { user: User | null }) {
                         className={`
                                 flex min-w-[70px] basis-0 cursor-pointer
                                 flex-col items-center gap-1 rounded-8 p-3
-                                data-[active=true]:text-green-pastel
-                                hover:text-green-pastel
+                                data-[active=true]:text-persian-blue-500
+                                hover:text-persian-blue-500
                                 transition-all duration-200 ease-in-out
                             `}
                     >
@@ -127,8 +127,8 @@ export default function Navigator({ user }: { user: User | null }) {
                         className={`
                                 flex min-w-[70px] basis-0 cursor-pointer
                                 flex-col items-center gap-1 rounded-8 p-3
-                                data-[active=true]:text-orange-safety
-                                hover:text-orange-safety
+                                data-[active=true]:text-persian-blue-500
+                                hover:text-persian-blue-500
                                 transition-all duration-200 ease-in-out
                             `}
                     >
@@ -142,8 +142,8 @@ export default function Navigator({ user }: { user: User | null }) {
                         className={`
                                 flex min-w-[70px] basis-0 cursor-pointer
                                 flex-col items-center gap-1 rounded-8 p-3
-                                data-[active=true]:text-blue-celestial
-                                hover:text-blue-celestial
+                                data-[active=true]:text-persian-blue-500
+                                hover:text-persian-blue-500
                                 transition-all duration-200 ease-in-out
                             `}
                             onClick={() => setHasNotifications(false)}
@@ -170,8 +170,8 @@ export default function Navigator({ user }: { user: User | null }) {
                         className={`
                                 flex min-w-[70px] basis-0 cursor-pointer
                                 flex-col items-center gap-1 rounded-8 p-3
-                                data-[active=true]:text-blue-celestial
-                                hover:text-blue-celestial
+                                data-[active=true]:text-persian-blue-500
+                                hover:text-persian-blue-500
                                 transition-all duration-200 ease-in-out
                             `}
                     >
@@ -255,8 +255,8 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                                 className={`
                                     flex  basis-0 cursor-pointer
                                     flex-col items-center gap-1 rounded-8 p-3
-                                    data-[active=true]:text-green-pastel
-                                    hover:text-green-pastel
+                                    data-[active=true]:text-persian-blue-500
+                                    hover:text-persian-blue-500
                                     transition-all duration-200 ease-in-out
                                 `}
                             >
@@ -270,8 +270,8 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                                 className={`
                                     flex  basis-0 cursor-pointer
                                     flex-col items-center gap-1 rounded-8 p-3
-                                    data-[active=true]:text-orange-safety
-                                    hover:text-orange-safety
+                                    data-[active=true]:text-persian-blue-500
+                                    hover:text-persian-blue-500
                                     transition-all duration-200 ease-in-out
                                 `}
                             >
@@ -285,8 +285,8 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                                 className={`
                                     flex cursor-pointer
                                     flex-col items-center gap-1 rounded-8 p-3
-                                    data-[active=true]:text-blue-celestial
-                                    hover:text-blue-celestial
+                                    data-[active=true]:text-persian-blue-500
+                                    hover:text-persian-blue-500
                                     transition-all duration-200 ease-in-out
                                 `}
                             >
@@ -305,8 +305,8 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                                 flex basis-0 cursor-pointer
                                 flex-row items-center gap-2
                                 py-3 pl-4
-                                data-[active=true]:text-green-pastel
-                                hover:text-green-pastel
+                                data-[active=true]:text-persian-blue-500
+                                hover:text-persian-blue-500
                                 transition-all duration-200 ease-in-out
                             `}
                         >

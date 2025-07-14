@@ -122,6 +122,13 @@ export default function ImageCropper({
                         onCropChange={setCrop}
                         onZoomChange={setZoom}
                         onCropComplete={onCropComplete}
+                        style={{
+                            containerStyle: {
+                                width: "100%",
+                                height: "100%",
+                                zIndex: 999,
+                            },
+                        }}
                     />
                     <div
                         className={`

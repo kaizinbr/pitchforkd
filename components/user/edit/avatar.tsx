@@ -102,7 +102,7 @@ export default function Avatar({
                     ) : (
                         ""
                     )}
-                    <div className="button primary block bg-orange-safety p-3 !rounded-(--icon) absolute right-2 bottom-2 z-20">
+                    <div className="button primary block bg-orange-safety p-3 !rounded-(--icon) absolute right-2 bottom-2 z-10">
                         <Pen size={14} className="" />
                     </div>
                 </label>

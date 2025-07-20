@@ -30,12 +30,14 @@ export default function RatingCard({
     const [loading, setLoading] = useState(true);
     const [liked, setLiked] = useState(false);
 
-    const content =
+    const content = 
         review.content &&
-        (review.content as Content).content.length > 0 &&
+        (review.content as Content).content.length > 1 &&
         (review.content as Content).content[0]?.content[0].text === ""
             ? ""
             : review.content;
+
+    console.log("Content:", content);
 
     const editor = useEditor({
         extensions: [StarterKit, Underline],

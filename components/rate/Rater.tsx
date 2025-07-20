@@ -168,6 +168,7 @@ export default function Rater({ album }: { album: Album }) {
                 const { ratings, review, total } = data[0];
                 setContent(data[0].content);
                 setJsonContent(data[0].content);
+                console.log("Ratings fetched", jsonContent);
 
                 setRatings(ratings);
                 setReview(review);
@@ -251,6 +252,7 @@ export default function Rater({ album }: { album: Album }) {
 
         if (ratingsData.length > 0) {
             console.log("User already rated this album", finalRating);
+            console.log("Ratings to update", jsonContent);
 
             const { data, error } = await supabase
                 .from("ratings")
@@ -301,9 +303,9 @@ export default function Rater({ album }: { album: Album }) {
             open();
         }
         //limpar o session e evitar conflito
-                                tracks.forEach((track) => {
-                                    sessionStorage.removeItem(track.id);
-                                });
+        tracks.forEach((track) => {
+            sessionStorage.removeItem(track.id);
+        });
     };
 
     return (

@@ -128,6 +128,9 @@ export default function Icon({ type, ...props }: Props) {
             </svg>
         );
 
+
+
+
     if (type === "discover")
         return (
             <svg

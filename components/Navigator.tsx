@@ -246,7 +246,7 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                             href={`https://pitchforkd.me/`}
                             className={FFDisplay.className + ` font-bold mr-8 text-xl`}
                         >
-                            Pitchforkd
+                            LOOPI
                         </Link>
                         <button>
                             <Link

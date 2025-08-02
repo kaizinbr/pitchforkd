@@ -1,4 +1,5 @@
 import Favorites from "@/components/user/Favorites";
+import FollowBtn from "@/components/user/FollowBtn";
 import Profile from "@/components/user/Profile";
 import UserRatings from "@/components/user/UserRatings";
 import { createClient } from "@/utils/supabase/server";
@@ -26,17 +27,11 @@ export async function generateMetadata(
         console.error("Error fetching user", error);
     }
 
-    // optionally access and extend (rather than replace) parent metadata
-    // const previousImages = (await parent).openGraph?.images || [];
-
     return {
         title:
             data && data.length > 0
                 ? data[0].username + " | Pitchforkd"
                 : "Usuário não encontrado | Pitchforkd",
-        // openGraph: {
-        //     images: ["/some-specific-page-image.jpg", ...previousImages],
-        // },
     };
 }
 
@@ -103,6 +98,7 @@ export default async function Page({
                         isUser={isUser}
                         reviewCount={reviewCount?.length}
                     />
+                    <FollowBtn user={data[0]} />
                     <Favorites favorites={data[0].favorites} isUser={isUser} />
                     <UserRatings user={data[0]} />
                 </>

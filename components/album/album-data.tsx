@@ -16,9 +16,9 @@ export default function AlbumData({
             {loading ? (
                 <div className=""></div>
             ) : (
-                <div className="">
-                    <h2 className="text-2xl font-bold">{album.name}</h2>
-                    <p className="font-medium mb-4">
+                <div className="text-white">
+                    <h2 className="text-xl font-bold">{album.name}</h2>
+                    <p className="font-medium mb-2">
                         {album.artists.map((artist: any, index: number) => (
                             <Link href={`/artist/${artist.id}`} key={artist.id}>
                                 {artist.name}
@@ -26,13 +26,13 @@ export default function AlbumData({
                             </Link>
                         ))}
                     </p>
-                    <p className="text-sm text-bunker-300">
+                    <p className="text-sm">
                         Lançado em{" "}
                         {new Date(album.release_date + "T00:00:00").toLocaleDateString(
                             "pt-BR"
                         )}
                     </p>
-                    <p className="text-sm text-bunker-300 flex gap-1">
+                    <p className="text-sm flex gap-1">
                         <span>{album.total_tracks} músicas</span>•
                         <span>{getAlbumTime(tracks)}</span>
                     </p>

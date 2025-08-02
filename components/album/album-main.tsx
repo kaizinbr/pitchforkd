@@ -7,16 +7,23 @@ import axios from "axios";
 import AlbumData from "./album-data";
 import AlbumTracks from "./album-tracks";
 import AlbumBtn from "./album-btn";
+import {
+    generatePleasantGradient,
+    reduceAlpha,
+    darkenColor,
+} from "./gen-gradient";
 
 export default function AlbumMain({ album_id }: { album_id: string | null }) {
     const [album, setAlbum] = useState<any>([]);
     const [tracks, setTracks] = useState<any>([]);
     const [loading, setLoading] = useState(true);
     const [currentColor, setCurrentColor] = useState<string>("#4a6d73");
+    const [colorsArray, setColorsArray] = useState<any[]>([]);
+    const [color1, setColor1] = useState<string>("#4a6d73");
+    const [color2, setColor2] = useState<string>("#b78972");
+    const [color3, setColor3] = useState<string>("#691209");
+    const [gradient, setGradient] = useState<string>("");
 
-    // no firefox, o extractColors funciona mas pode crashar na hora de pegar a cor de algumas fotos por motivos que eu desconheço
-    // aparentemente funcionar normal nos demais navegadores
-    // o erro é Uncaught DOMException: The operation is insecure.
     function updateColor(colors: { hex: string; intensity: number }[]) {
         if (setCurrentColor) {
             const maxIntensityColor = colors.reduce((prev, current) => {
@@ -37,7 +44,7 @@ export default function AlbumMain({ album_id }: { album_id: string | null }) {
             setTracks(response.data.tracks.items);
 
             if (response.data.total_tracks > 50) {
-                console.log("Mais de 50 músicas");  
+                console.log("Mais de 50 músicas");
 
                 const offsetTimes = Math.ceil(response.data.total_tracks / 50);
 
@@ -45,7 +52,7 @@ export default function AlbumMain({ album_id }: { album_id: string | null }) {
 
                 for (let i = 0; i < offsetTimes; i++) {
                     if (i === 0) {
-                        null
+                        null;
                     } else {
                         const response = await axios.get(
                             `/api/spot/album/${album_id}/tracks?offset=${i * 50}`
@@ -58,12 +65,21 @@ export default function AlbumMain({ album_id }: { album_id: string | null }) {
                 setTracks(tracks2);
             }
 
-
-
             setLoading(false);
             extractColors(response.data.images[0]?.url)
                 .then((colors) => {
+                    setColorsArray(colors);
+
                     updateColor(colors);
+                    const sortedColors = [...colors]
+                        .filter((c) => c.lightness <= 0.8)
+                        .sort((a, b) => b.intensity - a.intensity);
+
+                    const css = generatePleasantGradient(sortedColors);
+
+                    setColor1(css[0]);
+                    setColor2(css[1]);
+                    setColor3(css[2]);
                 })
                 .catch(console.error);
         };
@@ -75,14 +91,27 @@ export default function AlbumMain({ album_id }: { album_id: string | null }) {
         <>
             <div
                 className={`
-                        absolute h-[30rem] w-full -z-50 from-40 
-                        top-0
-                        transition-all duration-200 ease-in-out
-                    `}
+                                   absolute h-[30rem] w-full -z-50 from-40 
+                                   top-0
+                                   transition-all duration-200 ease-in-out overflow-hidden
+                                   bg-blend-screen
+                               `}
                 style={{
-                    backgroundImage: `linear-gradient(to bottom, ${currentColor}, transparent)`,
+                    backgroundImage: `linear-gradient(to bottom, ${darkenColor(color1, 2)}, transparent)`,
+                    filter: ` brightness(0.5) contrast(1.2) saturate(1.5)`,
                 }}
-            ></div>
+            >
+                <div className="absolute inset-0 flex items-center justify-center blur-3xl">
+                    <div
+                        style={{ backgroundColor: color1 }}
+                        className={`absolute rounded-full bg-[${color1}] size-100 -top-1/3 -left-1/4 blur-3xl`}
+                    ></div>
+                    <div
+                        style={{ backgroundColor: color2 }}
+                        className={`absolute rounded-full bg-[${color2}] -right-1/4 -top-1/3 size-80 blur-3xl`}
+                    ></div>
+                </div>
+            </div>
             <AlbumCover album={album} loading={loading} />
             <AlbumData album={album} tracks={tracks} loading={loading} />
             <AlbumBtn album={album} loading={loading} />

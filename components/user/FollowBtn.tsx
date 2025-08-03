@@ -3,7 +3,7 @@ import { User } from "@/lib/utils/types";
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 
-export default function FollowBtn({ user }: { user: User }) {
+export default function FollowBtn({ user, isUser }: { user: User, isUser: boolean }) {
     const [isFollowing, setIsFollowing] = useState(false);
 
     const supabase = createClient();
@@ -35,12 +35,15 @@ export default function FollowBtn({ user }: { user: User }) {
 
     return (
         <button
-            className={`px-4 py-2 rounded-full text-sm font-semibold transition-colors duration-200
+            className={`px-6 py-2 rounded-full text-sm font-semibold transition-colors duration-200
                 border ${
                 isFollowing
-                    ? "bg-neutral-800 text-neutral-300 hover:bg-neutral-700 border-main-500"
-                    : "bg-main-500 text-white hover:bg-main-600 border-transparent"
-            }`}
+                    ? " text-neutral-300 hover:bg-neutral-700 border-main-500"
+                    : "bg-main-500 text-white hover:bg-main-600 border-transparent"                
+                    }
+                ${isUser ? "hidden" : ""}
+            
+            `}
             onClick={async () => {
                 const {
                     data: { user: currentUser },
@@ -75,7 +78,7 @@ export default function FollowBtn({ user }: { user: User }) {
                 }
             }}
         >
-            {isFollowing ? "Seguindo" : `Seguir ${user.name}`}
+            {isFollowing ? "Seguindo" : `Seguir`}
         </button>
     );
 }

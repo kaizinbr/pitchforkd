@@ -186,11 +186,11 @@ export default function DisplayRate({
                             bg-blend-screen
                         `}
                         style={{
-                            backgroundImage: `linear-gradient(to bottom, ${darkenColor(color1, 2)}, transparent)`,
-                            filter: ` brightness(0.5) contrast(1.2) saturate(1.5)`,
+                            backgroundImage: `linear-gradient(to bottom, ${darkenColor(color1, 1.5)}, transparent)`,
+                            filter: ` brightness(0.7) contrast(1.2) saturate(1.5)`,
                         }}
                     >
-                        <div className="absolute inset-0 flex items-center justify-center blur-3xl">
+                        <div className="absolute inset-0 flex items-center justify-center blur-3xl md:m-auto md:max-w-lg">
                             <div
                                 style={{ backgroundColor: color1 }}
                                 className={`absolute rounded-full bg-[${color1}] size-100 -top-1/3 -left-1/4 blur-3xl`}
@@ -201,7 +201,7 @@ export default function DisplayRate({
                             ></div>
                             <div
                                 style={{ backgroundColor: color2 }}
-                                className={`absolute rounded-full left-0 top-1/3 size-40 blur-3xl`}
+                                className={`absolute rounded-full -top-2  h-40 w-88 -rotate-45 blur-3xl`}
                             ></div>
                         </div>
                     </div>

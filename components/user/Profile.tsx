@@ -1,6 +1,8 @@
 "use client";
 
 import Avatar from "@/components/ui/Avatar";
+import ColorThief from "colorthief";
+import { darkenColor } from "@/components/album/gen-gradient";
 import {
     TbSettings2,
     TbUserEdit,
@@ -19,30 +21,41 @@ export default function Profile({
     reviewCount: number;
     isUser: boolean;
 }) {
-    const [currentColor, setCurrentColor] = useState<string>("#F17105");
-    const [colorsArray, setColorsArray] = useState<any[]>([]);
-    const [gradient, setGradient] = useState<string>("");
-
-    function hexToRgba(hex: string, alpha = 1) {
-        const bigint = parseInt(hex.replace("#", ""), 16);
-        const r = (bigint >> 16) & 255;
-        const g = (bigint >> 8) & 255;
-        const b = bigint & 255;
-        return `rgba(${r}, ${g}, ${b}, ${alpha})`;
-    }
+    const [colors, setColors] = useState<string[]>([
+        "#4a6d73",
+        "#b78972",
+        "#691209",
+    ]);
 
     return (
         <>
-            {/* <div
+            <div
                 className={`
-                        absolute h-[30rem] w-full -z-50 from-40 
-                        top-0
-                        transition-all duration-200 ease-in-out
-                    `}
+                    absolute h-[30rem] w-full -z-50 from-40 
+                    top-0
+                    transition-all duration-200 ease-in-out overflow-hidden
+                    bg-blend-screen
+                `}
                 style={{
-                    backgroundImage: `linear-gradient(to bottom, ${currentColor}80, transparent)`,
+                    backgroundImage: `linear-gradient(to bottom, ${darkenColor(colors[0], 1.5)}, transparent)`,
+                    filter: ` brightness(0.7) contrast(1.2) saturate(1.5)`,
                 }}
-            ></div> */}
+            >
+                <div className="absolute inset-0 flex items-center justify-center blur-3xl md:m-auto md:max-w-lg">
+                    <div
+                        style={{ backgroundColor: colors[0] }}
+                        className={`absolute rounded-full bg-[${colors[0]}] size-100 -top-1/3 -left-1/4 blur-3xl`}
+                    ></div>
+                    <div
+                        style={{ backgroundColor: colors[2] }}
+                        className={`absolute rounded-full -right-1/4 -top-1/3 w-80 h-100 blur-3xl`}
+                    ></div>
+                    <div
+                        style={{ backgroundColor: colors[1] }}
+                        className={`absolute rounded-full -top-2  h-40 w-88 -rotate-45 blur-3xl`}
+                    ></div>
+                </div>
+            </div>
             {isUser && (
                 <div className="absolute top-0 md:top-20 w-full max-w-2xl mx-auto flex flex-row justify-end gap-3 p-5 md:p-0">
                     <Link href={`/edit`} className="">
@@ -58,7 +71,7 @@ export default function Profile({
                     <Avatar
                         size={120}
                         src={user.avatar_url}
-                        setCurrentColor={setCurrentColor}
+                        setColors={setColors}
                     />
                 </picture>
                 <div className="flex flex-col items-center w-full">

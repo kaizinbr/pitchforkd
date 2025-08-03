@@ -3,49 +3,71 @@ import { useState, useEffect } from "react";
 import { Avatar as UserAvatar } from "@mantine/core";
 import { createClient } from "@/utils/supabase/client";
 import { extractColors } from "extract-colors";
+import ColorThief from "colorthief";
+import axios from "axios";
 
 export default function Avatar({
     src,
     size,
     className,
-    setCurrentColor,
+    setColors,
     isIcon,
 }: {
     src: string | null;
     size: number;
     className?: string;
-    setCurrentColor?: (color: string) => void;
+    setColors?: (colors: string[]) => void;
     isIcon?: boolean;
 }) {
     const supabase = createClient();
     const [avatarSrc, setAvatarSrc] = useState<string | null>(src);
-    // console.log("Avatar src:", avatarSrc);
-
-    function updateColor(colors: { hex: string; intensity: number }[]) {
-        if (setCurrentColor) {
-            const maxIntensityColor = colors.reduce((prev, current) => {
-                const prevIntensity = prev.intensity;
-                const currentIntensity = current.intensity;
-                return currentIntensity > prevIntensity ? current : prev;
-            });
-            setCurrentColor(maxIntensityColor.hex);
-            console.log("Color:", maxIntensityColor.hex);
-        }
-    }
 
     useEffect(() => {
         async function downloadImage(path: string) {
             try {
-
                 if (path.startsWith("https")) {
                     setAvatarSrc(path);
                     if (!isIcon) {
                         try {
-                            extractColors(path)
-                                .then((colors) => {
-                                    updateColor(colors);
-                                })
-                                .catch(console.error);
+                            const img = new Image();
+                            img.crossOrigin = "anonymous"; // Para evitar problemas de CORS
+
+                            img.onload = () => {
+                                try {
+                                    const colorThief = new ColorThief();
+                                    // Agora pode usar o elemento img carregado
+                                    const dominantColor =
+                                        colorThief.getColor(img);
+                                    const palette = colorThief.getPalette(
+                                        img,
+                                        3
+                                    ); // 3 cores
+
+                                    console.log(
+                                        "Dominant Color:",
+                                        dominantColor
+                                    );
+                                    console.log("Palette:", palette);
+                                    const colors = [
+                                        `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`,
+                                        `rgb(${palette[1][0]}, ${palette[1][1]}, ${palette[1][2]})`,
+                                        `rgb(${palette[2][0]}, ${palette[2][1]}, ${palette[2][2]})`,
+                                    ];
+                                    if (setColors) setColors(colors);
+                                } catch (error) {
+                                    console.error(
+                                        "Erro ao extrair cores:",
+                                        error
+                                    );
+                                }
+                            };
+
+                            img.onerror = () => {
+                                console.error("Erro ao carregar a imagem");
+                            };
+
+                            // Definir a URL da imagem por último
+                            img.src = path;
                         } catch (error) {
                             console.error("Error extracting colors:", error);
                         }
@@ -57,11 +79,43 @@ export default function Avatar({
                     setAvatarSrc(path);
                     if (!isIcon) {
                         try {
-                            extractColors(path)
-                                .then((colors) => {
-                                    updateColor(colors);
-                                })
-                                .catch(console.error);
+                            const img = new Image();
+                            img.src = path;
+                            img.crossOrigin = "anonymous"; // Para evitar problemas de CORS
+
+                            img.onload = () => {
+                                try {
+                                    const colorThief = new ColorThief();
+                                    const dominantColor =
+                                        colorThief.getColor(img);
+                                    const palette = colorThief.getPalette(
+                                        img,
+                                        3
+                                    ); // 3 cores
+
+                                    console.log(
+                                        "Dominant Color:",
+                                        dominantColor
+                                    );
+                                    console.log("Palette:", palette);
+                                    const colors = [
+                                        `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`,
+                                        `rgb(${palette[1][0]}, ${palette[1][1]}, ${palette[1][2]})`,
+                                        `rgb(${palette[2][0]}, ${palette[2][1]}, ${palette[2][2]})`,
+                                    ];
+                                    if (setColors) setColors(colors);
+                                } catch (error) {
+                                    console.error(
+                                        "Erro ao extrair cores:",
+                                        error
+                                    );
+                                }
+                            };
+
+                            img.onerror = () => {
+                                console.error("Erro ao carregar a imagem");
+                            };
+                            img.src = path;
                         } catch (error) {
                             console.error("Error extracting colors:", error);
                         }
@@ -77,11 +131,33 @@ export default function Avatar({
                 // console.log(data.publicUrl);
                 if (!isIcon) {
                     try {
-                        extractColors(data.publicUrl)
-                            .then((colors) => {
-                                updateColor(colors);
-                            })
-                            .catch(console.error);
+                        const img = new Image();
+                        img.src = data.publicUrl;
+                        img.crossOrigin = "anonymous"; // Para evitar problemas de CORS
+
+                        img.onload = () => {
+                            try {
+                                const colorThief = new ColorThief();
+                                const dominantColor = colorThief.getColor(img);
+                                const palette = colorThief.getPalette(img, 3); // 3 cores
+
+                                console.log("Dominant Color:", dominantColor);
+                                console.log("Palette:", palette);
+                                const colors = [
+                                    `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`,
+                                    `rgb(${palette[1][0]}, ${palette[1][1]}, ${palette[1][2]})`,
+                                    `rgb(${palette[2][0]}, ${palette[2][1]}, ${palette[2][2]})`,
+                                ];
+                                if (setColors) setColors(colors);
+                            } catch (error) {
+                                console.error("Erro ao extrair cores:", error);
+                            }
+                        };
+
+                        img.onerror = () => {
+                            console.error("Erro ao carregar a imagem");
+                        };
+                            img.src = data.publicUrl;
                     } catch (error) {
                         console.error("Error extracting colors:", error);
                     }

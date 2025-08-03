@@ -109,12 +109,9 @@ export default function AlbumMain({ album_id }: { album_id: string | null }) {
                 style={{
                     backgroundImage: gradient,
                     backgroundSize: "cover",
-                    // backgroundBlendMode: "screen",
+                    backgroundBlendMode: "screen",
                     backgroundColor: "rgba(0, 0, 0, 0.5)",
                     transition: "background-image 0.8s ease-in-out",
-                    // "radial-gradient(ellipse at top left, rgba(39,45,131,0.8) 0%, rgba(99,148,180,0.3) 50%, rgba(0,0,0,0) 100%)",
-                    // radial-gradient(ellipse at top left, rgba(39,45,131,0.8), rgba(99,148,180,0.3), rgba(0,0,0,0))
-                    // backgroundImage: `radial-gradient(ellipse at top left, #272d83, #6394b4), linear-gradient(to bottom, #272d83, transparent)`,
                 }}
 
                 //                 setGradient(`

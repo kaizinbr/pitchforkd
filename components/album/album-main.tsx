@@ -169,8 +169,8 @@ export default function AlbumMain({ album_id }: { album_id: string | null }) {
                     bg-blend-screen
                 `}
                 style={{
-                    backgroundImage: `linear-gradient(to bottom, ${darkenColor(color1, 2)}, transparent)`,
-                    filter: ` brightness(0.5) contrast(1.2) saturate(1.5)`,
+                    backgroundImage: `linear-gradient(to bottom, ${darkenColor(color1, 1.5)}, transparent)`,
+                    filter: ` brightness(0.7) contrast(1.2) saturate(1.5)`,
                 }}
             >
                 <div className="absolute inset-0 flex items-center justify-center blur-3xl">

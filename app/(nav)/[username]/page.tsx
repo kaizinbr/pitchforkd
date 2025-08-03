@@ -98,7 +98,7 @@ export default async function Page({
                         isUser={isUser}
                         reviewCount={reviewCount?.length}
                     />
-                    <FollowBtn user={data[0]} />
+                    <FollowBtn user={data[0]} isUser={isUser} />
                     <Favorites favorites={data[0].favorites} isUser={isUser} />
                     <UserRatings user={data[0]} />
                 </>

@@ -1,7 +1,6 @@
 "use client";
 
 import Avatar from "@/components/ui/Avatar";
-import ColorThief from "colorthief";
 import { darkenColor } from "@/components/album/gen-gradient";
 import {
     TbSettings2,

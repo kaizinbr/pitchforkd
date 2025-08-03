@@ -65,7 +65,7 @@ export default async function Page({
     // console.log(data, albumData);
 
     return (
-        <div className="flex flex-col gap-4 items-center relative pt-16 md:pt-24">
+        <div className="flex flex-col gap-4 items-center relative pt-16 md:pt-24 w-full overflow-x-hidden">
             <ShareRate rate={data[0]} />
         </div>
     );

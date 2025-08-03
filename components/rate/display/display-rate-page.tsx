@@ -1,7 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { extractColors } from "extract-colors";
+import ColorThief from "colorthief";
+import { darkenColor } from "@/components/album/gen-gradient";
 import axios from "axios";
 import AlbumCover from "@/components/album/album-cover";
 import AlbumData from "@/components/album/album-data";
@@ -31,19 +32,9 @@ export default function DisplayRate({
     const [canDelete, setCanDelete] = useState(false);
     const [liked, setLiked] = useState(false);
     const [totalLikes, setTotalLikes] = useState(0);
-    const [currentColor, setCurrentColor] = useState<string>("#4a6d73");
-
-    function updateColor(colors: { hex: string; intensity: number }[]) {
-        if (setCurrentColor) {
-            const maxIntensityColor = colors.reduce((prev, current) => {
-                const prevIntensity = prev.intensity;
-                const currentIntensity = current.intensity;
-                return currentIntensity > prevIntensity ? current : prev;
-            });
-            setCurrentColor(maxIntensityColor.hex);
-            console.log("Color:", maxIntensityColor.hex);
-        }
-    }
+    const [color1, setColor1] = useState<string>("#4a6d73");
+    const [color2, setColor2] = useState<string>("#b78972");
+    const [color3, setColor3] = useState<string>("#691209");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -77,11 +68,42 @@ export default function DisplayRate({
             }
 
             setLoading(false);
-            extractColors(response.data.images[0]?.url)
-                .then((colors) => {
-                    updateColor(colors);
-                })
-                .catch(console.error);
+
+            const img = new Image();
+            img.crossOrigin = "anonymous"; // Para evitar problemas de CORS
+
+            img.onload = () => {
+                try {
+                    const colorThief = new ColorThief();
+                    // Agora pode usar o elemento img carregado
+                    const dominantColor = colorThief.getColor(img);
+                    const palette = colorThief.getPalette(img, 3); // 3 cores
+
+                    console.log("Dominant Color:", dominantColor);
+                    console.log("Palette:", palette);
+
+                    setColor1(
+                        `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`
+                    );
+                    setColor2(
+                        `rgb(${palette[1][0]}, ${palette[1][1]}, ${palette[1][2]})`
+                    );
+                    setColor3(
+                        `rgb(${palette[2][0]}, ${palette[2][1]}, ${palette[2][2]})`
+                    );
+                } catch (error) {
+                    console.error("Erro ao extrair cores:", error);
+                }
+            };
+
+            img.onerror = () => {
+                console.error("Erro ao carregar a imagem");
+            };
+
+            // Definir a URL da imagem por último
+            img.src = response.data.images[0]?.url;
+
+            setLoading(false);
         };
 
         const fetchUser = async () => {
@@ -144,7 +166,7 @@ export default function DisplayRate({
             }
 
             setTotalLikes(data.length);
-        }
+        };
 
         verifyLike();
         getLikes();
@@ -158,20 +180,29 @@ export default function DisplayRate({
                 <>
                     <div
                         className={`
-                        absolute h-[30rem] w-full -z-50 from-40 
-                        top-0
-                        transition-all duration-200 ease-in-out
-                    `}
+                            absolute h-[30rem] w-full -z-50 from-40 
+                            top-0
+                            transition-all duration-200 ease-in-out overflow-hidden
+                            bg-blend-screen
+                        `}
                         style={{
-                            // backgroundImage: `linear-gradient(to bottom, ${currentColor}, transparent)`,
+                            backgroundImage: `linear-gradient(to bottom, ${darkenColor(color1, 2)}, transparent)`,
+                            filter: ` brightness(0.5) contrast(1.2) saturate(1.5)`,
                         }}
                     >
-                        <div className="size-full my-8 md:mt-16 flex justify-center items-start">
-                            <div className="size-80 blur-[100px]"
-                            style={{
-                            // backgroundImage: `linear-gradient(to bottom, ${currentColor}, transparent)`,
-                            backgroundColor: currentColor,
-                        }}></div>
+                        <div className="absolute inset-0 flex items-center justify-center blur-3xl">
+                            <div
+                                style={{ backgroundColor: color1 }}
+                                className={`absolute rounded-full bg-[${color1}] size-100 -top-1/3 -left-1/4 blur-3xl`}
+                            ></div>
+                            <div
+                                style={{ backgroundColor: color3 }}
+                                className={`absolute rounded-full -right-1/4 -top-1/3 w-80 h-100 blur-3xl`}
+                            ></div>
+                            <div
+                                style={{ backgroundColor: color2 }}
+                                className={`absolute rounded-full left-0 top-1/3 size-40 blur-3xl`}
+                            ></div>
                         </div>
                     </div>
                     <AlbumCover album={album} loading={loading} />
@@ -203,7 +234,11 @@ export default function DisplayRate({
                             shadow-md
                         `}
                     />
-                    <UserRate review={rate} loading={loading} likes={totalLikes} />
+                    <UserRate
+                        review={rate}
+                        loading={loading}
+                        likes={totalLikes}
+                    />
                     {tracks.length > 0 ? (
                         <AlbumTracksDisplay
                             tracks={tracks}

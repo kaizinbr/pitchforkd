@@ -48,7 +48,7 @@ export default function AlbumMain({ album_id }: { album_id: string | null }) {
     useEffect(() => {
         const fetchData = async () => {
             const response = await axios.get(`/api/spot/album/${album_id}`);
-            console.log(response.data);
+            // console.log(response.data);
             setAlbum(response.data);
             setTracks(response.data.tracks.items);
 
@@ -83,6 +83,8 @@ export default function AlbumMain({ album_id }: { album_id: string | null }) {
                     const sortedColors = [...colors]
                         .filter((c) => c.lightness <= 0.8)
                         .sort((a, b) => b.intensity - a.intensity);
+
+                    console.log("Sorted Colors:", sortedColors);
 
                     const css = generatePleasantGradient(sortedColors)
                     

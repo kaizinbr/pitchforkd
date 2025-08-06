@@ -1,18 +1,31 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
+import axios from "axios";
 import useEmblaCarousel from "embla-carousel-react";
 import { EmblaCarouselType } from "embla-carousel";
-import Image from "next/image";
+import NextImage from "next/image";
 import Link from "next/link";
 import Autoplay from "embla-carousel-autoplay";
+import ColorThief from "colorthief";
+import { lightenColor, getTextColor } from "@/components/album/gen-gradient";
 import {
     PrevButton,
     NextButton,
     usePrevNextButtons,
 } from "./EmblaCarouselArrowButtons";
 
-const ImageCarousel = () => {
+interface CarouselItem {
+    title: string;
+    artist: string;
+    src: string;
+    from: string;
+    to: string;
+    text: string;
+    album_id: string;
+}
+
+export default function ImageCarousel() {
     const [emblaRef, emblaApi] = useEmblaCarousel(
         {
             loop: true,
@@ -41,132 +54,195 @@ const ImageCarousel = () => {
         onNextButtonClick,
     } = usePrevNextButtons(emblaApi, onNavButtonClick);
 
-    const data = [
-        {
-            title: "Only cry in the rain",
-            artist: "CHUU",
-            src: "https://i.scdn.co/image/ab67616d0000b2733533ec688f7b48a135fd1e47",
+    const [bannerContent, setBannerContent] = useState<CarouselItem[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    // Função para extrair cores de uma imagem
+    const extractColors = (imageUrl: string): Promise<{ from: string; to: string; text: string }> => {
+        return new Promise((resolve) => {
+            if (!imageUrl) {
+                console.error("URL da imagem não fornecida");
+                resolve({
+                    from: "#1B3955",
+                    to: "#A8B8C4",
+                    text: "text-white"
+                });
+                return;
+            }
+
+            const img = new window.Image();
+            img.crossOrigin = "anonymous";
+            
+            img.onload = () => {
+                try {
+                    const colorThief = new ColorThief();
+                    const dominantColor = colorThief.getColor(img);
+                    const palette = colorThief.getPalette(img, 3);
+
+                    // console.log("Dominant Color:", dominantColor);
+                    console.log("Palette:", palette);
+
+                    const color1 = `rgb(${palette[0][0]}, ${palette[0][1]}, ${palette[0][2]})`;
+                    const color2 = palette[1]
+                        ? `rgb(${palette[1][0]}, ${palette[1][1]}, ${palette[1][2]})`
+                        : color1;
+
+                        const textColor = getTextColor(color1);
+
+                    resolve({
+                        from: color1,
+                        to: color2,
+                        text: textColor
+                    });
+                } catch (error) {
+                    console.error("Erro ao extrair cores:", error);
+                    // Fallback para cores padrão
+                    resolve({
+                        from: "#1B3955",
+                        to: "#A8B8C4",
+                    text: "text-white"
+                    });
+                }
+            };
+            
+            img.onerror = () => {
+                console.error("Erro ao carregar a imagem:", imageUrl);
+                // Fallback para cores padrão
+                resolve({
+                    from: "#1B3955",
+                    to: "#A8B8C4",
+                    text: "text-white"
+                });
+            };
+            
+            img.src = imageUrl;
+        });
+    };
+
+    // Função para processar um item e extrair suas cores
+    const processItem = async (item: any): Promise<CarouselItem> => {
+        const baseItem = {
+            title: item.track.album.name,
+            artist: item.track.album.artists[0].name,
+            src: item.track.album.images[1]?.url || item.track.album.images[0]?.url,
             from: "#1B3955",
             to: "#A8B8C4",
             text: "text-white",
-            album_id: "5BenIQ2E8TFdZoAtPjUP9a",
-        },
-        {
-            title: "Love Language",
-            artist: "TOMORROW X TOGETHER",
-            src: "/lovelanguage.webp",
-            from: "#D40507",
-            to: "#E7CDC0",
-            text: "text-white",
-            album_id: "72JboNccBYyXR676YNfcYE",
-        },
-        {
-            title: "Ruby",
-            artist: "JENNIE",
-            src: "https://i.scdn.co/image/ab67616d0000b2735a43918ea90bf1e44b7bdcfd",
-            from: "#090E0E",
-            to: "#E30806",
-            text: "text-white",
-            album_id: "1vWMw6pu3err6qqZzI3RhH",
-        },
-        {
-            title: "Alter Ego",
-            artist: "LISA",
-            src: "https://i.scdn.co/image/ab67616d0000b2738034090e4afb5b053cd3e067",
-            from: "#0A1017",
-            to: "#B86937",
-            text: "text-white",
-            album_id: "5eoWRkeplmcCL97afSMJVm",
-        },
-        {
-            title: "MAYHEM",
-            artist: "Lady Gaga",
-            src: "https://i.scdn.co/image/ab67616d0000b273b0860cf0a98e09663c82290c",
-            from: "#343434",
-            to: "#ADADAD",
-            text: "text-white",
-            album_id: "2MHUaRi9OCyTN02SoyRRBJ",
-        },
-        {
-            title: "The Star Chapter: SANCTUARY",
-            artist: "TOMORROW X TOGETHER",
-            src: "https://i.scdn.co/image/ab67616d0000b273b612b8d797e8e3ec375ca60d",
-            from: "#384A7C",
-            to: "#C6AAC3",
-            text: "text-white",
-            album_id: "72JboNccBYyXR676YNfcYE",
-        },
-        {
-            title: "minisode 3: TOMORROW",
-            artist: "TOMORROW X TOGETHER",
-            src: "https://i.scdn.co/image/ab67616d0000b27303c996028737858321d2ffe0",
-            from: "#FE552A",
-            to: "#FA9579",
-            text: "text-white",
-            album_id: "0mDwrOXZHN1lgCNeBvkBbj",
-        },
-        {
-            title: "I Did: Bloom (Deluxe)",
-            artist: "Yves",
-            src: "https://i.scdn.co/image/ab67616d0000b2731fcabc8a98dd45fac3daf6ac",
-            from: "#85446E",
-            to: "#170D15",
-            text: "text-white",
-            album_id: "2haRGdLvimDfNlDBW1LAt1",
-        },
-        {
-            title: "What A Devastating Turn of Events",
-            artist: "Rachel Chinouriri",
-            src: "https://i.scdn.co/image/ab67616d0000b273e4f5675b69f75a4ff99302f0",
-            from: "#A7A3B5",
-            to: "#2E272D",
-            text: "text-white",
-            album_id: "1Td1oiZTQFYR7N1QX00uhr",
-        },
-    ];
+            album_id: item.track.album.id,
+        };
+
+        try {
+            const colors = await extractColors(baseItem.src);
+            return {
+                ...baseItem,
+                from: colors.from,
+                to: colors.to,
+                text: colors.text
+            };
+        } catch (error) {
+            console.error("Erro ao processar item:", error);
+            return baseItem;
+        }
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true);
+                const response = await axios.get(`/api/spot/banner`);
+                
+                // Processar cada item e extrair cores em paralelo
+                const itemPromises = response.data.tracks.items.map((item: any) => 
+                    processItem(item)
+                );
+                
+                // Aguardar todos os items serem processados
+                const processedItems = await Promise.all(itemPromises);
+                
+                setBannerContent(processedItems);
+                console.log("Banner content with colors:", processedItems);
+                
+            } catch (error) {
+                console.error("Erro ao buscar dados do banner:", error);
+                
+                // Fallback para dados estáticos se a API falhar
+                const fallbackData = [
+                    {
+                        title: "Only cry in the rain",
+                        artist: "CHUU",
+                        src: "https://i.scdn.co/image/ab67616d0000b2733533ec688f7b48a135fd1e47",
+                        from: "#1B3955",
+                        to: "#A8B8C4",
+                        text: "text-white",
+                        album_id: "5BenIQ2E8TFdZoAtPjUP9a",
+                    }
+                ];
+                setBannerContent(fallbackData);
+                
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
+
+    if (loading) {
+        return (
+            <div className="w-full max-w-[1000px] mx-auto px-5">
+                <div className="animate-pulse">
+                    <div className="bg-bunker-800 rounded-3xl h-64 md:h-80"></div>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <div className="embla" ref={emblaRef}>
             <div className="embla__container">
-                {data.map((image, index) => (
-                    <div key={index} className="embla__slide">
+                {bannerContent.map((album, index) => (
+                    <div key={`${album.album_id}-${index}`} className="embla__slide">
                         <Link
-                            href={`/album/${image.album_id}`}
-                            
+                            href={`/album/${album.album_id}`}
                             className={`
-                                        flex md:flex-row flex-col-reverse 
-                                        rounded-3xl p-8 gap-3
-                                        bg-gradient-to-br from-[${image.from}] to-[${image.to}] ${image.text}
-                                        shadow-inner 
-                                        w-full max-w-[422px] md:max-w-[750px] lg:max-w-[1000px]
-                                        max-[485px]:h-[485px]
-                                    `}
-                            style={{backgroundImage: `linear-gradient(to bottom right, ${image.from}, ${image.to})`}}
+                                flex md:flex-row flex-col-reverse 
+                                rounded-3xl p-8 gap-3
+                                ${album.text}
+                                shadow-inner 
+                                w-full max-w-[422px] md:max-w-[750px] lg:max-w-[1000px]
+                                max-[485px]:h-[485px]
+                                transition-all duration-300 
+                            `}
+                            style={{
+                                backgroundImage: `linear-gradient(to bottom right, ${album.from}, ${lightenColor(album.to, 1.5)})`,
+                            }}
                         >
                             <picture
                                 className={`
-                                                w-full h-auto rounded-xl overflow-hidden
-                                                md:max-w-64
-                                            `}
+                                    w-full h-auto rounded-xl overflow-hidden
+                                    md:max-w-64
+                                `}
                             >
-                                <Image
-                                    src={
-                                        typeof image.src === "string"
-                                            ? image.src
-                                            : ""
-                                    }
-                                    alt={`Slide ${index + 1}`}
+                                <NextImage
+                                    src={album.src}
+                                    alt={`${album.title} by ${album.artist}`}
                                     className="embla__slide__img"
                                     height={256}
                                     width={256}
+                                    loading="lazy"
                                 />
                             </picture>
-                            <div className="flex flex-col items-start justify-center pt-8 md:pt-0">
-                                <span className="text-sm text-bunker-200">Outras pessoas avaliaram:</span>
-                                <h2 className="font-bold text-lg md:text-2xl">
-                                    {image.title}
+                            <div className="flex flex-col items-start justify-center pt-8 md:pt-0"
+                                style={{ color: album.text }}
+                            >
+                                <span className="text-sm">
+                                    Outras pessoas avaliaram:
+                                </span>
+                                <h2 className="font-bold text-lg md:text-2xl line-clamp-2">
+                                    {album.title}
                                 </h2>
-                                <h3 className="text-base md:text-lg">
-                                    {image.artist}
+                                <h3 className="text-base md:text-lg line-clamp-1">
+                                    {album.artist}
                                 </h3>
                             </div>
                         </Link>
@@ -187,5 +263,4 @@ const ImageCarousel = () => {
             </div>
         </div>
     );
-};
-export default ImageCarousel;
+}

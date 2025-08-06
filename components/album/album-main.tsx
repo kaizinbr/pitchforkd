@@ -7,7 +7,7 @@ import AlbumData from "./album-data";
 import AlbumTracks from "./album-tracks";
 import AlbumBtn from "./album-btn";
 import ColorThief from "colorthief";
-import { darkenColor } from "./gen-gradient";
+import { darkenColor } from "@/components/album/gen-gradient";
 
 export default function AlbumMain({ album_id }: { album_id: string | null }) {
     const [album, setAlbum] = useState<any>([]);

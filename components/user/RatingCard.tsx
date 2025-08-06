@@ -29,15 +29,16 @@ export default function RatingCard({
     const [album, setAlbum] = useState<any>();
     const [loading, setLoading] = useState(true);
     const [liked, setLiked] = useState(false);
+    const [hasContent, setHasContent] = useState(false);
 
-    const content = 
+    const content =
         review.content &&
         (review.content as Content).content.length > 1 &&
         (review.content as Content).content[0]?.content[0].text === ""
             ? ""
             : review.content;
 
-    console.log("Content:", content);
+    // console.log("Content:", content);
 
     const editor = useEditor({
         extensions: [StarterKit, Underline],
@@ -47,33 +48,63 @@ export default function RatingCard({
     });
 
     useEffect(() => {
-        const verifyLike = async () => {
-            const {
-                data: { user },
-            } = await supabase.auth.getUser();
-            if (!user) {
-                console.error("User not logged in");
-                return;
+        if (review.content) {
+            const content = review.content as Content;
+            // setHasContent(
+            //     content.content.length > 0 &&
+            //         Array.isArray(content.content[0]?.content) &&
+            //         content.content[0].content.length > 0
+            // );
+
+            console.log("Content:", content);
+
+
+            // Verifica se existe conteúdo significativo no campo "text"
+            if (
+                !content ||
+                !(content as Content).content ||
+                (content as Content).content.length === 0 ||
+                !Array.isArray((content as Content).content[0]?.content) ||
+                ((content as Content).content[0]?.content.length === 1 &&
+                    ((content as Content).content[0]?.content[0]?.text ?? "") === "")
+            ) {
+                setHasContent(false);
+            } else {
+                setHasContent(true);
             }
 
-            const { data, error } = await supabase
-                .from("likes")
-                .select("*")
-                .eq("user_id", user.id)
-                .eq("rating_id", review.id);
+            console.log("Has Content:", hasContent);
+        }
+    }, [review.content]);
 
-            if (error) {
-                console.error(error);
-                return;
-            }
+    // useEffect(() => {
+    //     const verifyLike = async () => {
+    //         const {
+    //             data: { user },
+    //         } = await supabase.auth.getUser();
+    //         if (!user) {
+    //             console.error("User not logged in");
+    //             return;
+    //         }
 
-            if (data.length) {
-                setLiked(true);
-            }
-        };
+    //         const { data, error } = await supabase
+    //             .from("likes")
+    //             .select("*")
+    //             .eq("user_id", user.id)
+    //             .eq("rating_id", review.id);
 
-        verifyLike();
-    }, [review.id]);
+    //         if (error) {
+    //             console.error(error);
+    //             return;
+    //         }
+
+    //         if (data.length) {
+    //             setLiked(true);
+    //         }
+    //     };
+
+    //     verifyLike();
+    // }, [review.id]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -149,85 +180,87 @@ export default function RatingCard({
                         <Link
                             href={`/r/${review.shorten}`}
                             className={`
-                            flex flex-col *:w-full
+                            flex flex-row
                             `}
                         >
-                            <div className="flex flex-row items-start gap-2">
-                                <div className="flex relative flex-col justify-center items-center size-8 rounded-full">
-                                    <Avatar
-                                        size={32}
-                                        src={review.profiles.avatar_url}
-                                        className={"size-8"}
-                                        isIcon
-                                    />
-                                </div>
-                                <div className="flex items-start justify-center flex-row gap-2">
-                                    <h2 className="text-sm text-neutral-100">
-                                        <span className="">
-                                            {review.profiles.name ||
-                                                review.profiles.username}{" "}
-                                            avaliou
-                                        </span>{" "}
-                                        <span className="font-bold">
-                                            {album && album.name}
-                                        </span>{" "}
-                                        <span className="">de</span>{" "}
-                                        <span className="font-bold">
-                                            {album && album.artists[0].name}
-                                        </span>
-                                    </h2>
-                                </div>
+                            <div className="flex relative flex-col justify-center items-center size-8 rounded-full w-8 h-8 mr-3">
+                                <Avatar
+                                    size={32}
+                                    src={review.profiles.avatar_url}
+                                    className={"size-8"}
+                                    isIcon
+                                />
                             </div>
-                            <div className="flex flex-row relative my-3">
-                                {album && (
-                                    <picture className=" size-40">
-                                        <Image
-                                            src={album.images[0].url}
-                                            alt={album.name}
-                                            width={500}
-                                            height={500}
-                                            className="object-cover size-40 max-h-[160px] rounded-lg"
-                                        />
-                                    </picture>
+
+                            <div className="flex flex-col gap-3 w-9/10 max-w-9/10">
+                                <h2 className="text-sm text-neutral-100 font-medium">
+                                    <span className="">
+                                        {review.profiles.name ||
+                                            review.profiles.username}{" "}
+                                        avaliou
+                                    </span>{" "}
+                                    <span className="font-bold">
+                                        {album && album.name}
+                                    </span>{" "}
+                                    <span className="">de</span>{" "}
+                                    <span className="font-bold">
+                                        {album && album.artists[0].name}
+                                    </span>
+                                </h2>
+                                {hasContent && (
+                                    <div className="flex w-full -mt-2">
+                                        {review.content && (
+                                            <TextareaDisplay
+                                                editor={editor}
+                                                lineClamp={6}
+                                            />
+                                        )}
+                                    </div>
                                 )}
-                                <div
-                                    className={`
-                                        flex flex-col justify-start items-start px-3 gap-2
-                                        w-[calc(100%-160px)]
-                                    `}
-                                >
-                                    <span className="text-neutral-100 text-xl font-extrabold">
-                                        {formatRate(review.total)}
-                                    </span>
-
-                                    {review.content && (
-                                        <TextareaDisplay
-                                            editor={editor}
-                                            lineClamp={4}
-                                        />
+                                <div className="flex flex-row relative">
+                                    {album && (
+                                        <picture className=" size-40">
+                                            <Image
+                                                src={album.images[0].url}
+                                                alt={album.name}
+                                                width={500}
+                                                height={500}
+                                                className="object-cover size-40 max-h-[160px] rounded-lg"
+                                            />
+                                        </picture>
                                     )}
+                                    <div
+                                        className={`
+                                            flex flex-col justify-start items-start px-3 gap-2
+                                            w-[calc(100%-160px)]
+                                        `}
+                                    >
+                                        <span className="text-neutral-100 text-xl font-extrabold">
+                                            {formatRate(review.total)}
+                                        </span>
 
-                                    <span className="text-neutral-300 text-xs">
-                                        {review.ratings.length} músicas
-                                        avaliadas
+                                        <span className="text-neutral-300 text-xs">
+                                            {review.ratings.length} músicas
+                                            avaliadas
+                                        </span>
+                                    </div>
+                                </div>
+                                <div className="flex items-center justify-between flex-row gap-2">
+                                    <span className=" h-full flex items-center text-xs text-bunker-400 ">
+                                        {displayPastRelativeTime(
+                                            new Date(review.created_at)
+                                        )}
                                     </span>
                                 </div>
-                            </div>
-                            <div className="flex items-center justify-between flex-row gap-2">
-                                <span className=" h-full flex items-center text-xs text-bunker-400 ">
-                                    {displayPastRelativeTime(
-                                        new Date(review.created_at)
-                                    )}
-                                </span>
                             </div>
                         </Link>
-                        <LikeBtn
+                        {/* <LikeBtn
                             rating_id={review.id}
                             owner_id={review.user_id}
                             liked={liked}
                             setLiked={setLiked}
                             className="absolute bottom-5 right-5"
-                        />
+                        /> */}
                     </div>
                 </div>
             ) : (

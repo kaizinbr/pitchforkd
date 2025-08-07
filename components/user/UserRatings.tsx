@@ -80,9 +80,9 @@ export default function UserRatings({ user }: { user: any }) {
     useEffect(() => {
         async function fetchRatings() {
             // Verificar cache primeiro
-            const cachedRatings = localStorage.getItem(STORAGE_KEY);
-            const cachedOffset = localStorage.getItem(OFFSET_KEY);
-            const cachedTotal = localStorage.getItem(TOTAL_KEY);
+            const cachedRatings = sessionStorage.getItem(STORAGE_KEY);
+            const cachedOffset = sessionStorage.getItem(OFFSET_KEY);
+            const cachedTotal = sessionStorage.getItem(TOTAL_KEY);
             
             if (cachedRatings && cachedTotal) {
                 // Usar dados do cache
@@ -134,9 +134,9 @@ export default function UserRatings({ user }: { user: any }) {
             if (data) {
                 setRatings(data);
                 setTotal(totalCount);
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-                localStorage.setItem(TOTAL_KEY, totalCount.toString());
-                localStorage.setItem(OFFSET_KEY, "30");
+                sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+                sessionStorage.setItem(TOTAL_KEY, totalCount.toString());
+                sessionStorage.setItem(OFFSET_KEY, "30");
             }
             
             setLoading(false);
@@ -148,17 +148,17 @@ export default function UserRatings({ user }: { user: any }) {
     // Salvar no cache sempre que ratings mudar
     useEffect(() => {
         if (ratings.length > 0) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(ratings));
-            localStorage.setItem(OFFSET_KEY, offset.toString());
-            localStorage.setItem(TOTAL_KEY, total.toString());
+            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(ratings));
+            sessionStorage.setItem(OFFSET_KEY, offset.toString());
+            sessionStorage.setItem(TOTAL_KEY, total.toString());
         }
     }, [ratings, offset, total, STORAGE_KEY, OFFSET_KEY, TOTAL_KEY]);
 
     // Função para limpar cache (opcional)
     const clearCache = () => {
-        localStorage.removeItem(STORAGE_KEY);
-        localStorage.removeItem(OFFSET_KEY);
-        localStorage.removeItem(TOTAL_KEY);
+        sessionStorage.removeItem(STORAGE_KEY);
+        sessionStorage.removeItem(OFFSET_KEY);
+        sessionStorage.removeItem(TOTAL_KEY);
         setRatings([]);
         setOffset(30);
         setTotal(0);

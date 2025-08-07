@@ -73,10 +73,10 @@ export default function DisplayReviews({
         };
     }, [loadMoreData, loadingMore, allReviews.length, ratingsLength]);
 
-    // Carregar dados do localStorage na inicialização
+    // Carregar dados do sessionStorage na inicialização
     useEffect(() => {
-        const cachedReviews = localStorage.getItem(STORAGE_KEY);
-        const cachedOffset = localStorage.getItem(OFFSET_KEY);
+        const cachedReviews = sessionStorage.getItem(STORAGE_KEY);
+        const cachedOffset = sessionStorage.getItem(OFFSET_KEY);
         
         if (cachedReviews) {
             const parsedReviews = JSON.parse(cachedReviews);
@@ -88,15 +88,15 @@ export default function DisplayReviews({
         } else if (ratings) {
             // Se não tem cache, usa os dados iniciais
             setAllReviews(ratings);
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(ratings));
+            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(ratings));
         }
     }, [ratings]);
 
-    // Salvar no localStorage sempre que allReviews mudar
+    // Salvar no sessionStorage sempre que allReviews mudar
     useEffect(() => {
         if (allReviews.length > 0) {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(allReviews));
-            localStorage.setItem(OFFSET_KEY, offset.toString());
+            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(allReviews));
+            sessionStorage.setItem(OFFSET_KEY, offset.toString());
         }
     }, [allReviews, offset]);
 
@@ -123,8 +123,8 @@ export default function DisplayReviews({
 
     // Função para limpar cache (opcional)
     const clearCache = () => {
-        localStorage.removeItem(STORAGE_KEY);
-        localStorage.removeItem(OFFSET_KEY);
+        sessionStorage.removeItem(STORAGE_KEY);
+        sessionStorage.removeItem(OFFSET_KEY);
         setAllReviews(ratings || []);
         setOffset(30);
     };

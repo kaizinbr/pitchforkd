@@ -97,11 +97,11 @@ export default async function Page({
         <div className="flex flex-col gap-4 items-center relative">
             {data.length > 0 && reviewCount ? (
                 <>
-                    <UserHeader
+                    {/* <UserHeader
                         user={data[0]}
                         isUser={isUser}
                         reviewCount={reviewCount?.length}
-                    />
+                    /> */}
                     <Favorites favorites={data[0].favorites} isUser={isUser} />
                     <UserRatings user={data[0]} />
                 </>

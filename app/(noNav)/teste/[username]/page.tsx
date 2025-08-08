@@ -1,5 +1,5 @@
-import Favorites from "@/components/user/Favorites";
-import Profile from "@/components/user/Profile";
+import Favorites from "@/components/user/FavoritesHeader";
+import UserHeader from "@/components/user/Profile";
 import UserRatings from "@/components/user/UserRatings";
 import { createClient } from "@/utils/supabase/server";
 import type { Metadata, ResolvingMetadata } from "next";
@@ -97,7 +97,7 @@ export default async function Page({
         <div className="flex flex-col gap-4 items-center relative">
             {data.length > 0 && reviewCount ? (
                 <>
-                    <Profile
+                    <UserHeader
                         user={data[0]}
                         isUser={isUser}
                         reviewCount={reviewCount?.length}

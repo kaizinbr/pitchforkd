@@ -35,8 +35,10 @@ export default function FollowBtn({ user, isUser }: { user: User, isUser: boolea
 
     return (
         <button
-            className={`px-6 py-2 rounded-full text-sm font-semibold transition-colors duration-200
-                border ${
+            className={`
+                px-6 py-2 rounded-full text-sm font-semibold transition-colors duration-200
+                cursor-pointer
+                border-2 ${
                 isFollowing
                     ? " text-neutral-300 hover:bg-neutral-700 border-main-500"
                     : "bg-main-500 text-white hover:bg-main-600 border-transparent"                

@@ -10,15 +10,21 @@ import {
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
+import FollowBtn from "@/components/user/FollowBtn";
+import Favorites from "@/components/user/FavoritesHeader";
 
-export default function Profile({
+export default function UserHeader({
     user,
     reviewCount,
     isUser,
+    followersCount,
+    followingCount,
 }: {
     user: any;
     reviewCount: number;
     isUser: boolean;
+    followersCount: number;
+    followingCount: number;
 }) {
     const [colors, setColors] = useState<string[]>([
         "#4a6d73",
@@ -103,10 +109,27 @@ export default function Profile({
                         </div>
                     )}
                     <p className="text-xs font-medium text-neutral-300 text-center mt-1">
-                        {reviewCount} avaliações
+                        {reviewCount} avaliaç{reviewCount !== 1 ? "ões" : "ão"}
                     </p>
+                    <div className="flex flex-row gap-4 text-xs font-medium text-neutral-300 mt-1">
+                        <Link
+                            href={`/${user.username}/followers`}
+                            className="hover:underline"
+                        >
+                            {followersCount} seguidor{followersCount !== 1 ? "es" : ""}
+                        </Link>
+                        <Link
+                            href={`/${user.username}/following`}
+                            className="hover:underline"
+                        >
+                            {followingCount} seguindo
+                        </Link>
+                    </div>
                 </div>
             </div>
+                    
+            <FollowBtn user={user} isUser={isUser} />
+            <Favorites favorites={user.favorites} isUser={isUser} />
         </>
     );
 }

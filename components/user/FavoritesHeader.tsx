@@ -176,9 +176,75 @@ export default function Favorites({
         },
     ];
 
+    // console.log("Favorites", favorites);
+
     return (
         <>
-            <Tabs
+        <div className="flex flex-row w-full px-4 py-6 max-w-2xl">
+                    <div className="flex flex-col w-1/2">
+                        <h3 className="text-sm mb-2">Álbum do momento</h3>
+                        {favorites[0].albuns.length > 0 ? (
+                                    <Link
+                                            className="flex flex-col items-center size-18"
+                                            href={`/album/${favorites[0].albuns[0].id}`}
+                                        >
+                                            <Image
+                                                src={favorites[0].albuns[0].src}
+                                                alt={favorites[0].albuns[0].title}
+                                                width={80}
+                                                height={80}
+                                                className="size-18 object-cover rounded-sm"
+                                            />
+                                        </Link>
+                        ) : isUser ? (
+                            <div className="flex items-center justify-start mt-4 w-full min-h-18">
+                                <Link href="/edit">
+                                    <div className="flex flex-col items-center justify-center gap-2 size-18 rounded-lg bg-bunker-600 text-white cursor-pointer p-4">
+                                        <Plus size={24} />
+                                    </div>
+                                </Link>
+                            </div>
+                        ) : (
+                            <div className="flex items-center w-full min-h-18">
+                                <span className="text-bunker-300 text-sm">
+                                    Nada por aqui ainda...
+                                </span>
+                            </div>
+                        )}
+                    </div>
+                    <div className="flex flex-col w-1/2 items-">
+                        <h3 className="text-sm mb-2">Artista do momento</h3>
+                        {favorites[0].artists.length > 0 ? (
+                                    <Link
+                                            className="flex flex-col items-center size-19"
+                                            href={`/artist/${favorites[0].artists[0].id}`}
+                                        >
+                                            <Image
+                                                src={favorites[0].artists[0].src}
+                                                alt={favorites[0].artists[0].title}
+                                                width={80}
+                                                height={80}
+                                                className="size-19 object-cover rounded-full"
+                                            />
+                                        </Link>
+                        ) : isUser ? (
+                            <div className="flex items-center justify-start mt-4 w-full min-h-18">
+                                <Link href="/edit">
+                                    <div className="flex flex-col items-center justify-center gap-2 size-18 rounded-lg bg-bunker-600 text-white cursor-pointer p-4">
+                                        <Plus size={24} />
+                                    </div>
+                                </Link>
+                            </div>
+                        ) : (
+                            <div className="flex items-center w-full min-h-18">
+                                <span className="text-bunker-300 text-sm">
+                                    Nada por aqui ainda...
+                                </span>
+                            </div>
+                        )}
+                    </div>
+                </div>
+            {/* <Tabs
                 defaultValue="artist"
                 classNames={{
                     root: "w-full px-5 my-6 max-w-2xl",
@@ -199,6 +265,46 @@ export default function Favorites({
                         <Tabs.Tab value="album">Álbums</Tabs.Tab>
                     </Tabs.List>
                 </div>
+                <div className="flex flex-row w-full">
+                    <div className="flex flex-col w-1/2">
+                        <h3 className="">Álbum do momento</h3>
+                        {favorites.albuns.length > 0 ? (
+                            <div className="embla mt-4" >
+                                <div className="embla__container">
+                                    <Link
+                                            className="flex flex-col items-center size-18 embla__slide__fav"
+                                            href={`/album/${favorites.albuns[0].id}`}
+                                        >
+                                            <Image
+                                                src={favorites.albuns[0].src}
+                                                alt={favorites.albuns[0].title}
+                                                width={80}
+                                                height={80}
+                                                className="size-18 object-cover rounded-sm"
+                                            />
+                                        </Link>
+                                </div>
+                            </div>
+                        ) : isUser ? (
+                            <div className="flex items-center justify-start mt-4 w-full min-h-18">
+                                <Link href="/edit">
+                                    <div className="flex flex-col items-center justify-center gap-2 size-18 rounded-lg bg-bunker-600 text-white cursor-pointer p-4">
+                                        <Plus size={24} />
+                                    </div>
+                                </Link>
+                            </div>
+                        ) : (
+                            <div className="flex items-center justify-center w-full min-h-18">
+                                <span className="text-bunker-300 text-sm">
+                                    Nada por aqui ainda...
+                                </span>
+                            </div>
+                        )}
+                    </div>
+                    <div className="flex flex-col w-1/2 items-end">
+                        <h3 className="">Artista do momento</h3>
+                    </div>
+                </div>
 
                 <Tabs.Panel value="artist">
                     <ArtistsList
@@ -210,7 +316,7 @@ export default function Favorites({
                 <Tabs.Panel value="album">
                     <AlbunsList isUser={isUser} album={favorites[0].albuns} />
                 </Tabs.Panel>
-            </Tabs>
+            </Tabs> */}
         </>
     );
 }

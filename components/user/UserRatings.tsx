@@ -172,7 +172,6 @@ export default function UserRatings({ user }: { user: any }) {
                 <RatingCardSkeletonList count={3} />
             ) : ratings.length > 0 ? (
                 <>
-                    <h2 className="font-semibold flex px-5">Avaliações</h2>
                     <div
                         className={`
                             flex flex-col

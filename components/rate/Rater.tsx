@@ -106,7 +106,7 @@ const Track = ({
 
 export { Track };
 
-export default function Rater({ album }: { album: Album }) {
+export default function Rater({ album, setCurrentTrack }: { album: Album, setCurrentTrack: (track: string) => void }) {
     const supabase = createClient();
     const tracks = album.tracks.items;
 
@@ -350,11 +350,12 @@ export default function Rater({ album }: { album: Album }) {
                     </Link>
                 </div>
             </Modal>
-            <div className=" w-full max-w-2xl px-5 pb-8 bg-bunker-800 p-4 gap-4 rounded-xl">
+            <div className=" w-full max-w-2xl bg-bunker-800 p-5 gap-4 rounded-xl">
                 {onTracks ? (
                     <StepperTest
                         album={album}
                         onRate={() => console.log("Rated")}
+                        setCurrentTrack={setCurrentTrack}
                         setOnTracks={setOnTracks}
                         setFinalRatings={setRatings}
                         setFinalTotal={setTotal}

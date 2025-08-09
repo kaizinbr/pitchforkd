@@ -3,10 +3,12 @@ import RatingCard from "../user/RatingCard";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Review } from "@/lib/utils/types";
 import { createClient } from "@/utils/supabase/client";
+import axios from "axios";
 import { Loader } from "@mantine/core";
 
-const STORAGE_KEY = 'cached-reviews';
-const OFFSET_KEY = 'reviews-offset';
+const STORAGE_KEY = "cached-reviews";
+const ALBUMS_STORAGE_KEY = "cached-albums";
+const OFFSET_KEY = "reviews-offset";
 
 export default function DisplayReviews({
     ratings,
@@ -17,36 +19,81 @@ export default function DisplayReviews({
 }) {
     const supabase = createClient();
     const [allReviews, setAllReviews] = useState<Review[]>([]);
-    const [offset, setOffset] = useState(30);
+    const [allAlbums, setAllAlbums] = useState<{ [key: string]: any }>({});
+    const [offset, setOffset] = useState(20);
     const [loading, setLoading] = useState(false);
     const [loadingMore, setLoadingMore] = useState(false);
 
     // Ref para o elemento observador
     const loadMoreRef = useRef<HTMLDivElement>(null);
 
+    // Função para buscar álbuns que ainda não estão no cache
+    const fetchMissingAlbums = async (albumIds: string[]) => {
+        // Filtrar IDs que já não temos no cache
+        const missingIds = albumIds.filter(id => !allAlbums[id]);
+        
+        if (missingIds.length === 0) {
+            console.log("Todos os álbuns já estão em cache");
+            return;
+        }
+
+        try {
+            const idsString = missingIds.join(",");
+            console.log("Buscando álbuns faltantes:", missingIds);
+            
+            const response = await axios.get(
+                `/api/spot/album/multiple?ids=${idsString}`
+            );
+            
+            if (response.data.albums) {
+                // Converter array em objeto com chave sendo o album_id
+                const albumsMap = response.data.albums.reduce((acc: any, album: any) => {
+                    acc[album.id] = album;
+                    return acc;
+                }, {});
+                
+                // Adicionar aos álbuns existentes
+                setAllAlbums(prev => ({ ...prev, ...albumsMap }));
+                
+                console.log("Álbuns carregados:", Object.keys(albumsMap));
+            }
+            
+        } catch (error) {
+            console.error("Erro ao buscar álbuns:", error);
+        }
+    };
+
     // Função para carregar mais dados
     const loadMoreData = useCallback(async () => {
         if (loadingMore || allReviews.length >= ratingsLength) return;
-        
+
         setLoadingMore(true);
-        
-        const { data, error } = await supabase
-            .from("ratings")
-            .select(`*, profiles(*)`)
-            .eq("is_published", true)
-            .order("created_at", { ascending: false })
-            .range(offset, offset + 29);
 
-        if (data && !error) {
-            const newReviews = [...allReviews, ...data];
-            setAllReviews(newReviews);
-            setOffset(offset + 30);
+        try {
+            const { data, error } = await supabase
+                .from("ratings")
+                .select(`*, profiles(*)`)
+                .eq("is_published", true)
+                .order("created_at", { ascending: false })
+                .range(offset, offset + 19);
+
+            if (data && !error) {
+                const newReviews = [...allReviews, ...data];
+                setAllReviews(newReviews);
+                setOffset(offset + 20);
+
+                // Buscar álbuns das novas reviews
+                const newAlbumIds = data.map((review: Review) => review.album_id);
+                await fetchMissingAlbums(newAlbumIds);
+            }
+        } catch (error) {
+            console.error("Erro ao carregar mais reviews:", error);
         }
-        
-        setLoadingMore(false);
-    }, [loadingMore, allReviews.length, ratingsLength, offset, allReviews, supabase]);
 
-    // Intersection Observer para detectar quando chegou próximo do fim
+        setLoadingMore(false);
+    }, [loadingMore, allReviews.length, ratingsLength, offset, allReviews, supabase, allAlbums]);
+
+    // Intersection Observer para scroll infinito
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
@@ -57,7 +104,7 @@ export default function DisplayReviews({
             },
             {
                 root: null,
-                rootMargin: '260px', // Carrega quando estiver 260px antes do final
+                rootMargin: '300px', // Carrega quando estiver 300px antes do final
                 threshold: 0.1
             }
         );
@@ -73,26 +120,40 @@ export default function DisplayReviews({
         };
     }, [loadMoreData, loadingMore, allReviews.length, ratingsLength]);
 
-    // Carregar dados do sessionStorage na inicialização
+    // Carregar dados iniciais
     useEffect(() => {
-        const cachedReviews = sessionStorage.getItem(STORAGE_KEY);
-        const cachedOffset = sessionStorage.getItem(OFFSET_KEY);
-        
-        if (cachedReviews) {
-            const parsedReviews = JSON.parse(cachedReviews);
-            setAllReviews(parsedReviews);
-            
-            if (cachedOffset) {
-                setOffset(parseInt(cachedOffset));
+        const initializeData = async () => {
+            // Tentar carregar do cache primeiro
+            const cachedReviews = sessionStorage.getItem(STORAGE_KEY);
+            const cachedAlbums = sessionStorage.getItem(ALBUMS_STORAGE_KEY);
+            const cachedOffset = sessionStorage.getItem(OFFSET_KEY);
+
+            if (cachedReviews && cachedAlbums) {
+                console.log("Carregando dados do cache");
+                setAllReviews(JSON.parse(cachedReviews));
+                setAllAlbums(JSON.parse(cachedAlbums));
+                
+                if (cachedOffset) {
+                    setOffset(parseInt(cachedOffset));
+                }
+                return;
             }
-        } else if (ratings) {
-            // Se não tem cache, usa os dados iniciais
-            setAllReviews(ratings);
-            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(ratings));
-        }
+
+            // Se não tem cache, usar dados iniciais
+            if (ratings) {
+                console.log("Inicializando com dados do servidor");
+                setAllReviews(ratings);
+                
+                // Buscar álbuns das reviews iniciais
+                const initialAlbumIds = ratings.map((review: Review) => review.album_id);
+                await fetchMissingAlbums(initialAlbumIds);
+            }
+        };
+
+        initializeData();
     }, [ratings]);
 
-    // Salvar no sessionStorage sempre que allReviews mudar
+    // Salvar no cache sempre que os dados mudarem
     useEffect(() => {
         if (allReviews.length > 0) {
             sessionStorage.setItem(STORAGE_KEY, JSON.stringify(allReviews));
@@ -100,49 +161,51 @@ export default function DisplayReviews({
         }
     }, [allReviews, offset]);
 
+    useEffect(() => {
+        if (Object.keys(allAlbums).length > 0) {
+            sessionStorage.setItem(ALBUMS_STORAGE_KEY, JSON.stringify(allAlbums));
+        }
+    }, [allAlbums]);
+
+    // Botão manual para carregar mais (fallback)
     const handleLoadMore = async () => {
         if (loading || loadingMore) return;
-        
-        setLoading(true);
-        
-        const { data, error } = await supabase
-            .from("ratings")
-            .select(`*, profiles(*)`)
-            .eq("is_published", true)
-            .order("created_at", { ascending: false })
-            .range(offset, offset + 29);
-
-        if (data && !error) {
-            const newReviews = [...allReviews, ...data];
-            setAllReviews(newReviews);
-            setOffset(offset + 30);
-        }
-        
-        setLoading(false);
+        await loadMoreData();
     };
 
-    // Função para limpar cache (opcional)
+    // Função para limpar cache
     const clearCache = () => {
         sessionStorage.removeItem(STORAGE_KEY);
+        sessionStorage.removeItem(ALBUMS_STORAGE_KEY);
         sessionStorage.removeItem(OFFSET_KEY);
         setAllReviews(ratings || []);
-        setOffset(30);
+        setAllAlbums({});
+        setOffset(20);
+    };
+
+    // Função para obter álbum por ID
+    const getAlbumById = (albumId: string) => {
+        return allAlbums[albumId] || null;
     };
 
     return (
         <div className="flex flex-col w-full max-w-2xl">
             <h2 className="text-xl font-bold flex px-5 mb-3">Avaliações</h2>
-            
+
             <div className="flex flex-col w-full divide-bunker-800 divide-y">
                 {allReviews.map((rating) => (
-                    <RatingCard key={rating.id} review={rating} />
+                    <RatingCard 
+                        key={rating.id} 
+                        review={rating} 
+                        album={getAlbumById(rating.album_id)}
+                    />
                 ))}
             </div>
-            
-            {/* Elemento observador - invisível, apenas para detectar scroll */}
+
+            {/* Elemento observador para scroll infinito */}
             {allReviews.length < ratingsLength && (
-                <div 
-                    ref={loadMoreRef} 
+                <div
+                    ref={loadMoreRef}
                     className="w-full py-4 flex justify-center"
                 >
                     {loadingMore && (
@@ -153,8 +216,8 @@ export default function DisplayReviews({
                     )}
                 </div>
             )}
-            
-            {/* Botão manual como fallback (opcional) */}
+
+            {/* Botão manual como fallback */}
             {ratingsLength > 5 && allReviews.length < ratingsLength && !loadingMore && (
                 <button
                     onClick={handleLoadMore}
@@ -167,10 +230,10 @@ export default function DisplayReviews({
                     )}
                 </button>
             )}
-            
-            {/* Botão para limpar cache (apenas para desenvolvimento) */}
-            {process.env.NODE_ENV === 'development' && (
-                <button 
+
+            {/* Botão para limpar cache (desenvolvimento) */}
+            {process.env.NODE_ENV === "development" && (
+                <button
                     onClick={clearCache}
                     className="mt-2 text-xs text-gray-500 hover:text-gray-300"
                 >

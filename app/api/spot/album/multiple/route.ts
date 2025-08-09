@@ -33,12 +33,17 @@ const getAccessToken = async () => {
     return response.data.access_token;
 };
 
-export async function GET(
-    request: Request,
-    { params }: { params: Promise<{ id: string }> }
-) {
-    const id = (await params).id; // 'a', 'b', or 'c'
-    console.log(id);
+export async function GET(request: Request) {
+    const { searchParams } = new URL(request.url);
+    const ids = searchParams.get("ids"); // Ex: "id1,id2,id3"
+    if (!ids) {
+        return NextResponse.json(
+            { error: "Missing 'ids' query parameter" },
+            { status: 400 }
+        );
+    }
+
+    // console.log("Fetching albums with IDs:", ids);
 
     const cookieStore = await cookies();
     const hasCookie = cookieStore.has("spotify_token");
@@ -48,7 +53,7 @@ export async function GET(
 
     try {
         const response = await axios.get(
-            `https://api.spotify.com/v1/albums/${id}`,
+            `https://api.spotify.com/v1/albums?ids=${ids}`,
             {
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -56,16 +61,11 @@ export async function GET(
             }
         );
 
-        // console.log(response.data);
-
         if (response.status === 429) {
-            // Lógica para lidar com o erro 429 (Too Many Requests)
             console.error("Too many requests, retrying after 1 second...");
             await new Promise((resolve) => setTimeout(resolve, 1000));
-            token = await getAccessToken(); // Atualiza o token
-            return GET(request, { params });
-            
-
+            token = await getAccessToken();
+            return GET(request);
         }
 
         return NextResponse.json(response.data);

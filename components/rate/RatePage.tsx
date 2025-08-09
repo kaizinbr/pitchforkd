@@ -6,9 +6,11 @@ import axios from "axios";
 import Rater from "./Rater";
 import AlbumCover from "../album/album-cover";
 import { Album } from "@/lib/utils/types";
+import CurrentLyrics from "@/components/rate/lyrics";
 
 export default function RatePage({ id }: { id: string }) {
     const [album, setAlbum] = useState<Album>();
+    const [currentTrack, setCurrentTrack] = useState<string>("");
     const [loading, setLoading] = useState(true);
     const [currentColor, setCurrentColor] = useState<string>("#4a6d73");
     
@@ -44,7 +46,7 @@ export default function RatePage({ id }: { id: string }) {
         <>
             {album && (
                 <>
-                    <div className="flex flex-col  mb-6 w-full max-w-2xl mt-20">
+                    <div className="flex flex-col w-full max-w-2xl mt-8">
                         <h2>
                             Você está avaliando <span  className="font-semibold">{album.name}</span>
                         </h2>
@@ -58,7 +60,11 @@ export default function RatePage({ id }: { id: string }) {
                             ))}
                         </p>
                     </div>
-                    <Rater album={album} />
+                    <Rater album={album} setCurrentTrack={setCurrentTrack} />
+
+                    {currentTrack && (
+                        <CurrentLyrics track_id={currentTrack} album_img={album.images[0]?.url} />
+                    )}
                 </>
             )}
         </>

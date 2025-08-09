@@ -21,12 +21,14 @@ import TextareaDisplay from "../textaera-content";
 export default function RatingCard({
     review,
     edit,
+    album
 }: {
     review: Review;
     edit?: boolean;
+    album: any;
 }) {
     const supabase = createClient();
-    const [album, setAlbum] = useState<any>();
+    // const [album, setAlbum] = useState<any>();
     const [loading, setLoading] = useState(true);
     const [liked, setLiked] = useState(false);
     const [hasContent, setHasContent] = useState(false);
@@ -38,7 +40,7 @@ export default function RatingCard({
             ? ""
             : review.content;
 
-    // console.log("Content:", content);
+    // console.log("album:", album);
 
     const editor = useEditor({
         extensions: [StarterKit, Underline],
@@ -50,12 +52,7 @@ export default function RatingCard({
     useEffect(() => {
         if (review.content) {
             const content = review.content as Content;
-            // setHasContent(
-            //     content.content.length > 0 &&
-            //         Array.isArray(content.content[0]?.content) &&
-            //         content.content[0].content.length > 0
-            // );
-
+            
             console.log("Content:", content);
 
 
@@ -73,9 +70,16 @@ export default function RatingCard({
                 setHasContent(true);
             }
 
-            console.log("Has Content:", hasContent);
+            // console.log("Has Content:", hasContent);
         }
     }, [review.content]);
+
+    useEffect(() => {
+        if (album) {
+            // console.log("Album:", album);
+            setLoading(false);
+        }
+    }, [album]);
 
     // useEffect(() => {
     //     const verifyLike = async () => {
@@ -106,17 +110,17 @@ export default function RatingCard({
     //     verifyLike();
     // }, [review.id]);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const response = await axios.get(
-                `/api/spot/album/${review.album_id}`
-            );
-            setAlbum(response.data);
-            setLoading(false);
-        };
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         const response = await axios.get(
+    //             `/api/spot/album/${review.album_id}`
+    //         );
+    //         setAlbum(response.data);
+    //         setLoading(false);
+    //     };
 
-        fetchData();
-    }, [review.album_id]);
+    //     fetchData();
+    // }, [review.album_id]);
 
     return (
         <>
@@ -221,7 +225,7 @@ export default function RatingCard({
                                     {album && (
                                         <picture className=" size-40">
                                             <Image
-                                                src={album.images[0].url}
+                                                src={album.images[1].url}
                                                 alt={album.name}
                                                 width={500}
                                                 height={500}

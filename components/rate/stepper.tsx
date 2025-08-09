@@ -105,7 +105,7 @@ const Track = ({
                         onChange={handleChange}
                     />
                 </div>
-                <Chip
+                {/* <Chip
                     checked={favorite}
                     color="#fa805e"
                     onChange={(checked) => {
@@ -118,8 +118,8 @@ const Track = ({
                     }}
                 >
                     Favorita
-                </Chip>
-                <div className="flex flex-col gap-2 mt-3">
+                </Chip> */}
+                <div className="flex flex-col gap-2">
                     {/* <h1 className="font-medium">Deixe sua avaliação aqui</h1> */}
                     <Textarea
                         value={comment}
@@ -166,6 +166,7 @@ export default function TrackStepper({
     setOnTracks,
     setFinalRatings,
     setFinalTotal,
+    setCurrentTrack
 }: {
     album: Album;
     onRate: (trackId: string, rating: number) => void;
@@ -179,6 +180,7 @@ export default function TrackStepper({
         }[]
     ) => void;
     setFinalTotal: (total: number) => void;
+    setCurrentTrack: (track: string) => void;
     // setContent: (content: any) => void;
 }) {
     const supabase = createClient();
@@ -189,12 +191,6 @@ export default function TrackStepper({
         { id: string; value: number; favorite: boolean; comment?: string }[]
     >([]);
     const [total, setTotal] = useState<number>(0);
-
-    // const handleRate = (rating: number) => {
-    //     const trackId = tracks[active].id;
-    //     setRatings((prev) => ({ ...prev, [trackId]: rating }));
-    //     onRate(trackId, rating);
-    // };
 
     useEffect(() => {
         // check if user already rated the album
@@ -304,13 +300,20 @@ export default function TrackStepper({
     const nextStep = () =>
         setActive((current) =>
             current < tracks.length - 1 ? current + 1 : current
+
         );
     const prevStep = () =>
         setActive((current) => (current > 0 ? current - 1 : current));
 
     const currentTrack = tracks[active];
 
-    // console.log("Current Track:", tracks);
+    useEffect(() => {
+        if (currentTrack && setCurrentTrack) {
+            setCurrentTrack(currentTrack.id);
+        }
+    }, [active, currentTrack, setCurrentTrack]);
+
+    console.log("Current Track:", tracks);
 
     console.log("Ratings:", ratings);
     // console.log("Total:", total);
@@ -418,7 +421,7 @@ export default function TrackStepper({
                         {active === tracks.length - 1 ? "Finalizar" : "Próximo"}
                     </button>
                 </div>
-                <p>
+                <p className="text-sm text-white/70">
                     Música {active + 1} de {tracks.length}
                 </p>
             </div>

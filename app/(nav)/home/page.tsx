@@ -18,7 +18,7 @@ export default async function Home() {
         )
         .eq("is_published", true)
         .order("created_at", { ascending: false })
-        .range(0, 29);
+        .range(0, 19);
 
     if (error) {
         console.error("Error fetching reviews", error);

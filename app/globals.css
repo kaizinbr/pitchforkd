@@ -121,6 +121,10 @@ body {
     --admonition-danger-rgb-value: 220, 38, 38;
 }
 
+.fontSPMix {
+    font-family: "Spotify Mix", sans-serif !important;
+}
+
 .fontGraphik {
     font-family: "Graphik" !important;
 }

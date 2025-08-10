@@ -6,8 +6,6 @@ import {
     getMostSaturatedColor,
 } from "@/components/album/gen-gradient";
 
-
-
 type LyricsLine = {
     startTimeMs: string;
     words: string;
@@ -96,28 +94,50 @@ export default function CurrentLyrics({
     }, [track_id]);
 
     return (
-        <div
-            className={
-                `
-                w-full max-w-2xl px-5 pb-8 bg-bunker-800 p-4 gap-4 rounded-xl
-                max-h-[400px] overflow-y-auto
-                scrollbar-hide touch-pan-y
-            `
-            }
-            style={{
-                backgroundColor: color1,
-                color: textColor,
-            }}
-        >
-            <h3 className="text-sm font-semibold text-white/70 mb-4">Letras</h3>
-            {error && <p className="">{error}</p>}
-            {lyrics && (
-                <div className="whitespace-pre-wrap break-words font-bold flex flex-col gap-3">
-                    {lyrics.map((line, index) => (
-                        <p key={index}>{line.words}</p>
-                    ))}
-                </div>
-            )}
+        <div className="relative w-full max-w-2xl">
+                <h3 className="text-sm font-semibold text-white/70 top-3 left-5 z-30 absolute">
+                    Letras
+                </h3>
+            <div
+                className={`
+                    relative z-10
+                    p-5 gap-4 rounded-xl
+                    max-h-[400px] overflow-y-auto no-scrollbar touch-pan-y
+                `}
+                style={{
+                    backgroundColor: color1,
+                    color: textColor,
+                }}
+            >
+                {error && <p>{error}</p>}
+                {lyrics && (
+                    <div className="whitespace-pre-wrap break-words font-medium text-lg flex flex-col gap-5 pt-8 pb-16">
+                        {lyrics.map((line, index) => (
+                            <p key={index}>{line.words}</p>
+                        ))}
+
+                        <h3 className="text-sm font-normal text-white/70 mb-4">
+                            Letras obtidas através do Spotify/Musixmatch
+                        </h3>
+                    </div>
+                )}
+            </div>
+
+            {/* gradiente superior */}
+            <div
+                className="pointer-events-none absolute top-0 left-0 w-full h-14 z-20 rounded-t-xl"
+                style={{
+                    background: `linear-gradient(${color1} 20%, transparent 100%)`,
+                }}
+            />
+
+            {/* gradiente inferior */}
+            <div
+                className="pointer-events-none absolute bottom-0 left-0 w-full h-14 z-20 rounded-b-xl"
+                style={{
+                    background: `linear-gradient(transparent, ${color1} 80%)`,
+                }}
+            />
         </div>
     );
 }

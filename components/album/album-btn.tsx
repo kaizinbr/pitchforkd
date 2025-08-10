@@ -15,7 +15,7 @@ export default function AlbumBtn({
             {loading ? (
                 <div className=""></div>
             ) :  (
-                <Link href={`/album/${album.id}/rate`} className={`
+                <Link href={`/rate/${album.id}`} className={`
                     py-3
                     flex justify-center items-center
                     bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600 

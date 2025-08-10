@@ -224,7 +224,7 @@ export default function DisplayRate({
                         className={`
                             p-3
                             flex justify-center items-center
-                            bg-persian-blue-400 border-2 border-persian-blue-400 hover:bg-persian-blue-500 hover:border-persian-blue-500  
+                            bg-malachite-400 border-2 border-malachite-400 hover:bg-malachite-500 hover:border-malachite-500  
                             ${liked ? "text-red-500" : "!text-white"}
                             rounded-full
                             fixed right-4

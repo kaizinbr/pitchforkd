@@ -14,7 +14,7 @@ export default function ShareBtn({
             className={`
                     p-3
                     flex justify-center items-center
-                    bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600  text-white font-bold rounded-full
+                    bg-malachite-400 border-2 border-malachite-400 hover:bg-malachite-600 hover:border-malachite-600  text-white font-bold rounded-full
                     fixed right-20
                     ${scrollDirection > "down" ? "bottom-20" : "bottom-4"}
                     md:bottom-4

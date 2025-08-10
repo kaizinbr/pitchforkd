@@ -6,9 +6,9 @@ import getShorten from "@/lib/utils/getShorten";
 import { useDisclosure } from "@mantine/hooks";
 import { Modal } from "@mantine/core";
 import Link from "next/link";
-import useScrollDirection from "@/hooks/useScrollDirection";
+
 import TextareaEditor from "./textarea-editor";
-import StepperTest from "@/components/rate/stepper";
+import TrackStepper from "@/components/rate/stepper";
 
 import { Album } from "@/lib/utils/types";
 
@@ -106,14 +106,24 @@ const Track = ({
 
 export { Track };
 
-export default function Rater({ album, setCurrentTrack }: { album: Album, setCurrentTrack: (track: string) => void }) {
+export default function Rater({
+    album,
+    setCurrentTrack,
+    tracks,
+    ratings,
+    setRatings,
+    active,
+    setActive
+}: {
+    album: Album;
+    setCurrentTrack: (track: string) => void;
+    tracks: any[];
+    ratings: { id: string; value: number; favorite: boolean; comment?: string }[];
+    setRatings: React.Dispatch<React.SetStateAction<{ id: string; value: number; favorite: boolean; comment?: string }[]>>;
+    active: number;
+    setActive: React.Dispatch<React.SetStateAction<number>>;
+}) {
     const supabase = createClient();
-    const tracks = album.tracks.items;
-
-    const scrollDirection = useScrollDirection();
-    const [ratings, setRatings] = useState<
-        { id: string; value: number; favorite: boolean }[]
-    >([]);
 
     const [onTracks, setOnTracks] = useState<boolean>(true);
 
@@ -197,22 +207,6 @@ export default function Rater({ album, setCurrentTrack }: { album: Album, setCur
 
         fetchRatings();
     }, [tracks]);
-
-    const handleValueChange = (
-        id: string,
-        value: number,
-        favorite: boolean
-    ) => {
-        setRatings((prevRatings) =>
-            prevRatings.map((rating) =>
-                rating.id === id ? { ...rating, value, favorite } : rating
-            )
-        );
-        setTotal(
-            ratings.reduce((acc, rating) => acc + rating.value, 0) /
-                ratings.length
-        );
-    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -350,15 +344,17 @@ export default function Rater({ album, setCurrentTrack }: { album: Album, setCur
                     </Link>
                 </div>
             </Modal>
-            <div className=" w-full max-w-2xl bg-bunker-800 p-5 gap-4 rounded-xl">
+            <div className="w-full max-w-2xl mt-22 bg-bunker-800 p-5 gap-4 rounded-xl">
                 {onTracks ? (
-                    <StepperTest
+                    <TrackStepper
                         album={album}
                         onRate={() => console.log("Rated")}
                         setCurrentTrack={setCurrentTrack}
                         setOnTracks={setOnTracks}
                         setFinalRatings={setRatings}
                         setFinalTotal={setTotal}
+                        active={active}
+                        setActive={setActive}
                     />
                 ) : (
                     <div className="flex flex-col gap-4 w-full">

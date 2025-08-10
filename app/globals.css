@@ -2,8 +2,8 @@
 @import url("../public/fonts/font/stylesheet.css");
 
 @theme {
-    --color-main-500: #3d6fff;
-    --color-main-600: #1b44ff;
+    --color-main-500: #00d344;
+    --color-main-600: #00c039;
     --color-background: oklch(20.66% 0.0101 248.31);
     --color-bunker-50: #f3f6f8;
     --color-bunker-100: #e2e9eb;
@@ -19,7 +19,7 @@
     --color-orange-safety: oklch(68.42% 0.180984 49.9568);
     --color-green-pastel: oklch(64.58% 0.212469 143.5329);
     --color-blue-celestial: oklch(66.31% 0.1467 241.4);
-    --icon: 30.6% ;
+    --icon: 30.6%;
     --color-blue-ribbon-100: #d8f1ff;
     --color-blue-ribbon-200: #b9e6ff;
     --color-blue-ribbon-300: #89d8ff;
@@ -41,6 +41,18 @@
     --color-persian-blue-800: #1131c4;
     --color-persian-blue-900: #183297;
     --color-persian-blue-950: #0e1b58;
+
+    --color-malachite-50: #edfff2;
+    --color-malachite-100: #d5ffe3;
+    --color-malachite-200: #aeffc8;
+    --color-malachite-300: #70ff9f;
+    --color-malachite-400: #2bfd6e;
+    --color-malachite-500: #00d344;
+    --color-malachite-600: #00c039;
+    --color-malachite-700: #009630;
+    --color-malachite-800: #06752b;
+    --color-malachite-900: #076026;
+    --color-malachite-950: #003712;
 }
 
 @layer base {
@@ -81,6 +93,20 @@
 
     input[type="number"] {
         -moz-appearance: textfield;
+    }
+
+    .no-scrollbar::-webkit-scrollbar {
+        display: none;
+    }
+
+    /* IE and Edge */
+    .no-scrollbar {
+        -ms-overflow-style: none;
+    }
+
+    /* Firefox */
+    .no-scrollbar {
+        scrollbar-width: none;
     }
 }
 

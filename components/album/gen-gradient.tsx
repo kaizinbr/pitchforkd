@@ -77,5 +77,13 @@ export function getMostSaturatedColor(palette: number[][]): string | null {
         }
     }
 
-    return chroma(mostSaturated as [number, number, number]).css();
+    let color = chroma(mostSaturated as [number, number, number]);
+    // Ensure contrast with white is at least 4.5:1
+    while (chroma.contrast(color, "#fff") < 4.5) {
+        color = color.darken(2);
+        // Prevent infinite loop: stop if color is almost black
+        if (color.luminance() < 0.05) break;
+    }
+
+    return color.css();
 }

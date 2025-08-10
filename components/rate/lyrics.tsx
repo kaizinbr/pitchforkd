@@ -102,15 +102,19 @@ export default function CurrentLyrics({
                 className={`
                     relative z-10
                     p-5 gap-4 rounded-xl
-                    max-h-[400px] overflow-y-auto no-scrollbar touch-pan-y
+                    max-h-[400px] h-[400px] overflow-y-auto no-scrollbar touch-pan-y
                 `}
                 style={{
                     backgroundColor: color1,
                     color: textColor,
                 }}
             >
-                {error && <p>{error}</p>}
-                {lyrics && (
+                {error && (
+                    <div className="h-full flex items-center">
+                        <p>{error}</p>
+                    </div>
+                )}
+                {lyrics.length > 0 && (
                     <div className="whitespace-pre-wrap break-words font-medium text-lg flex flex-col gap-5 pt-8 pb-16">
                         {lyrics.map((line, index) => (
                             <p key={index}>{line.words}</p>

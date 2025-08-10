@@ -96,7 +96,7 @@ export default function RatePage({ id }: { id: string }) {
                 <>
                     <div
                         className={`
-                            flex flex-col w-full max-w-2xl 
+                            flex flex-col w-full
                             fixed top-0 left-0 right-0 z-10
                             p-4 bg-malachite-900/70 
                             backdrop-blur-md
@@ -106,17 +106,19 @@ export default function RatePage({ id }: { id: string }) {
                             color: textColor,
                         }}
                     >
-                        <h2>
-                            <span className="font-semibold">{album.name}</span>
-                        </h2>
-                        <p className="text-xs text-neutral-300">
-                            {album.artists.map((artist: any, index: number) => (
-                                <span key={artist.id} className="font-medium">
-                                    {artist.name}
-                                    {index < album.artists.length - 1 && ", "}
-                                </span>
-                            ))}
-                        </p>
+                        <div className="flex flex-col w-full max-w-2xl m-auto">
+                            <h2>
+                                <span className="font-semibold">{album.name}</span>
+                            </h2>
+                            <p className="text-xs text-neutral-300">
+                                {album.artists.map((artist: any, index: number) => (
+                                    <span key={artist.id} className="font-medium">
+                                        {artist.name}
+                                        {index < album.artists.length - 1 && ", "}
+                                    </span>
+                                ))}
+                            </p>
+                        </div>
                     </div>
                     <Rater
                         album={album}

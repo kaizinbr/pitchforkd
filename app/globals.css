@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import url("../public/fonts/font/stylesheet.css");
 
 @theme {
     --color-main-500: #00d344;

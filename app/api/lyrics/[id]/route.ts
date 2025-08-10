@@ -1,42 +1,56 @@
 import { NextResponse } from "next/server";
-import { customAlphabet } from "nanoid";
 import axios from "axios";
-import { cookies } from "next/headers";
-
-
 
 export async function GET(
     request: Request,
     { params }: { params: Promise<{ id: string }> }
 ) {
-    const id = (await params).id; 
-    console.log(id);
+    const id = (await params).id;
 
-    try {
-        const response = await axios.get(
-            `https://lyrics.kaizin.work/?trackid=${id}`
-        );
+    let attempts = 0;
+    const maxAttempts = 2;
 
-        // console.log(response.data);
-
-        return NextResponse.json(response.data);
-    } catch (error) {
-        console.error("Erro ao buscar letras:", error);
-
-        
-        if (axios.isAxiosError(error) && error.response?.status === 404) {
-            // Lógica para lidar com o erro 404 (Not Found)
-            console.error("Faixa não encontrada");
-            return NextResponse.json(
-                { error: "Faixa não encontrada" },
-                { status: 404 }
+    while (attempts < maxAttempts) {
+        try {
+            const response = await axios.get(
+                `https://lyrics.kaizin.work/?trackid=${id}`,
+                { responseType: "text" } // Força resposta como texto
             );
+
+            let data = response.data;
+
+            // Se não for JSON puro, tenta extrair o JSON do final da string
+            if (typeof data === "string") {
+                const jsonStart = data.indexOf("{");
+                if (jsonStart !== -1) {
+                    const jsonString = data.slice(jsonStart);
+                    try {
+                        data = JSON.parse(jsonString);
+                    } catch (parseError) {
+                        // Se falhar, tenta novamente (retry)
+                        attempts++;
+                        continue;
+                    }
+                }
+            }
+
+            return NextResponse.json(data);
+        } catch (error) {
+            // Se for erro 404, retorna imediatamente
+            if (axios.isAxiosError(error) && error.response?.status === 404) {
+                return NextResponse.json(
+                    { error: "Faixa não encontrada" },
+                    { status: 404 }
+                );
+            }
+            // Se for outro erro, tenta novamente (retry)
+            attempts++;
+            if (attempts >= maxAttempts) {
+                return NextResponse.json(
+                    { error: "Erro ao buscar letras" },
+                    { status: 500 }
+                );
+            }
         }
-
-
-        return NextResponse.json(
-            { error: "Erro ao buscar letras" },
-            { status: 500 }
-        );
     }
 }

@@ -96,7 +96,8 @@ export default function RatePage({ id }: { id: string }) {
                 <>
                     <div
                         className={`
-                            flex flex-col w-full
+                            flex flex-row w-full
+                            justify-between
                             fixed top-0 left-0 right-0 z-10
                             p-4 bg-malachite-900/70 
                             backdrop-blur-md
@@ -106,19 +107,26 @@ export default function RatePage({ id }: { id: string }) {
                             color: textColor,
                         }}
                     >
-                        <div className="flex flex-col w-full max-w-2xl m-auto">
-                            <h2>
-                                <span className="font-semibold">{album.name}</span>
-                            </h2>
+                        <div className="flex flex-col w-6/10 max-w-2xl m-auto">
+                            <h2 className="font-semibold line-clamp-1">{album.name}</h2>
                             <p className="text-xs text-neutral-300">
-                                {album.artists.map((artist: any, index: number) => (
-                                    <span key={artist.id} className="font-medium">
-                                        {artist.name}
-                                        {index < album.artists.length - 1 && ", "}
-                                    </span>
-                                ))}
+                                {album.artists.map(
+                                    (artist: any, index: number) => (
+                                        <span
+                                            key={artist.id}
+                                            className="font-medium"
+                                        >
+                                            {artist.name}
+                                            {index < album.artists.length - 1 &&
+                                                ", "}
+                                        </span>
+                                    )
+                                )}
                             </p>
                         </div>
+                        <button className="bg-main-500 hover:bg-main-600 transition-all duration-300 rounded-lg cursor-pointer px-4 py-2 text-sm">
+                            Salvar rascunho
+                        </button>
                     </div>
                     <Rater
                         album={album}
@@ -131,7 +139,10 @@ export default function RatePage({ id }: { id: string }) {
                     />
 
                     {currentTrack && (
-                        <CurrentLyrics track_id={currentTrack} album_img={album.images[0]?.url} />
+                        <CurrentLyrics
+                            track_id={currentTrack}
+                            album_img={album.images[0]?.url}
+                        />
                     )}
                 </>
             )}

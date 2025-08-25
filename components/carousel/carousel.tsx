@@ -191,7 +191,7 @@ export default function ImageCarousel() {
         return (
             <div className="w-full max-w-[1000px] mx-auto px-5">
                 <div className="animate-pulse">
-                    <div className="bg-bunker-800 rounded-3xl h-64 md:h-80"></div>
+                    <div className="bg-shark-800 rounded-3xl h-64 md:h-80"></div>
                 </div>
             </div>
         );

@@ -50,8 +50,8 @@ export default function DeleteBtn({ id }: { id: string }) {
                     root: "!z-[1999]",
                     overlay: "!z-[1998]",
                     inner: "!z-[1999]",
-                    content: "!bg-bunker-800 !rounded-xl",
-                    header: "!bg-bunker-800 !rounded-xl",
+                    content: "!bg-shark-800 !rounded-xl",
+                    header: "!bg-shark-800 !rounded-xl",
                 }}
                 withCloseButton={false}
             >

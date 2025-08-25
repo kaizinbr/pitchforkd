@@ -32,7 +32,7 @@ export const Item = ({
 
     return (
         <Reorder.Item value={Album} id={Album.id} style={{ boxShadow, y }}>
-            <div className="flex flex-row items-center justify-between p-2 pr-4 cursor-grab rounded-lg w-full bg-bunker-700 transition-all duration-300">
+            <div className="flex flex-row items-center justify-between p-2 pr-4 cursor-grab rounded-lg w-full bg-shark-700 transition-all duration-300">
                 <div className="flex flex-row  items-center">
                     <Image
                         className={`

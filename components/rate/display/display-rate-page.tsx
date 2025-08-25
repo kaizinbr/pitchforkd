@@ -180,37 +180,40 @@ export default function DisplayRate({
                 <>
                     <div
                         className={`
-                            absolute h-[30rem] w-full -z-50 from-40 
+                            absolute h-36 w-full -z-50 from-40 
                             top-0
                             transition-all duration-200 ease-in-out overflow-hidden
                             bg-blend-screen
                         `}
                         style={{
-                            backgroundImage: `linear-gradient(to bottom, ${darkenColor(color1, 1.5)}, transparent)`,
-                            filter: ` brightness(0.7) contrast(1.2) saturate(1.5)`,
+                            backgroundImage: `linear-gradient(to bottom, ${darkenColor(color1, 0.5)}, transparent)`,
+                            // filter: ` brightness(0.7) contrast(1.2) saturate(1.5)`,
                         }}
-                    >
-                        <div className="absolute inset-0 flex items-center justify-center blur-3xl md:m-auto md:max-w-lg">
-                            <div
-                                style={{ backgroundColor: color1 }}
-                                className={`absolute rounded-full bg-[${color1}] size-100 -top-1/3 -left-1/4 blur-3xl`}
-                            ></div>
-                            <div
-                                style={{ backgroundColor: color3 }}
-                                className={`absolute rounded-full -right-1/4 -top-1/3 w-80 h-100 blur-3xl`}
-                            ></div>
-                            <div
-                                style={{ backgroundColor: color2 }}
-                                className={`absolute rounded-full -top-2  h-40 w-88 -rotate-45 blur-3xl`}
-                            ></div>
+                    ></div>
+                    <div className="flex flex-row w-full items-center gap-4 px-5">
+                        <AlbumCover
+                            display={true}
+                            album={album}
+                            loading={loading}
+                        />
+                        <div className="text-white">
+                            <h2 className="text-xl font-bold">{album.name}</h2>
+                            <p className="font-medium mb-2">
+                                {album.artists.map(
+                                    (artist: any, index: number) => (
+                                        <Link
+                                            href={`/artist/${artist.id}`}
+                                            key={artist.id}
+                                        >
+                                            {artist.name}
+                                            {index < album.artists.length - 1 &&
+                                                ", "}
+                                        </Link>
+                                    )
+                                )}
+                            </p>
                         </div>
                     </div>
-                    <AlbumCover album={album} loading={loading} />
-                    <AlbumData
-                        album={album}
-                        tracks={tracks}
-                        loading={loading}
-                    />
                     {canDelete ? <DeleteBtn id={rate.id} /> : null}
                     <ShareBtn shorten={rate.shorten} />
                     <LikeBtn
@@ -224,7 +227,7 @@ export default function DisplayRate({
                         className={`
                             p-3
                             flex justify-center items-center
-                            bg-malachite-400 border-2 border-malachite-400 hover:bg-malachite-500 hover:border-malachite-500  
+                            bg-main-400 border-2 border-main-400 hover:bg-main-500 hover:border-main-500  
                             ${liked ? "text-red-500" : "!text-white"}
                             rounded-full
                             fixed right-4

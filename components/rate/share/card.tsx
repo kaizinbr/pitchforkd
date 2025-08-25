@@ -99,11 +99,11 @@ export default function Card({
             <p className=" text-[10px] text-center mb-1 max-w-full line-clamp-2 z-10">
                 <span className="!font-bold">{album.name}</span>
             </p>
-            <p className=" text-[10px] text-center mb-4 max-w-full line-clamp-2 z-10 text-bunker-300">
+            <p className=" text-[10px] text-center mb-4 max-w-full line-clamp-2 z-10 text-shark-300">
                 <span className="!font-bold">{album.artists[0].name}</span>
             </p>
 
-            <p className="text-[8px] text-bunker-300 text-center z-10 font-light">
+            <p className="text-[8px] text-shark-300 text-center z-10 font-light">
                 Veja mais em pitchforkd.me
             </p>
         </>

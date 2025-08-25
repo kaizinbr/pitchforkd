@@ -42,14 +42,14 @@ function ArtistsList({ artists, isUser }: { artists: any[]; isUser: boolean }) {
             ) : isUser ? (
                 <div className="flex items-center justify-start mt-4 w-full min-h-18">
                     <Link href="/edit">
-                        <div className="flex flex-col items-center justify-center gap-2 size-18 rounded-lg bg-bunker-600 text-white cursor-pointer p-4">
+                        <div className="flex flex-col items-center justify-center gap-2 size-18 rounded-lg bg-shark-600 text-white cursor-pointer p-4">
                             <Plus size={24} />
                         </div>
                     </Link>
                 </div>
             ) : (
                 <div className="flex items-center justify-center w-full min-h-18">
-                    <span className="text-bunker-300 text-sm">
+                    <span className="text-shark-300 text-sm">
                         Nada por aqui ainda...
                     </span>
                 </div>
@@ -91,14 +91,14 @@ function AlbunsList({ album, isUser }: { album: any[]; isUser: boolean }) {
             ) : isUser ? (
                 <div className="flex items-center justify-start mt-4 w-full min-h-18">
                     <Link href="/edit">
-                        <div className="flex flex-col items-center justify-center gap-2 size-18 rounded-lg bg-bunker-600 text-white cursor-pointer p-4">
+                        <div className="flex flex-col items-center justify-center gap-2 size-18 rounded-lg bg-shark-600 text-white cursor-pointer p-4">
                             <Plus size={24} />
                         </div>
                     </Link>
                 </div>
             ) : (
                 <div className="flex items-center justify-center w-full min-h-18">
-                    <span className="text-bunker-300 text-sm">
+                    <span className="text-shark-300 text-sm">
                         Nada por aqui ainda...
                     </span>
                 </div>
@@ -199,14 +199,14 @@ export default function Favorites({
                         ) : isUser ? (
                             <div className="flex items-center justify-start mt-4 w-full min-h-18">
                                 <Link href="/edit">
-                                    <div className="flex flex-col items-center justify-center gap-2 size-18 rounded-lg bg-bunker-600 text-white cursor-pointer p-4">
+                                    <div className="flex flex-col items-center justify-center gap-2 size-18 rounded-lg bg-shark-600 text-white cursor-pointer p-4">
                                         <Plus size={24} />
                                     </div>
                                 </Link>
                             </div>
                         ) : (
                             <div className="flex items-center w-full min-h-18">
-                                <span className="text-bunker-300 text-sm">
+                                <span className="text-shark-300 text-sm">
                                     Nada por aqui ainda...
                                 </span>
                             </div>
@@ -230,14 +230,14 @@ export default function Favorites({
                         ) : isUser ? (
                             <div className="flex items-center justify-start mt-4 w-full min-h-18">
                                 <Link href="/edit">
-                                    <div className="flex flex-col items-center justify-center gap-2 size-18 rounded-lg bg-bunker-600 text-white cursor-pointer p-4">
+                                    <div className="flex flex-col items-center justify-center gap-2 size-18 rounded-lg bg-shark-600 text-white cursor-pointer p-4">
                                         <Plus size={24} />
                                     </div>
                                 </Link>
                             </div>
                         ) : (
                             <div className="flex items-center w-full min-h-18">
-                                <span className="text-bunker-300 text-sm">
+                                <span className="text-shark-300 text-sm">
                                     Nada por aqui ainda...
                                 </span>
                             </div>
@@ -250,7 +250,7 @@ export default function Favorites({
                     root: "w-full px-5 my-6 max-w-2xl",
                     list: "flex flex-row gap-3 !border-0 before:!border-0 before:!border-transparent",
                     tab: `
-                        !text-xs !font-medium !text-bunker-300 data-[active=true]:!text-bunker-100 
+                        !text-xs !font-medium !text-shark-300 data-[active=true]:!text-shark-100 
                         data-[active=true]:!border-main-500
                         bg-transparent hover:!bg-transparent
                         !px-2 !py-0
@@ -288,14 +288,14 @@ export default function Favorites({
                         ) : isUser ? (
                             <div className="flex items-center justify-start mt-4 w-full min-h-18">
                                 <Link href="/edit">
-                                    <div className="flex flex-col items-center justify-center gap-2 size-18 rounded-lg bg-bunker-600 text-white cursor-pointer p-4">
+                                    <div className="flex flex-col items-center justify-center gap-2 size-18 rounded-lg bg-shark-600 text-white cursor-pointer p-4">
                                         <Plus size={24} />
                                     </div>
                                 </Link>
                             </div>
                         ) : (
                             <div className="flex items-center justify-center w-full min-h-18">
-                                <span className="text-bunker-300 text-sm">
+                                <span className="text-shark-300 text-sm">
                                     Nada por aqui ainda...
                                 </span>
                             </div>

@@ -116,8 +116,8 @@ const Track = ({
                         }}
                         placeholder="Deixe um comentário"
                         classNames={{
-                            root: "!bg-bunker-700 !text-white !border-bunker-700 !rounded-xl",
-                            input: "!bg-bunker-700 !text-white !border-bunker-700 !rounded-xl",
+                            root: "!bg-shark-700 !text-white !border-shark-700 !rounded-xl",
+                            input: "!bg-shark-700 !text-white !border-shark-700 !rounded-xl",
                         }}
                         autosize
                         minRows={2}
@@ -318,7 +318,7 @@ export default function TrackStepper({
                     />
                     <div className="flex flex-col justify-center">
                         <h1 className="font-medium">{currentTrack.name}</h1>
-                        <p className="text-sm text-bunker-300">
+                        <p className="text-sm text-shark-300">
                             {currentTrack.artists.map(
                                 (artist: any, index: number) => (
                                     <span
@@ -352,10 +352,10 @@ export default function TrackStepper({
                             onClick={prevStep}
                             disabled={active === 0}
                             className={`
-                                    bg-bunker-700 hover:bg-bunker-700/80 transition-all duration-200
+                                    bg-shark-700 hover:bg-shark-700/80 transition-all duration-200
                                     !font-semibold py-2 px-3 rounded-lg
                                     cursor-pointer disabled:cursor-not-allowed
-                                    disabled:opacity-50 disabled:hover:bg-bunker-700
+                                    disabled:opacity-50 disabled:hover:bg-shark-700
                                 `}
                         >
                             Voltar

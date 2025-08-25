@@ -15,7 +15,7 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
     const searchParams = await props.searchParams;
     return (
         <div className="w-full min-h-screen p-5 flex justify-center items-center">
-            <form className="flex-1 flex flex-col min-w-64 rounded-2xl py-8 px-5 bg-bunker-800">
+            <form className="flex-1 flex flex-col min-w-64 rounded-2xl py-8 px-5 bg-shark-800">
                 <h1 className="text-2xl font-bold">Entre com sua conta</h1>
                 <div className="flex flex-col gap-2 [&>input]:mb-3 mt-8">
                     <Label htmlFor="email">Email</Label>
@@ -49,7 +49,7 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
                     onClick={signInWithGoogle}
                     className={`
                                         w-full mt-3
-                                        border border-bunker-600 rounded-xl
+                                        border border-shark-600 rounded-xl
                                         p-2 text-center transition-all duration-200
                                         hover:border-main-600 cursor-pointer
                                         flex items-center justify-center
@@ -62,7 +62,7 @@ export default async function Login(props: { searchParams: Promise<Message> }) {
                     <p className="">Não tem uma conta?</p>
                     <Link
                         href="/sign-up"
-                        className="w-full border border-bunker-600 rounded-xl p-2 text-center transition-all duration-200 hover:border-main-600"
+                        className="w-full border border-shark-600 rounded-xl p-2 text-center transition-all duration-200 hover:border-main-600"
                     >
                         Crie uma conta
                     </Link>

@@ -7,8 +7,8 @@ export const metadata = {
 
 export default function About() {
     return (
-        <div className="flex flex-col items relative px-5 pt-16 text-bunker-200 max-w-2xl mx-auto">
-            <h1 className="text-2xl font-bold mb-6 text-bunker-100">Sobre</h1>
+        <div className="flex flex-col items relative px-5 pt-16 text-shark-200 max-w-2xl mx-auto">
+            <h1 className="text-2xl font-bold mb-6 text-shark-100">Sobre</h1>
             <p className="text-base mb-3">
                 A <strong>Pitchforkd</strong> é uma plataforma para avaliação de
                 álbuns de música. Aqui você pode avaliar álbuns, ver o que a
@@ -21,7 +21,7 @@ export default function About() {
                 comunidade. Se você gosta de música e quer compartilhar suas
                 opiniões, o Pitchforkd é o lugar certo para você.
             </p>
-            <h2 className="font-semibold text-lg text-bunker-100 mb-3">
+            <h2 className="font-semibold text-lg text-shark-100 mb-3">
                 Nome e criação
             </h2>
             <p className="text-base mb-3">
@@ -51,7 +51,7 @@ export default function About() {
                 bibliotecas, mas as principais são Next.Js, Tailwind CSS,
                 TypeScript e Supabase.
             </p>
-            <h2 className="font-semibold text-lg text-bunker-100 mb-3" id="privacidade">
+            <h2 className="font-semibold text-lg text-shark-100 mb-3" id="privacidade">
                 Políticas de privacidade
             </h2>
             <p className="text-base mb-3">
@@ -75,7 +75,7 @@ export default function About() {
                 </Link>
                 .
             </p>
-            <h2 className="font-semibold text-lg text-bunker-100 mb-3" id="ajuda">
+            <h2 className="font-semibold text-lg text-shark-100 mb-3" id="ajuda">
                 Exclusão de conta e problemas de acesso
             </h2>
             <p className="text-base mb-3">
@@ -100,7 +100,7 @@ export default function About() {
                 artistas não podem ser removidas, pois fazem parte da base de
                 dados do Spotify, não são provenientes da plataforma.
             </p>
-            <h2 className="font-semibold text-lg text-bunker-100 mb-3" id="relatar">
+            <h2 className="font-semibold text-lg text-shark-100 mb-3" id="relatar">
                 Questões legais
             </h2>
             <p className="text-base mb-3">
@@ -130,7 +130,7 @@ export default function About() {
                 produtos associados a elas. A plataforma é um projeto
                 independente e sem fins lucrativos.
             </p>
-            <h2 className="font-semibold text-lg text-bunker-100 mb-3" id="contato">
+            <h2 className="font-semibold text-lg text-shark-100 mb-3" id="contato">
                 Contato
             </h2>
             <p className="text-base mb-3">

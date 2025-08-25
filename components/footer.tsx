@@ -4,8 +4,8 @@ export default function Footer() {
     return (
         <footer
             className={`
-                w-full bg-bunker-950 border-t border-bunker-700 
-                text-bunker-300 text-xs text-center 
+                w-full bg-shark-950 border-t border-shark-700 
+                text-shark-300 text-xs text-center 
                 flex flex-col items-center 
                 p-5 pb-20 gap-3
             `}

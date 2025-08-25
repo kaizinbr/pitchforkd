@@ -41,8 +41,8 @@ export default function EditPfp({ avatar_url, setAvatarUrl }: { avatar_url: stri
                 transitionProps={{ transition: "fade", duration: 200 }}
                 classNames={{
                     inner: "!z-[999]",
-                    content: "!bg-bunker-900",
-                    header: "!bg-bunker-900",
+                    content: "!bg-shark-900",
+                    header: "!bg-shark-900",
                 }}
             >
                 <ImageCropper close={close} avatar_url={avatar_url} setAvatarUrl={setAvatarUrl} />

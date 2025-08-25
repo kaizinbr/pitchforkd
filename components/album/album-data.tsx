@@ -6,10 +6,12 @@ export default function AlbumData({
     album,
     tracks,
     loading,
+    display
 }: {
     album: any;
     tracks: any;
     loading: boolean;
+    display?: boolean;
 }) {
     return (
         <div className="w-full max-w-2xl px-5">

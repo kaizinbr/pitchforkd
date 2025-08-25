@@ -70,13 +70,13 @@ export default function ArtistAlbuns({ id }: { id: any }) {
                     <div
                             className={`
                                 p-4 flex flex-col items-start
-                                bg-bunker-800 rounded-xl 
+                                bg-shark-800 rounded-xl 
                             `}
                         >
                             <Skeleton
                                 height={"auto"}
                                 radius="md"
-                                className="!bg-bunker-800 aspect-square mb-3"
+                                className="!bg-shark-800 aspect-square mb-3"
                             />
 
                             <Skeleton
@@ -91,13 +91,13 @@ export default function ArtistAlbuns({ id }: { id: any }) {
                         <div
                             className={`
                                 p-4 flex flex-col items-start
-                                bg-bunker-800 rounded-xl 
+                                bg-shark-800 rounded-xl 
                             `}
                         >
                             <Skeleton
                                 height={"auto"}
                                 radius="md"
-                                className="!bg-bunker-800 aspect-square mb-3"
+                                className="!bg-shark-800 aspect-square mb-3"
                             />
 
                             <Skeleton
@@ -111,13 +111,13 @@ export default function ArtistAlbuns({ id }: { id: any }) {
                         <div
                             className={`
                                 p-4 flex flex-col items-start
-                                bg-bunker-800 rounded-xl 
+                                bg-shark-800 rounded-xl 
                             `}
                         >
                             <Skeleton
                                 height={"auto"}
                                 radius="md"
-                                className="!bg-bunker-800 aspect-square mb-3"
+                                className="!bg-shark-800 aspect-square mb-3"
                             />
 
                             <Skeleton
@@ -131,13 +131,13 @@ export default function ArtistAlbuns({ id }: { id: any }) {
                         <div
                             className={`
                                 p-4 flex flex-col items-start
-                                bg-bunker-800 rounded-xl 
+                                bg-shark-800 rounded-xl 
                             `}
                         >
                             <Skeleton
                                 height={"auto"}
                                 radius="md"
-                                className="!bg-bunker-800 aspect-square mb-3"
+                                className="!bg-shark-800 aspect-square mb-3"
                             />
 
                             <Skeleton
@@ -168,7 +168,7 @@ export default function ArtistAlbuns({ id }: { id: any }) {
                                 className={`
                                         p-4 flex flex-col items-start
                                         
-                                        bg-bunker-800 hover:bg-bunker-700 
+                                        bg-shark-800 hover:bg-shark-700 
                                         rounded-xl transition-all duration-200 cursor-pointer
                                     `}
                             >

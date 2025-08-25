@@ -47,7 +47,7 @@ const Track = ({
     return (
         <div
             className={`
-            bg-bunker-800
+            bg-shark-800
             p-4 gap-4
             rounded-xl w-full
             flex flex-col items- justify-center
@@ -317,8 +317,8 @@ export default function Rater({
                     root: "!z-[1999]",
                     overlay: "!z-[1998]",
                     inner: "!z-[1999]",
-                    content: "!bg-bunker-800 !rounded-xl",
-                    header: "!bg-bunker-800 !rounded-xl",
+                    content: "!bg-shark-800 !rounded-xl",
+                    header: "!bg-shark-800 !rounded-xl",
                 }}
             >
                 <div className="w-full flex flex-col items-center gap-3 font-semibold">
@@ -344,7 +344,7 @@ export default function Rater({
                     </Link>
                 </div>
             </Modal>
-            <div className="w-full max-w-2xl mt-22 bg-bunker-800 p-5 gap-4 rounded-xl">
+            <div className="w-full max-w-2xl mt-22 bg-shark-800 p-5 gap-4 rounded-xl">
                 {onTracks ? (
                     <TrackStepper
                         album={album}
@@ -360,7 +360,7 @@ export default function Rater({
                     <div className="flex flex-col gap-4 w-full">
                         <div
                             className={`
-                        bg-bunker-800
+                        bg-shark-800
                          gap-2
                         rounded-xl
                         flex flex-col items- justify-center
@@ -418,7 +418,7 @@ export default function Rater({
                                 className={`
                                 py-2 px-3
                                 flex justify-center items-center
-                                bg-bunker-700 hover:bg-bunker-700/80
+                                bg-shark-700 hover:bg-shark-700/80
                                 text-white !font-semibold rounded-xl
                                 cursor-pointer
                                 transition-all duration-300
@@ -475,7 +475,7 @@ export default function Rater({
                     ))}
                     <div
                         className={`
-                        bg-bunker-800
+                        bg-shark-800
                         p-4 gap-4
                         rounded-xl
                         flex flex-col items- justify-center

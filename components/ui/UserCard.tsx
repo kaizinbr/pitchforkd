@@ -15,7 +15,7 @@ export default function UserCard({
             href={`/${data.username}`}
             className={`
                 flex flex-row w- items-center ${className}
-                p-2 rounded-xl hover:bg-bunker-800 bg-transparent transition-all duration-300
+                p-2 rounded-xl hover:bg-shark-800 bg-transparent transition-all duration-300
             `}
         >
             <div className="size-12 rounded-full bg-woodsmoke-300 mr-3">
@@ -34,7 +34,7 @@ export default function UserCard({
                             <TbRosetteDiscountCheckFilled className="size-5 text-main-500" />
                         )}
                     </h3>
-                    <div className="text-sm text-bunker-300">
+                    <div className="text-sm text-shark-300">
                         @{data.username}
                     </div>
                 </div>

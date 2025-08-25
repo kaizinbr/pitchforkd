@@ -38,14 +38,14 @@ export default function tracksTracksDisplay({
                 <div className="flex flex-col gap-4">
                     {Object.values(discTracks).map(
                         (disc: any, index: number) => (
-                            <div className="mt-5" key={index}>
+                            <div className="" key={index}>
                                 {disc.length > 1 ? (
                                     <h2 className="text-lg font-bold w-full flex p-5">
                                         Disco {index + 1}
                                     </h2>
                                 ) : null}
                                 <div className="w-full text-sm text-left">
-                                    <div className="text-xs text-bunker-300 uppercase w-full  grid grid-cols-6 gap-4 items-center">
+                                    <div className="text-xs text-shark-300 uppercase w-full  grid grid-cols-6 gap-4 items-center">
                                         <div className="pl-5 py-3 col-span-1">
                                             #
                                         </div>
@@ -62,7 +62,7 @@ export default function tracksTracksDisplay({
                                                 <>
                                                     <motion.div
                                                         key={track.id}
-                                                        className="bg-transparent hover:bg-bunker-800/60 md:rounded-xl transition-all duration-200 ease-in-out grid grid-cols-6 gap-4 gap-y-2 cursor-pointer"
+                                                        className="bg-transparent hover:bg-shark-800/60 md:rounded-xl transition-all duration-200 ease-in-out grid grid-cols-6 gap-4 gap-y-2 cursor-pointer"
                                                         onClick={() =>
                                                             setOpenComment(
                                                                 openComment ===
@@ -90,18 +90,18 @@ export default function tracksTracksDisplay({
                                                             duration: 0.5, // Duração da animação
                                                         }}
                                                     >
-                                                        <span className="flex items-center pl-5 py-4 text-bunker-300 text-xs col-span-1">
+                                                        <span className="flex items-center pl-5 py-4 text-shark-300 text-xs col-span-1">
                                                             {track.track_number}
                                                         </span>
                                                         <div className="flex items-center px-2 py-4  col-span-4">
                                                             <div className="flex flex-col">
                                                                 <h2 className="text-sm font-semibold flex flex-row gap-1 items-center">
                                                                     {track.explicit ? (
-                                                                        <BsExplicitFill className="text-bunker-500 size-3" />
+                                                                        <BsExplicitFill className="text-shark-500 size-3" />
                                                                     ) : null}
                                                                     {track.name}
                                                                 </h2>
-                                                                <p className="text-xs text-bunker-300">
+                                                                <p className="text-xs text-shark-300">
                                                                     {track.artists.map(
                                                                         (
                                                                             artist: any,
@@ -157,7 +157,7 @@ export default function tracksTracksDisplay({
                                                                         }}
                                                                         className=" font-semibold col-span-4 col-start-2 row-start-2 mb-4"
                                                                     >
-                                                                        <div className="p-3 w-full flex flex-col gap-3 bg-bunker-800 rounded-xl">
+                                                                        <div className="p-3 w-full flex flex-col gap-3 bg-shark-800 rounded-xl">
                                                                             <div className="w-full flex flex-row gap-2 items-center">
                                                                                 <div className="flex relative flex-col justify-center items-center size-7">
                                                                                     <Avatar
@@ -175,7 +175,7 @@ export default function tracksTracksDisplay({
                                                                                                 <TbRosetteDiscountCheckFilled className="size-4 text-main-500" />
                                                                                             )}
                                                                                         </p>
-                                                                                        <p className="text-bunker-300 text-xs">
+                                                                                        <p className="text-shark-300 text-xs">
                                                                                             @{rate.profiles.username}
                                                                                         </p>
                                                                                     </div>

@@ -63,7 +63,7 @@ export default function Avatar({
                 <picture
                     className={`
                         flex flex-row justify-center items-center
-                        bg-bunker-800 !rounded-(--icon) overflow-hidden
+                        bg-shark-800 !rounded-(--icon) overflow-hidden
                         w-48 h-48
                         
                     `}

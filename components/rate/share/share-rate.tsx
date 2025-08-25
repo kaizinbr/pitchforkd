@@ -183,7 +183,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
                         Baixar
                     </button>
                     <div className="w-full max-w-2xl px-5">
-                        <div className="p-4 w-full bg-bunker-800 rounded-xl">
+                        <div className="p-4 w-full bg-shark-800 rounded-xl">
                             <h2 className="text-center text font-semibold mb-2">
                                 Configurações
                             </h2>
@@ -200,7 +200,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
 
                                             //     cardStyle === "dynamic"
                                             //         ? "bg-main-500 text-white"
-                                            //         : "bg-bunker-700 text-bunker-300 hover:bg-bunker-600"
+                                            //         : "bg-shark-700 text-shark-300 hover:bg-shark-600"
                                             // }
                                         `}
                                         onClick={() => setCardStyle("dynamic")}
@@ -215,7 +215,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
                                             ${
                                                 cardStyle === "linear"
                                                     ? "bg-main-500 text-white"
-                                                    : "bg-bunker-700 text-bunker-300 hover:bg-bunker-600"
+                                                    : "bg-shark-700 text-shark-300 hover:bg-shark-600"
                                             }
                                         `}
                                         onClick={() => setCardStyle("linear")}
@@ -229,7 +229,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
                                             ${
                                                 cardStyle === "spotlight"
                                                     ? "bg-main-500 text-white"
-                                                    : "bg-bunker-700 text-bunker-300 hover:bg-bunker-600"
+                                                    : "bg-shark-700 text-shark-300 hover:bg-shark-600"
                                             }
                                         `}
                                         onClick={() =>
@@ -243,7 +243,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
 
                             {cardStyle === "dynamic" ? (
                                 <>
-                                <div className="flex flex-col items-center bg-bunker-700 rounded-md p-2 mb-2">
+                                <div className="flex flex-col items-center bg-shark-700 rounded-md p-2 mb-2">
                                     <p className="text-center text-sm mb-3">
                                         Cor de fundo 1
                                     </p>
@@ -271,7 +271,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
                                         <button className="size-8 rounded-xl bg-black cursor-pointer" onClick={() => setColor1("#000000")}></button>
                                     </div>
                                 </div>
-                                <div className="flex flex-col items-center bg-bunker-700 rounded-md p-2 mb-2">
+                                <div className="flex flex-col items-center bg-shark-700 rounded-md p-2 mb-2">
                                     <p className="text-center text-sm mb-3">
                                         Cor de fundo 2
                                     </p>
@@ -299,7 +299,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
                                         <button className="size-8 rounded-xl bg-black cursor-pointer" onClick={() => setColor2("#000000")}></button>
                                     </div>
                                 </div>
-                                <div className="flex flex-col items-center bg-bunker-700 rounded-md p-2 mb-2">
+                                <div className="flex flex-col items-center bg-shark-700 rounded-md p-2 mb-2">
                                     <p className="text-center text-sm mb-3">
                                         Cor de fundo 3
                                     </p>
@@ -327,7 +327,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
                                         <button className="size-8 rounded-xl bg-black cursor-pointer" onClick={() => setColor3("#000000")}></button>
                                     </div>
                                 </div>
-                                <div className="flex flex-col items-center bg-bunker-700 rounded-md p-2">
+                                <div className="flex flex-col items-center bg-shark-700 rounded-md p-2">
                                     <p className="text-center text-sm mb-3">
                                         Cor de fundo 4
                                     </p>

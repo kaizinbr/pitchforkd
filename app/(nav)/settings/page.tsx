@@ -27,7 +27,7 @@ export default async function Index() {
         <div className="w-full max-w-2xl mt-20 px-3 mx-auto">
             <div className="flex-1 w-full flex flex-col gap-8">
                 <h1 className="text-xl font-bold">Suas configurações</h1>
-                <div className="flex flex-col gap-4 bg-bunker-700 rounded-3xl px-6 py-4">
+                <div className="flex flex-col gap-4 bg-shark-700 rounded-3xl px-6 py-4">
                     <div className="flex flex-col">
                         <div className="flex flex-col gap-2">
                             <span className="text-base">
@@ -50,12 +50,12 @@ export default async function Index() {
                         </div>
                     </div>
                 </div>
-                <div className="w-full flex flex-col divide-y divide-bunker-700">
+                <div className="w-full flex flex-col divide-y divide-shark-700">
                     <Link
                         href="/protected/reset-password"
                         className={`
                                     w-full gap-2 flex flex-row p-4 
-                                    bg-transparent hover:bg-bunker-700 
+                                    bg-transparent hover:bg-shark-700 
                                     transition duration-200
                                 `}
                     >
@@ -67,8 +67,8 @@ export default async function Index() {
                         // href="/update-email"
                         className={`
                                     w-full gap-2 flex flex-row p-4 
-                                    bg-transparent hover:bg-bunker-700 
-                                    transition duration-200 cursor-not-allowed text-bunker-400
+                                    bg-transparent hover:bg-shark-700 
+                                    transition duration-200 cursor-not-allowed text-shark-400
                                 `}
                     >
                         <Mail size={18} />
@@ -78,15 +78,15 @@ export default async function Index() {
                         // href="/profile/settings/account"
                         className={`
                                     w-full gap-2 flex flex-row p-4 
-                                    bg-transparent hover:bg-bunker-700 
-                                    transition duration-200 cursor-not-allowed  text-bunker-400
+                                    bg-transparent hover:bg-shark-700 
+                                    transition duration-200 cursor-not-allowed  text-shark-400
                                 `}
                     >
                         <Trash size={18} />
                         <span className="">Excluir conta</span>
                     </p>
                     <button
-                        className="w-full cursor-pointer gap-2 flex flex-row p-4 text-red-500 bg-transparent hover:bg-bunker-700 transition duration-200"
+                        className="w-full cursor-pointer gap-2 flex flex-row p-4 text-red-500 bg-transparent hover:bg-shark-700 transition duration-200"
                         onClick={signOutAction}
                     >
                         <LogOut size={18} />

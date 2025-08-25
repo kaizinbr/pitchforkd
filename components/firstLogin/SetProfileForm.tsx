@@ -144,8 +144,8 @@ export default function SetProfileForm({ user }: { user: User | null }) {
             className={`
                         flex-1 flex flex-col w-full justify-center gap-2 
                         text-foreground 
-                        p-8 bg-bunker-800
-                        border border-bunker-800 rounded-2xl overflow-hidden
+                        p-8 bg-shark-800
+                        border border-shark-800 rounded-2xl overflow-hidden
                     `}
         >
             <div
@@ -224,7 +224,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                                 className={`
                                                  rounded-lg
                                                 outline-none
-                                                bg-bunker-800 w-full
+                                                bg-shark-800 w-full
                                                 transition duration-200 ease-in-out
                                                 text-3xl font-bold
                                             `}
@@ -241,7 +241,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                                 className={`
                                                 rounded-lg
                                                 outline-none
-                                                bg-bunker-800 w-full
+                                                bg-shark-800 w-full
                                                 transition duration-200 ease-in-out
                                                 text-lg  font-medium
                                             `}
@@ -260,7 +260,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                                 className={`
                                                 rounded-lg
                                                 outline-none
-                                                bg-bunker-800 w-full
+                                                bg-shark-800 w-full
                                                 transition duration-200 ease-in-out
                                                 text-lg  font-medium py-1
                                             `}
@@ -276,7 +276,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                                 className={`
                                                 rounded-lg
                                                 outline-none
-                                                bg-bunker-800 w-full
+                                                bg-shark-800 w-full
                                                 transition duration-200 ease-in-out
                                                 text-lg  font-medium py-1
                                             `}
@@ -286,7 +286,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                             className={`
                     
                                         text-lg
-                                       bg-bunker-800 w-full
+                                       bg-shark-800 w-full
                                     `}
                         >
                             <Textarea
@@ -312,7 +312,7 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                 <button
                     className={`
                              rounded-xl px-4 py-2 !font-semibold
-                             ${loading || message !== null || !canUpdate ? "bg-bunker-600 cursor-not-allowed" : "bg-blue-celestial cursor-pointer"}
+                             ${loading || message !== null || !canUpdate ? "bg-shark-600 cursor-not-allowed" : "bg-blue-celestial cursor-pointer"}
                         `}
                     onClick={() =>
                         updateProfile({

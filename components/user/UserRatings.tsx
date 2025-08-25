@@ -218,7 +218,7 @@ export default function UserRatings({ user }: { user: any }) {
                     <div
                         className={`
                             flex flex-col
-                            w-full divide-bunker-800 divide-y
+                            w-full divide-shark-800 divide-y
                         `}
                     >
                         {ratings.map((rating) => (

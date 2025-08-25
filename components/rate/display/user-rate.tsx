@@ -43,13 +43,13 @@ export default function UserRate({
                         {formatRate(review.total)}
                     </p>
                     {review.review == "" ? (
-                        <p className="text-bunker-300 text-sm">
+                        <p className="text-shark-300 text-sm">
                             {displayPastRelativeTime(
                                 new Date(review.created_at)
                             )}
                         </p>
                     ) : (
-                        <div className="p-3 w-full flex flex-col gap-3 bg-bunker-800 rounded-xl">
+                        <div className="py-3 w-full flex flex-col gap-3 rounded-xl">
                             <div className="w-full flex flex-row gap-2 items-center">
                                 <Link
                                     href={`/${review.profiles.username}`}
@@ -73,12 +73,12 @@ export default function UserRate({
                                                 <TbRosetteDiscountCheckFilled className="size-4 text-main-500" />
                                             )}
                                         </p>
-                                        <p className="text-bunker-300 text-xs">
+                                        <p className="text-shark-300 text-xs">
                                             @{review.profiles.username}
                                         </p>
                                     </Link>
                                     {review.profiles.pronouns && (
-                                        <div className="flex flex-row justify-start items-center text-xs gap-2 text-bunker-400">
+                                        <div className="flex flex-row justify-start items-center text-xs gap-2 text-shark-400">
                                             <p className=" font-semibold">
                                                 {review.profiles.pronouns}
                                             </p>
@@ -92,7 +92,7 @@ export default function UserRate({
                                     uneditable={true}
                                 />
                             </div>
-                            <div className="flex items-center justify-start flex-row gap-1 text-xs text-bunker-400 ">
+                            <div className="flex items-center justify-start flex-row gap-1 text-xs text-shark-400 ">
                                 <span className=" h-full flex items-center">
                                     {displayPastRelativeTime(
                                         new Date(review.created_at)

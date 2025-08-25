@@ -74,6 +74,18 @@
     --color-main-800: #2f2fa4;
     --color-main-900: #2d2f82;
     --color-main-950: #1a1a4c;
+
+    --color-shark-50: #f4f5f7;
+    --color-shark-100: #e4e8e9;
+    --color-shark-200: #cbd2d6;
+    --color-shark-300: #a8b3b8;
+    --color-shark-400: #7c8c94;
+    --color-shark-500: #617079;
+    --color-shark-600: #535f67;
+    --color-shark-700: #424549;
+    --color-shark-800: #36393e;
+    --color-shark-900: #282b30;
+    --color-shark-950: #1e2124;
 }
 
 @layer base {
@@ -133,7 +145,7 @@
 
 body {
     font-family: "Walsheim" !important;
-    background-color: #14181c !important;
+    background-color: #1e2124 !important;
     --brand-primary: rgb(138, 180, 248);
     --brand-secondary: rgb(193, 168, 226);
     --brand-alternative: rgb(136, 186, 191);

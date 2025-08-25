@@ -42,9 +42,9 @@ function NotificationCard({ notification }: { notification: Notification }) {
         <button
             className={`
                 w-full
-                p-4 rounded-xl shadow-md border border-bunker-800
+                p-4 rounded-xl shadow-md border border-shark-800
                 
-                ${saw ? "bg-transparent text-bunker-400" : "bg-bunker-800 hover:bg-bunker-700"}
+                ${saw ? "bg-transparent text-shark-400" : "bg-shark-800 hover:bg-shark-700"}
                 transition-all duration-200 ease-in-out
             `}
             onClick={() => {
@@ -85,7 +85,7 @@ function NotificationCard({ notification }: { notification: Notification }) {
                     ) : (
                         <Skeleton height={8} radius="xl" />
                     )}
-                    <span className="text-bunker-300 text-xs">
+                    <span className="text-shark-300 text-xs">
                        {displayPastRelativeTime(new Date(notification.created_at))}
                         
                     </span>

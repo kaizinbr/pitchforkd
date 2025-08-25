@@ -124,20 +124,20 @@ export default function DisplayReviews({
     useEffect(() => {
         const initializeData = async () => {
             // Tentar carregar do cache primeiro
-            const cachedReviews = sessionStorage.getItem(STORAGE_KEY);
-            const cachedAlbums = sessionStorage.getItem(ALBUMS_STORAGE_KEY);
-            const cachedOffset = sessionStorage.getItem(OFFSET_KEY);
+            // const cachedReviews = sessionStorage.getItem(STORAGE_KEY);
+            // const cachedAlbums = sessionStorage.getItem(ALBUMS_STORAGE_KEY);
+            // const cachedOffset = sessionStorage.getItem(OFFSET_KEY);
 
-            if (cachedReviews && cachedAlbums) {
-                console.log("Carregando dados do cache");
-                setAllReviews(JSON.parse(cachedReviews));
-                setAllAlbums(JSON.parse(cachedAlbums));
+            // if (cachedReviews && cachedAlbums) {
+            //     console.log("Carregando dados do cache");
+            //     setAllReviews(JSON.parse(cachedReviews));
+            //     setAllAlbums(JSON.parse(cachedAlbums));
                 
-                if (cachedOffset) {
-                    setOffset(parseInt(cachedOffset));
-                }
-                return;
-            }
+            //     if (cachedOffset) {
+            //         setOffset(parseInt(cachedOffset));
+            //     }
+            //     return;
+            // }
 
             // Se não tem cache, usar dados iniciais
             if (ratings) {
@@ -192,7 +192,7 @@ export default function DisplayReviews({
         <div className="flex flex-col w-full max-w-2xl">
             <h2 className="text-xl font-bold flex px-5 mb-3">Avaliações</h2>
 
-            <div className="flex flex-col w-full divide-bunker-800 divide-y">
+            <div className="flex flex-col w-full divide-shark-900 divide-y">
                 {allReviews.map((rating) => (
                     <RatingCard 
                         key={rating.id} 

@@ -61,10 +61,10 @@ export default function ArtistPage({ id }: { id: string }) {
                 {loading ? null : (
                     <div className="flex flex-col mb-3">
                         <p className="flex flex-col gap-1">
-                            <span className="text-sm font-medium text-bunker-400">
+                            <span className="text-sm font-medium text-shark-400">
                                 Popularidade: {artist?.popularity}
                             </span>
-                            <span className="text-sm font-medium text-bunker-400">
+                            <span className="text-sm font-medium text-shark-400">
                                 Seguidores:{" "}
                                 {artist?.followers.total.toLocaleString()}
                             </span>

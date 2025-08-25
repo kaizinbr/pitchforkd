@@ -1,4 +1,4 @@
-import { Work_Sans } from "next/font/google";
+import { Work_Sans, Lora, Open_Sans } from "next/font/google";
 import "@/app/globals.css";
 import "@/app/embla.css";
 import "@mantine/core/styles.css";
@@ -26,6 +26,16 @@ export const metadata = {
 };
 
 const workSans = Work_Sans({
+    display: "swap",
+    subsets: ["latin"],
+});
+
+const lora = Lora({
+    display: "swap",
+    subsets: ["latin"],
+});
+
+const openSans = Open_Sans({
     display: "swap",
     subsets: ["latin"],
 });
@@ -241,13 +251,13 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="pt-br" className={walsheim.className} {...mantineHtmlProps}>
+        <html lang="pt-br" className={openSans.className} {...mantineHtmlProps}>
             <head>
                 <ColorSchemeScript />
             </head>
             <body
                 className={
-                    walsheim.className + ` !bg-bunker-950 !text-neutral-100 `
+                    openSans.className + ` !bg-shark-950 !text-neutral-100 `
                 }
             >
                 <MantineProvider defaultColorScheme="dark">

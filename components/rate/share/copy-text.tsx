@@ -12,7 +12,7 @@ export default function CopyText({
 }) {
     return (
         <div className="w-full max-w-2xl px-5">
-            <div className="p-4 w-full bg-bunker-800 rounded-xl text-sm">
+            <div className="p-4 w-full bg-shark-800 rounded-xl text-sm">
                 <p className="mb-3">
                     Avaliação de {rate.profiles.name || rate.profiles.username}
                 </p>

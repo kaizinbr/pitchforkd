@@ -31,7 +31,7 @@ export default function UserTabs({ username }: UserTabsProps) {
     const activeTab = getActiveTab();
 
     return (
-        <div className="w-full max-w-2xl px-5 border-b border-bunker-700">
+        <div className="w-full max-w-2xl px-5 border-b border-shark-700">
             <nav className="flex space-x-0">
                 {tabs.map((tab) => {
                     const isActive = activeTab === tab.key;
@@ -45,7 +45,7 @@ export default function UserTabs({ username }: UserTabsProps) {
                                 border-b-2 min-w-0 flex-1 text-center
                                 ${isActive 
                                     ? 'border-main-500 text-main-500' 
-                                    : 'border-transparent text-bunker-300 hover:text-white hover:border-bunker-500'
+                                    : 'border-transparent text-shark-300 hover:text-white hover:border-shark-500'
                                 }
                             `}
                         >

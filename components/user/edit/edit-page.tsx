@@ -75,7 +75,7 @@ export default function Edit({ profile }: { profile: any }) {
                 className={`
                     profile  
                     flex-1 flex flex-col w-full
-                    rounded-2xl p-5 bg-bunker-800
+                    rounded-2xl p-5 bg-shark-800
                     gap-3 mt-8
                 `}
                 autoComplete="off"
@@ -87,7 +87,7 @@ export default function Edit({ profile }: { profile: any }) {
                         htmlFor="name"
                         className={`
                                     text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70
-                                    text-bunker-300
+                                    text-shark-300
                                 `}
                     >
                         Nome
@@ -104,7 +104,7 @@ export default function Edit({ profile }: { profile: any }) {
                                         transition duration-200 ease-in-out
                                         text-3xl font-bold 
                                         flex h-10 w-full rounded-xl 
-                                        border border-bunker-700 bg-bunker-700 px-3 py-2 
+                                        border border-shark-700 bg-shark-700 px-3 py-2 
                                         ring-offset-background 
                                         placeholder:text-neutral-400 focus-visible:outline-none 
                                 `}
@@ -115,7 +115,7 @@ export default function Edit({ profile }: { profile: any }) {
                         htmlFor="username"
                         className={`
                                     text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70
-                                    text-bunker-300
+                                    text-shark-300
                                 `}
                     >
                         Nome de usuário
@@ -126,7 +126,7 @@ export default function Edit({ profile }: { profile: any }) {
                                     ${message != "" ? "text-red-500" : ""}
                                     transition duration-200 ease-in-out
                                     flex h-10 w-full rounded-xl
-                                            border border-bunker-700 bg-bunker-700 px-3 py-2
+                                            border border-shark-700 bg-shark-700 px-3 py-2
                                             ring-offset-background
                                             placeholder:text-neutral-400 focus-visible:outline-none
                                 `}
@@ -197,7 +197,7 @@ export default function Edit({ profile }: { profile: any }) {
                         htmlFor="site"
                         className={`
                                     text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70
-                                    text-bunker-300
+                                    text-shark-300
                                 `}
                     >
                         Website
@@ -214,7 +214,7 @@ export default function Edit({ profile }: { profile: any }) {
                                         transition duration-200 ease-in-out
                                         text-3xl font-bold 
                                         flex h-10 w-full rounded-xl 
-                                        border border-bunker-700 bg-bunker-700 px-3 py-2 
+                                        border border-shark-700 bg-shark-700 px-3 py-2 
                                         ring-offset-background 
                                         placeholder:text-neutral-400 focus-visible:outline-none 
                                     `}
@@ -226,7 +226,7 @@ export default function Edit({ profile }: { profile: any }) {
                         htmlFor="pronouns"
                         className={`
                                     text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70
-                                    text-bunker-300
+                                    text-shark-300
                                 `}
                     >
                         Pronomes
@@ -243,7 +243,7 @@ export default function Edit({ profile }: { profile: any }) {
                                         transition duration-200 ease-in-out
                                         text-3xl font-bold 
                                         flex h-10 w-full rounded-xl 
-                                        border border-bunker-700 bg-bunker-700 px-3 py-2 
+                                        border border-shark-700 bg-shark-700 px-3 py-2 
                                         ring-offset-background 
                                         placeholder:text-neutral-400 focus-visible:outline-none 
                                     `}
@@ -255,7 +255,7 @@ export default function Edit({ profile }: { profile: any }) {
                 <h1 className="text-lg font-semibold">Favoritos</h1>
                 <Link
                     href={"/edit/albuns"}
-                    className="flex flex-col gap-2 rounded-2xl p-5 bg-bunker-800"
+                    className="flex flex-col gap-2 rounded-2xl p-5 bg-shark-800"
                 >
                     <h3 className="text-sm">Editar álbums</h3>
                     <>
@@ -280,7 +280,7 @@ export default function Edit({ profile }: { profile: any }) {
                             </div>
                         ) : (
                             <div className="flex items-center justify-center w-full min-h-18">
-                                <span className="text-bunker-300 text-sm">
+                                <span className="text-shark-300 text-sm">
                                     Nada por aqui ainda...
                                 </span>
                             </div>
@@ -289,7 +289,7 @@ export default function Edit({ profile }: { profile: any }) {
                 </Link>
                 <Link
                     href={"/edit/artists"}
-                    className="flex flex-col gap-2 rounded-2xl p-5 bg-bunker-800"
+                    className="flex flex-col gap-2 rounded-2xl p-5 bg-shark-800"
                 >
                     <h3 className="text-sm">Editar artistas</h3>
                     <>
@@ -314,7 +314,7 @@ export default function Edit({ profile }: { profile: any }) {
                             </div>
                         ) : (
                             <div className="flex items-center justify-center w-full min-h-18">
-                                <span className="text-bunker-300 text-sm">
+                                <span className="text-shark-300 text-sm">
                                     Nada por aqui ainda...
                                 </span>
                             </div>

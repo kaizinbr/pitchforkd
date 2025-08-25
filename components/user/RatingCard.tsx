@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 "use client";
 
-import Image from "next/image";
+import NextImage from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@mantine/core";
@@ -12,6 +12,8 @@ import { displayPastRelativeTime } from "@/lib/utils/time";
 import axios from "axios";
 import formatRate from "@/lib/utils/formatRate";
 import LikeBtn from "./like-btn";
+import ColorThief from "colorthief";
+import { darkenColor } from "@/components/album/gen-gradient";
 
 import Underline from "@tiptap/extension-underline";
 import { useEditor } from "@tiptap/react";
@@ -21,7 +23,7 @@ import TextareaDisplay from "../textaera-content";
 export default function RatingCard({
     review,
     edit,
-    album
+    album,
 }: {
     review: Review;
     edit?: boolean;
@@ -32,6 +34,8 @@ export default function RatingCard({
     const [loading, setLoading] = useState(true);
     const [liked, setLiked] = useState(false);
     const [hasContent, setHasContent] = useState(false);
+
+    const [color1, setColor1] = useState<string>("#4a6d73");
 
     const content =
         review.content &&
@@ -52,9 +56,8 @@ export default function RatingCard({
     useEffect(() => {
         if (review.content) {
             const content = review.content as Content;
-            
-            console.log("Content:", content);
 
+            console.log("Content:", content);
 
             // Verifica se existe conteúdo significativo no campo "text"
             if (
@@ -63,7 +66,8 @@ export default function RatingCard({
                 (content as Content).content.length === 0 ||
                 !Array.isArray((content as Content).content[0]?.content) ||
                 ((content as Content).content[0]?.content.length === 1 &&
-                    ((content as Content).content[0]?.content[0]?.text ?? "") === "")
+                    ((content as Content).content[0]?.content[0]?.text ??
+                        "") === "")
             ) {
                 setHasContent(false);
             } else {
@@ -77,6 +81,34 @@ export default function RatingCard({
     useEffect(() => {
         if (album) {
             // console.log("Album:", album);
+            const img = new Image();
+            img.crossOrigin = "anonymous"; // Para evitar problemas de CORS
+
+            img.onload = () => {
+                try {
+                    const colorThief = new ColorThief();
+                    // Agora pode usar o elemento img carregado
+                    const dominantColor = colorThief.getColor(img);
+                    const palette = colorThief.getPalette(img, 3); // 3 cores
+
+                    console.log("Dominant Color:", dominantColor);
+                    console.log("Palette:", palette);
+
+                    setColor1(
+                        `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`
+                    );
+                } catch (error) {
+                    console.error("Erro ao extrair cores:", error);
+                }
+            };
+
+            img.onerror = () => {
+                console.error("Erro ao carregar a imagem");
+            };
+
+            // Definir a URL da imagem por último
+            img.src = album.images[1].url;
+
             setLoading(false);
         }
     }, [album]);
@@ -175,9 +207,9 @@ export default function RatingCard({
                 >
                     <div
                         className={`
-                            z-20 size-full bor border-bunker-800 p-4 relative
+                            z-20 size-full bor border-shark-900 p-4 relative
                             md:rounded-2xl
-                            bg-transparent hover:bg-bunker-800
+                            bg-transparent hover:bg-shark-900
                             transition-all duration-200 ease-in-out   
                         `}
                     >
@@ -221,16 +253,27 @@ export default function RatingCard({
                                         )}
                                     </div>
                                 )}
-                                <div className="flex flex-row relative">
+                                <div className={`
+                                        flex flex-row relative p-4 bg-shark-900 border border-shark-800 rounded-xl overflow-hidden
+                                        
+                                    `}
+                                        style={{
+                                            backgroundImage: `linear-gradient(to right, ${darkenColor(color1, 0.5)} 20%, #282b30 100%)`,
+                                            backgroundSize: 'cover',
+                                            backgroundPosition: 'center',
+                                            
+                                        }}
+                                    >
                                     {album && (
-                                        <picture className=" size-40">
-                                            <Image
+                                        <picture className="relative size-40">
+                                            <NextImage
                                                 src={album.images[1].url}
                                                 alt={album.name}
                                                 width={500}
                                                 height={500}
-                                                className="object-cover size-40 max-h-[160px] rounded-lg"
+                                                className="  object-cover z-10 size-40 max-h-[160px] rounded-lg opacity-"
                                             />
+
                                         </picture>
                                     )}
                                     <div
@@ -239,7 +282,7 @@ export default function RatingCard({
                                             w-[calc(100%-160px)]
                                         `}
                                     >
-                                        <span className="text-neutral-100 text-xl font-extrabold">
+                                        <span className="text-neutral-100 text-2xl font-extrabold">
                                             {formatRate(review.total)}
                                         </span>
 
@@ -250,7 +293,7 @@ export default function RatingCard({
                                     </div>
                                 </div>
                                 <div className="flex items-center justify-between flex-row gap-2">
-                                    <span className=" h-full flex items-center text-xs text-bunker-400 ">
+                                    <span className=" h-full flex items-center text-xs text-shark-400 ">
                                         {displayPastRelativeTime(
                                             new Date(review.created_at)
                                         )}

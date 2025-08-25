@@ -33,7 +33,7 @@ export default function tracksTracks({
                                     </h2>
                                 ) : null}
                                 <table className="w-full text-sm text-left">
-                                    <thead className="text-xs text-bunker-400 uppercase">
+                                    <thead className="text-xs text-shark-400 uppercase">
                                         <tr>
                                             <th
                                                 scope="col"
@@ -57,20 +57,20 @@ export default function tracksTracks({
                                             (track: any, index: number) => (
                                                 <tr
                                                     key={track.id}
-                                                    className="bg-transparent hover:bg-bunker-800 md:rounded-xl transition-all duration-200 ease-in-out"
+                                                    className="bg-transparent hover:bg-shark-800 md:rounded-xl transition-all duration-200 ease-in-out"
                                                 >
-                                                    <td className="pl-5 py-4 text-xs text-bunker-300">
+                                                    <td className="pl-5 py-4 text-xs text-shark-300">
                                                         {track.track_number}
                                                     </td>
                                                     <td className="px-3 py-4">
                                                         <div className="flex flex-col">
                                                             <h2 className="text-sm font-semibold flex flex-row gap-1 items-center">
                                                                 {track.explicit ? (
-                                                                    <BsExplicitFill className="text-bunker-500 size-3" />
+                                                                    <BsExplicitFill className="text-shark-500 size-3" />
                                                                 ) : null}
                                                                 {track.name}
                                                             </h2>
-                                                            <p className="text-xs text-bunker-300">
+                                                            <p className="text-xs text-shark-300">
                                                                 {track.artists.map(
                                                                     (
                                                                         artist: any,
@@ -96,7 +96,7 @@ export default function tracksTracks({
                                                             </p>
                                                         </div>
                                                     </td>
-                                                    <td className="px-4 pr-5 py-4 text-end text-bunker-300">
+                                                    <td className="px-4 pr-5 py-4 text-end text-shark-300">
                                                         <span>
                                                             {Math.floor(
                                                                 track.duration_ms /

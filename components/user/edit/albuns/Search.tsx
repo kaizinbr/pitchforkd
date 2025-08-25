@@ -37,8 +37,8 @@ export default function Search({ data, setData }: { data: any; setData: any }) {
         <div className="flex flex-col w-full">
             <input
                 className={`
-                    peer block w-full rounded-xl bg-bunker-700 border border-bunker-700
-                    px-3 py-2 text-sm outline-2 placeholder:text-bunker-500 outline-none
+                    peer block w-full rounded-xl bg-shark-700 border border-shark-700
+                    px-3 py-2 text-sm outline-2 placeholder:text-shark-500 outline-none
                 `}
                 onChange={(e) => {
                     handleSearch(e.target.value);
@@ -51,7 +51,7 @@ export default function Search({ data, setData }: { data: any; setData: any }) {
                         <button
                             type="button"
                             key={album.id}
-                            className="cursor-pointer flex flex-row items-center gap-3 p-2 rounded-xl hover:bg-bunker-800 bg-transparent transition-all duration-300 w-full"
+                            className="cursor-pointer flex flex-row items-center gap-3 p-2 rounded-xl hover:bg-shark-800 bg-transparent transition-all duration-300 w-full"
                             onClick={() => {
                                 // console.log(album);
                                 if (data.length < 10 && !data.some((item: any) => item.id === album.id)) {
@@ -79,7 +79,7 @@ export default function Search({ data, setData }: { data: any; setData: any }) {
                             />
                             <div className="text-left flex flex-col">
                                 <h3 className="font-semibold">{album.name}</h3>
-                                <span className="text-sm text-bunker-300">
+                                <span className="text-sm text-shark-300">
                                     {album.artists
                                         .map((artist) => artist.name)
                                         .join(", ")}
@@ -88,7 +88,7 @@ export default function Search({ data, setData }: { data: any; setData: any }) {
                         </button>
                     ))
                 ) : (
-                    <p className="text-bunker-300 text-center">
+                    <p className="text-shark-300 text-center">
                         Os resultados aparecerão aqui...
                     </p>
                 )}

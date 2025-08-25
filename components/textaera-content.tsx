@@ -19,7 +19,7 @@ export default function TextareaDisplay({
                 variant="subtle"
                 classNames={{
                     root: `!bg-transparent ${isShare ? "!text-[10px]" : "!text-sm"} !border-transparent !rounded-xl !w-full`,
-                    content: `!bg-transparent !p-0 display-contents text-wrap break-words ${lineClamp ? "line-clamp-3" : ""}`,
+                    content: `!bg-transparent !p-0 display-contents text-wrap break-words ${lineClamp ? "!line-clamp-4" : ""}`,
                 }}
             >
                 <RichTextEditor.Content />
@@ -49,7 +49,7 @@ export default function TextareaDisplay({
             variant="subtle"
             classNames={{
                 root: `!bg-transparent !text-sm !border-transparent !rounded-xl !w-full`,
-                content: `!bg-transparent !p-0 display-contents text-wrap break-words ${lineClamp ? "line-clamp-4" : ""}`,
+                content: `!bg-transparent !p-0 display-contents text-wrap break-words ${lineClamp ? "line-clamp-12" : ""}`,
             }}
         >
             <RichTextEditor.Content />

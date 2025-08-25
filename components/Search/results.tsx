@@ -101,7 +101,7 @@ function Results({
                         <Link
                             key={album.id}
                             href={`/album/${album.id}`}
-                            className="flex flex-row items-center gap-3 p-2 rounded-xl hover:bg-bunker-800 bg-transparent transition-all duration-300"
+                            className="flex flex-row items-center gap-3 p-2 rounded-xl hover:bg-shark-800 bg-transparent transition-all duration-300"
                         >
                             <Image
                                 className="w-10 h-10 rounded-md"
@@ -114,7 +114,7 @@ function Results({
                                 <h3 className="text-left font-semibold">
                                     {album.name}
                                 </h3>
-                                <span className="text-sm text-bunker-300">
+                                <span className="text-sm text-shark-300">
                                     {album.artists
                                         .map((artist) => artist.name)
                                         .join(", ")}
@@ -127,7 +127,7 @@ function Results({
                     tracksResults.map((track) => (
                         <Link
                             key={track.id}
-                            className="flex flex-row items-center gap-3 p-2 rounded-xl hover:bg-bunker-800 bg-transparent transition-all duration-300"
+                            className="flex flex-row items-center gap-3 p-2 rounded-xl hover:bg-shark-800 bg-transparent transition-all duration-300"
                             href={`/album/${track.album.id}`}
                         >
                             <Image
@@ -141,11 +141,11 @@ function Results({
                             <div className="flex flex-col">
                                 <h3 className="text-left font-semibold flex flex-row gap-1 items-center">
                                     {track.explicit ? (
-                                        <BsExplicitFill className="text-bunker-500 size-3" />
+                                        <BsExplicitFill className="text-shark-500 size-3" />
                                     ) : null}
                                     {track.name}
                                 </h3>
-                                <span className="text-sm text-bunker-300">
+                                <span className="text-sm text-shark-300">
                                     {track.artists
                                         .map((artist) => artist.name)
                                         .join(", ")}
@@ -157,7 +157,7 @@ function Results({
                     artistResults.map((artist) => (
                         <Link
                             key={artist.id}
-                            className="flex flex-row items-center p-2 rounded-xl hover:bg-bunker-800 bg-transparent transition-all duration-300"
+                            className="flex flex-row items-center p-2 rounded-xl hover:bg-shark-800 bg-transparent transition-all duration-300"
                             href={`/artist/${artist.id}`}
                         >
                             <Image
@@ -188,7 +188,7 @@ function Results({
 
                 {type === "album" && albunsResults.length === 0 && !loading && (
                     <div className="flex flex-col items-center justify-center w-full ">
-                        <h1 className=" text-sm text-bunker-300">
+                        <h1 className=" text-sm text-shark-300">
                             Nenhum resultado encontrado
                         </h1>
                     </div>
@@ -196,7 +196,7 @@ function Results({
 
                 {type === "track" && tracksResults.length === 0 && !loading && (
                     <div className="flex flex-col items-center justify-center w-full ">
-                        <h1 className=" text-sm text-bunker-300">
+                        <h1 className=" text-sm text-shark-300">
                             Nenhum resultado encontrado
                         </h1>
                     </div>
@@ -204,7 +204,7 @@ function Results({
 
                 {type === "artist" && artistResults.length === 0 && !loading && (
                     <div className="flex flex-col items-center justify-center w-full ">
-                        <h1 className=" text-sm text-bunker-300">
+                        <h1 className=" text-sm text-shark-300">
                             Nenhum resultado encontrado
                         </h1>
                     </div>
@@ -212,7 +212,7 @@ function Results({
 
                 {type === "user" && users.length === 0 && !loading && (
                     <div className="flex flex-col items-center justify-center w-full ">
-                        <h1 className=" text-sm text-bunker-300">
+                        <h1 className=" text-sm text-shark-300">
                             Nenhum resultado encontrado
                         </h1>
                     </div>
@@ -325,7 +325,7 @@ export default function ResultsPage({
                     <Tabs.Tab
                         value="1"
                         ref={setControlRef("1")}
-                        className={`text-bunker-50 font-semibold relative  ${classes.tab}`}
+                        className={`text-shark-50 font-semibold relative  ${classes.tab}`}
                     >
                         Álbuns
                     </Tabs.Tab>

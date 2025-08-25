@@ -101,7 +101,7 @@ export default function Navigator({ user }: { user: User | null }) {
                     transition-all duration-300 z-[999]
                     left-0 flex w-full items-center justify-evenly
                     backdrop-blur-xl
-                    bg-bunker-950/70  
+                    bg-shark-950/70  
                     
                 `}
             >
@@ -232,7 +232,7 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                     transition-all duration-300 z-[999]
                     left-0 flex w-full items-center justify-evenly
                     backdrop-blur-xl
-                    bg-bunker-950/70 h-16
+                    bg-shark-950/70 h-16
                     px-6 py-1
                 `}
             >

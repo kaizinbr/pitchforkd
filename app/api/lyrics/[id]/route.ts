@@ -3,9 +3,9 @@ import axios from "axios";
 
 export async function GET(
     request: Request,
-    { params }: { params: Promise<{ id: string }> }
+    { params }: { params: { id: string } }
 ) {
-    const id = (await params).id;
+    const id = params.id;
 
     let attempts = 0;
     const maxAttempts = 2;
@@ -22,12 +22,11 @@ export async function GET(
         try {
             const response = await axios.get(
                 `https://lyrics.kaizin.work/?trackid=${id}`,
-                { responseType: "text" } // Força resposta como texto
+                { responseType: "text" }
             );
 
             let data = response.data;
 
-            // Se não for JSON puro, tenta extrair o JSON do final da string
             if (typeof data === "string") {
                 const jsonStart = data.indexOf("{");
                 if (jsonStart !== -1) {
@@ -35,7 +34,6 @@ export async function GET(
                     try {
                         data = JSON.parse(jsonString);
                     } catch (parseError) {
-                        // Se falhar, tenta novamente (retry)
                         attempts++;
                         continue;
                     }
@@ -44,14 +42,12 @@ export async function GET(
 
             return NextResponse.json(data);
         } catch (error) {
-            // Se for erro 404, retorna imediatamente
             if (axios.isAxiosError(error) && error.response?.status === 404) {
                 return NextResponse.json(
                     { error: "Faixa não encontrada" },
                     { status: 404 }
                 );
             }
-            // Se for outro erro, tenta novamente (retry)
             attempts++;
             if (attempts >= maxAttempts) {
                 return NextResponse.json(
@@ -61,4 +57,9 @@ export async function GET(
             }
         }
     }
+    // Garante que sempre retorna uma resposta
+    return NextResponse.json(
+        { error: "Erro desconhecido" },
+        { status: 500 }
+    );
 }

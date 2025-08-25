@@ -154,18 +154,18 @@ export default function DisplayReviews({
     }, [ratings]);
 
     // Salvar no cache sempre que os dados mudarem
-    useEffect(() => {
-        if (allReviews.length > 0) {
-            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(allReviews));
-            sessionStorage.setItem(OFFSET_KEY, offset.toString());
-        }
-    }, [allReviews, offset]);
+    // useEffect(() => {
+    //     if (allReviews.length > 0) {
+    //         sessionStorage.setItem(STORAGE_KEY, JSON.stringify(allReviews));
+    //         sessionStorage.setItem(OFFSET_KEY, offset.toString());
+    //     }
+    // }, [allReviews, offset]);
 
-    useEffect(() => {
-        if (Object.keys(allAlbums).length > 0) {
-            sessionStorage.setItem(ALBUMS_STORAGE_KEY, JSON.stringify(allAlbums));
-        }
-    }, [allAlbums]);
+    // useEffect(() => {
+    //     if (Object.keys(allAlbums).length > 0) {
+    //         sessionStorage.setItem(ALBUMS_STORAGE_KEY, JSON.stringify(allAlbums));
+    //     }
+    // }, [allAlbums]);
 
     // Botão manual para carregar mais (fallback)
     const handleLoadMore = async () => {

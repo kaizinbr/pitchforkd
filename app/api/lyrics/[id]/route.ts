@@ -10,6 +10,14 @@ export async function GET(
     let attempts = 0;
     const maxAttempts = 2;
 
+    if (!id) {
+        // Retorne uma resposta de erro, nunca undefined
+        return NextResponse.json(
+            { error: "ID não fornecido" },
+            { status: 400 }
+        );
+    }
+
     while (attempts < maxAttempts) {
         try {
             const response = await axios.get(

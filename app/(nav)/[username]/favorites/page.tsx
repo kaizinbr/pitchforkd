@@ -1,4 +1,4 @@
-import FollowersList from "@/components/user/FollowersList";
+import Favorites from "@/components/user/Favorites";
 import { createClient } from "@/utils/supabase/server";
 
 export default async function FavoritesPage({
@@ -22,7 +22,7 @@ export default async function FavoritesPage({
     return (
         <div className="w-full">
             <div className="w-full flex items-center justify-center">
-                <p className="text-neutral-500">em construção.</p>
+                <Favorites />
             </div>
         </div>
     );

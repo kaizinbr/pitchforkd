@@ -36,7 +36,7 @@ export default function UserHeader({
         <>
             <div
                 className={`
-                    absolute h-[30rem] w-full -z-50 from-40 
+                    absolute h-[25rem] w-full -z-50 from-40 
                     top-0
                     transition-all duration-200 ease-in-out overflow-hidden
                     bg-blend-screen
@@ -49,15 +49,15 @@ export default function UserHeader({
                 <div className="absolute inset-0 flex items-center justify-center blur-3xl md:m-auto md:max-w-lg">
                     <div
                         style={{ backgroundColor: colors[0] }}
-                        className={`absolute rounded-full bg-[${colors[0]}] size-100 -top-1/3 -left-1/4 blur-3xl`}
+                        className={`absolute rounded-full bg-[${colors[0]}] size-100 -top-2/3 -left-1/4 blur-3xl`}
                     ></div>
                     <div
                         style={{ backgroundColor: colors[2] }}
-                        className={`absolute rounded-full -right-1/4 -top-1/3 w-80 h-100 blur-3xl`}
+                        className={`absolute rounded-full -right-1/4 -top-2/3 w-80 h-100 blur-3xl`}
                     ></div>
                     <div
                         style={{ backgroundColor: colors[1] }}
-                        className={`absolute rounded-full -top-2  h-40 w-88 -rotate-45 blur-3xl`}
+                        className={`absolute rounded-full -top-2 h-40 w-88 -rotate-45 blur-3xl`}
                     ></div>
                 </div>
             </div>
@@ -71,13 +71,18 @@ export default function UserHeader({
                     </Link>
                 </div>
             )}
-            <div className="flex flex-col gap-4 items-center w-full mt-18 md:mt-28 px-5  max-w-2xl">
-                <picture className="flex items-center justify-center">
+            <div className="flex flex-col gap-4 items-center w-full mt-14 md:mt-24 px-5  max-w-2xl">
+                <picture className="flex items-center justify-center relative">
                     <Avatar
                         size={120}
                         src={user.avatar_url}
                         setColors={setColors}
                     />
+                    {user.pronouns && (
+                        <span className="absolute -bottom-3 text-xs bg-main-500 px-2 py-[2px] rounded-md">
+                            {user.pronouns}
+                        </span>
+                    )}
                 </picture>
                 <div className="flex flex-col items-center w-full">
                     <h1 className="text-lg font-bold text-center flex flex-row items-center gap-1">
@@ -86,14 +91,11 @@ export default function UserHeader({
                             <TbRosetteDiscountCheckFilled className="size-5 text-main-500" />
                         )}
                     </h1>
-                    <p className="text-base font-semibold text-neutral-300 text-center">
+                    <p className="text-sm font-semibold text-neutral-400 text-center">
                         @{user.username}
                     </p>
                     {!user.pronouns && !user.site ? null : (
                         <div className="flex flex-row gap-1 text-xs font-medium text-neutral-300 text-center mt-1">
-                            {user.pronouns && (
-                                <span className="">{user.pronouns}</span>
-                            )}
                             {user.pronouns && user.site && <span>•</span>}
                             {user.site && (
                                 <Link
@@ -108,15 +110,17 @@ export default function UserHeader({
                             )}
                         </div>
                     )}
-                    <p className="text-xs font-medium text-neutral-300 text-center mt-1">
-                        {reviewCount} avaliaç{reviewCount !== 1 ? "ões" : "ão"}
-                    </p>
                     <div className="flex flex-row gap-4 text-xs font-medium text-neutral-300 mt-1">
+                        <p className="text-xs font-medium text-neutral-300 text-center">
+                            {reviewCount} avaliaç
+                            {reviewCount !== 1 ? "ões" : "ão"}
+                        </p>
                         <Link
                             href={`/${user.username}/followers`}
                             className="hover:underline"
                         >
-                            {followersCount} seguidor{followersCount !== 1 ? "es" : ""}
+                            {followersCount} seguidor
+                            {followersCount !== 1 ? "es" : ""}
                         </Link>
                         <Link
                             href={`/${user.username}/following`}
@@ -127,9 +131,9 @@ export default function UserHeader({
                     </div>
                 </div>
             </div>
-                    
+
             <FollowBtn user={user} isUser={isUser} />
-            <Favorites favorites={user.favorites} isUser={isUser} />
+            {/* <Favorites favorites={user.favorites} isUser={isUser} /> */}
         </>
     );
 }

@@ -17,13 +17,13 @@ import { Skeleton } from "@mantine/core";
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
-function Results({
+ 
+
+export default function ResultsPage({
     query,
-    currentPage,
     type,
 }: {
     query: string;
-    currentPage: number;
     type: string;
 }) {
     const supabase = createClient();
@@ -54,7 +54,7 @@ function Results({
                     setUsers(data);
                 }
                 setLoading(false);
-            } else if (type === "user") {
+            } else if (type === "profiles") {
                 const { data, error } = await supabase
                     .from("profiles")
                     .select("*")
@@ -72,7 +72,6 @@ function Results({
                 const response = await axios.post("/api/spot/search", {
                     q: query,
                     type: type,
-                    page: currentPage,
                 });
                 const data = response.data;
                 console.log(data);
@@ -88,15 +87,13 @@ function Results({
                 setLoading(false);
             }
         };
-        console.log("aaa");
         fetchInvoices();
-        console.log("a2222aa");
-    }, [query, currentPage, type]);
+    }, [query, type]);
 
     return (
-        <div className="flex flex-col w-full">
+        <div className="flex flex-col w-full px-4">
             <div className="flex flex-col w-full gap-3">
-                {type === "album" &&
+                {type === "albums" &&
                     albunsResults.map((album) => (
                         <Link
                             key={album.id}
@@ -123,7 +120,7 @@ function Results({
                         </Link>
                     ))}
 
-                {type === "track" &&
+                {type === "tracks" &&
                     tracksResults.map((track) => (
                         <Link
                             key={track.id}
@@ -153,7 +150,7 @@ function Results({
                             </div>
                         </Link>
                     ))}
-                {type === "artist" &&
+                {type === "artists" &&
                     artistResults.map((artist) => (
                         <Link
                             key={artist.id}
@@ -173,7 +170,7 @@ function Results({
                         </Link>
                     ))}
 
-                {type === "user" &&
+                {type === "profiles" &&
                     users.map((user) => (
                         <UserCard
                             key={user.id}
@@ -186,7 +183,7 @@ function Results({
                         />
                     ))}
 
-                {type === "album" && albunsResults.length === 0 && !loading && (
+                {type === "albums" && albunsResults.length === 0 && !loading && (
                     <div className="flex flex-col items-center justify-center w-full ">
                         <h1 className=" text-sm text-shark-300">
                             Nenhum resultado encontrado
@@ -194,7 +191,7 @@ function Results({
                     </div>
                 )}
 
-                {type === "track" && tracksResults.length === 0 && !loading && (
+                {type === "tracks" && tracksResults.length === 0 && !loading && (
                     <div className="flex flex-col items-center justify-center w-full ">
                         <h1 className=" text-sm text-shark-300">
                             Nenhum resultado encontrado
@@ -202,7 +199,7 @@ function Results({
                     </div>
                 )}
 
-                {type === "artist" && artistResults.length === 0 && !loading && (
+                {type === "artists" && artistResults.length === 0 && !loading && (
                     <div className="flex flex-col items-center justify-center w-full ">
                         <h1 className=" text-sm text-shark-300">
                             Nenhum resultado encontrado
@@ -210,7 +207,7 @@ function Results({
                     </div>
                 )}
 
-                {type === "user" && users.length === 0 && !loading && (
+                {type === "profiles" && users.length === 0 && !loading && (
                     <div className="flex flex-col items-center justify-center w-full ">
                         <h1 className=" text-sm text-shark-300">
                             Nenhum resultado encontrado
@@ -263,154 +260,5 @@ function Results({
                 )}
             </div>
         </div>
-    );
-}
-
-export default function ResultsPage({
-    query,
-    currentPage,
-    tab,
-}: {
-    query: string;
-    currentPage: number;
-    tab: string;
-}) {
-    const searchParams = useSearchParams();
-    const { replace } = useRouter();
-    const pathname = usePathname();
-    const [rootRef, setRootRef] = useState<HTMLDivElement | null>(null);
-    const [value, setValue] = useState<string | null>(tab);
-    const [controlsRefs, setControlsRefs] = useState<
-        Record<string, HTMLButtonElement | null>
-    >({});
-    const setControlRef = (val: string) => (node: HTMLButtonElement) => {
-        controlsRefs[val] = node;
-        setControlsRefs(controlsRefs);
-    };
-
-    const handleSearch = (term: string) => {
-        console.log(`Searching... ${term}`);
-
-        const params = new URLSearchParams(searchParams);
-
-        if (term) {
-            params.set("tab", term);
-        } else {
-            params.delete("tab");
-        }
-        replace(`${pathname}?${params.toString()}`);
-    };
-
-    function handleValue(value: string) {
-        setValue(value);
-        handleSearch(value);
-    }
-
-    return (
-        <Tabs
-            variant="none"
-            value={value}
-            onChange={(val) => {
-                if (val) {
-                    handleValue(val);
-                }
-            }}
-            className="w-full"
-        >
-            <Tabs.List
-                ref={setRootRef}
-                className={`flex flex-row justify-center w-full ${classes.list}`}
-            >
-                <div className="flex flex-row w-full justify-center">
-                    <Tabs.Tab
-                        value="1"
-                        ref={setControlRef("1")}
-                        className={`text-shark-50 font-semibold relative  ${classes.tab}`}
-                    >
-                        Álbuns
-                    </Tabs.Tab>
-                    <Tabs.Tab
-                        value="2"
-                        ref={setControlRef("2")}
-                        className={classes.tab}
-                    >
-                        Músicas
-                    </Tabs.Tab>
-                    <Tabs.Tab
-                        value="3"
-                        ref={setControlRef("3")}
-                        className={classes.tab}
-                    >
-                        Artistas
-                    </Tabs.Tab>
-                    <Tabs.Tab
-                        value="4"
-                        ref={setControlRef("4")}
-                        className={classes.tab}
-                    >
-                        Usuários
-                    </Tabs.Tab>
-                </div>
-
-                <FloatingIndicator
-                    target={value ? controlsRefs[value] : null}
-                    parent={rootRef}
-                    className={`bg-main-500 rounded-full`}
-                />
-            </Tabs.List>
-
-            <Tabs.Panel value="1">
-                <Suspense
-                    key={query + currentPage}
-                    fallback={<InvoicesMobileSkeleton />}
-                >
-                    <h1 className="font-bold text-xl mb-2">Álbuns</h1>
-                    <Results
-                        query={query}
-                        currentPage={currentPage}
-                        type="album"
-                    />
-                </Suspense>
-            </Tabs.Panel>
-            <Tabs.Panel value="2">
-                <Suspense
-                    key={query + currentPage}
-                    fallback={<InvoicesMobileSkeleton />}
-                >
-                    <h1 className="font-bold text-xl mb-2">Músicas</h1>
-                    <Results
-                        query={query}
-                        currentPage={currentPage}
-                        type="track"
-                    />
-                </Suspense>
-            </Tabs.Panel>
-            <Tabs.Panel value="3">
-                <Suspense
-                    key={query + currentPage}
-                    fallback={<InvoicesMobileSkeleton />}
-                >
-                    <h1 className="font-bold text-xl mb-2">Artistas</h1>
-                    <Results
-                        query={query}
-                        currentPage={currentPage}
-                        type="artist"
-                    />
-                </Suspense>
-            </Tabs.Panel>
-            <Tabs.Panel value="4">
-                <Suspense
-                    key={query + currentPage}
-                    fallback={<InvoicesMobileSkeleton />}
-                >
-                    <h1 className="font-bold text-xl mb-2">Usuários</h1>
-                    <Results
-                        query={query}
-                        currentPage={currentPage}
-                        type="user"
-                    />
-                </Suspense>
-            </Tabs.Panel>
-        </Tabs>
     );
 }

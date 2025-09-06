@@ -44,7 +44,7 @@ export default function UserTabs({ username }: UserTabsProps) {
                                 px-4 py-3 text-sm font-medium transition-colors duration-200
                                 border-b-2 min-w-0 flex-1 text-center
                                 ${isActive 
-                                    ? 'border-main-500 text-main-500' 
+                                    ? 'border-main-400 text-main-400' 
                                     : 'border-transparent text-shark-300 hover:text-white hover:border-shark-500'
                                 }
                             `}

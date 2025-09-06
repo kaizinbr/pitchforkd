@@ -1,71 +1,37 @@
 "use client";
 
-import { createClient } from "@/utils/supabase/client";
-import { useEffect, useState } from "react";
-import { RatingCardSkeletonList } from "../Skeletons";
+import { Suspense, useState, useEffect } from "react";
 import axios from "axios";
-import Image from "next/image";
 import Link from "next/link";
+import Image from "next/image";
 import Masonry from "@mui/lab/Masonry";
 import { Skeleton } from "@mantine/core";
 
-export default function ArtistAlbuns({ id }: { id: any }) {
-    const [albuns, setalbuns] = useState<any[]>([]);
+export default function ReleasesPage() {
     const [loading, setLoading] = useState(true);
-    const [offset, setOffset] = useState<number>(30);
-    const [total, setTotal] = useState(0);
+    const [releases, setReleases] = useState([]);
 
     useEffect(() => {
-        const fetchData = async () => {
-            const response = await axios.get(`/api/spot/artist/${id}/albuns`);
-            console.log(response.data);
-            setalbuns(response.data.items);
-            setTotal(response.data.total);
+        const fetchReleases = async () => {
+            const response = await axios.get("/api/spot/releases");
+            setReleases(response.data.albums.items);
             setLoading(false);
         };
 
-        fetchData();
+        fetchReleases();
     }, []);
 
-    const albunsList = albuns;
-
-    const handleLoadMore = async () => {
-        const fetchData = async () => {
-            const response = await axios.get(`/api/spot/artist/${id}/albuns`, {
-                params: {
-                    offset: offset,
-                },
-            });
-            // console.log(response.data);
-
-            setalbuns((prevAlbuns) => [...prevAlbuns, ...response.data.items]);
-            console.log("Albuns", albunsList);
-
-            // if (albunsList && response.data.items) {
-            //     albunsList.push(...response.data.items);
-            // }
-            // return response.data;
-        };
-        setOffset(offset + 30);
-
-        await fetchData();
-
-        // if (albunsList && data.items) {
-        //     albunsList.push(...data.items);
-        // }
-    };
-
     return (
-        <div className="w-full flex flex-col gap-4 max-w-2xl mt-10 mx-auto">
-            <h2 className="font-semibold flex px-5">Álbuns</h2>
+        <>
+            <h1 className="text-xl font-bold mb-4">Lançamentos Recentes</h1>
             {loading ? (
                 <Masonry
                     columns={{ xs: 2, md: 3 }}
                     spacing={2}
                     className={`
                     
-                    w-full px-3 !m-0
-                `}
+                        w-full !m-0
+                    `}
                 >
                     <div
                         className={`
@@ -150,17 +116,17 @@ export default function ArtistAlbuns({ id }: { id: any }) {
                         <Skeleton height={11} radius="xl" width="60%" />
                     </div>
                 </Masonry>
-            ) : albuns.length > 0 ? (
+            ) : releases.length > 0 ? (
                 <>
                     <Masonry
                         columns={{ xs: 2, md: 3 }}
                         spacing={2}
                         className={`
                             
-                            w-full px-3 !m-0
+                            w-full !m-0
                         `}
                     >
-                        {albuns.map((album) => (
+                        {releases.map((album: any) => (
                             <Link
                                 href={`/album/${album.id}`}
                                 key={album.id}
@@ -201,24 +167,12 @@ export default function ArtistAlbuns({ id }: { id: any }) {
                         ))}
                     </Masonry>
 
-                    {total > 5 && albuns.length < total && (
-                        <button
-                            onClick={handleLoadMore}
-                            className={`
-                                flex justify-center items-center py-2 mx-5 rounded-xl 
-                                bg-blue-celestial hover:bg-blue-celestial/80 transition-all duration-200 cursor-pointer 
-                                text-white font-bold
-                            `}
-                        >
-                            Carregar mais
-                        </button>
-                    )}
                 </>
             ) : (
                 <div className="text-xl font-bold  px-5 mt-10 text-center w-full">
                     <h2 className="">Nenhum álbum ainda</h2>
                 </div>
             )}
-        </div>
+        </>
     );
 }

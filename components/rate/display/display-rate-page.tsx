@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import ColorThief from "colorthief";
+import { Vibrant } from "node-vibrant/browser";
 import { darkenColor } from "@/components/album/gen-gradient";
 import axios from "axios";
 import AlbumCover from "@/components/album/album-cover";
@@ -32,9 +32,15 @@ export default function DisplayRate({
     const [canDelete, setCanDelete] = useState(false);
     const [liked, setLiked] = useState(false);
     const [totalLikes, setTotalLikes] = useState(0);
-    const [color1, setColor1] = useState<string>("#4a6d73");
-    const [color2, setColor2] = useState<string>("#b78972");
-    const [color3, setColor3] = useState<string>("#691209");
+
+    const [vibrantColor, setVibrantColor] = useState<string>("#ffffff");
+    const [mutedColor, setMutedColor] = useState<string>("#ffffff");
+    const [darkVibrantColor, setDarkVibrantColor] = useState<string>("#ffffff");
+    const [darkMutedColor, setDarkMutedColor] = useState<string>("#ffffff");
+    const [lightVibrantColor, setLightVibrantColor] =
+        useState<string>("#ffffff");
+    const [lightMutedColor, setLightMutedColor] = useState<string>("#ffffff");
+    const [textColor, setTextColor] = useState<string>("#222");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -69,39 +75,52 @@ export default function DisplayRate({
 
             setLoading(false);
 
-            const img = new Image();
-            img.crossOrigin = "anonymous"; // Para evitar problemas de CORS
+            Vibrant.from(response.data.images[0]?.url)
+                .getPalette()
+                .then((palette) => {
+                    console.log(palette);
+                    // setColors(palette);
+                    if (palette.Vibrant) {
+                        const rgb = palette.Vibrant.rgb;
+                        setVibrantColor(`rgb(${rgb.join(", ")})`);
+                        console.log("Vibrant Color RGB:", rgb);
+                        setVibrantColor(`rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`);
+                    }
 
-            img.onload = () => {
-                try {
-                    const colorThief = new ColorThief();
-                    // Agora pode usar o elemento img carregado
-                    const dominantColor = colorThief.getColor(img);
-                    const palette = colorThief.getPalette(img, 3); // 3 cores
+                    if (palette.Vibrant?.titleTextColor) {
+                        setTextColor(palette.Vibrant.titleTextColor);
+                    }
 
-                    console.log("Dominant Color:", dominantColor);
-                    console.log("Palette:", palette);
+                    if (palette.Muted) {
+                        const rgb = palette.Muted.rgb;
+                        setMutedColor(`rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`);
+                    }
 
-                    setColor1(
-                        `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`
-                    );
-                    setColor2(
-                        `rgb(${palette[1][0]}, ${palette[1][1]}, ${palette[1][2]})`
-                    );
-                    setColor3(
-                        `rgb(${palette[2][0]}, ${palette[2][1]}, ${palette[2][2]})`
-                    );
-                } catch (error) {
-                    console.error("Erro ao extrair cores:", error);
-                }
-            };
-
-            img.onerror = () => {
-                console.error("Erro ao carregar a imagem");
-            };
-
-            // Definir a URL da imagem por último
-            img.src = response.data.images[0]?.url;
+                    if (palette.DarkVibrant) {
+                        const rgb = palette.DarkVibrant.rgb;
+                        setDarkVibrantColor(
+                            `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
+                        );
+                    }
+                    if (palette.DarkMuted) {
+                        const rgb = palette.DarkMuted.rgb;
+                        setDarkMutedColor(
+                            `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
+                        );
+                    }
+                    if (palette.LightVibrant) {
+                        const rgb = palette.LightVibrant.rgb;
+                        setLightVibrantColor(
+                            `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
+                        );
+                    }
+                    if (palette.LightMuted) {
+                        const rgb = palette.LightMuted.rgb;
+                        setLightMutedColor(
+                            `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
+                        );
+                    }
+                });
 
             setLoading(false);
         };
@@ -180,23 +199,52 @@ export default function DisplayRate({
                 <>
                     <div
                         className={`
-                            absolute h-36 w-full -z-50 from-40 
+                            absolute h-64 w-full -z-50 from-40 
                             top-0
                             transition-all duration-200 ease-in-out overflow-hidden
                             bg-blend-screen
                         `}
                         style={{
-                            backgroundImage: `linear-gradient(to bottom, ${darkenColor(color1, 0.5)}, transparent)`,
+                            backgroundImage: `linear-gradient(to bottom, ${darkenColor(darkVibrantColor, 0.5)}, transparent)`,
                             // filter: ` brightness(0.7) contrast(1.2) saturate(1.5)`,
                         }}
-                    ></div>
-                    <div className="flex flex-row w-full items-center gap-4 px-5">
+                    >
+                        <div className="absolute inset-0 max-w-sm m-auto flex items-center justify-center blur-3xl">
+                            <div
+                                style={{ backgroundColor: vibrantColor }}
+                                className={`absolute rounded-full size-44 -top-1/3 -left-1/4 blur-3xl`}
+                            ></div>
+                            <div
+                                style={{ backgroundColor: mutedColor }}
+                                className={`absolute rounded-full -right-1/4 -top-1/3 size-44 blur-3xl`}
+                            ></div>
+                            <div
+                                style={{ backgroundColor: lightVibrantColor }}
+                                className={`absolute rounded-full left-1/3 -top-6 w-36 h-16 rotate-45 blur-3xl`}
+                            ></div>
+                        </div>
+                    </div>
+                    <div className="flex flex-row w-full items-end gap-4 px-5 mx-auto max-w-2xl">
                         <AlbumCover
                             display={true}
                             album={album}
                             loading={loading}
                         />
-                        <div className="text-white">
+                        <div className="text-white h-32 mb-8">
+                            <p className="text-xs text-gray-200 mb-1 mt-4">
+                                        {(() => {
+                                            switch (album.album_type) {
+                                                case "album":
+                                                    return "Álbum";
+                                                case "single":
+                                                    return "Single/EP";
+                                                case "compilation":
+                                                    return "Compilação";
+                                                default:
+                                                    return "Outro";
+                                            }
+                                        })()}
+                                    </p>
                             <h2 className="text-xl font-bold">{album.name}</h2>
                             <p className="font-medium mb-2">
                                 {album.artists.map(

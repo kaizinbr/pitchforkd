@@ -47,7 +47,16 @@ export function reduceAlpha(color: string, alpha: number): string {
 }
 
 export function darkenColor(color: string, amount: number): string {
-    return chroma(color).darken(amount).css();
+    // If color is in rgb(x, x, x) format, sanitize and round values
+    const rgbMatch = color.match(/^rgb\(([\d.]+),\s*([\d.]+),\s*([\d.]+)\)$/);
+    let safeColor = color;
+    if (rgbMatch) {
+        const r = Math.round(Number(rgbMatch[1]));
+        const g = Math.round(Number(rgbMatch[2]));
+        const b = Math.round(Number(rgbMatch[3]));
+        safeColor = chroma(r, g, b).css();
+    }
+    return chroma(safeColor).darken(amount).css();
 }
 
 export function lightenColor(color: string, amount: number): string {
@@ -79,11 +88,11 @@ export function getMostSaturatedColor(palette: number[][]): string | null {
 
     let color = chroma(mostSaturated as [number, number, number]);
     // Ensure contrast with white is at least 4.5:1
-    while (chroma.contrast(color, "#fff") < 4.5) {
-        color = color.darken(2);
-        // Prevent infinite loop: stop if color is almost black
-        if (color.luminance() < 0.05) break;
-    }
+    // while (chroma.contrast(color, "#fff") < 4.5) {
+    //     color = color.darken(2);
+    //     // Prevent infinite loop: stop if color is almost black
+    //     if (color.luminance() < 0.05) break;
+    // }
 
     return color.css();
 }

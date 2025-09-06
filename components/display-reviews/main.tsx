@@ -175,12 +175,12 @@ export default function DisplayReviews({
 
     // Função para limpar cache
     const clearCache = () => {
-        sessionStorage.removeItem(STORAGE_KEY);
-        sessionStorage.removeItem(ALBUMS_STORAGE_KEY);
-        sessionStorage.removeItem(OFFSET_KEY);
-        setAllReviews(ratings || []);
-        setAllAlbums({});
-        setOffset(20);
+        // sessionStorage.removeItem(STORAGE_KEY);
+        // sessionStorage.removeItem(ALBUMS_STORAGE_KEY);
+        // sessionStorage.removeItem(OFFSET_KEY);
+        // // setAllReviews(ratings || []);
+        // setAllAlbums({});
+        // setOffset(20);
     };
 
     // Função para obter álbum por ID

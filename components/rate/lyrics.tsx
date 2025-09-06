@@ -16,59 +16,58 @@ type LyricsLine = {
 export default function CurrentLyrics({
     track_id,
     album_img,
+    backgroundColor,
+    textColor
 }: {
     track_id: string;
     album_img: string;
+    backgroundColor: string;
+    textColor: string;
 }) {
     const [lyrics, setLyrics] = useState<LyricsLine[]>([]);
     const [error, setError] = useState<string>("");
 
-    const [color1, setColor1] = useState<string>("#4a6d73");
-    const [color2, setColor2] = useState<string>("#b78972");
-    const [color3, setColor3] = useState<string>("#691209");
-    const [textColor, setTextColor] = useState<string>("#ffffff");
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         const img = new Image();
+    //         img.crossOrigin = "anonymous"; // Para evitar problemas de CORS
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const img = new Image();
-            img.crossOrigin = "anonymous"; // Para evitar problemas de CORS
+    //         img.onload = () => {
+    //             try {
+    //                 const colorThief = new ColorThief();
+    //                 // Agora pode usar o elemento img carregado
+    //                 const dominantColor = colorThief.getColor(img);
+    //                 const palette = colorThief.getPalette(img); // 3 cores
+    //                 const mostSaturatedColor = getMostSaturatedColor(palette);
 
-            img.onload = () => {
-                try {
-                    const colorThief = new ColorThief();
-                    // Agora pode usar o elemento img carregado
-                    const dominantColor = colorThief.getColor(img);
-                    const palette = colorThief.getPalette(img); // 3 cores
-                    const mostSaturatedColor = getMostSaturatedColor(palette);
+    //                 console.log("Dominant Color:", dominantColor);
+    //                 console.log("Palette:", palette);
+    //                 console.log("Most Saturated Color:", mostSaturatedColor);
 
-                    console.log("Dominant Color:", dominantColor);
-                    console.log("Palette:", palette);
-                    console.log("Most Saturated Color:", mostSaturatedColor);
+    //                 setColor1(mostSaturatedColor ?? "#4a6d73");
+    //                 setColor2(
+    //                     `rgb(${palette[1][0]}, ${palette[1][1]}, ${palette[1][2]})`
+    //                 );
+    //                 setColor3(
+    //                     `rgb(${palette[2][0]}, ${palette[2][1]}, ${palette[2][2]})`
+    //                 );
 
-                    setColor1(mostSaturatedColor ?? "#4a6d73");
-                    setColor2(
-                        `rgb(${palette[1][0]}, ${palette[1][1]}, ${palette[1][2]})`
-                    );
-                    setColor3(
-                        `rgb(${palette[2][0]}, ${palette[2][1]}, ${palette[2][2]})`
-                    );
+    //                 const textColor = getTextColor(color1);
+    //                 console.log("Text Color:", textColor);
+    //                 setTextColor(textColor);
+    //             } catch (error) {
+    //                 console.error("Erro ao extrair cores:", error);
+    //             }
+    //         };
 
-                    const textColor = getTextColor(color1);
-                    console.log("Text Color:", textColor);
-                    setTextColor(textColor);
-                } catch (error) {
-                    console.error("Erro ao extrair cores:", error);
-                }
-            };
+    //         img.onerror = () => {
+    //             console.error("Erro ao carregar a imagem");
+    //         };
+    //         img.src = album_img;
+    //     };
 
-            img.onerror = () => {
-                console.error("Erro ao carregar a imagem");
-            };
-            img.src = album_img;
-        };
-
-        fetchData();
-    }, [album_img]);
+    //     fetchData();
+    // }, [album_img]);
 
     useEffect(() => {
         const fetchLyrics = async () => {
@@ -105,7 +104,7 @@ export default function CurrentLyrics({
                     max-h-[400px] h-[400px] overflow-y-auto no-scrollbar touch-pan-y
                 `}
                 style={{
-                    backgroundColor: color1,
+                    backgroundColor: backgroundColor,
                     color: textColor,
                 }}
             >
@@ -131,7 +130,7 @@ export default function CurrentLyrics({
             <div
                 className="pointer-events-none absolute top-0 left-0 w-full h-14 z-20 rounded-t-xl"
                 style={{
-                    background: `linear-gradient(${color1} 20%, transparent 100%)`,
+                    background: `linear-gradient(${backgroundColor} 20%, transparent 100%)`,
                 }}
             />
 
@@ -139,7 +138,7 @@ export default function CurrentLyrics({
             <div
                 className="pointer-events-none absolute bottom-0 left-0 w-full h-14 z-20 rounded-b-xl"
                 style={{
-                    background: `linear-gradient(transparent, ${color1} 80%)`,
+                    background: `linear-gradient(transparent, ${backgroundColor} 80%)`,
                 }}
             />
         </div>

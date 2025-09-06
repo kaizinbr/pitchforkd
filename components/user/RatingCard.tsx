@@ -19,6 +19,7 @@ import Underline from "@tiptap/extension-underline";
 import { useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import TextareaDisplay from "../textaera-content";
+import useColors from "@/lib/utils/getColors";
 
 export default function RatingCard({
     review,
@@ -78,40 +79,21 @@ export default function RatingCard({
         }
     }, [review.content]);
 
+    // Hook para extrair cores do álbum
+    const allColors = useColors(album?.images?.[1]?.url);
+
     useEffect(() => {
         if (album) {
-            // console.log("Album:", album);
             const img = new Image();
-            img.crossOrigin = "anonymous"; // Para evitar problemas de CORS
-
-            img.onload = () => {
-                try {
-                    const colorThief = new ColorThief();
-                    // Agora pode usar o elemento img carregado
-                    const dominantColor = colorThief.getColor(img);
-                    const palette = colorThief.getPalette(img, 3); // 3 cores
-
-                    console.log("Dominant Color:", dominantColor);
-                    console.log("Palette:", palette);
-
-                    setColor1(
-                        `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`
-                    );
-                } catch (error) {
-                    console.error("Erro ao extrair cores:", error);
-                }
-            };
-
+            img.crossOrigin = "anonymous";
             img.onerror = () => {
                 console.error("Erro ao carregar a imagem");
             };
-
-            // Definir a URL da imagem por último
             img.src = album.images[1].url;
-
             setLoading(false);
         }
     }, [album]);
+
 
     // useEffect(() => {
     //     const verifyLike = async () => {
@@ -258,7 +240,7 @@ export default function RatingCard({
                                         
                                     `}
                                         style={{
-                                            backgroundImage: `linear-gradient(to right, ${darkenColor(color1, 0.5)} 20%, #282b30 100%)`,
+                                            backgroundImage: `linear-gradient(to right, ${allColors.darkVibrant} 20%, #282b30 100%)`,
                                             backgroundSize: 'cover',
                                             backgroundPosition: 'center',
                                             

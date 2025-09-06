@@ -6,16 +6,24 @@ import axios from "axios";
 import AlbumData from "./album-data";
 import AlbumTracks from "./album-tracks";
 import AlbumBtn from "./album-btn";
-import ColorThief from "colorthief";
-import { darkenColor } from "@/components/album/gen-gradient";
+import { Vibrant } from "node-vibrant/browser";
+import {
+    darkenColor,
+} from "@/components/album/gen-gradient";
 
 export default function AlbumMain({ album_id }: { album_id: string | null }) {
     const [album, setAlbum] = useState<any>([]);
     const [tracks, setTracks] = useState<any>([]);
     const [loading, setLoading] = useState(true);
-    const [color1, setColor1] = useState<string>("#4a6d73");
-    const [color2, setColor2] = useState<string>("#b78972");
-    const [color3, setColor3] = useState<string>("#691209");
+
+    const [vibrantColor, setVibrantColor] = useState<string>("#ffffff");
+    const [mutedColor, setMutedColor] = useState<string>("#ffffff");
+    const [darkVibrantColor, setDarkVibrantColor] = useState<string>("#ffffff");
+    const [darkMutedColor, setDarkMutedColor] = useState<string>("#ffffff");
+    const [lightVibrantColor, setLightVibrantColor] =
+        useState<string>("#ffffff");
+    const [lightMutedColor, setLightMutedColor] = useState<string>("#ffffff");
+    const [textColor, setTextColor] = useState<string>("#222");
 
     useEffect(() => {
         const fetchData = async () => {
@@ -46,114 +54,54 @@ export default function AlbumMain({ album_id }: { album_id: string | null }) {
                 setTracks(tracks2);
             }
 
-            const img = new Image();
-            img.crossOrigin = "anonymous"; // Para evitar problemas de CORS
+            Vibrant.from(response.data.images[0]?.url)
+                .getPalette()
+                .then((palette) => {
+                    console.log(palette);
+                    // setColors(palette);
+                    if (palette.Vibrant) {
+                        const rgb = palette.Vibrant.rgb;
+                        setVibrantColor(`rgb(${rgb.join(", ")})`);
+                        console.log("Vibrant Color RGB:", rgb);
+                        setVibrantColor(`rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`);
+                    }
 
-            img.onload = () => {
-                try {
-                    const colorThief = new ColorThief();
-                    // Agora pode usar o elemento img carregado
-                    const dominantColor = colorThief.getColor(img);
-                    const palette = colorThief.getPalette(img, 3); // 3 cores
+                    if (palette.Vibrant?.titleTextColor) {
+                        setTextColor(palette.Vibrant.titleTextColor);
+                    }
 
-                    console.log("Dominant Color:", dominantColor);
-                    console.log("Palette:", palette);
+                    if (palette.Muted) {
+                        const rgb = palette.Muted.rgb;
+                        setMutedColor(`rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`);
+                    }
 
-                    setColor1(
-                        `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`
-                    );
-                    setColor2(
-                        `rgb(${palette[1][0]}, ${palette[1][1]}, ${palette[1][2]})`
-                    );
-                    setColor3(
-                        `rgb(${palette[2][0]}, ${palette[2][1]}, ${palette[2][2]})`
-                    );
-                } catch (error) {
-                    console.error("Erro ao extrair cores:", error);
-                }
-            };
-
-            img.onerror = () => {
-                console.error("Erro ao carregar a imagem");
-            };
-
-            // Definir a URL da imagem por último
-            img.src = response.data.images[0]?.url;
+                    if (palette.DarkVibrant) {
+                        const rgb = palette.DarkVibrant.rgb;
+                        setDarkVibrantColor(
+                            `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
+                        );
+                    }
+                    if (palette.DarkMuted) {
+                        const rgb = palette.DarkMuted.rgb;
+                        setDarkMutedColor(
+                            `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
+                        );
+                    }
+                    if (palette.LightVibrant) {
+                        const rgb = palette.LightVibrant.rgb;
+                        setLightVibrantColor(
+                            `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
+                        );
+                    }
+                    if (palette.LightMuted) {
+                        const rgb = palette.LightMuted.rgb;
+                        setLightMutedColor(
+                            `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
+                        );
+                    }
+                });
 
             setLoading(false);
-
-            // extractColors(response.data.images[0]?.url)
-            //     .then((colors) => {
-            //         setColorsArray(colors);
-
-            //         updateColor(colors);
-            //         const sortedColors = [...colors]
-            //             .filter((c) => c.lightness <= 0.8)
-            //             .sort((a, b) => b.intensity - a.intensity);
-
-            //         // Função para calcular pontuação de uma cor
-            //         const calculateColorScore = (color: any) => {
-            //             let score = 0;
-
-            //             // Peso para área (maior área = melhor)
-            //             const areaWeight = 0.4;
-            //             score += (color.area || 0) * areaWeight;
-
-            //             // Peso para lightness ideal (entre 0.3 e 0.85)
-            //             const lightnessWeight = 0.3;
-            //             const idealLightness =
-            //                 color.lightness >= 0.3 && color.lightness <= 0.85;
-            //             if (idealLightness) {
-            //                 // Bonus para lightness no range ideal
-            //                 score += lightnessWeight * 100;
-            //                 // Bonus extra para lightness próximo ao centro do range (0.575)
-            //                 const centerDistance = Math.abs(
-            //                     color.lightness - 0.575
-            //                 );
-            //                 score +=
-            //                     (1 - centerDistance) * lightnessWeight * 50;
-            //             } else {
-            //                 // Penalidade para lightness fora do range
-            //                 score -= lightnessWeight * 50;
-            //             }
-
-            //             // Peso para intensidade (maior intensidade = melhor)
-            //             const intensityWeight = 0.3;
-            //             score += (color.intensity || 0) * intensityWeight * 100;
-
-            //             // Peso para saturação (cores mais saturadas = melhor)
-            //             const saturationWeight = 0.1;
-            //             score +=
-            //                 (color.saturation || 0) * saturationWeight * 100;
-
-            //             return score;
-            //         };
-
-            //         // Filtrar e ordenar cores por pontuação
-            //         const scoredColors = colors
-            //             .map((color) => ({
-            //                 ...color,
-            //                 score: calculateColorScore(color),
-            //             }))
-            //             .filter(
-            //                 (color) =>
-            //                     color.lightness >= 0.2 &&
-            //                     color.lightness <= 0.9 &&
-            //                     color.intensity > 0.1 // Filtrar cores muito fracas
-            //             )
-            //             .sort((a, b) => b.score - a.score); // Maior pontuação primeiro
-
-            //         console.log("Scored Colors:", scoredColors);
-
-            //         updateColor(scoredColors);
-
-            //         const css = generatePleasantGradient(scoredColors);
-
-            //         setColor1(css[0]);
-            //         setColor2(css[1]);
-            //         setColor3(css[2]);
-            //     })
-            //     .catch(console.error);
         };
 
         fetchData();
@@ -169,22 +117,22 @@ export default function AlbumMain({ album_id }: { album_id: string | null }) {
                     bg-blend-screen
                 `}
                 style={{
-                    backgroundImage: `linear-gradient(to bottom, ${darkenColor(color1, 1.5)}, transparent)`,
+                    backgroundImage: `linear-gradient(to bottom, ${darkenColor(darkVibrantColor, 0.2)}, transparent)`,
                     filter: ` brightness(0.7) contrast(1.2) saturate(1.5)`,
                 }}
             >
-                <div className="absolute inset-0 flex items-center justify-center blur-3xl">
+                <div className="absolute inset-0 max-w-sm m-auto flex items-center justify-center blur-3xl">
                     <div
-                        style={{ backgroundColor: color1 }}
-                        className={`absolute rounded-full bg-[${color1}] size-100 -top-1/3 -left-1/4 blur-3xl`}
+                        style={{ backgroundColor: vibrantColor }}
+                        className={`absolute rounded-full size-80 -top-1/3 -left-1/4 blur-3xl`}
                     ></div>
                     <div
-                        style={{ backgroundColor: color3 }}
+                        style={{ backgroundColor: mutedColor }}
                         className={`absolute rounded-full -right-1/4 -top-1/3 w-80 h-100 blur-3xl`}
                     ></div>
                     <div
-                        style={{ backgroundColor: color2 }}
-                        className={`absolute rounded-full left-0 top-1/3 size-40 blur-3xl`}
+                        style={{ backgroundColor: lightVibrantColor }}
+                        className={`absolute rounded-full left-1/3 top-8 w-24 h-80 rotate-45 blur-3xl`}
                     ></div>
                 </div>
             </div>

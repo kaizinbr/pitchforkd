@@ -6,7 +6,7 @@ export default function AlbumData({
     album,
     tracks,
     loading,
-    display
+    display,
 }: {
     album: any;
     tracks: any;
@@ -30,12 +30,26 @@ export default function AlbumData({
                     </p>
                     <p className="text-sm">
                         Lançado em{" "}
-                        {new Date(album.release_date + "T00:00:00").toLocaleDateString(
-                            "pt-BR"
-                        )}
+                        {new Date(
+                            album.release_date + "T00:00:00"
+                        ).toLocaleDateString("pt-BR")}
                     </p>
                     <p className="text-sm flex gap-1">
-                        <span>{album.total_tracks} músicas</span>•
+                        <span className="">
+                            {(() => {
+                                switch (album.album_type) {
+                                    case "album":
+                                        return "Álbum";
+                                    case "single":
+                                        return "Single/EP";
+                                    case "compilation":
+                                        return "Compilação";
+                                    default:
+                                        return "Outro";
+                                }
+                            })()}
+                        </span>
+                        •<span>{album.total_tracks} músicas</span>•
                         <span>{getAlbumTime(tracks)}</span>
                     </p>
                 </div>

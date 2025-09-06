@@ -15,11 +15,15 @@ export default function AlbumCover({
             <div
                 className={`
                     my-8 md:mt-32 flex justify-center items-center
-                    ${display ? "" : "w-full"}
+                    ${display ? "min-w-32" : "w-full"}
                 `}
             >
                 {loading ? (
-                    <div className="size-64 rounded-xl bg-shark-500"></div>
+                    <div className={`
+                        
+                                ${display ? "size-32" : "size-64"}
+                                rounded-xl bg-shark-500 animate-pulse
+                        `}></div>
                 ) : (
                     <picture>
                         <Image

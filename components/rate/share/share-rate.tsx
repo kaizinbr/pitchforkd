@@ -3,7 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import ColorThief from "colorthief";
 import axios from "axios";
-import { toPng, getFontEmbedCSS } from "html-to-image";
+import { toPng, getFontEmbedCSS, toJpeg } from "html-to-image";
 import html2canvas from 'html2canvas';
 import { AlbumRate, Review } from "@/lib/utils/types";
 import Card from "./card";
@@ -29,13 +29,13 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
 
     const [cardStyle, setCardStyle] = useState<
         "dynamic" | "linear" | "spotlight"
-    >("linear");
+    >("dynamic");
 
     const ref = useRef<HTMLDivElement>(null);
 
     const handleCapture = async () => {
       if (ref.current) {
-        const canvas = await html2canvas(ref.current, { allowTaint: true });
+        const canvas = await html2canvas(ref.current, { allowTaint: true, useCORS: true });
         // You can now use the 'canvas' object, for example, to download it as an image:
         const dataURL = canvas.toDataURL('image/png');
         const link = document.createElement('a');
@@ -50,6 +50,8 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
             console.error("Ref is null");
             return;
         }
+        await document.fonts.ready;
+
         const fontEmbedCSS = await getFontEmbedCSS(ref.current);
 
         toPng(ref.current, {
@@ -59,6 +61,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
             pixelRatio: 2,
             quality: 1,
             fontEmbedCSS,
+            // useCORS: true,
         })
             .then((dataUrl) => {
                 const link = document.createElement("a");
@@ -196,15 +199,15 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
                                     <button
                                         className={`
                                             px-3 py-1.5 rounded-full text-xs font-medium
-                                            transition-all duration-200 cursor-not-allowed opacity-50
+                                            transition-all duration-200 cursor-not-allowed
 
-                                            //     cardStyle === "dynamic"
-                                            //         ? "bg-main-500 text-white"
-                                            //         : "bg-shark-700 text-shark-300 hover:bg-shark-600"
-                                            // }
+                                            ${cardStyle === "dynamic"
+                                                ? "bg-main-500 text-white"
+                                                : "bg-shark-700 text-shark-300 hover:bg-shark-600"
+                                             }
                                         `}
                                         onClick={() => setCardStyle("dynamic")}
-                                        disabled
+                                        // disabled
                                     >
                                         Dinâmico
                                     </button>

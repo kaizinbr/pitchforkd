@@ -12,7 +12,7 @@ export default async function Page({
 }) {
     const id = (await params).id;
     return (
-        <div className="flex flex-col gap-4 items-center px-5">
+        <div className="flex flex-col gap-4 items-center">
             <RatePage id={id} />
         </div>
     );

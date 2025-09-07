@@ -51,9 +51,9 @@ export default function SearchTabs({ query }: SearchTabsProps) {
                                 replace(tab.href);
                             }}
                             className={`
-                                px-4 py-[7px] !text-sm !font-medium transition-colors duration-200
+                                px-4 py-[7px] !text-sm !font-medium !cursor-pointer transition-colors duration-200
                                 flex-1 text-center max-w-fit
-                                rounded-full
+                                rounded-xl
                                 ${isActive 
                                     ? 'bg-main-500' 
                                     : 'bg-shark-800 text-shark-300'

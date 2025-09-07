@@ -122,7 +122,7 @@ export default function Navigator({ user }: { user: User | null }) {
                 </button>
                 <button>
                     <Link
-                        data-active={pathname === "/explore"}
+                        data-active={pathname === "/explore" || pathname === "/search"}
                         href={`/explore`}
                         className={`
                                 flex min-w-[70px] basis-0 cursor-pointer
@@ -265,7 +265,7 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                         </button>
                         <button>
                             <Link
-                                data-active={pathname === "/explore"}
+                                data-active={pathname === "/explore" || pathname === "/search"}
                                 href={`/explore`}
                                 className={`
                                     flex  basis-0 cursor-pointer

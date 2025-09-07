@@ -22,7 +22,7 @@ export default async function FavoritesPage({
     return (
         <div className="w-full">
             <div className="w-full flex items-center justify-center">
-                <Favorites />
+                {/* <Favorites /> */}
             </div>
         </div>
     );

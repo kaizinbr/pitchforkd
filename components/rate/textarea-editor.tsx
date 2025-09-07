@@ -59,12 +59,12 @@ export default function TextareaEditor({
             variant="subtle"
             classNames={{
                 toolbar:
-                    "!border-b !bg-shark-700 !text-white !border-shark-600 !rounded-t-xl",
-                root: "!bg-shark-700 !text-white !border-shark-700 !rounded-xl",
-                content: "!bg-shark-700 ",
+                    "!border-b !bg-shark-800 !text-white !border-shark-600 !rounded-t-xl",
+                root: "!bg-shark-800 !text-white !border-shark-800 !rounded-xl",
+                content: "!bg-shark-800 ",
                 controlsGroup: "!gap-2 !bg-transparent",
                 control:
-                    "!bg-transparent !text-white !rounded-lg transition-all duration-200 hover:!bg-shark-700 hover:!text-white data-[active=true]:!bg-shark-600",
+                    "!bg-transparent !text-white !rounded-lg transition-all duration-200 hover:!bg-shark-800 hover:!text-white data-[active=true]:!bg-shark-600",
             }}
         >
             <RichTextEditor.Toolbar sticky stickyOffset={0}>

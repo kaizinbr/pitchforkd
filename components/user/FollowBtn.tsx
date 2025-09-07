@@ -45,6 +45,7 @@ export default function FollowBtn({
             {isUser ? (
                 <Link
                     className={`
+                        mt-6
                 px-6 py-2 rounded-full text-sm font-semibold transition-colors duration-200
                 cursor-pointer
                 border-2 ${
@@ -61,6 +62,7 @@ export default function FollowBtn({
             ) : (
                 <button
                     className={`
+                        mt-6
                 px-6 py-2 rounded-full text-sm font-semibold transition-colors duration-200
                 cursor-pointer
                 border-2 ${

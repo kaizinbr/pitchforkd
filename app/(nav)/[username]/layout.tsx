@@ -65,7 +65,7 @@ export default async function UserLayout({ params, children }: Props) {
     const isOwnProfile = currentUser?.user?.id === user.id;
 
     return (
-        <div className="flex flex-col gap-4 items-center relative">
+        <div className="flex flex-col items-center relative">
             {/* Header do perfil (Profile + FollowBtn + Favorites) */}
             <UserHeader 
                 user={user} 

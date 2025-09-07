@@ -4,6 +4,9 @@ import formatRate from "@/lib/utils/formatRate";
 import { Album, Review } from "@/lib/utils/types";
 import { darkenColor } from "@/components/album/gen-gradient";
 import { useEffect, useState } from "react";
+import localFont from "next/font/local";
+
+
 
 export default function Card({
     currentColor,
@@ -30,6 +33,7 @@ export default function Card({
                         absolute h-8/10 w-full z-0 from-40 
                         top-0
                         transition-all duration-200 ease-in-out
+                        font-walsheim
                         ${cardStyle === "linear" ? "" : "hidden"}
                     `}
                 style={{
@@ -52,15 +56,15 @@ export default function Card({
                 >
                             <div
                                 style={{ backgroundColor: color1 }}
-                                className={`absolute rounded-full w-50 h-70 -top-12 -left-12 blur-[388px]`}
+                                className={`absolute rounded-full w-50 h-70 -top-12 -left-12 blur-3xl`}
                             ></div>
                             <div
                                 style={{ backgroundColor: color2 }}
-                                className={`absolute rounded-full top-24 h-20 w-90 -rotate-60 blur-[388px]`}
+                                className={`absolute rounded-full top-24 h-20 w-90 -rotate-60 blur-3xl`}
                             ></div>
                             <div
                                 style={{ backgroundColor: color3 }}
-                                className={`absolute rounded-full -right-12 -top-12 w-40 h-100 blur-[388px]`}
+                                className={`absolute rounded-full -right-12 -top-12 w-40 h-100 blur-3xl`}
                             ></div>
                         </div>
             </div>

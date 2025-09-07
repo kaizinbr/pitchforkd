@@ -201,7 +201,7 @@ export default function RatingCard({
                             flex flex-row
                             `}
                         >
-                            <div className="flex relative flex-col justify-center items-center size-8 rounded-full w-8 h-8 mr-3">
+                            <div className="flex relative flex-col justify-center items-center size-8 rounded-full mr-3">
                                 <Avatar
                                     size={32}
                                     src={review.profiles.avatar_url}
@@ -210,7 +210,7 @@ export default function RatingCard({
                                 />
                             </div>
 
-                            <div className="flex flex-col gap-3 w-9/10 max-w-9/10">
+                            <div className="flex flex-col gap-3 w-[calc(100%-44px)] max-w-9/10">
                                 <h2 className="text-sm text-neutral-100 font-medium">
                                     <span className="">
                                         {review.profiles.name ||
@@ -247,13 +247,13 @@ export default function RatingCard({
                                         }}
                                     >
                                     {album && (
-                                        <picture className="relative size-40">
+                                        <picture className="relative size-36">
                                             <NextImage
                                                 src={album.images[1].url}
                                                 alt={album.name}
                                                 width={500}
                                                 height={500}
-                                                className="  object-cover z-10 size-40 max-h-[160px] rounded-lg opacity-"
+                                                className="  object-cover z-10 size-36 max-h-[144px] rounded-lg opacity-"
                                             />
 
                                         </picture>

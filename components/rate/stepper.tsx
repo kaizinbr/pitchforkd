@@ -116,8 +116,8 @@ const Track = ({
                         }}
                         placeholder="Deixe um comentário"
                         classNames={{
-                            root: "!bg-shark-700 !text-white !border-shark-700 !rounded-xl",
-                            input: "!bg-shark-700 !text-white !border-shark-700 !rounded-xl",
+                            root: "!bg-shark-800 !text-white !border-shark-700 !rounded-xl",
+                            input: "!bg-shark-800 !text-white !border-shark-700 !rounded-xl",
                         }}
                         autosize
                         minRows={2}
@@ -308,7 +308,6 @@ export default function TrackStepper({
         <div className="flex flex-col gap-4 items-center relative w-full max-w-2xl">
             <div className="flex flex-col gap-4 w-full">
                 <div className="flex flex-row gap-2 w-full">
-                    {/* tracks={album.tracks.items} albumId={album.id} albumImg={album.images[0]?.url} */}
                     <Image
                         src={album.images[0].url}
                         alt="Album"
@@ -352,10 +351,10 @@ export default function TrackStepper({
                             onClick={prevStep}
                             disabled={active === 0}
                             className={`
-                                    bg-shark-700 hover:bg-shark-700/80 transition-all duration-200
-                                    !font-semibold py-2 px-3 rounded-lg
+                                    bg-shark-800 hover:bg-shark-800/80 transition-all duration-200
+                                    !font-semibold py-2 px-3 rounded-xl
                                     cursor-pointer disabled:cursor-not-allowed
-                                    disabled:opacity-50 disabled:hover:bg-shark-700
+                                    disabled:opacity-50 disabled:hover:bg-shark-800
                                 `}
                         >
                             Voltar
@@ -406,7 +405,7 @@ export default function TrackStepper({
                             className={`
                     
                                     transition-all duration-200 py-2 px-3 !font-semibold
-                                    rounded-lg cursor-pointer disabled:cursor-not-allowed
+                                    rounded-xl cursor-pointer disabled:cursor-not-allowed
                                     bg-malachite-600 hover:bg-malachite-700
                                 `}
                         >

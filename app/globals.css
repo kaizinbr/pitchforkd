@@ -86,6 +86,8 @@
     --color-shark-800: #36393e;
     --color-shark-900: #282b30;
     --color-shark-950: #1e2124;
+
+    --font-walsheim: "Walsheim", sans-serif;
 }
 
 @layer base {
@@ -186,6 +188,10 @@ body {
 
 .fontGraphik {
     font-family: "Graphik" !important;
+}
+
+.font-Walsheim {
+    font-family: "Walsheim" !important;
 }
 
 .display-contents .ProseMirror {

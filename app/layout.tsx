@@ -251,13 +251,13 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang="pt-br" className={openSans.className} {...mantineHtmlProps}>
+        <html lang="pt-br" className={walsheim.className} {...mantineHtmlProps}>
             <head>
                 <ColorSchemeScript />
             </head>
             <body
                 className={
-                    openSans.className + ` !bg-shark-950 !text-neutral-100 `
+                    walsheim.className + ` !bg-shark-950 !text-neutral-100 `
                 }
             >
                 <MantineProvider defaultColorScheme="dark">

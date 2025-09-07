@@ -44,8 +44,7 @@ export default function RatePage({ id }: { id: string }) {
         fetchData();
     }, []);
 
-    
-        const { darkVibrant, lightMuted, titleTextColor } = useColors(album_img);
+        const { vibrant, darkVibrant, lightMuted, titleTextColor } = useColors(album_img);
 
 
     useEffect(() => {
@@ -69,17 +68,18 @@ export default function RatePage({ id }: { id: string }) {
                 <>
                     <div
                         className={`
-                            flex flex-row w-full
+                            flex flex-row px-4
                             justify-between
-                            fixed top-0 left-0 right-0 z-10
+                            w-full
                             p-4 bg-malachite-900/70 
                             backdrop-blur-md
+                            z-[999] text-shark-100
                         `}
-                        style={{
-                            backgroundColor: darkVibrant,
-                            color: titleTextColor,
-                        }}
-                    >
+                            style={{
+                                backgroundColor: darkVibrant,
+                                // color: titleTextColor,
+                            }}
+                        >
                         <div className="flex flex-col w-6/10 max-w-2xl m-auto">
                             <h2 className="font-semibold line-clamp-1">{album.name}</h2>
                             <p className="text-xs text-neutral-300">
@@ -114,7 +114,9 @@ export default function RatePage({ id }: { id: string }) {
                     {currentTrack && (
                         <CurrentLyrics
                             track_id={currentTrack}
-                            album_img={album.images[0]?.url}
+                            lightMuted={lightMuted}
+                            darkVibrant={darkVibrant}
+                            vibrant={vibrant}
                             backgroundColor={darkVibrant}
                             textColor={titleTextColor}
                         />

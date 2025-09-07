@@ -344,209 +344,114 @@ export default function Rater({
                     </Link>
                 </div>
             </Modal>
-            <div className="w-full max-w-2xl mt-22 bg-shark-800 p-5 gap-4 rounded-xl">
-                {onTracks ? (
-                    <TrackStepper
-                        album={album}
-                        onRate={() => console.log("Rated")}
-                        setCurrentTrack={setCurrentTrack}
-                        setOnTracks={setOnTracks}
-                        setFinalRatings={setRatings}
-                        setFinalTotal={setTotal}
-                        active={active}
-                        setActive={setActive}
-                    />
-                ) : (
-                    <div className="flex flex-col gap-4 w-full">
-                        <div
-                            className={`
-                        bg-shark-800
-                         gap-2
-                        rounded-xl
-                        flex flex-col items- justify-center
-                    `}
-                        >
-                            <h2 className="font-medium">Total do álbum</h2>
-                            <input
-                                type="number"
-                                name="total"
-                                id="total"
-                                className={`
-                                    bg-transparent outline-none
-                                    !font-semibold w-full text-2xl
-                                `}
-                                value={total === 0 ? "" : total}
-                                max={100}
-                                min={0}
-                                placeholder="0"
-                                onChange={(e) =>
-                                    setTotal(Number(e.target.value))
-                                }
-                                disabled={useMedia}
-                            />
-                            <Chip
-                                checked={useMedia}
-                                color="#fa805e"
-                                onChange={(useMedia) => {
-                                    setUseMedia(useMedia);
-                                    setTotal(
-                                        ratings.reduce(
-                                            (acc, rating) => acc + rating.value,
-                                            0
-                                        ) / ratings.length
-                                    );
-                                    console.log(useMedia);
-                                }}
-                                classNames={{
-                                    label: classes.label,
-                                }}
-                            >
-                                Automático
-                            </Chip>
-                        </div>
-                        <div className="flex flex-col gap-2 mt-3">
-                            {content && (
-                                <TextareaEditor
-                                    content={content}
-                                    setRawText={setRawText}
-                                    setJsonContent={setJsonContent}
-                                />
-                            )}
-                        </div>
-                        <div className="flex flex-row w-full gap-4 justify-end">
-                            <button
-                                className={`
-                                py-2 px-3
-                                flex justify-center items-center
-                                bg-shark-700 hover:bg-shark-700/80
-                                text-white !font-semibold rounded-xl
-                                cursor-pointer
-                                transition-all duration-300
-                                z-[500]
-                            `}
-                                type="button"
-                                onClick={() => {
-                                    setOnTracks(true);
-                                }}
-                            >
-                                Voltar
-                            </button>
-                            {/* <button
-                                className={`
-                                py-2 px-3
-                                flex justify-center items-center
-                                bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600
-                                text-white !font-semibold rounded-xl
-                                cursor-pointer
-                                transition-all duration-300
-                                z-[500]
-                            `}
-                                type="submit"
-                            >
-                                Salvar rascunho
-                            </button> */}
-                            <button
-                                className={`
-                                py-2 px-3
-                                flex justify-center items-center
-                                bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600
-                                text-white !font-semibold rounded-xl
-                                cursor-pointer
-                                transition-all duration-300
-                                z-[500]
-                            `}
-                                type="button"
-                                onClick={handleSubmit}
-                            >
-                                Publicar
-                            </button>
-                        </div>
-                    </div>
-                )}
-
-                {/* <form className="flex flex-col gap-4" onSubmit={handleSubmit}>
-                    {tracks.map((track) => (
-                        <Track
-                            key={track.id}
-                            track={track}
-                            ratings={ratings}
-                            onValueChange={handleValueChange}
+            <div className="w-full flex px-4">
+                <div className="w-full max-w-2xl bg-shark-900 p-5 gap-4 rounded-xl">
+                    {onTracks ? (
+                        <TrackStepper
+                            album={album}
+                            onRate={() => console.log("Rated")}
+                            setCurrentTrack={setCurrentTrack}
+                            setOnTracks={setOnTracks}
+                            setFinalRatings={setRatings}
+                            setFinalTotal={setTotal}
+                            active={active}
+                            setActive={setActive}
                         />
-                    ))}
-                    <div
-                        className={`
-                        bg-shark-800
-                        p-4 gap-4
-                        rounded-xl
-                        flex flex-col items- justify-center
-                    `}
-                    >
-                        <h2 className="font-medium">Sua avaliação do álbum</h2>
-                        <input
-                            type="number"
-                            name="total"
-                            id="total"
-                            className={`
-                                    bg-transparent outline-none
-                                    !font-semibold w-full text-2xl
-                                `}
-                            value={total === 0 ? "" : total}
-                            max={100}
-                            min={0}
-                            placeholder="0"
-                            onChange={(e) => setTotal(Number(e.target.value))}
-                            disabled={useMedia}
-                        />
-                        <Chip
-                            checked={useMedia}
-                            color="#fa805e"
-                            onChange={(useMedia) => {
-                                setUseMedia(useMedia);
-                                setTotal(
-                                    ratings.reduce(
-                                        (acc, rating) => acc + rating.value,
-                                        0
-                                    ) / ratings.length
-                                );
-                                console.log(useMedia);
-                            }}
-                            classNames={{
-                                label: classes.label,
-                            }}
-                        >
-                            Automático
-                        </Chip>
-                    </div>
-                    <div className="flex flex-col gap-2 mt-3">
-                        <h1 className="font-medium">
-                            Deixe sua avaliação aqui
-                        </h1>
-                        {content && (
-                            <TextareaEditor
-                                content={content}
-                                setRawText={setRawText}
-                                setJsonContent={setJsonContent}
-                            />
-                        )}
-                    </div>
-                    <button
-                        className={`
-                            py-3
-                            flex justify-center items-center
-                            bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600 
-                            text-white !font-semibold rounded-xl
-                            fixed left-4 right-4
-                            max-w-2xl mx-auto
-                            ${scrollDirection > "down" ? "bottom-20" : "bottom-4"}
-                            md:bottom-4 cursor-pointer
-                            transition-all duration-300
-                            z-[500]
+                    ) : (
+                        <div className="flex flex-col gap-4 w-full">
+                            <div
+                                className={`
+                            bg-shark-800
+                             gap-2 p-4
+                            rounded-xl
+                            flex flex-col items- justify-center
                         `}
-                        type="submit"
-                    >
-                        Salvar avaliação
-                    </button>
-                </form> */}
+                            >
+                                <h2 className="font-medium">Total do álbum</h2>
+                                <input
+                                    type="number"
+                                    name="total"
+                                    id="total"
+                                    className={`
+                                        bg-transparent outline-none
+                                        !font-semibold w-full text-2xl
+                                    `}
+                                    value={total === 0 ? "" : total}
+                                    max={100}
+                                    min={0}
+                                    placeholder="0"
+                                    onChange={(e) =>
+                                        setTotal(Number(e.target.value))
+                                    }
+                                    disabled={useMedia}
+                                />
+                                <Chip
+                                    checked={useMedia}
+                                    color="#fa805e"
+                                    onChange={(useMedia) => {
+                                        setUseMedia(useMedia);
+                                        setTotal(
+                                            ratings.reduce(
+                                                (acc, rating) => acc + rating.value,
+                                                0
+                                            ) / ratings.length
+                                        );
+                                        console.log(useMedia);
+                                    }}
+                                    classNames={{
+                                        label: classes.label,
+                                    }}
+                                >
+                                    Automático
+                                </Chip>
+                            </div>
+                            <div className="flex flex-col gap-2 mt-3">
+                                {content && (
+                                    <TextareaEditor
+                                        content={content}
+                                        setRawText={setRawText}
+                                        setJsonContent={setJsonContent}
+                                    />
+                                )}
+                            </div>
+                            <div className="flex flex-row w-full gap-4 justify-end">
+                                <button
+                                    className={`
+                                    py-2 px-3
+                                    flex justify-center items-center
+                                    bg-shark-700 hover:bg-shark-700/80
+                                    text-white !font-semibold rounded-xl
+                                    cursor-pointer
+                                    transition-all duration-300
+                                    z-[500]
+                                `}
+                                    type="button"
+                                    onClick={() => {
+                                        setOnTracks(true);
+                                    }}
+                                >
+                                    Voltar
+                                </button>
+                                <button
+                                    className={`
+                                    py-2 px-3
+                                    flex justify-center items-center
+                                    bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600
+                                    text-white !font-semibold rounded-xl
+                                    cursor-pointer
+                                    transition-all duration-300
+                                    z-[500]
+                                `}
+                                    type="button"
+                                    onClick={handleSubmit}
+                                >
+                                    Publicar
+                                </button>
+                            </div>
+                        </div>
+                    )}
+                    
+                </div>
             </div>
         </>
     );

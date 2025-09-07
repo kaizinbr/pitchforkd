@@ -64,9 +64,9 @@ export default function tracksTracks({
                                                     </td>
                                                     <td className="px-3 py-4">
                                                         <div className="flex flex-col">
-                                                            <h2 className="text-sm font-semibold flex flex-row gap-1 items-center">
+                                                            <h2 className="text-sm font-semibold flex flex-row gap-1 items-start">
                                                                 {track.explicit ? (
-                                                                    <BsExplicitFill className="text-shark-500 size-3" />
+                                                                    <BsExplicitFill className="text-shark-500 size-3 mt-[2px]" />
                                                                 ) : null}
                                                                 {track.name}
                                                             </h2>

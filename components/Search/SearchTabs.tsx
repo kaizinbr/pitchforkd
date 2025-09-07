@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface SearchTabsProps {
     query: string;
@@ -9,30 +9,34 @@ interface SearchTabsProps {
 
 export default function SearchTabs({ query }: SearchTabsProps) {
     const pathname = usePathname();
-    const baseUrl = `/search/${query}`;
+    const baseUrl = `/search?q=${query}`;
+    const searchParams = useSearchParams();
+    const { replace } = useRouter();
 
     const tabs = [
-        { name: "Álbuns", href: baseUrl, key: "albums" },
-        // { name: "Álbuns", href: `${baseUrl}/albums`, key: "albums" },
-        { name: "Músicas", href: `${baseUrl}/tracks`, key: "tracks" },
-        { name: "Artistas", href: `${baseUrl}/artists`, key: "artists" },
-        { name: "Perfis", href: `${baseUrl}/profiles`, key: "profiles" },
+        { name: "Álbuns", href: `${baseUrl}&tab=albums`, key: "albums" },
+        { name: "Músicas", href: `${baseUrl}&tab=tracks`, key: "tracks" },
+        { name: "Artistas", href: `${baseUrl}&tab=artists`, key: "artists" },
+        { name: "Perfis", href: `${baseUrl}&tab=profiles`, key: "profiles" },
         // { name: "Sobre", href: `${baseUrl}/about`, key: "about" },
     ];
 
     const getActiveTab = () => {
         if (pathname === baseUrl) return "albums";
-        // if (pathname.includes("/albums")) return "albums";
-        if (pathname.includes("/tracks")) return "tracks";
-        if (pathname.includes("/artists")) return "artists";
-        if (pathname.includes("/profiles")) return "profiles";
+        if (searchParams.get("tab") === "albums") return "albums";
+        if (searchParams.get("tab") === "tracks") return "tracks";
+        if (searchParams.get("tab") === "artists") return "artists";
+        if (searchParams.get("tab") === "profiles") return "profiles";
         return "albums";
     };
 
     const activeTab = getActiveTab();
 
     return (
-        <div className="w-full max-w-2xl overflow-hidden">
+        <div className={`
+            w-full max-w-2xl overflow-hidden 
+            ${pathname === '/explore' ? 'hidden' : ''}
+        `}>
             <nav
                 className="flex px-4 gap-2  overflow-x-auto no-scrollbar touch-pan-x"
                 style={{ WebkitOverflowScrolling: 'touch' }}
@@ -40,11 +44,14 @@ export default function SearchTabs({ query }: SearchTabsProps) {
                 {tabs.map((tab) => {
                     const isActive = activeTab === tab.key;
                     return (
-                        <Link
+                        <button
                             key={tab.key}
-                            href={tab.href}
+                            onClick={() => {
+                                if (tab.key === activeTab) return;
+                                replace(tab.href);
+                            }}
                             className={`
-                                px-4 py-[7px] text-sm font-medium transition-colors duration-200
+                                px-4 py-[7px] !text-sm !font-medium transition-colors duration-200
                                 flex-1 text-center max-w-fit
                                 rounded-full
                                 ${isActive 
@@ -54,7 +61,7 @@ export default function SearchTabs({ query }: SearchTabsProps) {
                             `}
                         >
                             {tab.name}
-                        </Link>
+                        </button>
                     );
                 })}
             </nav>

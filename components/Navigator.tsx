@@ -122,8 +122,8 @@ export default function Navigator({ user }: { user: User | null }) {
                 </button>
                 <button>
                     <Link
-                        data-active={pathname === "/search"}
-                        href={`/search`}
+                        data-active={pathname === "/explore"}
+                        href={`/explore`}
                         className={`
                                 flex min-w-[70px] basis-0 cursor-pointer
                                 flex-col items-center gap-1 rounded-8 p-3
@@ -265,8 +265,8 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                         </button>
                         <button>
                             <Link
-                                data-active={pathname === "/search"}
-                                href={`/search`}
+                                data-active={pathname === "/explore"}
+                                href={`/explore`}
                                 className={`
                                     flex  basis-0 cursor-pointer
                                     flex-col items-center gap-1 rounded-8 p-3

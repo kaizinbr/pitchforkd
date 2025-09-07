@@ -1,9 +1,6 @@
 "use client";
 
 import { Suspense, useState, useEffect } from "react";
-import { FloatingIndicator, Tabs } from "@mantine/core";
-import classes from "./tabs.module.css";
-import { InvoicesMobileSkeleton } from "@/components/Skeletons";
 import { BsExplicitFill } from "react-icons/bs";
 import UserCard from "../ui/UserCard";
 import axios from "axios";
@@ -11,7 +8,6 @@ import Link from "next/link";
 import Image from "next/image";
 import { Track, Album, User } from "@/lib/utils/types";
 import { createClient } from "@/utils/supabase/client";
-import { Loader } from "@mantine/core";
 
 import { Skeleton } from "@mantine/core";
 
@@ -21,10 +17,10 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 export default function ResultsPage({
     query,
-    type,
+    tab,
 }: {
     query: string;
-    type: string;
+    tab: string;
 }) {
     const supabase = createClient();
     const [invoices, setInvoices] = useState<any>([]);
@@ -54,7 +50,7 @@ export default function ResultsPage({
                     setUsers(data);
                 }
                 setLoading(false);
-            } else if (type === "profiles") {
+            } else if (tab === "profiles") {
                 const { data, error } = await supabase
                     .from("profiles")
                     .select("*")
@@ -71,7 +67,7 @@ export default function ResultsPage({
             } else {
                 const response = await axios.post("/api/spot/search", {
                     q: query,
-                    type: type,
+                    type: tab,
                 });
                 const data = response.data;
                 console.log(data);
@@ -88,12 +84,12 @@ export default function ResultsPage({
             }
         };
         fetchInvoices();
-    }, [query, type]);
+    }, [query, tab]);
 
     return (
-        <div className="flex flex-col w-full px-4">
+        <div className="flex flex-col w-full px-4 mt-29 md:mt-32 gap-6">
             <div className="flex flex-col w-full gap-3">
-                {type === "albums" &&
+                {tab === "albums" &&
                     albunsResults.map((album) => (
                         <Link
                             key={album.id}
@@ -120,7 +116,7 @@ export default function ResultsPage({
                         </Link>
                     ))}
 
-                {type === "tracks" &&
+                {tab === "tracks" &&
                     tracksResults.map((track) => (
                         <Link
                             key={track.id}
@@ -150,7 +146,7 @@ export default function ResultsPage({
                             </div>
                         </Link>
                     ))}
-                {type === "artists" &&
+                {tab === "artists" &&
                     artistResults.map((artist) => (
                         <Link
                             key={artist.id}
@@ -170,7 +166,7 @@ export default function ResultsPage({
                         </Link>
                     ))}
 
-                {type === "profiles" &&
+                {tab === "profiles" &&
                     users.map((user) => (
                         <UserCard
                             key={user.id}
@@ -183,7 +179,7 @@ export default function ResultsPage({
                         />
                     ))}
 
-                {type === "albums" && albunsResults.length === 0 && !loading && (
+                {tab === "albums" && albunsResults.length === 0 && !loading && (
                     <div className="flex flex-col items-center justify-center w-full ">
                         <h1 className=" text-sm text-shark-300">
                             Nenhum resultado encontrado
@@ -191,7 +187,7 @@ export default function ResultsPage({
                     </div>
                 )}
 
-                {type === "tracks" && tracksResults.length === 0 && !loading && (
+                {tab === "tracks" && tracksResults.length === 0 && !loading && (
                     <div className="flex flex-col items-center justify-center w-full ">
                         <h1 className=" text-sm text-shark-300">
                             Nenhum resultado encontrado
@@ -199,7 +195,7 @@ export default function ResultsPage({
                     </div>
                 )}
 
-                {type === "artists" && artistResults.length === 0 && !loading && (
+                {tab === "artists" && artistResults.length === 0 && !loading && (
                     <div className="flex flex-col items-center justify-center w-full ">
                         <h1 className=" text-sm text-shark-300">
                             Nenhum resultado encontrado
@@ -207,7 +203,7 @@ export default function ResultsPage({
                     </div>
                 )}
 
-                {type === "profiles" && users.length === 0 && !loading && (
+                {tab === "profiles" && users.length === 0 && !loading && (
                     <div className="flex flex-col items-center justify-center w-full ">
                         <h1 className=" text-sm text-shark-300">
                             Nenhum resultado encontrado

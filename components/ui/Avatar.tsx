@@ -2,9 +2,8 @@
 import { useState, useEffect } from "react";
 import { Avatar as UserAvatar } from "@mantine/core";
 import { createClient } from "@/utils/supabase/client";
-import { extractColors } from "extract-colors";
-import ColorThief from "colorthief";
-import axios from "axios";
+
+import { Vibrant } from "node-vibrant/browser";
 
 export default function Avatar({
     src,
@@ -21,6 +20,7 @@ export default function Avatar({
 }) {
     const supabase = createClient();
     const [avatarSrc, setAvatarSrc] = useState<string | null>(src);
+    // const { vibrant, muted, darkVibrant } = useColors(avatarSrc || undefined);
 
     useEffect(() => {
         async function downloadImage(path: string) {
@@ -32,42 +32,27 @@ export default function Avatar({
                             const img = new Image();
                             img.crossOrigin = "anonymous"; // Para evitar problemas de CORS
 
-                            img.onload = () => {
-                                try {
-                                    const colorThief = new ColorThief();
-                                    // Agora pode usar o elemento img carregado
-                                    const dominantColor =
-                                        colorThief.getColor(img);
-                                    const palette = colorThief.getPalette(
-                                        img,
-                                        3
-                                    ); // 3 cores
-
-                                    console.log(
-                                        "Dominant Color:",
-                                        dominantColor
-                                    );
-                                    console.log("Palette:", palette);
-                                    const colors = [
-                                        `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`,
-                                        `rgb(${palette[1][0]}, ${palette[1][1]}, ${palette[1][2]})`,
-                                        `rgb(${palette[2][0]}, ${palette[2][1]}, ${palette[2][2]})`,
-                                    ];
-                                    if (setColors) setColors(colors);
-                                } catch (error) {
-                                    console.error(
-                                        "Erro ao extrair cores:",
-                                        error
-                                    );
-                                }
-                            };
-
                             img.onerror = () => {
                                 console.error("Erro ao carregar a imagem");
                             };
 
                             // Definir a URL da imagem por último
                             img.src = path;
+
+                            // console.log("Image loaded:", img);
+                            // console.log("Image src:", img.src);
+
+                            Vibrant.from(img.src)
+                                .getPalette()
+                                .then((palette) => {
+                                    // console.log(palette);
+                                    setColors &&
+                                        setColors([
+                                            palette.Vibrant?.hex ?? "#ffffff",
+                                            palette.Muted?.hex ?? "#ffffff",
+                                            palette.DarkVibrant?.hex ?? "#222",
+                                        ]);
+                                });
                         } catch (error) {
                             console.error("Error extracting colors:", error);
                         }
@@ -83,39 +68,24 @@ export default function Avatar({
                             img.src = path;
                             img.crossOrigin = "anonymous"; // Para evitar problemas de CORS
 
-                            img.onload = () => {
-                                try {
-                                    const colorThief = new ColorThief();
-                                    const dominantColor =
-                                        colorThief.getColor(img);
-                                    const palette = colorThief.getPalette(
-                                        img,
-                                        3
-                                    ); // 3 cores
-
-                                    console.log(
-                                        "Dominant Color:",
-                                        dominantColor
-                                    );
-                                    console.log("Palette:", palette);
-                                    const colors = [
-                                        `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`,
-                                        `rgb(${palette[1][0]}, ${palette[1][1]}, ${palette[1][2]})`,
-                                        `rgb(${palette[2][0]}, ${palette[2][1]}, ${palette[2][2]})`,
-                                    ];
-                                    if (setColors) setColors(colors);
-                                } catch (error) {
-                                    console.error(
-                                        "Erro ao extrair cores:",
-                                        error
-                                    );
-                                }
-                            };
-
                             img.onerror = () => {
                                 console.error("Erro ao carregar a imagem");
                             };
                             img.src = path;
+
+                            // console.log("Image loaded:", img);
+                            // console.log("Image src:", img.src);
+                            Vibrant.from(img.src)
+                                .getPalette()
+                                .then((palette) => {
+                                    // console.log(palette);
+                                    setColors &&
+                                        setColors([
+                                            palette.Vibrant?.hex ?? "#ffffff",
+                                            palette.Muted?.hex ?? "#ffffff",
+                                            palette.DarkVibrant?.hex ?? "#222",
+                                        ]);
+                                });
                         } catch (error) {
                             console.error("Error extracting colors:", error);
                         }
@@ -135,29 +105,25 @@ export default function Avatar({
                         img.src = data.publicUrl;
                         img.crossOrigin = "anonymous"; // Para evitar problemas de CORS
 
-                        img.onload = () => {
-                            try {
-                                const colorThief = new ColorThief();
-                                const dominantColor = colorThief.getColor(img);
-                                const palette = colorThief.getPalette(img, 3); // 3 cores
-
-                                console.log("Dominant Color:", dominantColor);
-                                console.log("Palette:", palette);
-                                const colors = [
-                                    `rgb(${dominantColor[0]}, ${dominantColor[1]}, ${dominantColor[2]})`,
-                                    `rgb(${palette[1][0]}, ${palette[1][1]}, ${palette[1][2]})`,
-                                    `rgb(${palette[2][0]}, ${palette[2][1]}, ${palette[2][2]})`,
-                                ];
-                                if (setColors) setColors(colors);
-                            } catch (error) {
-                                console.error("Erro ao extrair cores:", error);
-                            }
-                        };
-
                         img.onerror = () => {
                             console.error("Erro ao carregar a imagem");
                         };
-                            img.src = data.publicUrl;
+                        img.src = data.publicUrl;
+
+                        // console.log("Image loaded:", img);
+                        // console.log("Image src:", img.src);
+
+                        Vibrant.from(img.src)
+                            .getPalette()
+                            .then((palette) => {
+                                // console.log(palette);
+                                setColors &&
+                                    setColors([
+                                        palette.Vibrant?.hex ?? "#ffffff",
+                                        palette.Muted?.hex ?? "#ffffff",
+                                        palette.DarkVibrant?.hex ?? "#222",
+                                    ]);
+                            });
                     } catch (error) {
                         console.error("Error extracting colors:", error);
                     }

@@ -1,24 +1,26 @@
-import Search from "@/components/Search/search-bar";
-
-import Results from "@/components/Search/results";
-import Link from "next/link";
+import SearchLayout from "@/components/Search/search";
+import ResultsPage from "@/components/Search/results";
 
 export const metadata = {
     title: "Pesquisa | Pitchforkd",
     description: "Avalie álbuns de música e veja o que a comunidade acha deles",
 };
 
-export default async function Page() {
-
+export default async function Page(props: {
+    searchParams?: Promise<{
+        q?: string;
+        tab?: string;
+    }>;
+}) {
+    const searchParams = await props.searchParams;
+    const query = searchParams?.q || "";
+    const tab = searchParams?.tab || "albums"; 
 
     return (
         <div className="flex-1 w-full flex flex-col gap-8 items-center  mx-auto max-w-2xl py-5 md:mt-16">
-            <Search placeholder="Pesquisar..." />
-            {/* <div className="w-full max-w-2xl mt-36 md:mt-52">
-                <Link href={`/releases`} className="text-blue-500 hover:underline">
-                    Lançamentos recentes
-                </Link>
-            </div> */}
+            <SearchLayout query={query} tab={tab} />
+
+            <ResultsPage query={query} tab={tab} />
         </div>
     );
 }

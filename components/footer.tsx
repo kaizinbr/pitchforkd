@@ -5,12 +5,14 @@ export default function Footer() {
         <footer
             className={`
                 w-full bg-shark-950 border-t border-shark-700 
-                text-shark-300 text-xs text-center 
-                flex flex-col items-center 
-                p-5 pb-20 gap-3
+                text-shark-300 text-xs text-start md:text-center
+                flex flex-col items-start 
+                p-5 pb-20 gap-6
+                
             `}
         >
-            <nav className="flex flex-row items-center justify-center flex-wrap gap-3  max-w-2xl">
+            <nav className="flex flex-col md:flex-row items-start justify-center flex-wrap gap-2 w-full max-w-2xl mx-auto">
+                {/* <span className=""></span> */}
                 <Link
                     href="/about"
                     className="hover:underline transition-all duration-200"
@@ -48,15 +50,16 @@ export default function Footer() {
                     Contato
                 </Link>
             </nav>
-            <p>
+            <p className="max-w-2xl md:mx-auto">
                 Algumas imagens e informações dispostas aqui pertencem ao
                 Spotify.
             </p>
-            <p>
+            <p className="max-w-2xl md:mx-auto">
                 Este site não possui filiação com as empresas Spotify ou Letterboxd, tampouco
                 utiliza as informações dispostas para fins comerciais.
             </p>
-            <p>© 2025 - Feito por <Link href={'https://kaizin.work'} target="_blank" className="underline">Kaizin</Link> </p>
+            <p className="max-w-2xl md:mx-auto">
+                © 2025 - Feito por <Link href={'https://kaizin.work'} target="_blank" className="underline">Kaizin</Link> </p>
         </footer>
     );
 }

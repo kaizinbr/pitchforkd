@@ -43,5 +43,7 @@ export default function useColors(url?: string) {
             });
     }, [url]);
 
+    // console.log("Colors:", colors);
+
     return colors;
 }

@@ -1,13 +1,13 @@
 "use client";
 
 import { signIn } from "next-auth/react";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
 import { PinInput } from "@mantine/core";
 
 export default function LoginPage() {
-    // const router = useRouter();
+    const router = useRouter();
     const [error, setError] = useState<string | null>(null);
     const [step, setStep] = useState<"email" | "otp">("email");
     const [email, setEmail] = useState("");
@@ -28,7 +28,6 @@ export default function LoginPage() {
                 return;
             }
 
-            setError("Magic link sent! Check your email.");
             setStep("otp");
             setEmail(formData.get("email") as string);
         } catch (error) {
@@ -40,19 +39,21 @@ export default function LoginPage() {
     async function loginOTP(event: React.FormEvent<HTMLFormElement>) {
         try {
             event.preventDefault();
-            const response = await signIn("resend", {
+            console.log("Verifying OTP:", otp, "for email:", email);
+
+            const response = await signIn("credentials-otp", {
                 email,
-                token: otp,
+                otp: otp,
                 redirect: false,
-                redirectTo: "/",
             });
 
             if (response?.error) {
-                setError("Failed to verify OTP");
+                setError("Código inválido ou expirado.");
                 return;
             }
 
             // router.refresh();
+            router.push("/");
         } catch (error) {
             setError("An error occurred while verifying the OTP");
             console.error("OTP verification error:", error);
@@ -100,7 +101,8 @@ export default function LoginPage() {
                             <div>
                                 <button
                                     type="submit"
-                                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                    className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 `}
+                                    
                                 >
                                     Entrar
                                 </button>
@@ -135,8 +137,8 @@ export default function LoginPage() {
                                         </label>
                                         <PinInput
                                             value={otp}
-                                            onChange={() => {
-                                                setOtp(otp);
+                                            onChange={(value) => {
+                                                setOtp(value);
                                             }}
                                             size="md"
                                             length={6}
@@ -148,7 +150,12 @@ export default function LoginPage() {
                                 <div className="text-center flex flex-col gap-2">
                                     <button
                                         onClick={() => setStep("email")}
-                                        className="text-gray-300 hover:underline"
+                                        className={`
+                                                text-gray-300 text-sm! hover:underline
+                                                cursor-pointer
+                                                py-1 px-3 rounded-full border border-gray-600
+                                                w-fit mx-auto
+                                            `}
                                     >
                                         Reenviar código
                                     </button>
@@ -156,11 +163,25 @@ export default function LoginPage() {
                                 <div>
                                     <button
                                         type="submit"
-                                        className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                                        disabled={otp.length < 6}
+                                        className={`
+                                                group relative w-full flex justify-center py-2 px-4 
+                                                border border-transparent text-sm font-medium rounded-md text-white 
+                                                bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
+                                                ${otp.length < 6 ? "opacity-50 cursor-not-allowed" : ""}
+                                            `}
                                     >
                                         Verificar Código
                                     </button>
                                 </div>
+
+                                {error && (
+                                    <>
+                                        <div className="text-red-400 text-sm text-center">
+                                            {error}
+                                        </div>
+                                    </>
+                                )}
 
                                 <Link
                                     href="/login/credentials"
@@ -172,14 +193,14 @@ export default function LoginPage() {
                         </div>
                     </>
                 )}
-                <div className="text-center flex flex-col gap-2">
+                {/* <div className="text-center flex flex-col gap-2">
                     <Link
                         href="/register"
                         className="text-gray-300 hover:underline"
                     >
                         Não tem uma conta? Registre-se.
                     </Link>
-                </div>
+                </div> */}
             </div>
         </div>
     );

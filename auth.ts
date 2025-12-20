@@ -56,6 +56,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
                     ).toString();
                 },
                 sendVerificationRequest,
+                
             }),
             CredentialsProvider({
                 name: "credentials",
@@ -124,76 +125,74 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
                     };
                 },
             }),
-            // CredentialsProvider({
-            //     name: "otp",
-            //     id: "credentials-otp",
-            //     credentials: {
-            //         email: { label: "Email", type: "email" },
-            //         otp: { label: "Código", type: "text" },
-            //     },
-            //     async authorize(credentials) {
-            //         if (!credentials?.email || !credentials?.otp) return null;
+            CredentialsProvider({
+                name: "otp",
+                id: "credentials-otp",
+                credentials: {
+                    email: { label: "Email", type: "email" },
+                    otp: { label: "Código", type: "text" },
+                },
+                async authorize(credentials) {
+                    if (!credentials?.email || !credentials?.otp) return null;
 
-            //         const email = credentials.email as string;
-            //         const otp = credentials.otp as string;
+                    const email = credentials.email as string;
+                    const otp = credentials.otp as string;
 
-            //         console.log("Authorizing OTP for email:", email);
+                    const tokenRecord = await prisma.tokenOTP.findUnique({
+                        where: { identifier: email },
+                    });
 
-            //         const tokenRecord = await prisma.tokenOTP.findUnique({
-            //             where: { identifier: email },
-            //         });
+                    if (
+                        !tokenRecord ||
+                        tokenRecord.token !== otp ||
+                        new Date() > tokenRecord.expires
+                    ) {
+                        throw new Error("Código inválido ou expirado.");
+                    }
 
-            //         if (
-            //             !tokenRecord ||
-            //             tokenRecord.token !== otp ||
-            //             new Date() > tokenRecord.expires
-            //         ) {
-            //             throw new Error("Código inválido ou expirado.");
-            //         }
+                    await prisma.tokenOTP.delete({
+                        where: { identifier: email },
+                    });
 
-            //         await prisma.tokenOTP.delete({
-            //             where: { identifier: email },
-            //         });
+                    let user = await prisma.user.findFirst({
+                        where: { email },
+                    });
 
-            //         let user = await prisma.user.findFirst({
-            //             where: { email },
-            //         });
+                    if (!user) {
+                        const tempUsername = `user_${Math.random()
+                            .toString(36)
+                            .slice(2, 10)}`;
+                        const newUser = await prisma.user.create({
+                            data: {
+                                name: tempUsername,
+                                email: email,
+                                Profile: {
+                                    create: {
+                                        username: tempUsername,
+                                        lowercased_username:
+                                            tempUsername.toLowerCase(),
+                                        name: email,
+                                        bio: "",
+                                        avatar_url: "",
+                                    },
+                                },
+                            },
+                        });
 
-            //         if (!user) {
-            //             const tempUsername = `user_${Math.random()
-            //                 .toString(36)
-            //                 .slice(2, 10)}`;
-            //             const newUser = await prisma.user.create({
-            //                 data: {
-            //                     name: tempUsername,
-            //                     email: email,
-            //                     Profile: {
-            //                         create: {
-            //                             username: tempUsername,
-            //                             lowercased_username:
-            //                                 tempUsername.toLowerCase(),
-            //                             name: email,
-            //                             bio: "",
-            //                             avatar_url: "",
-            //                         },
-            //                     },
-            //                 },
-            //             });
+                        return {
+                            id: newUser.id,
+                            email: newUser.email,
+                            name: newUser.name,
+                        };
+                    }
 
-            //             return {
-            //                 id: newUser.id,
-            //                 email: newUser.email,
-            //                 name: newUser.name,
-            //             };
-            //         }
-
-            //         return {
-            //             id: user.id,
-            //             email: user.email,
-            //             name: user.name,
-            //         };
-            //     },
-            // }),
+                    return {
+                        id: user.id,
+                        email: user.email,
+                        name: user.name,
+                    };
+                },
+            }),
         ],
         pages: {
             signIn: "/login",

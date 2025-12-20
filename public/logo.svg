@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Camada_2" data-name="Camada 2" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1502.19 361.44">
+  <defs>
+    <style>
+      .cls-1 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-2 {
+        letter-spacing: 0em;
+      }
+
+      .cls-3 {
+        letter-spacing: -.03em;
+      }
+
+      .cls-4 {
+        letter-spacing: -.02em;
+      }
+
+      .cls-5 {
+        fill: #fff;
+        font-family: 'Aerobik_trial-Regular', Aerobik_trial;
+        font-size: 300px;
+      }
+    </style>
+  </defs>
+  <g id="Camada_1-2" data-name="Camada 1">
+    <text class="cls-5" transform="translate(121.25 255)"><tspan class="cls-1" x="0" y="0">p</tspan><tspan class="cls-2" x="196.8" y="0">a</tspan><tspan class="cls-4" x="403.5" y="0">r</tspan><tspan x="548.1" y="0">a</tspan><tspan class="cls-3" x="754.8" y="0">i</tspan><tspan x="865.5" y="0">so</tspan></text>
+  </g>
+</svg>

@@ -38,14 +38,6 @@ const nextConfig: NextConfig = {
                 ? { exclude: ["error", "warn"] }
                 : false,
     },
-    webpack(config) {
-    config.ignoreWarnings = [
-      (warning: any) =>
-        typeof warning.message === "string" &&
-        warning.message.includes("Critical dependency: the request of a dependency is an expression"),
-    ];
-    return config;
-  },
 };
 
 export default nextConfig;

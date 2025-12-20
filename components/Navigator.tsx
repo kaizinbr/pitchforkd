@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Indicator } from "@mantine/core";
@@ -246,7 +247,7 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                             href={`https://pitchforkd.me/`}
                             className={FFDisplay.className + ` font-bold mr-8 text-xl`}
                         >
-                            LOOPI
+                            <Image src="/logo.svg" alt="LOOPI" width={64} height={32} />
                         </Link>
                         <button>
                             <Link

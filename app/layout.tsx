@@ -273,6 +273,7 @@ export default function RootLayout({
                         <Footer />
                     </main>
                 </MantineProvider>
+                <script src="https://accounts.google.com/gsi/client" async></script>
             </body>
         </html>
     );

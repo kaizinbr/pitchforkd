@@ -50,14 +50,14 @@ export default async function Home() {
                     Pitchforkd
                 </Link>
                 <ImageCarousel />
-                {data && dataLength ? (
+                {/* {data && dataLength ? (
                     <DisplayReviews
                         ratings={data}
                         ratingsLength={dataLength.length}
                     />
                 ) : (
                     <div>Não há reviews</div>
-                )}
+                )} */}
             </main>
         </>
     );

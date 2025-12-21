@@ -75,7 +75,7 @@ export default function UserHeader({
                 <picture className="flex items-center justify-center relative">
                     <Avatar
                         size={120}
-                        src={profile.avatar_url}
+                        src={profile.avatarUrl}
                         setColors={setColors}
                     />
                     {profile.pronouns && (
@@ -133,7 +133,7 @@ export default function UserHeader({
             </div>
 
             <FollowBtn profile={profile} isUser={isUser} />
-            <Favorites favorites={profile.favorites} isUser={isUser} />
+            {/* <Favorites favorites={profile.favorites} isUser={isUser} /> */}
         </>
     );
 }

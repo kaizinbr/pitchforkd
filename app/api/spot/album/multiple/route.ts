@@ -71,6 +71,7 @@ export async function GET(request: Request) {
         return NextResponse.json(response.data);
     } catch (error) {
         console.error("Erro ao buscar álbum do Spotify:", error);
+        // console.error(error.response)
         return NextResponse.json(
             { error: "Erro ao buscar álbum do Spotify" },
             { status: 500 }

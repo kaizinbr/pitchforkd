@@ -13,9 +13,9 @@ export interface Profile {
     color: string | null;
     pronouns: string | null;
     username: string | null;
-    avatar_url: string | null;
-    created_at: Date;
-    lowercased_username: string | null;
+    avatarUrl: string | null;
+    createdAt: Date;
+    lowername: string | null;
     public: boolean;
     favorites: any;
     verified: boolean;
@@ -47,6 +47,7 @@ export interface Review {
         type: string;
         content: [];
     };
+    Profile: Profile;
 }
 
 export interface User {

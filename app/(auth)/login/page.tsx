@@ -102,7 +102,6 @@ export default function LoginPage() {
                                 <button
                                     type="submit"
                                     className={`group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 `}
-                                    
                                 >
                                     Entrar
                                 </button>
@@ -110,7 +109,6 @@ export default function LoginPage() {
                         </form>
                     </>
                 )}
-
                 {step === "otp" && (
                     <>
                         <div className="flex flex-col gap-2 max-w-72">
@@ -192,6 +190,26 @@ export default function LoginPage() {
                             </form>
                         </div>
                     </>
+                )}
+                <button
+                    onClick={() =>
+                        signIn("google", { redirectTo: "/home" })
+                    }
+                >
+                    Google
+                </button>
+                {/* <button
+                    onClick={() =>
+                        signIn("spotify", { redirectTo: "/home" })
+                    }
+                >
+                    spotify
+                </button> */}
+                {error === "OAuthAccountNotLinked" && (
+                    <div className="text-red-400 text-sm text-center">
+                        Conta do Google não vinculada. Por favor, entre com
+                        outro método.
+                    </div>
                 )}
                 {/* <div className="text-center flex flex-col gap-2">
                     <Link

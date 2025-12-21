@@ -36,8 +36,10 @@ export default async function UserLayout({ params, children }: Props) {
 
     // Buscar dados do usuário
     const profile = await prisma.profile.findFirst({
-        where: { lowercased_username: username.toLowerCase() },
+        where: { lowername: username.toLowerCase() },
     });
+
+    console.log("UserLayout profile:", profile);
 
     if (!profile) {
         notFound();
@@ -48,17 +50,17 @@ export default async function UserLayout({ params, children }: Props) {
 
     // Buscar quantidade de avaliações
     const reviewCount = await prisma.rating.count({
-        where: { user_id: profile.id },
+        where: { userId: profile.id },
     });
 
     // Buscar quantidade de seguidores
     const followersCount = await prisma.follow.count({
-        where: { followed_id: profile.id },
+        where: { followedId: profile.id },
     });
 
     // Buscar quantidade de seguindo
     const followingCount = await prisma.follow.count({
-        where: { follower_id: profile.id },
+        where: { followerId: profile.id },
     });
 
     const isOwnProfile = currentUser?.user?.id === profile.id;

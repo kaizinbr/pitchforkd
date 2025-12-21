@@ -16,6 +16,8 @@ import localFont from "next/font/local";
 
 import useScrollDirection from "@/hooks/useScrollDirection";
 
+
+
 import { type User } from "@supabase/supabase-js";
 
 const FFDisplay = localFont({
@@ -38,7 +40,7 @@ export default function Navigator({ profile }: { profile: Profile | null }) {
     const supabase = createClient();
 
     const [username, setUsername] = useState<string | null>(profile?.username ?? null);
-    const [avatar_url, setAvatarUrl] = useState<string | null>(profile?.avatar_url ?? null);
+    const [avatarUrl, setAvatarUrl] = useState<string | null>(profile?.avatarUrl ?? null);
     const [hasNotifications, setHasNotifications] = useState<boolean>(false);
     const scrollDirection = useScrollDirection();
 
@@ -128,8 +130,8 @@ export default function Navigator({ profile }: { profile: Profile | null }) {
                                 transition-all duration-200 ease-in-out
                             `}
                     >
-                        {avatar_url ? (
-                            <Avatar size={24} src={avatar_url} isIcon={true} />
+                        {avatarUrl ? (
+                            <Avatar size={24} src={avatarUrl} isIcon={true} />
                         ) : (
                             <TbUserFilled className="size-6" />
                         )}
@@ -146,7 +148,7 @@ export function DesktopNavigator({ profile }: { profile: Profile | null }) {
 
     const [name, setName] = useState<string | null>(profile?.name ?? null);
     const [username, setUsername] = useState<string | null>(profile?.username ?? null);
-    const [avatar_url, setAvatarUrl] = useState<string | null>(profile?.avatar_url ?? null);
+    const [avatarUrl, setAvatarUrl] = useState<string | null>(profile?.avatarUrl ?? null);
     const scrollDirection = useScrollDirection();
 
 
@@ -237,7 +239,7 @@ export function DesktopNavigator({ profile }: { profile: Profile | null }) {
                                 transition-all duration-200 ease-in-out
                             `}
                         >
-                            {avatar_url ? (
+                            {avatarUrl ? (
                                 <>
                                     <div className="flex flex-col items-end justify-center">
                                         <span className="text-xs font-semibold">
@@ -249,7 +251,7 @@ export function DesktopNavigator({ profile }: { profile: Profile | null }) {
                                     </div>
                                     <Avatar
                                         size={36}
-                                        src={avatar_url}
+                                        src={avatarUrl}
                                         isIcon={true}
                                     />
                                 </>

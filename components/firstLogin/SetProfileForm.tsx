@@ -1,28 +1,30 @@
 "use client";
 import { useCallback, useEffect, useState, ChangeEvent } from "react";
 import { createClient } from "@/utils/supabase/client";
-import { type User } from "@supabase/supabase-js";
+import { Profile } from "@/lib/utils/types";
 import Avatar from "./AvatarEdit";
 import { Textarea } from "@mantine/core";
 import { useSearchParams, useRouter } from "next/navigation";
 import containsSpecialChars from "@/lib/utils/containsSpecialChars";
 import usernameAlreadyExists from "@/lib/utils/usernameAlreadyExists";
 
+import axios from "axios";
+
 import classes from "./AcForm.module.css";
 import Link from "next/link";
 
-export default function SetProfileForm({ user }: { user: User | null }) {
+export default function SetProfileForm({ profile }: { profile: Profile | null }) {
     const supabase = createClient();
     const [loading, setLoading] = useState(true);
-    const [name, setName] = useState<string | null>(null);
-    const [username, setUsername] = useState<string | null>(null);
+    const [name, setName] = useState<string | null>(profile?.name || null);
+    const [username, setUsername] = useState<string | null>(profile?.username || null);
     const [originalUsername, setOriginalUsername] = useState<string | null>(
-        null
+        profile?.username || null
     );
-    const [site, setsite] = useState<string | null>(null);
-    const [avatar_url, setAvatarUrl] = useState<string | null>(null);
-    const [bio, setBio] = useState<string | null>(null);
-    const [pronouns, setPronouns] = useState<string | null>(null);
+    const [site, setsite] = useState<string | null>(profile?.site || null);
+    const [avatarUrl, setAvatarUrl] = useState<string | null>(profile?.avatarUrl || null);
+    const [bio, setBio] = useState<string | null>(profile?.bio || null);
+    const [pronouns, setPronouns] = useState<string | null>(profile?.pronouns || null);
 
     const [message, setMessage] = useState<string | null>(null);
     const [canUpdate, setCanUpdate] = useState<boolean>(false);
@@ -59,42 +61,8 @@ export default function SetProfileForm({ user }: { user: User | null }) {
         setCanUpdate(true);
     };
 
-    console.log(user);
+    console.log(profile);
 
-    const getProfile = useCallback(async () => {
-        try {
-            setLoading(true);
-
-            const { data, error, status } = await supabase
-                .from("profiles")
-                .select(`name, username, site, avatar_url, bio, pronouns`)
-                .eq("id", user?.id)
-                .single();
-
-            if (error && status !== 406) {
-                console.log(error);
-                throw error;
-            }
-
-            if (data) {
-                setName(data.name);
-                setUsername(data.username);
-                setOriginalUsername(data.username);
-                setsite(data.site);
-                setAvatarUrl(data.avatar_url);
-                setBio(data.bio);
-                setPronouns(data.pronouns);
-            }
-        } catch (error) {
-            alert("Error loading user data!");
-        } finally {
-            setLoading(false);
-        }
-    }, [user, supabase]);
-
-    useEffect(() => {
-        getProfile();
-    }, [user, getProfile]);
 
     const router = useRouter();
 
@@ -116,21 +84,19 @@ export default function SetProfileForm({ user }: { user: User | null }) {
         try {
             setLoading(true);
 
-            const lowercased_username = username?.toLowerCase();
+            const lowername = username?.toLowerCase();
 
-            const { error } = await supabase
-                .from("profiles")
-                .update({
-                    name: name,
-                    username,
-                    lowercased_username,
-                    site,
-                    avatar_url,
-                    bio,
-                    pronouns,
-                })
-                .eq("id", user?.id);
-            if (error) throw error;
+            const update = await axios.post("/api/user/profile", {
+
+                username,
+                lowername,
+                site,
+                avatar_url,
+                name,
+                bio,
+                pronouns,
+            });
+            
             alert("Profile updated!");
         } catch (error) {
             alert("Error updating the data!");
@@ -170,8 +136,8 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                             `}
                     >
                         <Avatar
-                            uid={user?.id ?? null}
-                            src={avatar_url}
+                            uid={profile?.id ?? null}
+                            src={avatarUrl}
                             size={176}
                             onUpload={(url) => {
                                 setAvatarUrl(url);
@@ -319,12 +285,12 @@ export default function SetProfileForm({ user }: { user: User | null }) {
                             name: name,
                             username,
                             site,
-                            avatar_url,
+                            avatar_url: avatarUrl,
                             pronouns,
                             bio,
                         })
                     }
-                    disabled={loading || message !== null || !canUpdate}
+                    // disabled={loading || message !== null || !canUpdate}
                 >
                     {loading ? "Salvando..." : "Salvar"}
                 </button>

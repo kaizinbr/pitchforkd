@@ -12,7 +12,7 @@ export async function GET(
 
     try {
         const profile = await prisma.profile.findFirst({
-            where: { lowercased_username: username.toLowerCase() },
+            where: { lowername: username.toLowerCase() },
         });
 
         if (!profile) {

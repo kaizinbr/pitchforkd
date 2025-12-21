@@ -1,5 +1,7 @@
 import FollowersList from "@/components/user/FollowersList";
 import { createClient } from "@/utils/supabase/server";
+import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
 
 export default async function FollowingPage({
     params,
@@ -8,6 +10,25 @@ export default async function FollowingPage({
 }) {
     const username = (await params).username;
     const supabase = await createClient();
+
+    const session = await auth();
+
+    const userId = await prisma.profile
+        .findFirst({
+            where: { lowercased_username: username.toLowerCase() },
+        })
+        .then((profile) => profile?.id);
+
+        console.log("User ID:", userId);
+
+    const followings = await prisma.follow.findMany({
+        where: {
+            follower_id: userId!,
+        },
+        select: { followed_id: true },
+    });
+
+    console.log(followings)
 
     const { data: user } = await supabase
         .from("profiles")
@@ -53,12 +74,14 @@ export default async function FollowingPage({
     // console.log("Profiles data:", profiles);
 
     return (
-        <div className="w-full">
+        <div className="w-full pt-2">
             {profiles && profiles.length > 0 ? (
                 <FollowersList initialFollowers={profiles} />
             ) : (
                 <div className="w-full flex items-center justify-center">
-                    <p className="text-neutral-500">Parece que {user.name} não segue ninguém ainda</p>
+                    <p className="text-neutral-500">
+                        Parece que {user.name} não segue ninguém ainda
+                    </p>
                 </div>
             )}
         </div>

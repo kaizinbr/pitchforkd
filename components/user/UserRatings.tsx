@@ -11,6 +11,9 @@ export default function UserRatings({ profile }: { profile: any }) {
     const [allAlbums, setAllAlbums] = useState<{ [key: string]: any }>({});
     const [loading, setLoading] = useState(true);
     const [loadingMore, setLoadingMore] = useState(false);
+
+    const [ratingsApiPage, setRatingsApiPage] = useState(1);
+
     const [offset, setOffset] = useState(20);
     const [total, setTotal] = useState(0);
 
@@ -46,8 +49,10 @@ export default function UserRatings({ profile }: { profile: any }) {
                 `/api/user/${profile.username}/ratings?p=1`
             );
 
-            setTotal(initialRatings.data.ratings.length);
+            setTotal(initialRatings.data.total);
+            console.log(total)
             setRatings(initialRatings.data.ratings);
+            setRatingsApiPage(initialRatings.data.next);
 
             // setTotal(totalCount);
             sessionStorage.setItem(
@@ -59,7 +64,7 @@ export default function UserRatings({ profile }: { profile: any }) {
 
             // Buscar álbuns das ratings iniciais
             const initialAlbumIds = initialRatings.data.ratings.map(
-                (r: any) => r.album_id
+                (r: any) => r.albumId
             );
             setAllAlbums(initialAlbumIds);
             await fetchMissingAlbums(initialAlbumIds);
@@ -106,17 +111,25 @@ export default function UserRatings({ profile }: { profile: any }) {
         setLoadingMore(true);
 
         const getRatings = await axios.get(
-            `/api/user/${profile.username}/ratings?p=1`
+            `/api/user/${profile.username}/ratings?p=${ratingsApiPage}`
         );
 
         if (getRatings) {
             const newRatings = [...ratings, ...getRatings.data.ratings];
             setRatings(newRatings);
             setOffset(offset + 20);
+            setRatingsApiPage(getRatings.data.next);
+
+            // Atualizar cache
+            sessionStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(newRatings)
+            );
+            sessionStorage.setItem(OFFSET_KEY, (offset + 20).toString());
 
             // Buscar álbuns das novas ratings
             const newAlbumIds = getRatings.data.ratings.map(
-                (r: any) => r.album_id
+                (r: any) => r.albumId
             );
             await fetchMissingAlbums(newAlbumIds);
         }
@@ -144,6 +157,7 @@ export default function UserRatings({ profile }: { profile: any }) {
                     ratings.length < total
                 ) {
                     loadMoreData();
+                    console.log("Carregando mais avaliações...");
                 }
             },
             {
@@ -215,13 +229,13 @@ export default function UserRatings({ profile }: { profile: any }) {
                             <RatingCard
                                 key={rating.id}
                                 review={rating}
-                                album={getAlbumById(rating.album_id)}
+                                album={getAlbumById(rating.albumId)}
                             />
                         ))}
                     </div>
 
                     {/* Elemento observador - invisível, apenas para detectar scroll */}
-                    {ratings.length < total && (
+                    {/* {ratings.length < total && (
                         <div
                             ref={loadMoreRef}
                             className="w-full py-4 flex justify-center"
@@ -235,10 +249,10 @@ export default function UserRatings({ profile }: { profile: any }) {
                                 </div>
                             )}
                         </div>
-                    )}
+                    )} */}
 
                     {/* Botão manual como fallback (opcional) */}
-                    {/* {total > 5 && ratings.length < total && !loadingMore && (
+                    {total > 5 && ratings.length < total && !loadingMore && (
                         <button
                             onClick={loadMoreData}
                             className={`
@@ -249,7 +263,7 @@ export default function UserRatings({ profile }: { profile: any }) {
                         >
                             Carregar mais manualmente
                         </button>
-                    )} */}
+                    )}
 
                     {/* Botão para limpar cache (apenas desenvolvimento) */}
                     {process.env.NODE_ENV === "development" && (

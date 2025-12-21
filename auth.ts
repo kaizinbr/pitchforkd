@@ -6,6 +6,8 @@ import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import Resend from "next-auth/providers/resend";
+import Google from "next-auth/providers/google";
+import Spotify from "next-auth/providers/spotify";
 
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
@@ -44,11 +46,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
                     ).toString();
                 },
                 sendVerificationRequest,
-                
+            }),
+            Google({
+                allowDangerousEmailAccountLinking: true,
             }),
             CredentialsProvider({
                 name: "credentials",
-                id: "credentials-password",
+                id: "credentials",
                 credentials: {
                     email: { label: "Email", type: "email" },
                     name: { label: "Name", type: "name" },
@@ -62,6 +66,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
                         where: { email: creds.email },
                     });
 
+                    console.log("User found:", user);
+
                     if (!user) {
                         const tempUsername = `user_${Math.random()
                             .toString(36)
@@ -70,18 +76,17 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
                             data: {
                                 name: creds.name ?? creds.email,
                                 email: creds.email,
-                                encrypted_password: await bcrypt.hash(
+                                encryptedPassword: await bcrypt.hash(
                                     creds.password,
                                     10
                                 ),
-                                Profile: {
+                                profiles: {
                                     create: {
                                         username: tempUsername,
-                                        lowercased_username:
-                                            tempUsername.toLowerCase(),
+                                        lowername: tempUsername.toLowerCase(),
                                         name: creds.name ?? creds.email,
                                         bio: "",
-                                        avatar_url: "",
+                                        avatarUrl: "",
                                     },
                                 },
                             },
@@ -94,16 +99,16 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
                         };
                     }
 
-                    if (!user.encrypted_password) {
-                        throw new Error("Invalid credentials 1");
+                    if (!user.encryptedPassword) {
+                        throw new Error("NO_PASSWORD_SET");
                     }
                     const isCorrectPassword = await bcrypt.compare(
                         creds.password,
-                        user.encrypted_password
+                        user.encryptedPassword
                     );
 
                     if (!isCorrectPassword) {
-                        throw new Error("Invalid credentials");
+                        throw new Error("INVALID_CREDENTIALS");
                     }
 
                     return {
@@ -154,14 +159,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
                             data: {
                                 name: tempUsername,
                                 email: email,
-                                Profile: {
+                                profiles: {
                                     create: {
                                         username: tempUsername,
-                                        lowercased_username:
-                                            tempUsername.toLowerCase(),
+                                        lowername: tempUsername.toLowerCase(),
                                         name: email,
                                         bio: "",
-                                        avatar_url: "",
+                                        avatarUrl: "",
                                     },
                                 },
                             },
@@ -186,8 +190,25 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
             signIn: "/login",
             newUser: "/new-user",
         },
-        session: { strategy: "jwt" },
+        events: {
+            async createUser({ user }) {
+                const tempUsername = `user_${Math.random()
+                    .toString(36)
+                    .slice(2, 10)}`;
 
+                await prisma.profile.create({
+                    data: {
+                        id: user.id, // mesmo id do User
+                        avatarUrl: user.image,
+                        username: tempUsername,
+                        lowername: tempUsername.toLowerCase(),
+                        name: user.name || user.email || "Usuário",
+                        bio: "",
+                    },
+                });
+            },
+        },
+        session: { strategy: "jwt" },
         secret: process.env.AUTH_SECRET,
         callbacks: {
             authorized({ request, auth }) {

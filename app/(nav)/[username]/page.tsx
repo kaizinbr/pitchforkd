@@ -12,11 +12,11 @@ export default async function UserReviewsPage({
 
     // Buscar dados do usuário
     const profile = await prisma.profile.findFirst({
-        where: { lowercased_username: username.toLowerCase() },
+        where: { lowername: username.toLowerCase() },
     });
     
     return (
-        <div className="w-full">
+        <div className="w-full pt-2">
             <UserRatings profile={profile} />
         </div>
     );

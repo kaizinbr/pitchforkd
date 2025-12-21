@@ -31,7 +31,7 @@ export default function RatingCard({
     album: any;
 }) {
     const supabase = createClient();
-    console.log("RatingCard review:", review, album);
+    // console.log("RatingCard review:", review, album);
     // const [album, setAlbum] = useState<any>();
     const [loading, setLoading] = useState(true);
     const [liked, setLiked] = useState(false);
@@ -205,7 +205,7 @@ export default function RatingCard({
                             <div className="flex relative flex-col justify-center items-center size-8 rounded-full mr-3">
                                 <Avatar
                                     size={32}
-                                    src={review.Profile.avatar_url}
+                                    src={review.Profile.avatarUrl}
                                     className={"size-8"}
                                     isIcon
                                 />

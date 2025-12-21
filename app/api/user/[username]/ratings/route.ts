@@ -28,16 +28,22 @@ export async function GET(
             console.log("Fetching all ratings for user:", username);
             const ratings = await prisma.rating.findMany({
                 where: {
-                    Profile: { lowercased_username: username.toLowerCase() },
-                    is_published: true,
+                    Profile: { lowername: username.toLowerCase() },
+                    published: true,
                 },
-                orderBy: { created_at: "desc" },
+                orderBy: { createdAt: "desc" },
             });
 
             if (!ratings || ratings.length === 0) {
                 return NextResponse.json(
-                    { error: "Profile not found" },
-                    { status: 404 }
+                    {
+                        total: 0,
+                        page: null,
+                        next: 0,
+                        prev: 0,
+                        ratings,
+                    },
+                    { status: 200 }
                 );
             }
 
@@ -61,40 +67,54 @@ export async function GET(
 
         const index = page ? (parseInt(page) - 1) * 20 : 0;
 
-        console.log("Fetching paginated ratings for user:", username, "from index:", index);
+        console.log(
+            "Fetching paginated ratings for user:",
+            username,
+            "from index:",
+            index
+        );
 
         const ratings = await prisma.rating.findMany({
             where: {
-                Profile: { lowercased_username: username.toLowerCase() },
-                is_published: true,
+                Profile: { lowername: username.toLowerCase() },
+                published: true,
             },
             include: {
                 Profile: true,
             },
-            orderBy: { created_at: "desc" },
+            orderBy: { createdAt: "desc" },
             skip: index,
             take: 20,
         });
 
         const totalRatings = await prisma.rating.count({
             where: {
-                Profile: { lowercased_username: username.toLowerCase() },
-                is_published: true,
+                Profile: { lowername: username.toLowerCase() },
+                published: true,
             },
         });
 
-        if (!ratings || ratings.length === 0) {
-            return NextResponse.json(
-                { error: "Profile not found" },
-                { status: 404 }
-            );
-        }
+            if (!ratings || ratings.length === 0) {
+                return NextResponse.json(
+                    {
+                        total: 0,
+                        page: null,
+                        next: 0,
+                        prev: 0,
+                        ratings,
+                    },
+                    { status: 200 }
+                );
+            }
 
         return NextResponse.json(
             {
                 total: totalRatings,
                 page: page ? parseInt(page) : 1,
-                next: page && parseInt(page) * 20 < totalRatings ? parseInt(page) + 1 : null,
+                next:
+                    page && parseInt(page) * 20 < totalRatings
+                        ? parseInt(page) + 1
+                        : null,
                 prev: page && parseInt(page) > 1 ? parseInt(page) - 1 : null,
                 ratings,
             },

@@ -13,7 +13,7 @@ export async function GET(
 
     try {
         const userProfile = await prisma.profile.findFirst({
-            where: { lowercased_username: username.toLowerCase() },
+            where: { lowername: username.toLowerCase() },
         });
 
         if (!userProfile) {
@@ -39,8 +39,8 @@ export async function GET(
 
         const followCheck = await prisma.follow.findMany({
             where: {
-                follower_id: currentUser?.user!.id,
-                followed_id: userProfile.id,
+                followerId: currentUser?.user!.id,
+                followedId: userProfile.id,
             },
         });
 
@@ -49,9 +49,9 @@ export async function GET(
                 isFollowing: followCheck.length > 0,
                 follow: {
                     id: Number(followCheck[0].id),
-                    follower_id: followCheck[0]?.follower_id,
-                    followed_id: followCheck[0]?.followed_id,
-                    created_at: followCheck[0]?.created_at,
+                    followerId: followCheck[0]?.followerId,
+                    followedId: followCheck[0]?.followedId,
+                    createdAt: followCheck[0]?.createdAt,
                 },
             },
             { status: 200 }

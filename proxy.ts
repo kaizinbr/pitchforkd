@@ -28,8 +28,14 @@ export async function proxy(req: NextRequest) {
         (p) => pathname === p || pathname.startsWith(p + "/")
     );
 
+    if (pathname === "/" && token) {
+        console.log(pathname, token);
+        const homeUrl = new URL("/home", req.url);
+        return NextResponse.redirect(homeUrl);
+    }
+
     if (isProtected && !token) {
-        const signInUrl = new URL("/auth/signin", req.url);
+        const signInUrl = new URL("/login", req.url);
         signInUrl.searchParams.set("callbackUrl", req.nextUrl.pathname);
         return NextResponse.redirect(signInUrl);
     }
@@ -38,5 +44,5 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/protected/:path*", "/dashboard"],
+    matcher: ["/", "/protected/:path*", "/dashboard"],
 };

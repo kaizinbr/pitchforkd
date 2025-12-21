@@ -1,5 +1,5 @@
 "use client";
-
+import { Profile } from "@/lib/utils/types";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -33,65 +33,17 @@ const FFDisplay = localFont({
     ],
 });
 
-export default function Navigator({ user }: { user: User | null }) {
+export default function Navigator({ profile }: { profile: Profile | null }) {
     const pathname = usePathname();
     const supabase = createClient();
 
-    const [username, setUsername] = useState<string | null>(null);
-    const [avatar_url, setAvatarUrl] = useState<string | null>(null);
+    const [username, setUsername] = useState<string | null>(profile?.username ?? null);
+    const [avatar_url, setAvatarUrl] = useState<string | null>(profile?.avatar_url ?? null);
     const [hasNotifications, setHasNotifications] = useState<boolean>(false);
     const scrollDirection = useScrollDirection();
 
-    const getProfile = useCallback(async () => {
-        try {
-            const { data, error, status } = await supabase
-                .from("profiles")
-                .select(`name, username, avatar_url`)
-                .eq("id", user?.id)
-                .single();
-
-            if (error && status !== 406) {
-                console.log(error);
-                throw error;
-            }
-
-            if (data) {
-                setUsername(data.username);
-                setAvatarUrl(data.avatar_url);
-            }
-        } catch (error) {
-            console.log("Error loading user data!");
-        }
-    }, [user, supabase]);
-
-    useEffect(() => {
-        getProfile();
-    }, [user, getProfile]);
-
     const [localNotifications, setLocalNotifications] = useState<any[]>([]);
 
-    useEffect(() => {
-        supabase
-            .channel("notifications")
-            .on(
-                "postgres_changes",
-                { event: "INSERT", schema: "public", table: "notifications" },
-                (payload) => {
-                    const notification = payload.new;
-
-                    if (notification.user_id === user!.id) {
-                        setLocalNotifications([
-                            ...localNotifications,
-                            notification,
-                        ]);
-                        setHasNotifications(true);
-                        console.log("New notification", payload);
-                    }
-                        console.log(notification.sender_id, user!.id);
-                }
-            )
-            .subscribe();
-    }, []);
 
     return (
         <div className="relative md:hidden">
@@ -188,41 +140,15 @@ export default function Navigator({ user }: { user: User | null }) {
     );
 }
 
-export function DesktopNavigator({ user }: { user: User | null }) {
+export function DesktopNavigator({ profile }: { profile: Profile | null }) {
     const pathname = usePathname();
     const supabase = createClient();
 
-    const [name, setName] = useState<string | null>(null);
-    const [username, setUsername] = useState<string | null>(null);
-    const [avatar_url, setAvatarUrl] = useState<string | null>(null);
+    const [name, setName] = useState<string | null>(profile?.name ?? null);
+    const [username, setUsername] = useState<string | null>(profile?.username ?? null);
+    const [avatar_url, setAvatarUrl] = useState<string | null>(profile?.avatar_url ?? null);
     const scrollDirection = useScrollDirection();
 
-    const getProfile = useCallback(async () => {
-        try {
-            const { data, error, status } = await supabase
-                .from("profiles")
-                .select(`name, username, avatar_url`)
-                .eq("id", user?.id)
-                .single();
-
-            if (error && status !== 406) {
-                console.log(error);
-                throw error;
-            }
-
-            if (data) {
-                setName(data.name);
-                setUsername(data.username);
-                setAvatarUrl(data.avatar_url);
-            }
-        } catch (error) {
-            console.log("Error loading user data!");
-        }
-    }, [user, supabase]);
-
-    useEffect(() => {
-        getProfile();
-    }, [user, getProfile]);
 
     return (
         <div className="relative hidden md:block">
@@ -243,12 +169,12 @@ export function DesktopNavigator({ user }: { user: User | null }) {
                         flex flex-row items-center justify-evenly
                     `}
                     >
-                        <Link
+                        {/* <Link
                             href={`https://pitchforkd.me/`}
                             className={FFDisplay.className + ` font-bold mr-8 text-xl`}
                         >
                             <Image src="/logo.svg" alt="LOOPI" width={64} height={32} />
-                        </Link>
+                        </Link> */}
                         <button>
                             <Link
                                 data-active={pathname === "/home"}

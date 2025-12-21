@@ -4,11 +4,15 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 
+import { auth } from "@/auth";
+
+import axios from "axios";
+
 export default function FollowBtn({
-    user,
+    profile,
     isUser,
 }: {
-    user: User;
+    profile: User;
     isUser: boolean;
 }) {
     const [isFollowing, setIsFollowing] = useState(false);
@@ -18,27 +22,21 @@ export default function FollowBtn({
     // const  = supabase.auth.user();
 
     const checkIfFollowing = async () => {
-        const {
-            data: { user: currentUser },
-        } = await supabase.auth.getUser();
-        if (!currentUser) return;
+        
+        const response = await axios.get(`/api/user/${profile.username}/follow-check`);
+        const { isFollowing: followingCheck } = response.data;
+        console.log("follow-check response:", response.data);
 
-        const { data, error } = await supabase
-            .from("follows")
-            .select("*")
-            .eq("follower_id", currentUser.id)
-            .eq("followed_id", user.id);
-
-        if (error) {
-            console.error("Error checking follow status", error);
+        if (!followingCheck) {
+            console.error("Error checking follow status", followingCheck);
         } else {
-            setIsFollowing(data.length > 0);
+            setIsFollowing(followingCheck.length > 0);
         }
     };
 
     useEffect(() => {
         checkIfFollowing();
-    }, [user.id]);
+    }, [profile.id]);
 
     return (
         <>
@@ -84,7 +82,7 @@ export default function FollowBtn({
                                 .from("follows")
                                 .delete()
                                 .eq("follower_id", currentUser.id)
-                                .eq("followed_id", user.id);
+                                .eq("followed_id", profile.id);
 
                             if (error) {
                                 console.error("Error unfollowing user", error);
@@ -95,7 +93,7 @@ export default function FollowBtn({
                             const { error } = await supabase
                                 .from("follows")
                                 .insert({
-                                    followed_id: user.id,
+                                    followed_id: profile.id,
                                     follower_id: currentUser.id,
                                 });
 

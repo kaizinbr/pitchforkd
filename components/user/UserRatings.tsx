@@ -6,7 +6,7 @@ import RatingCard from "./RatingCard";
 import { RatingCardSkeletonList } from "../Skeletons";
 import axios from "axios";
 
-export default function UserRatings({ user }: { user: any }) {
+export default function UserRatings({ profile }: { profile: any }) {
     const [ratings, setRatings] = useState<any[]>([]);
     const [allAlbums, setAllAlbums] = useState<{ [key: string]: any }>({});
     const [loading, setLoading] = useState(true);
@@ -19,93 +19,10 @@ export default function UserRatings({ user }: { user: any }) {
     const loadMoreRef = useRef<HTMLDivElement>(null);
 
     // Chaves únicas para cada usuário
-    const STORAGE_KEY = `user-ratings-${user.id}`;
-    const OFFSET_KEY = `user-ratings-offset-${user.id}`;
-    const TOTAL_KEY = `user-ratings-total-${user.id}`;
-    const ALBUMS_KEY = `user-albums-${user.id}`;
-
-    // Busca álbuns faltantes em lotes de até 20 IDs
-    const fetchMissingAlbums = async (albumIds: string[]) => {
-        const missingIds = albumIds.filter(id => !allAlbums[id]);
-        if (missingIds.length === 0) return;
-
-        // Dividir em lotes de 20
-        for (let i = 0; i < missingIds.length; i += 20) {
-            const batch = missingIds.slice(i, i + 20);
-            try {
-                const idsString = batch.join(",");
-                const response = await axios.get(`/api/spot/album/multiple?ids=${idsString}`);
-                if (response.data.albums) {
-                    const albumsMap = response.data.albums.reduce((acc: any, album: any) => {
-                        acc[album.id] = album;
-                        return acc;
-                    }, {});
-                    setAllAlbums(prev => ({ ...prev, ...albumsMap }));
-                }
-            } catch (error) {
-                console.error("Erro ao buscar álbuns:", error);
-            }
-        }
-    };
-
-    // Carregar mais ratings e buscar álbuns
-    const loadMoreData = useCallback(async () => {
-        if (loadingMore || ratings.length >= total) return;
-
-        setLoadingMore(true);
-
-        const { data, error } = await supabase
-            .from("ratings")
-            .select(
-                `*,
-                profiles(
-                    *
-                )`
-            )
-            .eq("is_published", true)
-            .eq("user_id", user.id)
-            .order("created_at", { ascending: false })
-            .range(offset, offset + 19);
-
-        if (data && !error) {
-            const newRatings = [...ratings, ...data];
-            setRatings(newRatings);
-            setOffset(offset + 20);
-
-            // Buscar álbuns das novas ratings
-            const newAlbumIds = data.map((r: any) => r.album_id);
-            await fetchMissingAlbums(newAlbumIds);
-        }
-
-        setLoadingMore(false);
-    }, [loadingMore, ratings.length, total, offset, ratings, supabase, user.id, allAlbums]);
-
-    // Intersection Observer para scroll infinito
-    useEffect(() => {
-        const observer = new IntersectionObserver(
-            (entries) => {
-                const target = entries[0];
-                if (target.isIntersecting && !loadingMore && ratings.length < total) {
-                    loadMoreData();
-                }
-            },
-            {
-                root: null,
-                rootMargin: '260px',
-                threshold: 0.1
-            }
-        );
-
-        if (loadMoreRef.current) {
-            observer.observe(loadMoreRef.current);
-        }
-
-        return () => {
-            if (loadMoreRef.current) {
-                observer.unobserve(loadMoreRef.current);
-            }
-        };
-    }, [loadMoreData, loadingMore, ratings.length, total]);
+    const STORAGE_KEY = `user-ratings-${profile.id}`;
+    const OFFSET_KEY = `user-ratings-offset-${profile.id}`;
+    const TOTAL_KEY = `user-ratings-total-${profile.id}`;
+    const ALBUMS_KEY = `user-albums-${profile.id}`;
 
     // Carregar dados iniciais e álbuns
     useEffect(() => {
@@ -124,71 +41,144 @@ export default function UserRatings({ user }: { user: any }) {
                 return;
             }
 
-            // Buscar ratings do banco
-            const { data, error } = await supabase
-                .from("ratings")
-                .select(
-                    `*,
-                    profiles(
-                        *
-                    )`
-                )
-                .eq("is_published", true)
-                .eq("user_id", user.id)
-                .order("created_at", { ascending: false })
-                .range(0, 19);
+            // Buscar todos os ratings do banco
+            const initialRatings = await axios.get(
+                `/api/user/${profile.username}/ratings?p=1`
+            );
 
-            if (error) {
-                console.error("Error fetching ratings", error);
-                setLoading(false);
-                return;
-            }
+            setTotal(initialRatings.data.ratings.length);
+            setRatings(initialRatings.data.ratings);
 
-            const { data: totalData, error: totalError } = await supabase
-                .from("ratings")
-                .select("*")
-                .eq("is_published", true)
-                .eq("user_id", user.id);
+            // setTotal(totalCount);
+            sessionStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(initialRatings.data.ratings)
+            );
+            // sessionStorage.setItem(TOTAL_KEY, totalCount.toString());
+            sessionStorage.setItem(OFFSET_KEY, "20");
 
-            if (totalError) {
-                console.error("Error fetching total ratings", totalError);
-            }
-
-            const totalCount = totalData?.length || 0;
-
-            if (data) {
-                setRatings(data);
-                setTotal(totalCount);
-                sessionStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-                sessionStorage.setItem(TOTAL_KEY, totalCount.toString());
-                sessionStorage.setItem(OFFSET_KEY, "20");
-
-                // Buscar álbuns das ratings iniciais
-                const initialAlbumIds = data.map((r: any) => r.album_id);
-                await fetchMissingAlbums(initialAlbumIds);
-            }
+            // Buscar álbuns das ratings iniciais
+            const initialAlbumIds = initialRatings.data.ratings.map(
+                (r: any) => r.album_id
+            );
+            setAllAlbums(initialAlbumIds);
+            await fetchMissingAlbums(initialAlbumIds);
 
             setLoading(false);
         }
 
         fetchRatings();
-    }, [user.id]);
+    }, [profile.id]);
 
-    // Salvar ratings e offset no cache
-    useEffect(() => {
-        if (ratings.length > 0) {
-            sessionStorage.setItem(STORAGE_KEY, JSON.stringify(ratings));
-            sessionStorage.setItem(OFFSET_KEY, offset.toString());
-            sessionStorage.setItem(TOTAL_KEY, total.toString());
-        }
-    }, [ratings, offset, total, STORAGE_KEY, OFFSET_KEY, TOTAL_KEY]);
+    // Busca álbuns faltantes em lotes de até 20 IDs
+    const fetchMissingAlbums = async (albumIds: string[]) => {
+        const missingIds = albumIds.filter((id) => !allAlbums[id]);
+        if (missingIds.length === 0) return;
 
-    // Salvar álbuns no cache
-    useEffect(() => {
-        if (Object.keys(allAlbums).length > 0) {
-            sessionStorage.setItem(ALBUMS_KEY, JSON.stringify(allAlbums));
+        // Dividir em lotes de 20
+        for (let i = 0; i < missingIds.length; i += 20) {
+            const batch = missingIds.slice(i, i + 20);
+            try {
+                const idsString = batch.join(",");
+                const response = await axios.get(
+                    `/api/spot/album/multiple?ids=${idsString}`
+                );
+                if (response.data.albums) {
+                    const albumsMap = response.data.albums.reduce(
+                        (acc: any, album: any) => {
+                            acc[album.id] = album;
+                            return acc;
+                        },
+                        {}
+                    );
+                    setAllAlbums((prev) => ({ ...prev, ...albumsMap }));
+                }
+            } catch (error) {
+                console.error("Erro ao buscar álbuns:", error);
+            }
         }
-    }, [allAlbums, ALBUMS_KEY]);
+    };
+
+    // Carregar mais ratings e buscar álbuns
+    const loadMoreData = useCallback(async () => {
+        if (loadingMore || ratings.length >= total) return;
+
+        setLoadingMore(true);
+
+        const getRatings = await axios.get(
+            `/api/user/${profile.username}/ratings?p=1`
+        );
+
+        if (getRatings) {
+            const newRatings = [...ratings, ...getRatings.data.ratings];
+            setRatings(newRatings);
+            setOffset(offset + 20);
+
+            // Buscar álbuns das novas ratings
+            const newAlbumIds = getRatings.data.ratings.map(
+                (r: any) => r.album_id
+            );
+            await fetchMissingAlbums(newAlbumIds);
+        }
+
+        setLoadingMore(false);
+    }, [
+        loadingMore,
+        ratings.length,
+        total,
+        offset,
+        ratings,
+        supabase,
+        profile.id,
+        allAlbums,
+    ]);
+
+    // // Intersection Observer para scroll infinito
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                const target = entries[0];
+                if (
+                    target.isIntersecting &&
+                    !loadingMore &&
+                    ratings.length < total
+                ) {
+                    loadMoreData();
+                }
+            },
+            {
+                root: null,
+                rootMargin: "260px",
+                threshold: 0.1,
+            }
+        );
+
+        if (loadMoreRef.current) {
+            observer.observe(loadMoreRef.current);
+        }
+
+        return () => {
+            if (loadMoreRef.current) {
+                observer.unobserve(loadMoreRef.current);
+            }
+        };
+    }, [loadMoreData, loadingMore, ratings.length, total]);
+
+    // // Salvar ratings e offset no cache
+    // useEffect(() => {
+    //     if (ratings.length > 0) {
+    //         sessionStorage.setItem(STORAGE_KEY, JSON.stringify(ratings));
+    //         sessionStorage.setItem(OFFSET_KEY, offset.toString());
+    //         sessionStorage.setItem(TOTAL_KEY, total.toString());
+    //     }
+    // }, [ratings, offset, total, STORAGE_KEY, OFFSET_KEY, TOTAL_KEY]);
+
+    // // Salvar álbuns no cache
+    // useEffect(() => {
+    //     if (Object.keys(allAlbums).length > 0) {
+    //         sessionStorage.setItem(ALBUMS_KEY, JSON.stringify(allAlbums));
+    //     }
+    // }, [allAlbums, ALBUMS_KEY]);
 
     // Função para limpar cache (opcional)
     const clearCache = () => {
@@ -239,14 +229,16 @@ export default function UserRatings({ user }: { user: any }) {
                             {loadingMore && (
                                 <div className="flex items-center gap-2 text-gray-400">
                                     <div className="animate-spin h-4 w-4 border-2 border-gray-400 border-t-transparent rounded-full"></div>
-                                    <span className="text-sm">Carregando mais...</span>
+                                    <span className="text-sm">
+                                        Carregando mais...
+                                    </span>
                                 </div>
                             )}
                         </div>
                     )}
 
                     {/* Botão manual como fallback (opcional) */}
-                    {total > 5 && ratings.length < total && !loadingMore && (
+                    {/* {total > 5 && ratings.length < total && !loadingMore && (
                         <button
                             onClick={loadMoreData}
                             className={`
@@ -257,10 +249,10 @@ export default function UserRatings({ user }: { user: any }) {
                         >
                             Carregar mais manualmente
                         </button>
-                    )}
+                    )} */}
 
                     {/* Botão para limpar cache (apenas desenvolvimento) */}
-                    {process.env.NODE_ENV === 'development' && (
+                    {process.env.NODE_ENV === "development" && (
                         <button
                             onClick={clearCache}
                             className="mt-2 text-xs text-gray-500 hover:text-gray-300 mx-5"

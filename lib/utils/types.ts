@@ -8,15 +8,19 @@ export interface Rating {
 export interface Profile {
     id: string;
     bio: string | null;
-    name: string;
-    site: string;
+    name: string | null;
+    site: string | null;
     color: string | null;
-    pronouns: string;
-    username: string;
-    avatar_url: string;
-    created_at: string;
-    lowercased_username: string;
+    pronouns: string | null;
+    username: string | null;
+    avatar_url: string | null;
+    created_at: Date;
+    lowercased_username: string | null;
+    public: boolean;
+    favorites: any;
+    verified: boolean;
 }
+
 
 export interface AlbumRate {
     id: string;

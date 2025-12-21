@@ -6,22 +6,10 @@ import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import Resend from "next-auth/providers/resend";
-//
-import { Pool } from "@neondatabase/serverless";
 
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
 import { sendVerificationRequest } from "@/lib/authSendRequest";
-
-// const storage = createStorage({
-//     driver: process.env.VERCEL
-//         ? vercelKVDriver({
-//               url: process.env.AUTH_KV_REST_API_URL,
-//               token: process.env.AUTH_KV_REST_API_TOKEN,
-//               env: false,
-//           })
-//         : memoryDriver(),
-// });
 
 type Credentials = {
     email: string;

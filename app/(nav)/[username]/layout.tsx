@@ -2,16 +2,22 @@ import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 import UserHeader from "@/components/user/Profile";
 import UserTabs from "@/components/user/UserTabs";
+import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
 
 type Props = {
     params: Promise<{ username: string }>;
     children: React.ReactNode;
 };
 
-export async function generateMetadata({ params }: { params: Promise<{ username: string }> }) {
+export async function generateMetadata({
+    params,
+}: {
+    params: Promise<{ username: string }>;
+}) {
     const username = (await params).username;
     const supabase = await createClient();
-    
+
     const { data } = await supabase
         .from("profiles")
         .select("username")
@@ -19,7 +25,7 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
         .single();
 
     return {
-        title: data?.username 
+        title: data?.username
             ? `${data.username} | Pitchforkd`
             : "Usuário não encontrado | Pitchforkd",
     };
@@ -27,61 +33,52 @@ export async function generateMetadata({ params }: { params: Promise<{ username:
 
 export default async function UserLayout({ params, children }: Props) {
     const username = (await params).username;
-    const supabase = await createClient();
 
     // Buscar dados do usuário
-    const { data: user, error: userError } = await supabase
-        .from("profiles")
-        .select("*")
-        .eq("lowercased_username", username.toLowerCase())
-        .single();
+    const profile = await prisma.profile.findFirst({
+        where: { lowercased_username: username.toLowerCase() },
+    });
 
-    if (userError || !user) {
+    if (!profile) {
         notFound();
     }
 
     // Buscar usuário autenticado
-    const { data: currentUser } = await supabase.auth.getUser();
+    const currentUser = await auth();
 
     // Buscar quantidade de avaliações
-    const { count: reviewCount } = await supabase
-        .from("ratings")
-        .select("id", { count: "exact", head: true })
-        .eq("is_published", true)
-        .eq("user_id", user.id);
+    const reviewCount = await prisma.rating.count({
+        where: { user_id: profile.id },
+    });
 
     // Buscar quantidade de seguidores
-    const { count: followersCount } = await supabase
-        .from("follows")
-        .select("id", { count: "exact", head: true })
-        .eq("followed_id", user.id);
+    const followersCount = await prisma.follow.count({
+        where: { followed_id: profile.id },
+    });
 
     // Buscar quantidade de seguindo
-    const { count: followingCount } = await supabase
-        .from("follows")
-        .select("id", { count: "exact", head: true })
-        .eq("follower_id", user.id);
+    const followingCount = await prisma.follow.count({
+        where: { follower_id: profile.id },
+    });
 
-    const isOwnProfile = currentUser?.user?.id === user.id;
+    const isOwnProfile = currentUser?.user?.id === profile.id;
 
     return (
         <div className="flex flex-col items-center relative">
             {/* Header do perfil (Profile + FollowBtn + Favorites) */}
-            <UserHeader 
-                user={user} 
+            <UserHeader
+                profile={profile}
                 isUser={isOwnProfile}
                 reviewCount={reviewCount || 0}
                 followersCount={followersCount || 0}
                 followingCount={followingCount || 0}
             />
-            
+
             {/* Tabs de navegação */}
-            <UserTabs username={user.username} />
-            
+            <UserTabs username={profile.username!} />
+
             {/* Conteúdo da página ativa */}
-            <div className="w-full max-w-2xl">
-                {children}
-            </div>
+            <div className="w-full max-w-2xl">{children}</div>
         </div>
     );
 }

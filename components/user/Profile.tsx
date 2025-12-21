@@ -14,13 +14,13 @@ import FollowBtn from "@/components/user/FollowBtn";
 import Favorites from "@/components/user/FavoritesHeader";
 
 export default function UserHeader({
-    user,
+    profile,
     reviewCount,
     isUser,
     followersCount,
     followingCount,
 }: {
-    user: any;
+    profile: any;
     reviewCount: number;
     isUser: boolean;
     followersCount: number;
@@ -75,37 +75,37 @@ export default function UserHeader({
                 <picture className="flex items-center justify-center relative">
                     <Avatar
                         size={120}
-                        src={user.avatar_url}
+                        src={profile.avatar_url}
                         setColors={setColors}
                     />
-                    {user.pronouns && (
+                    {profile.pronouns && (
                         <span className="absolute -bottom-3 text-xs bg-main-500 px-2 py-[2px] rounded-md">
-                            {user.pronouns}
+                            {profile.pronouns}
                         </span>
                     )}
                 </picture>
                 <div className="flex flex-col items-center w-full">
                     <h1 className="text-lg font-bold text-center flex flex-row items-center gap-1">
-                        {user.name}{" "}
-                        {user.verified && (
+                        {profile.name}{" "}
+                        {profile.verified && (
                             <TbRosetteDiscountCheckFilled className="size-5 text-main-500" />
                         )}
                     </h1>
                     <p className="text-sm font-semibold text-neutral-400 text-center">
-                        @{user.username}
+                        @{profile.username}
                     </p>
-                    {!user.pronouns && !user.site ? null : (
+                    {!profile.pronouns && !profile.site ? null : (
                         <div className="flex flex-row gap-1 text-xs font-medium text-neutral-300 text-center mt-1">
-                            {user.pronouns && user.site && <span>•</span>}
-                            {user.site && (
+                            {profile.pronouns && profile.site && <span>•</span>}
+                            {profile.site && (
                                 <Link
-                                    href={`https://${user.site}`}
+                                    href={`https://${profile.site}`}
                                     className={`
                                          underline
                                     `}
                                     target="_blank"
                                 >
-                                    {user.site || ""}
+                                    {profile.site || ""}
                                 </Link>
                             )}
                         </div>
@@ -116,14 +116,14 @@ export default function UserHeader({
                             {reviewCount !== 1 ? "ões" : "ão"}
                         </p>
                         <Link
-                            href={`/${user.username}/followers`}
+                            href={`/${profile.username}/followers`}
                             className="hover:underline"
                         >
                             {followersCount} seguidor
                             {followersCount !== 1 ? "es" : ""}
                         </Link>
                         <Link
-                            href={`/${user.username}/following`}
+                            href={`/${profile.username}/following`}
                             className="hover:underline"
                         >
                             {followingCount} seguindo
@@ -132,8 +132,8 @@ export default function UserHeader({
                 </div>
             </div>
 
-            <FollowBtn user={user} isUser={isUser} />
-            {/* <Favorites favorites={user.favorites} isUser={isUser} /> */}
+            <FollowBtn profile={profile} isUser={isUser} />
+            <Favorites favorites={profile.favorites} isUser={isUser} />
         </>
     );
 }

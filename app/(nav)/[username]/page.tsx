@@ -1,5 +1,7 @@
 import UserRatings from "@/components/user/UserRatings";
 import { createClient } from "@/utils/supabase/server";
+import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
 
 export default async function UserReviewsPage({
     params,
@@ -7,19 +9,15 @@ export default async function UserReviewsPage({
     params: Promise<{ username: string }>;
 }) {
     const username = (await params).username;
-    const supabase = await createClient();
+
+    // Buscar dados do usuário
+    const profile = await prisma.profile.findFirst({
+        where: { lowercased_username: username.toLowerCase() },
+    });
     
-    const { data: user } = await supabase
-        .from("profiles")
-        .select("id")
-        .eq("lowercased_username", username.toLowerCase())
-        .single();
-
-    if (!user) return null;
-
     return (
         <div className="w-full">
-            <UserRatings user={user} />
+            <UserRatings profile={profile} />
         </div>
     );
 }

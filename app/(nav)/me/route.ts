@@ -1,7 +1,19 @@
 import { createClient } from "@/utils/supabase/server";
+import { auth } from "@/auth";
 
 export async function GET(): Promise<Response> {
     const supabase = createClient();
+    const session = await auth();
+
+    if (!session?.user) {
+        return new Response(null, {
+            status: 307, // Use 308 for a permanent redirect, 307 for a temporary redirect
+            headers: {
+                Location: `/login`,
+                "Cache-Control": "no-store, max-age=0",
+            },
+        });
+    }
 
     const { data, error } = await (await supabase).auth.getUser();
 
@@ -9,7 +21,7 @@ export async function GET(): Promise<Response> {
         return new Response(null, {
             status: 307, // Use 308 for a permanent redirect, 307 for a temporary redirect
             headers: {
-                Location: `/sign-in`,
+                Location: `/login`,
                 "Cache-Control": "no-store, max-age=0",
             },
         });
@@ -19,7 +31,7 @@ export async function GET(): Promise<Response> {
         return new Response(null, {
             status: 307, // Use 308 for a permanent redirect, 307 for a temporary redirect
             headers: {
-                Location: `/sign-in`,
+                Location: `/login`,
                 "Cache-Control": "no-store, max-age=0",
             },
         });

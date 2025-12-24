@@ -1,5 +1,5 @@
-import FollowersList from "@/components/user/FollowersList";
-import { createClient } from "@/utils/supabase/server";
+import FollowList from "@/components/user/FollowersList";
+import { prisma } from "@/lib/prisma";
 
 export default async function FollowersPage({
     params,
@@ -7,55 +7,28 @@ export default async function FollowersPage({
     params: Promise<{ username: string }>;
 }) {
     const username = (await params).username;
-    const supabase = await createClient();
 
-    const { data: user } = await supabase
-        .from("profiles")
-        .select("id")
-        .eq("lowercased_username", username.toLowerCase())
-        .single();
+    
+    const userId = await prisma.profile
+        .findFirst({
+            where: { lowername: username.toLowerCase() },
+        })
+        .then((profile) => profile?.id);
 
-    if (!user) return null;
+        console.log("User ID:", userId);
 
-    // Buscar seguidores do usuário
-    const { data: followers, error } = await supabase
-        .from("follows")
-        .select(
-            `*
-        `
-        )
-        .eq("followed_id", user.id)
-        .range(0, 29);
+    const followeds = await prisma.follow.findMany({
+        where: {
+            followedId: userId!,
+        },
+        select: { followerId: true, follower: true },
+    });
 
-    if (error) {
-        console.error(error);
-        return;
-    }
-
-    if (!followers) {
-        console.error("Error fetching followers");
-        return null;
-    }
-
-    const { data: profiles, error: profileError } = await supabase
-        .from("profiles")
-        .select("id, name, username, avatar_url, verified")
-        .order("created_at", { ascending: false })
-        .in(
-            "id",
-            followers.map((f) => f.follower_id)
-        );
-
-    if (profileError) {
-        console.error("Error fetching profiles:", profileError);
-        return null;
-    }
-    // console.log("Profiles data:", profiles);
 
     return (
-        <div className="w-full">
-            {profiles && profiles.length > 0 ? (
-                <FollowersList initialFollowers={profiles} />
+        <div className="w-full pt-2">
+            {followeds && followeds.length > 0 ? (
+                <FollowList follows={followeds} />
             ) : (
                 <div className="w-full flex items-center justify-center">
                     <p className="text-neutral-500">Nenhum seguidor encontrado.</p>

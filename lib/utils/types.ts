@@ -35,14 +35,14 @@ export interface AlbumRate {
 
 export interface Review {
     id: string;
-    created_at: string;
-    user_id: string;
-    album_id: string;
-    review: string;    
-    ratings: Rating[];
+    createdAt: Date;
+    userId: string | null;
+    albumId: string | null;
+    review: string | null;    
+    ratings: Rating[] | any;
     total: number;
-    profiles: User;
-    shorten: string;
+    shorten: string | null;
+    published: boolean;
     content: {
         type: string;
         content: [];

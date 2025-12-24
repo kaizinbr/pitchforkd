@@ -21,7 +21,7 @@ export default function UserCard({
             <div className="size-12 rounded-full bg-woodsmoke-300 mr-3">
                 <Avatar
                     size={48}
-                    src={data.avatar_url}
+                    src={data.avatarUrl}
                     className={"size-12"}
                     isIcon
                 />

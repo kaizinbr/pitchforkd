@@ -7,7 +7,9 @@ import { LoadingSm } from "@/components/tutorial/loading";
 import { useState } from "react";
 import { useRouter } from 'next/navigation'
 
-export default function DeleteBtn({ id }: { id: string }) {
+import axios from "axios";
+
+export default function DeleteBtn({ shorten }: { shorten: string }) {
     const supabase = createClient();
     const router = useRouter()
     const scrollDirection = useScrollDirection();
@@ -15,20 +17,20 @@ export default function DeleteBtn({ id }: { id: string }) {
     const [opened, { open, close }] = useDisclosure(false);
     const [loading, setLoading] = useState(false);
 
-    async function handleDelete(id: string) {
+    async function handleDelete(shorten: string) {
         setLoading(true);   
-        console.log("Deleting:", id);
+        console.log("Deleting:", shorten);
 
-        const response = await supabase.from("ratings").delete().eq("id", id);
+        const response = await axios.delete(`/api/rating/${shorten}`);
 
         console.log(response);
 
-        if (response.error) {
-            console.error(response.error);
+        if (response.data.error) {
+            console.error(response.data.error);
             return;
         }
 
-        if (response.status == 204) {
+        if (response.status == 200) {
             console.log("deletado com sucesso!");
             router.push('/me')
         }
@@ -72,7 +74,7 @@ export default function DeleteBtn({ id }: { id: string }) {
                     </button>
                     <button
                         className="bg-red-500 cursor-pointer text-white rounded-xl py-2 px-6"
-                        onClick={() => handleDelete(id)}
+                        onClick={() => handleDelete(shorten)}
                     >
                         Excluir
                     </button>

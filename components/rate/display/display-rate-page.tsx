@@ -16,12 +16,17 @@ import { createClient } from "@/utils/supabase/client";
 import LikeBtn from "@/components/user/like-btn";
 import useScrollDirection from "@/hooks/useScrollDirection";
 
+import { auth } from "@/auth";
+import { fetchUser } from "@/lib/utils/fetchUser";
+
 export default function DisplayRate({
     id,
     rate,
+    userLogged,
 }: {
     id?: string;
-    rate: Review;
+    rate: Review | any;
+    userLogged?: any;
 }) {
     const supabase = createClient();
     const scrollDirection = useScrollDirection();
@@ -44,10 +49,8 @@ export default function DisplayRate({
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await axios.get(
-                `/api/spot/album/${rate.album_id}`
-            );
-            console.log(response.data);
+            const response = await axios.get(`/api/spot/album/${rate.albumId}`);
+            // console.log(response.data);
             setAlbum(response.data);
             setTracks(response.data.tracks.items);
 
@@ -125,70 +128,33 @@ export default function DisplayRate({
             setLoading(false);
         };
 
-        const fetchUser = async () => {
-            const {
-                data: { user },
-                error,
-            } = await supabase.auth.getUser();
-
-            if (!user) {
-                console.error("User not logged in");
-                return;
-            }
-
-            if (error) {
-                console.error(error);
-                return;
-            }
-
-            console.log(user.id, rate.profiles.id);
-
-            if (user.id === rate.profiles.id) {
-                setCanDelete(true);
-            }
+        const user = async () => {
+            return await fetchUser()
         };
+
+        if (userLogged?.id === rate.Profile.id) {
+            setCanDelete(true);
+        }
 
         const verifyLike = async () => {
-            const {
-                data: { user },
-            } = await supabase.auth.getUser();
-            if (!user) {
-                console.error("User not logged in");
-                return;
-            }
+            const response = await axios.get(`/api/rating/${rate.shorten}/likes`);
+            console.log("Likes fetched:", response.data);
 
-            const { data, error } = await supabase
-                .from("likes")
-                .select("*")
-                .eq("user_id", user.id)
-                .eq("rating_id", rate.id);
+            const likes = response.data.Like || [];
 
-            if (error) {
-                console.error(error);
-                return;
-            }
+            
 
-            if (data.length) {
+            const userLike = likes.find(
+                (like: any) => like.userId === userLogged?.id
+            );
+            if (userLike) {
                 setLiked(true);
             }
-        };
 
-        const getLikes = async () => {
-            const { data, error } = await supabase
-                .from("likes")
-                .select("*")
-                .eq("rating_id", rate.id);
-
-            if (error) {
-                console.error(error);
-                return;
-            }
-
-            setTotalLikes(data.length);
+            setTotalLikes(likes.length);
         };
 
         verifyLike();
-        getLikes();
         fetchData();
         fetchUser();
     }, [id]);
@@ -232,19 +198,19 @@ export default function DisplayRate({
                         />
                         <div className="text-white h-32 mb-8">
                             <p className="text-xs text-gray-200 mb-1 mt-4">
-                                        {(() => {
-                                            switch (album.album_type) {
-                                                case "album":
-                                                    return "Álbum";
-                                                case "single":
-                                                    return "Single/EP";
-                                                case "compilation":
-                                                    return "Compilação";
-                                                default:
-                                                    return "Outro";
-                                            }
-                                        })()}
-                                    </p>
+                                {(() => {
+                                    switch (album.album_type) {
+                                        case "album":
+                                            return "Álbum";
+                                        case "single":
+                                            return "Single/EP";
+                                        case "compilation":
+                                            return "Compilação";
+                                        default:
+                                            return "Outro";
+                                    }
+                                })()}
+                            </p>
                             <h2 className="text-xl font-bold">{album.name}</h2>
                             <p className="font-medium mb-2">
                                 {album.artists.map(
@@ -262,11 +228,11 @@ export default function DisplayRate({
                             </p>
                         </div>
                     </div>
-                    {canDelete ? <DeleteBtn id={rate.id} /> : null}
+                    {canDelete ? <DeleteBtn shorten={rate.shorten} /> : null}
                     <ShareBtn shorten={rate.shorten} />
                     <LikeBtn
                         rating_id={rate.id}
-                        owner_id={rate.user_id}
+                        owner_id={rate.userId}
                         liked={liked}
                         setLiked={setLiked}
                         totalLikes={totalLikes}

@@ -1,6 +1,5 @@
-import FollowersList from "@/components/user/FollowersList";
-import { createClient } from "@/utils/supabase/server";
-import { auth } from "@/auth";
+import FollowList from "@/components/user/FollowersList";
+
 import { prisma } from "@/lib/prisma";
 
 export default async function FollowingPage({
@@ -9,13 +8,10 @@ export default async function FollowingPage({
     params: Promise<{ username: string }>;
 }) {
     const username = (await params).username;
-    const supabase = await createClient();
-
-    const session = await auth();
 
     const userId = await prisma.profile
         .findFirst({
-            where: { lowercased_username: username.toLowerCase() },
+            where: { lowername: username.toLowerCase() },
         })
         .then((profile) => profile?.id);
 
@@ -23,64 +19,27 @@ export default async function FollowingPage({
 
     const followings = await prisma.follow.findMany({
         where: {
-            follower_id: userId!,
+            followerId: userId!,
         },
-        select: { followed_id: true },
+        select: { followedId: true, followed: true },
     });
 
-    console.log(followings)
+    // console.log(followings)
 
-    const { data: user } = await supabase
-        .from("profiles")
-        .select("id, name")
-        .eq("lowercased_username", username.toLowerCase())
-        .single();
 
-    if (!user) return null;
-
-    // Buscar seguidores do usuário
-    const { data: followers, error } = await supabase
-        .from("follows")
-        .select(
-            `*
-        `
-        )
-        .eq("follower_id", user.id)
-        .range(0, 29);
-
-    if (error) {
-        console.error(error);
-        return;
-    }
-
-    if (!followers) {
+    if (!followings) {
         console.error("Error fetching followings");
         return null;
     }
 
-    const { data: profiles, error: profileError } = await supabase
-        .from("profiles")
-        .select("id, name, username, avatar_url, verified")
-        .order("created_at", { ascending: false })
-        .in(
-            "id",
-            followers.map((f) => f.followed_id)
-        );
-
-    if (profileError) {
-        console.error("Error fetching profiles:", profileError);
-        return null;
-    }
-    // console.log("Profiles data:", profiles);
-
     return (
         <div className="w-full pt-2">
-            {profiles && profiles.length > 0 ? (
-                <FollowersList initialFollowers={profiles} />
+            {followings && followings.length > 0 ? (
+                <FollowList follows={followings} />
             ) : (
                 <div className="w-full flex items-center justify-center">
                     <p className="text-neutral-500">
-                        Parece que {user.name} não segue ninguém ainda
+                        Parece que esse usuário não segue ninguém ainda
                     </p>
                 </div>
             )}

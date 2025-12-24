@@ -2,8 +2,11 @@ import { createClient } from "@/utils/supabase/server";
 import DisplayRate from "@/components/rate/display/display-rate-page";
 import type { Metadata, ResolvingMetadata } from "next";
 
+import { prisma } from "@/lib/prisma";
+import { auth } from "@/auth";
+
 type Props = {
-    params: Promise<{ shorten: string}>;
+    params: Promise<{ shorten: string }>;
 };
 
 export async function generateMetadata(
@@ -11,28 +14,23 @@ export async function generateMetadata(
     parent: ResolvingMetadata
 ): Promise<Metadata> {
     const shorten = (await params).shorten;
-    const supabase = await createClient();
-    
-    const { data, error } = await supabase
-        .from("ratings")
-        .select(
-            `*,
-            profiles(
-                *
-            )`
-        )
-        .eq("is_published", true)
-        .eq("shorten", shorten);
 
-    if (error) {
-        console.error("Error fetching user", error);
-    }
+    const userProfile = await prisma.rating.findFirst({
+        where: { shorten: shorten },
+        select: {
+            Profile: {
+                select: {
+                    name: true,
+                    username: true,
+                },
+            },
+        },
+    });
 
     return {
-        title:
-            data && data.length > 0
-                ? `Avaliação de ${data[0].profiles.name || data[0].profiles.username} | Pitchforkd`
-                : "Avaliação | Pitchforkd",
+        title: userProfile
+            ? `Avaliação de ${userProfile?.Profile!.name || userProfile?.Profile!.username} | Pitchforkd`
+            : "Avaliação | Pitchforkd",
     };
 }
 
@@ -42,38 +40,43 @@ export default async function Page({
     params: Promise<{ shorten: string }>;
 }) {
     const shorten = (await params).shorten;
-    // console.log(shorten);
 
-    const supabase = await createClient();
+    const rating = await prisma.rating.findFirst({
+        where: { shorten: shorten },
+        include: {
+            Profile: true,
+        },
+    })
+    .then((rate) => {
+        // Convert Decimal to number
+        if (rate && rate.total) {
+            return {
+                ...rate,
+                total: Number(rate.total),
+            };
+        }
+        return rate;
+    });
 
-    // if (supabase !== )
+    // console.log("Fetched rating:", rating);
 
-    const { data, error: albumError } = await supabase
-        .from("ratings")
-        .select(
-            `*,
-            profiles(
-                *
-            )`
-        )
-        .eq("is_published", true)
-        .eq("shorten", shorten);
-
-    if (albumError) {
-        console.error("Error fetching album", albumError);
+    if (!rating) {
+        console.error("Error fetching album");
         return (
             <div className="h-full min-h-screen w-full flex">
-                    <div className="flex-1 flex items-center justify-center">
-                        <div className="text-2xl">Avaliação não encontrada</div>
-                    </div>
+                <div className="flex-1 flex items-center justify-center">
+                    <div className="text-2xl">Avaliação não encontrada</div>
                 </div>
+            </div>
         );
     }
-    
+
+    const session = await auth();
+
     return (
         <div className="flex flex-col gap-4 items-center relative">
-            {data.length > 0 ? (
-                <DisplayRate rate={data[0]} />
+            {rating ? (
+                <DisplayRate rate={rating} userLogged={session?.user} />
             ) : (
                 <div className="h-full min-h-screen w-full flex">
                     <div className="flex-1 flex items-center justify-center">
@@ -81,7 +84,6 @@ export default async function Page({
                     </div>
                 </div>
             )}
-
         </div>
     );
 }

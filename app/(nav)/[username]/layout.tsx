@@ -39,7 +39,7 @@ export default async function UserLayout({ params, children }: Props) {
         where: { lowername: username.toLowerCase() },
     });
 
-    console.log("UserLayout profile:", profile);
+    // console.log("UserLayout profile:", profile);
 
     if (!profile) {
         notFound();

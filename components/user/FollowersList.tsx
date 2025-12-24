@@ -1,19 +1,39 @@
 import Image from "next/image";
 import UserCard from "@/components/ui/UserCard";
 
-export default async function FollowersList({
-    initialFollowers,
+type FollowRelation = {
+    followedId: string;
+    followed: {
+        id: string | null;
+        name: string | null;
+        username: string | null;
+        avatarUrl: string | null;
+        verified: boolean;
+    };
+};
+
+type FollowerRelation = {
+    followerId: string;
+    follower: {
+        id: string | null;
+        name: string | null;
+        username: string | null;
+        avatarUrl: string | null;
+        verified: boolean;
+    };
+};
+
+export default async function FollowList({
+    follows,
 }: {
-    initialFollowers: { id: string; username: string; avatar_url: string; verified: boolean }[];
+    follows: FollowRelation[] | FollowerRelation[];
 }) {
-    // Implement the FollowersList component logic here
-    // This is a placeholder for the actual implementation
     return (
         <div className="flex flex-col gap-2 px-4">
-            {/* Render followers list */}
-            {initialFollowers.map((follower) => (
-                <UserCard key={follower.id} data={follower} />
-            ))}
+            {follows.map((item) => {
+                const user = "followed" in item ? item.followed : item.follower;
+                return <UserCard key={user.id} data={user} />;
+            })}
         </div>
     );
 }

@@ -30,7 +30,6 @@ export default function RatingCard({
     edit?: boolean;
     album: any;
 }) {
-    const supabase = createClient();
     // console.log("RatingCard review:", review, album);
     // const [album, setAlbum] = useState<any>();
     const [loading, setLoading] = useState(true);
@@ -59,7 +58,7 @@ export default function RatingCard({
         if (review.content) {
             const content = review.content as Content;
 
-            console.log("Content:", content);
+            // console.log("Content:", content);
 
             // Verifica se existe conteúdo significativo no campo "text"
             if (
@@ -278,19 +277,12 @@ export default function RatingCard({
                                 <div className="flex items-center justify-between flex-row gap-2">
                                     <span className=" h-full flex items-center text-xs text-shark-400 ">
                                         {displayPastRelativeTime(
-                                            new Date(review.created_at)
+                                            new Date(review.createdAt)
                                         )}
                                     </span>
                                 </div>
                             </div>
                         </Link>
-                        {/* <LikeBtn
-                            rating_id={review.id}
-                            owner_id={review.user_id}
-                            liked={liked}
-                            setLiked={setLiked}
-                            className="absolute bottom-5 right-5"
-                        /> */}
                     </div>
                 </div>
             ) : (

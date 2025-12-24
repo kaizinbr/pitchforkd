@@ -35,8 +35,8 @@ export default function UserRate({
                 <div className="flex flex-col gap-2 items-">
                     <h2 className="text-xl font-medium">
                         Avaliação de{" "}
-                        <Link className="font-bold" href={`/${review.profiles.username}`}>
-                            {review.profiles.name || review.profiles.username}
+                        <Link className="font-bold" href={`/${review.Profile.username}`}>
+                            {review.Profile.name || review.Profile.username}
                         </Link>
                     </h2>
                     <p className="text-3xl font-extrabold">
@@ -45,42 +45,42 @@ export default function UserRate({
                     {review.review == "" ? (
                         <p className="text-shark-300 text-sm">
                             {displayPastRelativeTime(
-                                new Date(review.created_at)
+                                new Date(review.createdAt)
                             )}
                         </p>
                     ) : (
                         <div className="py-3 w-full flex flex-col gap-3 rounded-xl">
                             <div className="w-full flex flex-row gap-2 items-center">
                                 <Link
-                                    href={`/${review.profiles.username}`}
+                                    href={`/${review.Profile.username}`}
                                     className="flex relative flex-col justify-center items-center size-10 rounded-full"
                                 >
                                     <Avatar
                                         size={40}
-                                        src={review.profiles.avatar_url}
+                                        src={review.Profile.avatarUrl}
                                         className={"size-10"}
                                         isIcon
                                     />
                                 </Link>
                                 <div className="flex flex-col items-start justify-center">
                                     <Link
-                                        href={`/${review.profiles.username}`}
+                                        href={`/${review.Profile.username}`}
                                         className="flex flex-row justify-start items-center gap-2 text-sm"
                                     >
                                         <p className=" font-medium flex flex-row items-center gap-1">
-                                            {review.profiles.name}
-                                            {review.profiles.verified && (
+                                            {review.Profile.name}
+                                            {review.Profile.verified && (
                                                 <TbRosetteDiscountCheckFilled className="size-4 text-main-500" />
                                             )}
                                         </p>
                                         <p className="text-shark-300 text-xs">
-                                            @{review.profiles.username}
+                                            @{review.Profile.username}
                                         </p>
                                     </Link>
-                                    {review.profiles.pronouns && (
+                                    {review.Profile.pronouns && (
                                         <div className="flex flex-row justify-start items-center text-xs gap-2 text-shark-400">
                                             <p className=" font-semibold">
-                                                {review.profiles.pronouns}
+                                                {review.Profile.pronouns}
                                             </p>
                                         </div>
                                     )}
@@ -95,7 +95,7 @@ export default function UserRate({
                             <div className="flex items-center justify-start flex-row gap-1 text-xs text-shark-400 ">
                                 <span className=" h-full flex items-center">
                                     {displayPastRelativeTime(
-                                        new Date(review.created_at)
+                                        new Date(review.createdAt)
                                     )}
                                 </span>
                                 <span className="">•</span>

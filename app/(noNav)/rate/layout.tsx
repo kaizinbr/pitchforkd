@@ -1,6 +1,4 @@
 import "@/app/globals.css";
-import Navigator, { DesktopNavigator } from "@/components/Navigator";
-import { createClient } from "@/utils/supabase/server";
 
 const defaultUrl = process.env.VERCEL_URL
     ? `https://${process.env.VERCEL_URL}`
@@ -17,12 +15,6 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const supabase = await createClient();
-
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
-
     return (
         <div className="flex-1 w-full flex flex-col items-center mb-20 min-h-screen">
             <div className="flex flex-col w-full">{children}</div>

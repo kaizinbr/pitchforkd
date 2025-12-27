@@ -98,7 +98,7 @@ export default function CurrentLyrics({
 
     return (
         <div className="w-full flex px-4">
-            <div className="relative w-full max-w-2xl">
+            <div className="relative w-full mx-auto max-w-2xl">
                 <h3 className="text-sm font-semibold text-white/70 top-3 left-5 z-30 absolute">
                     Letras
                 </h3>

@@ -25,8 +25,6 @@ export default function RatePage({ id }: { id: string }) {
     const [active, setActive] = useState(0);
     const [album_img, setAlbumImg] = useState<string>("");
 
-    // const [showLyrics, setShowLyrics] = useState<boolean>(false);
-
     const [loading, setLoading] = useState(true);
     const [currentColor, setCurrentColor] = useState<string>("#4a6d73");
 
@@ -66,19 +64,15 @@ export default function RatePage({ id }: { id: string }) {
         <>
             {album && (
                 <>
-                    <div
+                    {/* <div
                         className={`
                             flex flex-row px-4
                             justify-between
                             w-full
-                            p-4 bg-malachite-900/70 
+                            p-4
                             backdrop-blur-md
                             z-[999] text-shark-100
                         `}
-                            style={{
-                                backgroundColor: darkVibrant,
-                                // color: titleTextColor,
-                            }}
                         >
                         <div className="flex flex-col w-6/10 max-w-2xl m-auto">
                             <h2 className="font-semibold line-clamp-1">{album.name}</h2>
@@ -100,7 +94,7 @@ export default function RatePage({ id }: { id: string }) {
                         <button className="bg-main-500 hover:bg-main-600 transition-all duration-300 rounded-lg cursor-pointer px-4 py-2 text-sm">
                             Salvar rascunho
                         </button>
-                    </div>
+                    </div> */}
                     <Rater
                         album={album}
                         setCurrentTrack={setCurrentTrack}

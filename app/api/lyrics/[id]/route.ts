@@ -11,7 +11,6 @@ export async function GET(
     const maxAttempts = 2;
 
     if (!id) {
-        // Retorne uma resposta de erro, nunca undefined
         return NextResponse.json(
             { error: "ID não fornecido" },
             { status: 400 }
@@ -60,6 +59,7 @@ export async function GET(
     // Garante que sempre retorna uma resposta
     return NextResponse.json(
         { error: "Erro desconhecido" },
+
         { status: 500 }
     );
 }

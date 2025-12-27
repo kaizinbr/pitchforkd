@@ -54,7 +54,6 @@ export default function EditPfp({
 
     const handleSave = (croppedImage: string | null) => {
         if (croppedImage) {
-            // Aqui você pode implementar a lógica para salvar a imagem cortada
             console.log("Imagem cortada salva:", croppedImage);
         }
     };

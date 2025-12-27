@@ -344,8 +344,8 @@ export default function Rater({
                     </Link>
                 </div>
             </Modal>
-            <div className="w-full flex px-4">
-                <div className="w-full max-w-2xl bg-shark-900 p-5 gap-4 rounded-xl">
+            <div className="w-full flex px-4 pt-8">
+                <div className="w-full mx-auto max-w-2xl bg-shark-900 p-5 gap-4 rounded-xl">
                     {onTracks ? (
                         <TrackStepper
                             album={album}

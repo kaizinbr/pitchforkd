@@ -1,6 +1,7 @@
 import "@/app/globals.css";
 import Navigator, { DesktopNavigator } from "@/components/Navigator";
-import { createClient } from "@/utils/supabase/server";
+import { cookies } from "next/headers";
+import { redirect, RedirectType } from 'next/navigation'
 
 //migrando para neondb
 import { auth } from "@/auth";
@@ -23,6 +24,14 @@ export default async function RootLayout({
     children: React.ReactNode;
 }>) {
     const session = await auth();
+    const cookieStore = await cookies();
+
+    const isnewuser = cookieStore.get("new")?.value === "true" || false;
+    console.log("Is new user:", isnewuser);
+    if (isnewuser) {
+        redirect('/new-user', RedirectType.replace);
+    }
+
     let profile = null;
 
     if (!session?.user) {
@@ -32,8 +41,6 @@ export default async function RootLayout({
             where: { id: session.user.id },
         });
     }
-
-    
 
     return (
         <div className="flex-1 w-full flex flex-col items-center mb-20 min-h-screen">

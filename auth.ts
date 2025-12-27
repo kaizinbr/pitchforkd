@@ -4,6 +4,7 @@ import "next-auth/jwt";
 import { prisma } from "@/lib/prisma";
 import bcrypt from "bcryptjs";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { cookies } from "next/headers";
 
 import Resend from "next-auth/providers/resend";
 import Google from "next-auth/providers/google";
@@ -59,6 +60,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
                     password: { label: "Password", type: "password" },
                 },
                 async authorize(credentials) {
+
                     const creds = parseCredentials(credentials);
                     if (!creds?.email || !creds?.password) return null;
 
@@ -126,6 +128,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
                     otp: { label: "Código", type: "text" },
                 },
                 async authorize(credentials) {
+                    const cookieStore = await cookies();
+
                     if (!credentials?.email || !credentials?.otp) return null;
 
                     const email = credentials.email as string;
@@ -170,6 +174,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
                                 },
                             },
                         });
+
+                        cookieStore.set("new", "true");
 
                         return {
                             id: newUser.id,
@@ -218,6 +224,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
             },
             jwt({ token, trigger, session, account, user }) {
                 if (user && (user as any).id) token.id = (user as any).id;
+                if (user && (user as any).newUser)
+                    token.newUser = (user as any).newUser;
 
                 if (trigger === "update") token.name = session.user.name;
                 if (account?.provider === "keycloak") {
@@ -234,6 +242,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
                     // eslint-disable-next-line @typescript-eslint/no-explicit-any
                     (session.user as any).id = userId as string;
                 }
+                if (token?.newUser) {
+                    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                    (session.user as any).new = token.newUser;
+                }
                 return session;
             },
         },
@@ -247,6 +259,7 @@ declare module "next-auth" {
         // ensure session.user has an optional id
         user?: {
             id?: string;
+            new?: boolean;
         } & DefaultSession["user"];
     }
 }
@@ -255,5 +268,6 @@ declare module "next-auth/jwt" {
     interface JWT {
         accessToken?: string;
         id?: string;
+        newUser?: boolean;
     }
 }

@@ -29,7 +29,7 @@ export async function proxy(req: NextRequest) {
     );
 
     if (pathname === "/" && token) {
-        console.log(pathname, token);
+        // console.log(pathname, token);
         const homeUrl = new URL("/home", req.url);
         return NextResponse.redirect(homeUrl);
     }

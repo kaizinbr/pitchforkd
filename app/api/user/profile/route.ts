@@ -1,5 +1,7 @@
 import { NextResponse, NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
+import { cookies } from 'next/headers'
+
 
 import { auth } from "@/auth";
 
@@ -14,6 +16,8 @@ export async function POST(
 
     const { username, lowername, site, name, bio, pronouns } = await request.json();
     const session = await auth();
+    const cookieStore = await cookies();
+    const newUserCookie = cookieStore.get("new");
 
     try {
         if (!username) {
@@ -35,6 +39,10 @@ export async function POST(
                 pronouns: pronouns || null,
             },
         });
+
+        if (newUserCookie) {
+            cookieStore.delete("new");
+        }
 
         return NextResponse.json(
             { message: "Profile updated successfully" },

@@ -6,6 +6,8 @@ import { useState } from "react";
 import Link from "next/link";
 import { PinInput } from "@mantine/core";
 
+import { useSession } from "next-auth/react";
+
 export default function LoginPage() {
     const router = useRouter();
     const [error, setError] = useState<string | null>(null);
@@ -52,8 +54,12 @@ export default function LoginPage() {
                 return;
             }
 
+
+            console.log(response);
+            // Successful login
+            router.push("/home");
             // router.refresh();
-            router.push("/");
+            // router.push("/");
         } catch (error) {
             setError("An error occurred while verifying the OTP");
             console.error("OTP verification error:", error);
@@ -192,33 +198,16 @@ export default function LoginPage() {
                     </>
                 )}
                 <button
-                    onClick={() =>
-                        signIn("google", { redirectTo: "/home" })
-                    }
+                    onClick={() => signIn("google", { redirectTo: "/home" })}
                 >
                     Google
                 </button>
-                {/* <button
-                    onClick={() =>
-                        signIn("spotify", { redirectTo: "/home" })
-                    }
-                >
-                    spotify
-                </button> */}
                 {error === "OAuthAccountNotLinked" && (
                     <div className="text-red-400 text-sm text-center">
                         Conta do Google não vinculada. Por favor, entre com
                         outro método.
                     </div>
                 )}
-                {/* <div className="text-center flex flex-col gap-2">
-                    <Link
-                        href="/register"
-                        className="text-gray-300 hover:underline"
-                    >
-                        Não tem uma conta? Registre-se.
-                    </Link>
-                </div> */}
             </div>
         </div>
     );

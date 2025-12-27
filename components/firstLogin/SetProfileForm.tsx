@@ -12,19 +12,30 @@ import axios from "axios";
 
 import classes from "./AcForm.module.css";
 import Link from "next/link";
+import EditPfp from "@/components/user/edit/edit-pfp";
 
-export default function SetProfileForm({ profile }: { profile: Profile | null }) {
+export default function SetProfileForm({
+    profile,
+}: {
+    profile: Profile | null;
+}) {
     const supabase = createClient();
     const [loading, setLoading] = useState(true);
     const [name, setName] = useState<string | null>(profile?.name || null);
-    const [username, setUsername] = useState<string | null>(profile?.username || null);
+    const [username, setUsername] = useState<string | null>(
+        profile?.username || null
+    );
     const [originalUsername, setOriginalUsername] = useState<string | null>(
         profile?.username || null
     );
     const [site, setsite] = useState<string | null>(profile?.site || null);
-    const [avatarUrl, setAvatarUrl] = useState<string | null>(profile?.avatarUrl || null);
+    const [avatarUrl, setAvatarUrl] = useState<string | null>(
+        profile?.avatarUrl || null
+    );
     const [bio, setBio] = useState<string | null>(profile?.bio || null);
-    const [pronouns, setPronouns] = useState<string | null>(profile?.pronouns || null);
+    const [pronouns, setPronouns] = useState<string | null>(
+        profile?.pronouns || null
+    );
 
     const [message, setMessage] = useState<string | null>(null);
     const [canUpdate, setCanUpdate] = useState<boolean>(false);
@@ -63,7 +74,6 @@ export default function SetProfileForm({ profile }: { profile: Profile | null })
 
     console.log(profile);
 
-
     const router = useRouter();
 
     async function updateProfile({
@@ -87,7 +97,6 @@ export default function SetProfileForm({ profile }: { profile: Profile | null })
             const lowername = username?.toLowerCase();
 
             const update = await axios.post("/api/user/profile", {
-
                 username,
                 lowername,
                 site,
@@ -96,7 +105,7 @@ export default function SetProfileForm({ profile }: { profile: Profile | null })
                 bio,
                 pronouns,
             });
-            
+
             alert("Profile updated!");
         } catch (error) {
             alert("Error updating the data!");
@@ -135,22 +144,7 @@ export default function SetProfileForm({ profile }: { profile: Profile | null })
                                 z-30
                             `}
                     >
-                        <Avatar
-                            uid={profile?.id ?? null}
-                            src={avatarUrl}
-                            size={176}
-                            onUpload={(url) => {
-                                setAvatarUrl(url);
-                                updateProfile({
-                                    name: name,
-                                    username,
-                                    site,
-                                    avatar_url: url,
-                                    pronouns,
-                                    bio,
-                                });
-                            }}
-                        />
+                        <EditPfp avatar_url={avatarUrl!} setAvatarUrl={setAvatarUrl} />
                     </div>
                 </div>
             </div>
@@ -292,7 +286,7 @@ export default function SetProfileForm({ profile }: { profile: Profile | null })
                     }
                     // disabled={loading || message !== null || !canUpdate}
                 >
-                    {loading ? "Salvando..." : "Salvar"}
+                    Salvar
                 </button>
                 <Link
                     href="/"

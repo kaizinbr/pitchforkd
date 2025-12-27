@@ -79,36 +79,6 @@ export default function EditPfp({
                 </label>
             </form>
 
-            <div
-                className={`
-                    flex flex-col justify-start
-                    w-full
-                `}
-            >
-                <div
-                    className={`
-                        bgPfp flex flex-col justify-end items-start relative
-                        h-56 w-full
-                    `}
-                >
-                    <div
-                        className={`
-                            flex flex-row justify-start items-center
-                            gap-3 pt-8 px-4 w-full h-56
-                            bg-gradient-to- from-transparent to-black/45 from-40% 
-                            z-30
-                        `}
-                    >
-                        <button
-                            type="button"
-                            className="cursor-pointer"
-                            onClick={open}
-                        >
-                            <Avatar src={avatar_url} size={192} />
-                        </button>
-                    </div>
-                </div>
-            </div>
         </>
     );
 }

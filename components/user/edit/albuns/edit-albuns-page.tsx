@@ -3,6 +3,7 @@ import { Reorder } from "framer-motion";
 import { useCallback, useEffect, useState, ChangeEvent } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
+import axios from "axios";
 
 import { notifications } from "@mantine/notifications";
 import * as React from "react";
@@ -33,7 +34,7 @@ export default function EditAlbuns({ profile }: { profile: any }) {
             type?: string;
             artist: string;
         }[]
-    >(profile.favorites[0].albuns);
+    >(profile.albuns);
 
     const router = useRouter();
     async function saveFavorites({
@@ -50,11 +51,9 @@ export default function EditAlbuns({ profile }: { profile: any }) {
         try {
             setLoading(true);
 
-            const { error } = await supabase.from("profiles").upsert({
-                id: profile?.id as string,
-                favorites: [{ albuns, artists: profile.favorites[0].artists }],
+            const response = await axios.post("/api/user/profile/favorites/albuns", {
+                albuns,
             });
-            if (error) throw error;
             router.push(`/edit`);
         } catch (error) {
             alert("Error updating the data!");

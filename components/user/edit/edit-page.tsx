@@ -1,5 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState, ChangeEvent } from "react";
+import axios from "axios";
 import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import usernameAlreadyExists from "@/lib/utils/usernameAlreadyExists";
@@ -19,7 +20,7 @@ export default function Edit({ profile }: { profile: any }) {
     );
     const [site, setSite] = useState<string | null>(profile.site);
     const [avatar_url, setAvatarUrl] = useState<string | null>(
-        profile.avatar_url
+        profile.avatarUrl
     );
     const [pronouns, setPronouns] = useState<string | null>(profile.pronouns);
     const [message, setMessage] = useState<string>("");
@@ -43,18 +44,21 @@ export default function Edit({ profile }: { profile: any }) {
 
             const lowercasedUsername = username?.toLowerCase();
 
-            const { error } = await supabase.from("profiles").upsert({
-                id: profile?.id as string,
-                name,
-                username,
-                lowercased_username: lowercasedUsername,
-                site,
-                avatar_url,
-                pronouns,
+            const response = await axios.post("/api/user/profile", {
+                username: username,
+                lowername: lowercasedUsername,
+                site: site,
+                name: name,
+                bio: profile.bio,
+                pronouns: pronouns,
             });
-            if (error) throw error;
+
+            if (response.status !== 200) {
+                throw new Error("Failed to update profile");
+            }
+
             alert("Profile updated!");
-            router.push(`/${username}`);
+            // router.push(`/${username}`);
         } catch (error) {
             alert("Error updating the data!");
         } finally {

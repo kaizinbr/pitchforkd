@@ -1,25 +1,54 @@
 import { useDisclosure } from "@mantine/hooks";
 import { Modal, Button } from "@mantine/core";
 import Avatar from "@/components/ui/Avatar";
+import { useRef } from "react";
+import type { PutBlobResult } from "@vercel/blob";
+
+import { upload } from '@vercel/blob/client';
 // import ProfileImageEditor from "./crop";
 
 import React, { useState } from "react";
 import ImageCropper from "./crop";
 
-export default function EditPfp({ avatar_url, setAvatarUrl }: { avatar_url: string; setAvatarUrl: any }) {
+export default function EditPfp({
+    avatar_url,
+    setAvatarUrl,
+}: {
+    avatar_url: string;
+    setAvatarUrl: any;
+}) {
     const [opened, { open, close }] = useDisclosure(false);
 
     const [imageSrc, setImageSrc] = useState<string | null>(null);
 
-    const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setImageSrc(reader.result as string);
-                console.log("reader.result:", reader.result);
-            };
-            reader.readAsDataURL(file);
+    const inputFileRef = useRef<HTMLInputElement>(null);
+    const [blob, setBlob] = useState<PutBlobResult | null>(null);
+
+    const handleImageUpload = async (
+        event: React.ChangeEvent<HTMLInputElement>
+    ) => {
+        {
+            event.preventDefault();
+
+            if (!inputFileRef.current?.files) {
+                throw new Error("No file selected");
+            }
+
+            const file = inputFileRef.current.files[0];
+
+            const response = await fetch(
+                `/api/avatar/upload?filename=${file.name}`,
+                {
+                    method: "PUT",
+                    body: file,
+                }
+            );
+
+            const newBlob = (await response.json()) as PutBlobResult;
+
+                    console.log("newBlob", newBlob);
+            setBlob(newBlob);
+            setAvatarUrl(newBlob.url);
         }
     };
 
@@ -32,21 +61,23 @@ export default function EditPfp({ avatar_url, setAvatarUrl }: { avatar_url: stri
 
     return (
         <>
-            <Modal
-                opened={opened}
-                onClose={close}
-                title="Selecione uma imagem de perfil"
-                fullScreen
-                radius={0}
-                transitionProps={{ transition: "fade", duration: 200 }}
-                classNames={{
-                    inner: "!z-[999]",
-                    content: "!bg-shark-900",
-                    header: "!bg-shark-900",
-                }}
+            <form
+            
             >
-                <ImageCropper close={close} avatar_url={avatar_url} setAvatarUrl={setAvatarUrl} />
-            </Modal>
+                <input
+                    name="file"
+                    ref={inputFileRef}
+                    type="file"
+                    id="file"
+                    accept="image/jpeg, image/png, image/webp"
+                    required
+                    className="hidden"
+                    onChange={handleImageUpload}
+                />
+                <label htmlFor="file" className="cursor-pointer">
+                    <Avatar src={avatar_url} size={192} />
+                </label>
+            </form>
 
             <div
                 className={`

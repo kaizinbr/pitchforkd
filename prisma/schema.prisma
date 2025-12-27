@@ -88,7 +88,7 @@ model Comment {
 }
 
 model Follow {
-    id         Int       @id(map: "follows_pkey")
+    id         String       @id(map: "follows_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
     followerId String    @map("follower_id") @db.Uuid
     followedId String    @map("followed_id") @db.Uuid
     createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)

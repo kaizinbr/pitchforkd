@@ -5,6 +5,8 @@ import { createClient } from "@/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import { notifications } from "@mantine/notifications";
 
+import axios from "axios";
+
 import * as React from "react";
 
 import { Item } from "./Item";
@@ -29,7 +31,7 @@ export default function EditArtists({ profile }: { profile: any }) {
             src: string;
             name: string;
         }[]
-    >(profile.favorites[0].artists);
+    >(profile.artists);
 
     const router = useRouter();
     async function saveFavorites({
@@ -44,11 +46,9 @@ export default function EditArtists({ profile }: { profile: any }) {
         try {
             setLoading(true);
 
-            const { error } = await supabase.from("profiles").upsert({
-                id: profile?.id as string,
-                favorites: [{ artists, albuns: profile.favorites[0].albuns }],
+            const response = await axios.post("/api/user/profile/favorites/artists", {
+                artists,
             });
-            if (error) throw error;
             router.push(`/edit`);
         } catch (error) {
             alert("Error updating the data!");

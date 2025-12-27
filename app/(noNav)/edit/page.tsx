@@ -1,6 +1,4 @@
 import Edit from "@/components/user/edit/edit-page";
-import AccountForm from "./account-form";
-import { createClient } from "@/utils/supabase/server";
 import { auth } from "@/auth";
 import { prisma } from "@/lib/prisma";
 
@@ -11,8 +9,6 @@ export const metadata = {
 
 
 export default async function Page() {
-    const supabase = await createClient();
-    const { data: user, error: sessionsError } = await supabase.auth.getUser()
 
     const session = await auth();
 
@@ -33,7 +29,6 @@ export default async function Page() {
     return (
         <div className="flex flex-col gap-4 items-center relative w-full pb-8">
             {profile ? (
-                // <AccountForm profile={profile} />
                 <Edit profile={profile} />
             ) : (
                 <div>User not found</div>

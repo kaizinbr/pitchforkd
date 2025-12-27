@@ -11,28 +11,35 @@ export async function POST(
         params: Promise<{ username: string }>;
     }
 ) {
-
-    const { username, lowername, site, name, bio, pronouns } = await request.json();
+    const { albuns } = await request.json();
     const session = await auth();
 
     try {
-        if (!username) {
+        if (!session?.user) {
             return NextResponse.json(
-                { error: "Username is required" },
+                { error: "User is not authenticated" },
                 { status: 400 }
             );
         }
 
+        const artists = await prisma.profile.findFirst({
+            where: { id: session.user.id },
+            select: {
+                favorites: true,
+            },
+        });
+
+
+        console.log(artists);
         await prisma.profile.update({
             where: { id: session?.user!.id },
             data: {
-                username: username,
-                lowername: username.toLowerCase(),
-                site: site || null, 
-                // avatarUrl: avatar_url || null,
-                name: name || null,
-                bio: bio || null,
-                pronouns: pronouns || null,
+                favorites: [
+                    {
+                        albuns,
+                        artists: artists?.favorites[0]?.artists || [],
+                    },
+                ],
             },
         });
 

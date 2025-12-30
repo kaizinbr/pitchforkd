@@ -2,7 +2,6 @@
 import RatingCard from "../user/RatingCard";
 import { useState, useEffect, useRef, useCallback } from "react";
 import { Review } from "@/lib/utils/types";
-import { createClient } from "@/utils/supabase/client";
 import axios from "axios";
 import { Loader } from "@mantine/core";
 
@@ -17,12 +16,14 @@ export default function DisplayReviews({
     ratings: Review[] | any;
     ratingsLength: number;
 }) {
-    const supabase = createClient();
+    
     const [allReviews, setAllReviews] = useState<Review[]>([]);
     const [allAlbums, setAllAlbums] = useState<{ [key: string]: any }>({});
     const [offset, setOffset] = useState(20);
     const [loading, setLoading] = useState(false);
     const [loadingMore, setLoadingMore] = useState(false);
+    const [ratingsApiPage, setRatingsApiPage] = useState(2);
+    const [hasMore, setHasMore] = useState(true);
 
     // Ref para o elemento observador
     const loadMoreRef = useRef<HTMLDivElement>(null);
@@ -65,47 +66,64 @@ export default function DisplayReviews({
 
     // Função para carregar mais dados
     const loadMoreData = useCallback(async () => {
-        if (loadingMore || allReviews.length >= ratingsLength) return;
+        if (loadingMore || !hasMore) return;
+        setTimeout(() => {
+            console.log("Carregando mais avaliações...");
+        }, 5000);
 
         setLoadingMore(true);
 
-        try {
-            const { data, error } = await supabase
-                .from("ratings")
-                .select(`*, profiles(*)`)
-                .eq("is_published", true)
-                .order("created_at", { ascending: false })
-                .range(offset, offset + 19);
+        if (!ratingsApiPage) {
+            setLoadingMore(false);
+            setHasMore(false);
+            return;
+        }
 
-            if (data && !error) {
-                const newReviews = [...allReviews, ...data];
-                setAllReviews(newReviews);
-                setOffset(offset + 20);
+        const getRatings = await axios.get(
+            `/api/rating?p=${ratingsApiPage}`
+        );
 
-                // Buscar álbuns das novas reviews
-                const newAlbumIds = data.map((review: Review) => review.albumId!);
-                await fetchMissingAlbums(newAlbumIds);
+        if (getRatings) {
+            const newRatings = [...allReviews, ...getRatings.data.ratings];
+            setAllReviews(newRatings);
+            setOffset(offset + 20);
+            
+            // Verificar se há mais dados
+            if (!getRatings.data.next) {
+                setHasMore(false);
             }
-        } catch (error) {
-            console.error("Erro ao carregar mais reviews:", error);
+            setRatingsApiPage(getRatings.data.next);
+
+            // Atualizar cache
+            sessionStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(newRatings)
+            );
+            sessionStorage.setItem(OFFSET_KEY, (offset + 20).toString());
+
+            // Buscar álbuns das novas ratings
+            const newAlbumIds = getRatings.data.ratings.map(
+                (r: any) => r.albumId
+            );
+            await fetchMissingAlbums(newAlbumIds);
         }
 
         setLoadingMore(false);
-    }, [loadingMore, allReviews.length, ratingsLength, offset, allReviews, supabase, allAlbums]);
+    }, [loadingMore, hasMore, offset, allReviews, ratingsApiPage]);
 
     // Intersection Observer para scroll infinito
     useEffect(() => {
         const observer = new IntersectionObserver(
             (entries) => {
                 const target = entries[0];
-                if (target.isIntersecting && !loadingMore && allReviews.length < ratingsLength) {
+                if (target.isIntersecting && !loadingMore && hasMore) {
                     loadMoreData();
                 }
             },
             {
                 root: null,
-                rootMargin: '300px', // Carrega quando estiver 300px antes do final
-                threshold: 0.1
+                rootMargin: '200px', // Carrega quando estiver 200px antes do final
+                threshold: 0.01
             }
         );
 
@@ -118,7 +136,7 @@ export default function DisplayReviews({
                 observer.unobserve(loadMoreRef.current);
             }
         };
-    }, [loadMoreData, loadingMore, allReviews.length, ratingsLength]);
+    }, [loadMoreData, loadingMore, hasMore]);
 
     // Carregar dados iniciais
     useEffect(() => {
@@ -143,6 +161,8 @@ export default function DisplayReviews({
             if (ratings) {
                 console.log("Inicializando com dados do servidor");
                 setAllReviews(ratings);
+                setOffset(20);
+
                 
                 // Buscar álbuns das reviews iniciais
                 const initialAlbumIds = ratings.map((review: Review) => review.albumId!);
@@ -203,7 +223,7 @@ export default function DisplayReviews({
             </div>
 
             {/* Elemento observador para scroll infinito */}
-            {allReviews.length < ratingsLength && (
+            {hasMore && (
                 <div
                     ref={loadMoreRef}
                     className="w-full py-4 flex justify-center"
@@ -218,15 +238,15 @@ export default function DisplayReviews({
             )}
 
             {/* Botão manual como fallback */}
-            {ratingsLength > 5 && allReviews.length < ratingsLength && !loadingMore && (
+            {hasMore && allReviews.length > 0 && !loadingMore && (
                 <button
                     onClick={handleLoadMore}
-                    className="flex justify-center items-center py-2 mx-4 md:mx-0 mt-6 rounded-xl text-center !font-medium bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600 cursor-pointer transition-all duration-200 opacity-50 text-sm"
+                    className="flex justify-center items-center py-2 mx-4 md:mx-0 mt-6 rounded-xl text-center !font-medium bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600 cursor-pointer transition-all duration-200 text-sm"
                 >
                     {loading ? (
                         <Loader size={24.8} color="white" />
                     ) : (
-                        "Carregar mais manualmente"
+                        "Carregar mais"
                     )}
                 </button>
             )}

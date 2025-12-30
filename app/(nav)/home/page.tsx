@@ -14,7 +14,7 @@ export default async function Home() {
             Profile: true,
         },
         orderBy: {
-            updatedAt: "desc",
+            createdAt: "desc",
         },
         take: 20,
     });

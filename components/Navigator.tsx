@@ -11,6 +11,7 @@ import { createClient } from "@/utils/supabase/client";
 import {
     TbUserFilled,
     TbBellFilled,
+    TbUsers,
 } from "react-icons/tb";
 import localFont from "next/font/local";
 
@@ -90,10 +91,10 @@ export default function Navigator({ profile }: { profile: Profile | null }) {
                         <Icon type="search" className="h-5" />
                     </Link>
                 </button>
-                {/* <button>
+                <button>
                     <Link
-                        data-active={pathname === "/notifications"}
-                        href={`/notifications`}
+                        data-active={pathname === "/users"}
+                        href={`/users`}
                         className={`
                                 flex min-w-[70px] basis-0 cursor-pointer
                                 flex-col items-center gap-1 rounded-8 p-3
@@ -101,7 +102,6 @@ export default function Navigator({ profile }: { profile: Profile | null }) {
                                 hover:text-main-500
                                 transition-all duration-200 ease-in-out
                             `}
-                            onClick={() => setHasNotifications(false)}
                     >
                         <Indicator
                             inline
@@ -110,12 +110,11 @@ export default function Navigator({ profile }: { profile: Profile | null }) {
                             position="top-end"
                             color="#00ac1c"
                             withBorder
-                            disabled={!hasNotifications}
                         >
-                            <TbBellFilled className="size-6" />
+                            <TbUsers className="size-6" />
                         </Indicator>
                     </Link>
-                </button> */}
+                </button>
                 <button>
                     <Link
                         data-active={
@@ -209,8 +208,8 @@ export function DesktopNavigator({ profile }: { profile: Profile | null }) {
                         </button>
                         <button>
                             <Link
-                                data-active={pathname === "/notifications"}
-                                href={`/notifications`}
+                                data-active={pathname === "/users"}
+                                href={`/users`}
                                 className={`
                                     flex cursor-pointer
                                     flex-col items-center gap-1 rounded-8 p-3
@@ -219,7 +218,7 @@ export function DesktopNavigator({ profile }: { profile: Profile | null }) {
                                     transition-all duration-200 ease-in-out
                                 `}
                             >
-                                <TbBellFilled className="size-6" />
+                                <TbUsers className="size-6" />
                             </Link>
                         </button>
                     </div>

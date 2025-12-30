@@ -50,7 +50,7 @@ export default async function Index() {
                     </p>
                     <button
                         className="w-full cursor-pointer gap-2 flex flex-row p-4 text-red-500 bg-transparent hover:bg-shark-700 transition duration-200"
-                        onClick={signOutAction}
+                        // onClick={signOutAction}
                     >
                         <LogOut size={18} />
 

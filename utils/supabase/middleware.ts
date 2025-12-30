@@ -39,38 +39,38 @@ export const updateSession = async (request: NextRequest) => {
         // https://supabase.com/docs/guides/auth/server-side/nextjs
         const user = await supabase.auth.getUser();
 
-        // protected routes
-        if (request.nextUrl.pathname.startsWith("/protected") && user.error) {
-            return NextResponse.redirect(new URL("/sign-in", request.url));
-        }
+        // // protected routes
+        // if (request.nextUrl.pathname.startsWith("/protected") && user.error) {
+        //     return NextResponse.redirect(new URL("/sign-in", request.url));
+        // }
 
-        if (request.nextUrl.pathname.includes("/rate") && user.error) {
-            return NextResponse.redirect(new URL("/sign-in", request.url));
-        }
+        // if (request.nextUrl.pathname.includes("/rate") && user.error) {
+        //     return NextResponse.redirect(new URL("/sign-in", request.url));
+        // }
 
-        if (request.nextUrl.pathname.includes("/edit") && user.error) {
-            return NextResponse.redirect(new URL("/sign-in", request.url));
-        }
+        // if (request.nextUrl.pathname.includes("/edit") && user.error) {
+        //     return NextResponse.redirect(new URL("/sign-in", request.url));
+        // }
 
-        if (request.nextUrl.pathname.includes("/share") && user.error) {
-            return NextResponse.redirect(new URL("/sign-in", request.url));
-        }
+        // if (request.nextUrl.pathname.includes("/share") && user.error) {
+        //     return NextResponse.redirect(new URL("/sign-in", request.url));
+        // }
 
-        if (request.nextUrl.pathname.includes("/settings") && user.error) {
-            return NextResponse.redirect(new URL("/sign-in", request.url));
-        }
+        // if (request.nextUrl.pathname.includes("/settings") && user.error) {
+        //     return NextResponse.redirect(new URL("/sign-in", request.url));
+        // }
 
-        if (request.nextUrl.pathname.includes("/home") && user.error) {
-            return NextResponse.redirect(new URL("/sign-in", request.url));
-        }
+        // if (request.nextUrl.pathname.includes("/home") && user.error) {
+        //     return NextResponse.redirect(new URL("/sign-in", request.url));
+        // }
         
-        if (request.nextUrl.pathname.includes("/notifications") && user.error) {
-            return NextResponse.redirect(new URL("/sign-in", request.url));
-        }
+        // if (request.nextUrl.pathname.includes("/notifications") && user.error) {
+        //     return NextResponse.redirect(new URL("/sign-in", request.url));
+        // }
 
-        if (request.nextUrl.pathname === "/" && !user.error) {
-            return NextResponse.redirect(new URL("/home", request.url));
-        }
+        // if (request.nextUrl.pathname === "/" && !user.error) {
+        //     return NextResponse.redirect(new URL("/home", request.url));
+        // }
 
         return response;
     } catch (e) {

@@ -9,47 +9,10 @@ export const metadata = {
 };
 
 export default async function Index() {
-    const supabase = await createClient();
-
-    const {
-        data: { user },
-    } = await supabase.auth.getUser();
-
-    const { data } = await supabase
-        .from("profiles")
-        .select()
-        .eq("id", user?.id)
-        .single();
-
-    // console.log(data);
 
     return (
         <div className="w-full max-w-2xl mt-20 px-3 mx-auto">
             <div className="flex-1 w-full flex flex-col gap-8">
-                <h1 className="text-xl font-bold">Suas configurações</h1>
-                <div className="flex flex-col gap-4 bg-shark-700 rounded-3xl px-6 py-4">
-                    <div className="flex flex-col">
-                        <div className="flex flex-col gap-2">
-                            <span className="text-base">
-                                Nome: {data?.name}
-                            </span>
-                            <span className="text-base">
-                                Email: {user?.email}
-                            </span>
-
-                            <span className="text-base">
-                                {user?.identities! && (
-                                    <>
-                                        Criado em:{" "}
-                                        {new Date(
-                                            user?.created_at ?? ""
-                                        ).toLocaleDateString("pt-BR")}
-                                    </>
-                                )}
-                            </span>
-                        </div>
-                    </div>
-                </div>
                 <div className="w-full flex flex-col divide-y divide-shark-700">
                     {/* <Link
                         href="/protected/reset-password"

@@ -7,11 +7,6 @@ import { auth } from "@/auth";
 
 export async function POST(
     request: NextRequest,
-    {
-        params,
-    }: {
-        params: Promise<{ username: string }>;
-    }
 ) {
 
     const { username, lowername, site, name, bio, pronouns } = await request.json();

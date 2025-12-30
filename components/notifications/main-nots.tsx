@@ -35,7 +35,7 @@ function NotificationCard({ notification }: { notification: Notification }) {
             setAlbum(response.data);
         };
 
-        fetchAlbum(notification.ratings.album_id);
+        fetchAlbum(notification.ratings.albumId!);
     }, []);
 
     return (
@@ -54,7 +54,7 @@ function NotificationCard({ notification }: { notification: Notification }) {
             <div className="flex items-start text-start space-x-4">
                 <Avatar
                     size={32}
-                    src={notification.profiles.avatar_url}
+                    src={notification.profiles.avatarUrl}
                     className={"size-8"}
                     isIcon
                 />

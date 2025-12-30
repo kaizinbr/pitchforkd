@@ -137,8 +137,14 @@ export default function tracksTracksDisplay({
                                                             }
                                                         </span>
                                                         <AnimatePresence>
-                                                            {openComment === track.id &&
-                                                                ratings.find((rating) => rating.id === track.id && rating.comment) && (
+                                                            {openComment ===
+                                                                track.id &&
+                                                                ratings.find(
+                                                                    (rating) =>
+                                                                        rating.id ===
+                                                                            track.id &&
+                                                                        rating.comment
+                                                                ) && (
                                                                     <motion.div
                                                                         initial={{
                                                                             opacity: 0,
@@ -161,22 +167,41 @@ export default function tracksTracksDisplay({
                                                                             <div className="w-full flex flex-row gap-2 items-center">
                                                                                 <div className="flex relative flex-col justify-center items-center size-7">
                                                                                     <Avatar
-                                                                                        size={28}
-                                                                                        src={rate.profiles.avatar_url}
-                                                                                        className={"size-7"}
+                                                                                        size={
+                                                                                            28
+                                                                                        }
+                                                                                        src={
+                                                                                            rate
+                                                                                                .Profile
+                                                                                                .avatarUrl
+                                                                                        }
+                                                                                        className={
+                                                                                            "size-7"
+                                                                                        }
                                                                                         isIcon
                                                                                     />
                                                                                 </div>
                                                                                 <div className="flex flex-col items-start justify-center">
                                                                                     <div className="flex flex-row justify-start items-center gap-2 text-xs">
                                                                                         <p className=" font-medium flex flex-row items-center gap-1">
-                                                                                            {rate.profiles.name}
-                                                                                            {rate.profiles.verified && (
+                                                                                            {
+                                                                                                rate
+                                                                                                    .Profile
+                                                                                                    .name
+                                                                                            }
+                                                                                            {rate
+                                                                                                .Profile
+                                                                                                .verified && (
                                                                                                 <TbRosetteDiscountCheckFilled className="size-4 text-main-500" />
                                                                                             )}
                                                                                         </p>
                                                                                         <p className="text-shark-300 text-xs">
-                                                                                            @{rate.profiles.username}
+                                                                                            @
+                                                                                            {
+                                                                                                rate
+                                                                                                    .Profile
+                                                                                                    .username
+                                                                                            }
                                                                                         </p>
                                                                                     </div>
                                                                                 </div>
@@ -185,9 +210,14 @@ export default function tracksTracksDisplay({
                                                                                 <p className="font-normal">
                                                                                     {
                                                                                         ratings.find(
-                                                                                            (rating) =>
-                                                                                                rating.id === track.id && rating.comment
-                                                                                        )?.comment
+                                                                                            (
+                                                                                                rating
+                                                                                            ) =>
+                                                                                                rating.id ===
+                                                                                                    track.id &&
+                                                                                                rating.comment
+                                                                                        )
+                                                                                            ?.comment
                                                                                     }
                                                                                 </p>
                                                                             </div>

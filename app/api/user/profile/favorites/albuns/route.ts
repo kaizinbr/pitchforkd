@@ -5,11 +5,6 @@ import { auth } from "@/auth";
 
 export async function POST(
     request: NextRequest,
-    {
-        params,
-    }: {
-        params: Promise<{ username: string }>;
-    }
 ) {
     const { albuns } = await request.json();
     const session = await auth();
@@ -31,13 +26,17 @@ export async function POST(
 
 
         console.log(artists);
+        const previousArtists = artists?.favorites && Array.isArray(artists.favorites) 
+            ? (artists.favorites[0] as any)?.artists || [] 
+            : [];
+        
         await prisma.profile.update({
             where: { id: session?.user!.id },
             data: {
                 favorites: [
                     {
                         albuns,
-                        artists: artists?.favorites[0]?.artists || [],
+                        artists: previousArtists,
                     },
                 ],
             },

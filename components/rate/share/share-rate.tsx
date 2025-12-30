@@ -79,7 +79,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
     useEffect(() => {
         const fetchData = async () => {
             const response = await axios.get(
-                `/api/spot/album/${rate.album_id}`
+                `/api/spot/album/${rate.albumId}`
             );
             console.log(response.data);
             setAlbum(response.data);

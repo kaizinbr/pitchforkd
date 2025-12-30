@@ -83,7 +83,7 @@ export default function DisplayReviews({
                 setOffset(offset + 20);
 
                 // Buscar álbuns das novas reviews
-                const newAlbumIds = data.map((review: Review) => review.album_id);
+                const newAlbumIds = data.map((review: Review) => review.albumId!);
                 await fetchMissingAlbums(newAlbumIds);
             }
         } catch (error) {
@@ -145,7 +145,7 @@ export default function DisplayReviews({
                 setAllReviews(ratings);
                 
                 // Buscar álbuns das reviews iniciais
-                const initialAlbumIds = ratings.map((review: Review) => review.album_id);
+                const initialAlbumIds = ratings.map((review: Review) => review.albumId!);
                 await fetchMissingAlbums(initialAlbumIds);
             }
         };
@@ -197,7 +197,7 @@ export default function DisplayReviews({
                     <RatingCard 
                         key={rating.id} 
                         review={rating} 
-                        album={getAlbumById(rating.album_id)}
+                        album={getAlbumById(rating.albumId!)}
                     />
                 ))}
             </div>

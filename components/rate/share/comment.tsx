@@ -37,7 +37,7 @@ export default function Comment({
                     {review.review == "" ? (
                         <p className="text-shark-300 text-center text-[10px]">
                             {displayPastRelativeTime(
-                                new Date(review.created_at)
+                                new Date(review.createdAt)
                             )}
                         </p>
                     ) : (
@@ -46,7 +46,7 @@ export default function Comment({
                                 <div className="flex relative flex-col justify-center items-center size-6">
                                     <Avatar
                                         size={24}
-                                        src={review.profiles.avatar_url}
+                                        src={review.Profile.avatarUrl}
                                         className={"size-6"}
                                         isIcon
                                     />
@@ -54,19 +54,19 @@ export default function Comment({
                                 <div className="flex flex-col items-start justify-center">
                                     <div className="flex flex-row justify-start items-center gap-1 max-h-3 text-[10px]">
                                         <p className=" font-medium flex flex-row items-center gap-1">
-                                            {review.profiles.name}
-                                            {review.profiles.verified && (
+                                            {review.Profile.name}
+                                            {review.Profile.verified && (
                                                 <TbRosetteDiscountCheckFilled className="size-3 text-main-500" />
                                             )}
                                         </p>
                                         <p className="text-shark-300 text-[8px]">
-                                            @{review.profiles.username}
+                                            @{review.Profile.username}
                                         </p>
                                     </div>
-                                    {review.profiles.pronouns && (
+                                    {review.Profile.pronouns && (
                                         <div className="flex flex-row justify-start items-center text-[8px] max-h-3 text-shark-400">
                                             <p className=" font-semibold">
-                                                {review.profiles.pronouns}
+                                                {review.Profile.pronouns}
                                             </p>
                                         </div>
                                     )}
@@ -83,7 +83,7 @@ export default function Comment({
                             <div className="flex items-center justify-start flex-row gap-1 text-[8px] text-shark-400 ">
                                 <span className=" h-full flex items-center">
                                     {displayPastRelativeTime(
-                                        new Date(review.created_at)
+                                        new Date(review.createdAt)
                                     )}
                                 </span>
                             </div>

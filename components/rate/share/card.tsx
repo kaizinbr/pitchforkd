@@ -71,7 +71,7 @@ export default function Card({
             <div className="w-full relative mb-3 z-10">
                 <Avatar
                     size={28}
-                    src={review.profiles.avatar_url}
+                    src={review.Profile.avatarUrl}
                     className={"size-8 absolute top-[14px] z-20 mx-auto"}
                     isIcon
                 />
@@ -98,7 +98,7 @@ export default function Card({
                 {formatRate(review.total)}
             </p>
             <p className=" text-[10px] text-center mb-1 max-w-full line-clamp-2 z-10">
-                {review.profiles.name || review.profiles.username} avaliou{" "}
+                {review.Profile.name || review.Profile.username} avaliou{" "}
             </p>
             <p className=" text-[10px] text-center mb-1 max-w-full line-clamp-2 z-10">
                 <span className="!font-bold">{album.name}</span>

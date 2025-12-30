@@ -3,42 +3,27 @@ import DisplayReviews from "@/components/display-reviews/main";
 import ImageCarousel from "@/components/carousel/carousel";
 import Link from "next/link";
 
+import { prisma } from "@/lib/prisma";
+
 export default async function Home() {
-    const supabase = createClient();
+    const reviews = await prisma.rating.findMany({
+        where: {
+            published: true,
+        },
+        include: {
+            Profile: true,
+        },
+        orderBy: {
+            updatedAt: "desc",
+        },
+        take: 20,
+    });
 
-    const { data, error } = await (
-        await supabase
-    )
-        .from("ratings")
-        .select(
-            `*,
-            profiles(
-                *
-            )`
-        )
-        .eq("is_published", true)
-        .order("created_at", { ascending: false })
-        .range(0, 19);
-
-    if (error) {
-        console.error("Error fetching reviews", error);
-        return <div>Error fetching reviews</div>;
-    }
-
-    const { data: dataLength, error: errorLength } = await (await supabase)
-        .from("ratings")
-        .select(
-            `*,
-            profiles(
-                *
-            )`
-        )
-        .eq("is_published", true);
-
-    if (error) {
-        console.error("Error fetching reviews", error);
-        return <div>Error fetching reviews</div>;
-    }
+    const totalReviews = await prisma.rating.count({
+        where: {
+            published: true,
+        },
+    });
 
     return (
         <>
@@ -50,14 +35,14 @@ export default async function Home() {
                     Pitchforkd
                 </Link>
                 <ImageCarousel />
-                {/* {data && dataLength ? (
+                {reviews && totalReviews ? (
                     <DisplayReviews
-                        ratings={data}
-                        ratingsLength={dataLength.length}
+                        ratings={reviews}
+                        ratingsLength={totalReviews}
                     />
                 ) : (
                     <div>Não há reviews</div>
-                )} */}
+                )}
             </main>
         </>
     );

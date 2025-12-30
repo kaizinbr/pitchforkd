@@ -16,7 +16,7 @@ export default function UserRate({
     loading,
     likes,
 }: {
-    review: Review;
+    review: Review | any;
     loading: boolean;
     likes: number;
 }) {
@@ -40,7 +40,7 @@ export default function UserRate({
                         </Link>
                     </h2>
                     <p className="text-3xl font-extrabold">
-                        {formatRate(review.total)}
+                        {formatRate(Number(review.total))}
                     </p>
                     {review.review == "" ? (
                         <p className="text-shark-300 text-sm">

@@ -95,7 +95,7 @@ export default function Card({
                 </div>
             </div>
             <p className="text-xl !font-extrabold mb-3 z-10">
-                {formatRate(review.total)}
+                {formatRate(Number(review.total))}
             </p>
             <p className=" text-[10px] text-center mb-1 max-w-full line-clamp-2 z-10">
                 {review.Profile.name || review.Profile.username} avaliou{" "}

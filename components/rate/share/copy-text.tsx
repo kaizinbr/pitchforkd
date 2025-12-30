@@ -18,7 +18,7 @@ export default function CopyText({
                 </p>
                 <p className="mb-3">
                     {album.name} – {album.artists[0].name} –{" "}
-                    {formatRate(rate.total)}
+                    {formatRate(Number(rate.total))}
                 </p>
                 {rate.ratings.map((rating: any, index: any) => {
                     const track: Track | undefined = album.tracks.items.find(
@@ -51,7 +51,7 @@ export default function CopyText({
                 <button
                     className="mt-4 p-2 !font-semibold bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600  text-white rounded-xl w-full cursor-pointer"
                     onClick={() => {
-                        const textToCopy = `Avaliação de ${rate.Profile.name || rate.Profile.username}\n\n${album.name} – ${album.artists[0].name} – ${formatRate(rate.total)}\n\n${rate.ratings
+                        const textToCopy = `Avaliação de ${rate.Profile.name || rate.Profile.username}\n\n${album.name} – ${album.artists[0].name} – ${formatRate(Number(rate.total))}\n\n${rate.ratings
                             .map((rating: any) => {
                                 const track = album.tracks.items.find(
                                     (item) => item.id === rating.id

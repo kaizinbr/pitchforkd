@@ -22,17 +22,6 @@ export default function LoginPage() {
             const checkData = checkRes.data;
             console.log("Check login method response:", checkData);
 
-            // if (!checkData.exists) {
-            //     // Email não cadastrado, prossegue com registro
-            //     const result = await signIn("credentials", {
-            //         email,
-            //         password,
-            //         redirect: false,
-            //     });
-            //     // ...
-            //     return;
-            // }
-
             if (!checkData.hasPassword) {
                 // Mostra mensagem informando o método correto
                 setError(checkData.message);

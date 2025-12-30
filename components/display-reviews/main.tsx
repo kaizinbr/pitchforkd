@@ -14,7 +14,7 @@ export default function DisplayReviews({
     ratings,
     ratingsLength,
 }: {
-    ratings: Review[] | null;
+    ratings: Review[] | any;
     ratingsLength: number;
 }) {
     const supabase = createClient();

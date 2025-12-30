@@ -130,7 +130,7 @@ export default function ReviewCard({
                             flex justify-center items-center p-3 gap-2
                         `}>
                         <span className="text-neutral-100 text-3xl font-bold">
-                            {formatRate(review.total)}
+                            {formatRate(Number(review.total))}
                         </span>
                     </div>
                 </div>

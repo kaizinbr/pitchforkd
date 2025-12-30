@@ -1,3 +1,5 @@
+import { Decimal, JsonValue } from "@prisma/client/runtime/client";
+
 export interface Rating {
     id: string;
     value: number;
@@ -40,13 +42,13 @@ export interface Review {
     albumId: string | null;
     review: string | null;    
     ratings: Rating[] | any;
-    total: number;
+    total: number | Decimal;
     shorten: string | null;
     published: boolean;
     content: {
         type: string;
         content: [];
-    };
+    } | JsonValue | null;
     Profile: Profile;
 }
 

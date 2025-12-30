@@ -26,7 +26,7 @@ export default function RatingCard({
     edit,
     album,
 }: {
-    review: Review;
+    review: Review | any;
     edit?: boolean;
     album: any;
 }) {
@@ -265,7 +265,7 @@ export default function RatingCard({
                                         `}
                                     >
                                         <span className="text-neutral-100 text-2xl font-extrabold">
-                                            {Number(review.total).toFixed(1)}/100
+                                            {Number(Number(review.total)).toFixed(1)}/100
                                         </span>
 
                                         <span className="text-neutral-300 text-xs">

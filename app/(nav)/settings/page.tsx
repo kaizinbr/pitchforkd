@@ -51,7 +51,7 @@ export default async function Index() {
                     </div>
                 </div>
                 <div className="w-full flex flex-col divide-y divide-shark-700">
-                    <Link
+                    {/* <Link
                         href="/protected/reset-password"
                         className={`
                                     w-full gap-2 flex flex-row p-4 
@@ -61,7 +61,7 @@ export default async function Index() {
                     >
                         <LockKeyhole size={18} />
                         <span className="">Redefinir senha</span>
-                    </Link>
+                    </Link> */}
 
                     <p
                         // href="/update-email"

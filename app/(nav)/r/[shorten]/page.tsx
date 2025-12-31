@@ -48,7 +48,6 @@ export default async function Page({
         },
     })
     .then((rate) => {
-        // Convert Decimal to number
         if (rate && rate.total) {
             return {
                 ...rate,

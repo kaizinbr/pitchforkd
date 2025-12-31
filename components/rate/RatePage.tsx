@@ -64,37 +64,6 @@ export default function RatePage({ id }: { id: string }) {
         <>
             {album && (
                 <>
-                    {/* <div
-                        className={`
-                            flex flex-row px-4
-                            justify-between
-                            w-full
-                            p-4
-                            backdrop-blur-md
-                            z-[999] text-shark-100
-                        `}
-                        >
-                        <div className="flex flex-col w-6/10 max-w-2xl m-auto">
-                            <h2 className="font-semibold line-clamp-1">{album.name}</h2>
-                            <p className="text-xs text-neutral-300">
-                                {album.artists.map(
-                                    (artist: any, index: number) => (
-                                        <span
-                                            key={artist.id}
-                                            className="font-medium"
-                                        >
-                                            {artist.name}
-                                            {index < album.artists.length - 1 &&
-                                                ", "}
-                                        </span>
-                                    )
-                                )}
-                            </p>
-                        </div>
-                        <button className="bg-main-500 hover:bg-main-600 transition-all duration-300 rounded-lg cursor-pointer px-4 py-2 text-sm">
-                            Salvar rascunho
-                        </button>
-                    </div> */}
                     <Rater
                         album={album}
                         setCurrentTrack={setCurrentTrack}
@@ -105,7 +74,7 @@ export default function RatePage({ id }: { id: string }) {
                         setActive={setActive}
                     />
 
-                    {currentTrack && (
+                    {/* {currentTrack && (
                         <CurrentLyrics
                             track_id={currentTrack}
                             lightMuted={lightMuted}
@@ -114,7 +83,7 @@ export default function RatePage({ id }: { id: string }) {
                             backgroundColor={darkVibrant}
                             textColor={titleTextColor}
                         />
-                    )}
+                    )} */}
                 </>
             )}
         </>

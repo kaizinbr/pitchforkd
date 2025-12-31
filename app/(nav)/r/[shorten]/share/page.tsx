@@ -2,6 +2,9 @@ import { createClient } from "@/utils/supabase/server";
 import ShareRate from "@/components/rate/share/share-rate";
 import type { Metadata, ResolvingMetadata } from "next";
 
+import { auth } from "@/auth"
+import { prisma } from "@/lib/prisma";
+
 type Props = {
     params: Promise<{ shorten: string}>;
 };
@@ -44,21 +47,20 @@ export default async function Page({
     const shorten = (await params).shorten;
     // console.log(shorten);
 
-    const supabase = await createClient();
+    const session = await auth();
 
-    const { data, error: albumError } = await supabase
-        .from("ratings")
-        .select(
-            `*,
-            profiles(
-                *
-            )`
-        )
-        .eq("is_published", true)
-        .eq("shorten", shorten);
+    const rate = await prisma.rating.findFirst({
+        where: {
+            shorten: shorten,
+            published: true,
+        },
+        include: {
+            Profile: true,
+        },
+    });
 
-    if (albumError) {
-        console.error("Error fetching album", albumError);
+    if (!rate) {
+        console.error("Error fetching album");
         return <div>Error fetching album</div>;
     }
 
@@ -66,7 +68,7 @@ export default async function Page({
 
     return (
         <div className="flex flex-col gap-4 items-center relative pt-16 md:pt-24 w-full overflow-x-hidden">
-            <ShareRate rate={data[0]} />
+            <ShareRate rate={rate} />
         </div>
     );
 }

@@ -49,6 +49,7 @@ const Track = ({
             setValue(rating.value);
             setFavorite(rating.favorite);
             setComment(rating.comment || "");
+            console.log("Loaded rating for track:", track.id, rating);
         }
     }, [ratings, track.id]);
 
@@ -151,6 +152,7 @@ export default function TrackStepper({
     setCurrentTrack,
     active,
     setActive,
+    ratings
 }: {
     album: Album;
     onRate: (trackId: string, rating: number) => void;
@@ -167,91 +169,21 @@ export default function TrackStepper({
     setCurrentTrack: (track: string) => void;
     active: number;
     setActive: React.Dispatch<React.SetStateAction<number>>;
+    ratings: {
+        id: string;
+        value: number;
+        favorite: boolean;
+        comment?: string;
+    }[];
 }) {
     const supabase = createClient();
     const tracks = album.tracks.items;
 
-    const [ratings, setRatings] = useState<
+    const [ratings2, setRatings] = useState<
         { id: string; value: number; favorite: boolean; comment?: string }[]
     >([]);
     const [total, setTotal] = useState<number>(0);
 
-    useEffect(() => {
-        // check if user already rated the album
-        // if so, load the ratings
-        const fetchRatings = async () => {
-            const {
-                data: { user },
-            } = await supabase.auth.getUser();
-            if (!user) {
-                console.error("User not logged in");
-                return;
-            }
-
-            const { data, error } = await supabase
-                .from("ratings")
-                .select("ratings, review, total, shorten, content")
-                .eq("user_id", user.id)
-                .eq("album_id", album.id);
-
-            if (error) {
-                console.error("Error fetching ratings", error);
-                return;
-            }
-
-            // Primeiro, tenta carregar do sessionStorage
-            const sessionRatings = tracks.map((track) => {
-                const item = sessionStorage.getItem(track.id);
-                return item ? JSON.parse(item) : null;
-            });
-
-            const hasSessionRatings = sessionRatings.some(
-                (rating) => rating !== null
-            );
-
-            if (hasSessionRatings) {
-                // Se encontrou algum rating no sessionStorage, usa eles
-                const filledRatings = tracks.map((track, idx) =>
-                    sessionRatings[idx] !== null
-                        ? sessionRatings[idx]
-                        : {
-                              id: track.id,
-                              value: 0,
-                              favorite: false,
-                              comment: "",
-                          }
-                );
-                setRatings(filledRatings);
-                const soma = filledRatings.reduce(
-                    (acc, rating) => acc + rating.value,
-                    0
-                );
-                const finalTotal = soma / filledRatings.length;
-                setTotal(finalTotal);
-            } else if (data.length > 0) {
-                // Se não tem no session, tenta do banco
-                const { ratings, total } = data[0];
-                // Salva cada rating individual no session
-                ratings.forEach((rating: any) => {
-                    sessionStorage.setItem(rating.id, JSON.stringify(rating));
-                });
-
-                setRatings(ratings);
-                setTotal(parseFloat(total.toFixed(1).replace(",", ".")));
-            } else {
-                // Se não tem em nenhum lugar, inicializa zerado
-                const emptyRatings = tracks.map((track) => ({
-                    id: track.id,
-                    value: 0,
-                    favorite: false,
-                    comment: "",
-                }));
-                setRatings(emptyRatings);
-            }
-        };
-
-        fetchRatings();
-    }, [tracks]);
 
     const handleValueChange = (
         id: string,
@@ -259,19 +191,35 @@ export default function TrackStepper({
         favorite: boolean,
         comment: string
     ) => {
-        setRatings((prevRatings) =>
-            prevRatings.map((rating) =>
-                rating.id === id
-                    ? { ...rating, value, favorite, comment }
-                    : rating
-            )
+        setRatings((prevRatings => {
+            const existingRatingIndex = prevRatings.findIndex(rating => rating.id === id);
+            if (existingRatingIndex !== -1) {
+                const updatedRatings = [...prevRatings];
+                updatedRatings[existingRatingIndex] = { id, value, favorite, comment };
+                return updatedRatings;
+            } else {
+                return [...prevRatings, { id, value, favorite, comment }];
+            }
+        }));
+
+         const ratings2 = [...ratings];
+        const existingRatingIndex = ratings2.findIndex(
+            (rating) => rating.id === id
         );
+
+        if (existingRatingIndex !== -1) {
+            ratings2[existingRatingIndex] = { id, value, favorite, comment };
+        } else {
+            ratings2.push({ id, value, favorite, comment });
+        }
+
+        setFinalRatings(ratings2);
         setTotal(
             ratings.reduce((acc, rating) => acc + rating.value, 0) /
                 ratings.length
         );
-        console.log("Ratings:", ratings);
-        console.log("Total:", total);
+        // console.log("Ratings:", ratings2);
+        // console.log("Total:", total);
 
         sessionStorage.setItem(
             id,
@@ -299,14 +247,22 @@ export default function TrackStepper({
         }
     }, [active, currentTrack, setCurrentTrack]);
 
-    console.log("Current Track:", tracks);
+    // console.log("Current Track:", tracks);
 
-    console.log("Ratings:", ratings);
+    // console.log("Ratings:", ratings);
     // console.log("Total:", total);
 
     return (
-        <div className="flex flex-col gap-4 items-center relative w-full max-w-2xl">
+        <div className={`
+            flex flex-col gap-4 items-center relative w-full max-w-2xl
+            
+                                    bg-shark-900
+                                   p-4
+                                    rounded-xl
+                                   items- justify-center
+        `}>
             <div className="flex flex-col gap-4 w-full">
+                <h2>Músicas</h2>
                 <div className="flex flex-row gap-2 w-full">
                     <Image
                         src={album.images[0].url}
@@ -401,17 +357,17 @@ export default function TrackStepper({
                                     nextStep();
                                 }
                             }}
-                            // disabled={active === tracks.length - 1}
+                            disabled={active === tracks.length - 1}
                             className={`
                     
                                     transition-all duration-200 py-2 px-3 !font-semibold
                                     rounded-xl cursor-pointer disabled:cursor-not-allowed
                                     bg-malachite-600 hover:bg-malachite-700
+
+                                    disabled:opacity-50 disabled:hover:bg-malachite-600
                                 `}
                         >
-                            {active === tracks.length - 1
-                                ? "Finalizar"
-                                : "Próximo"}
+                            Próximo
                         </button>
                     </div>
                 </div>

@@ -9,7 +9,7 @@ import { AlbumRate, Review } from "@/lib/utils/types";
 import Card from "./card";
 import CopyText from "./copy-text";
 
-export default function ShareRate({ id, rate }: { id?: string; rate: Review }) {
+export default function ShareRate({ id, rate }: { id?: string; rate: Review | any }) {
     const [album, setAlbum] = useState<any>();
     const [tracks, setTracks] = useState<any>([]);
     const [loading, setLoading] = useState(true);

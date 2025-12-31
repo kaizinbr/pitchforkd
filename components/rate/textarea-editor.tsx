@@ -59,13 +59,15 @@ export default function TextareaEditor({
             variant="subtle"
             classNames={{
                 toolbar:
-                    "!border-b !bg-shark-800 !text-white !border-shark-600 !rounded-t-xl",
-                root: "!bg-shark-800 !text-white !border-shark-800 !rounded-xl",
-                content: "!bg-shark-800 ",
+                    "!border-b !bg-shark-900 !text-white !border-shark-700 !rounded-t-xl",
+                root: "!bg-shark-900 !text-white !border-shark-900 !rounded-xl",
+                content: "!bg-shark-900 !min-h-48 flex !text-white",
                 controlsGroup: "!gap-2 !bg-transparent",
+
                 control:
-                    "!bg-transparent !text-white !rounded-lg transition-all duration-200 hover:!bg-shark-800 hover:!text-white data-[active=true]:!bg-shark-600",
+                    "!bg-transparent !text-white !rounded-lg transition-all duration-200 hover:!bg-shark-900 hover:!text-white data-[active=true]:!bg-shark-700",
             }}
+            
         >
             <RichTextEditor.Toolbar sticky stickyOffset={0}>
                 <RichTextEditor.ControlsGroup>
@@ -81,7 +83,7 @@ export default function TextareaEditor({
             <div
                 className={`character-count ${editor.storage.characterCount.characters() === limit ? "character-count--warning" : ""}`}
             >
-                <svg height="20" width="20" viewBox="0 0 20 20">
+                {/* <svg height="20" width="20" viewBox="0 0 20 20">
                     <circle r="10" cx="10" cy="10" fill="#e9ecef" />
                     <circle
                         r="5"
@@ -94,7 +96,7 @@ export default function TextareaEditor({
                         transform="rotate(-90) translate(-20)"
                     />
                     <circle r="6" cx="10" cy="10" fill="white" />
-                </svg>
+                </svg> */}
                 {editor.storage.characterCount.characters()} / {limit}{" "}
                 caracteres
                 <br />

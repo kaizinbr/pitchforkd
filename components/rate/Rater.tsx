@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { use, useEffect, useState } from "react";
 import { createClient } from "@/utils/supabase/client";
 import { Slider, Chip, Textarea } from "@mantine/core";
 import classes from "./Rater.module.css";
@@ -11,6 +11,10 @@ import TextareaEditor from "./textarea-editor";
 import TrackStepper from "@/components/rate/stepper";
 
 import { Album } from "@/lib/utils/types";
+
+import axios from "axios";
+import Image from "next/image";
+import RaterAlbumCover from "@/components/rate/rater-album-cover";
 
 const Track = ({
     track,
@@ -113,24 +117,33 @@ export default function Rater({
     ratings,
     setRatings,
     active,
-    setActive
+    setActive,
 }: {
     album: Album;
     setCurrentTrack: (track: string) => void;
     tracks: any[];
-    ratings: { id: string; value: number; favorite: boolean; comment?: string }[];
-    setRatings: React.Dispatch<React.SetStateAction<{ id: string; value: number; favorite: boolean; comment?: string }[]>>;
+    ratings: {
+        id: string;
+        value: number;
+        favorite: boolean;
+        comment?: string;
+    }[];
+    setRatings: React.Dispatch<
+        React.SetStateAction<
+            { id: string; value: number; favorite: boolean; comment?: string }[]
+        >
+    >;
     active: number;
     setActive: React.Dispatch<React.SetStateAction<number>>;
 }) {
     const supabase = createClient();
 
-    const [onTracks, setOnTracks] = useState<boolean>(true);
+    const [onTracks, setOnTracks] = useState<boolean>(false);
 
     const [review, setReview] = useState<string>("");
     const [total, setTotal] = useState<number>(0);
     const [shorten, setShorten] = useState<string>("");
-    const [useMedia, setUseMedia] = useState<boolean>(true);
+    const [useMedia, setUseMedia] = useState<boolean>(false);
     const [opened, { open, close }] = useDisclosure(false);
     const [content, setContent] = useState<any>(null);
 
@@ -154,38 +167,10 @@ export default function Rater({
         // check if user already rated the album
         // if so, load the ratings
         const fetchRatings = async () => {
-            const {
-                data: { user },
-            } = await supabase.auth.getUser();
-            if (!user) {
-                console.error("User not logged in");
-                return;
-            }
+            const response = await axios.get(`/api/album/${album.id}/ratings`);
+            console.log("Fetched ratings:", response.data);
 
-            const { data, error } = await supabase
-                .from("ratings")
-                .select("ratings, review, total, shorten, content")
-                .eq("user_id", user.id)
-                .eq("album_id", album.id);
-
-            if (error) {
-                console.error("Error fetching ratings", error);
-                return;
-            }
-
-            if (data.length > 0) {
-                // ja avaliou
-                const { ratings, review, total } = data[0];
-                setContent(data[0].content);
-                setJsonContent(data[0].content);
-                console.log("Ratings fetched", jsonContent);
-
-                setRatings(ratings);
-                setReview(review);
-                setRawText(review);
-                setShorten(data[0].shorten);
-                setTotal(parseFloat(total.toFixed(1).replace(",", ".")));
-            } else {
+            if (response.data.avaliou === false) {
                 //nao avaliou
                 const initialRatings = tracks.map((track) => ({
                     id: track.id,
@@ -202,23 +187,35 @@ export default function Rater({
                         },
                     ],
                 });
+            } else {
+                // ja avaliou
+                const { ratings, review, total, shorten, content } =
+                    response.data;
+                setContent(content);
+                setJsonContent(content);
+                console.log("Ratings fetched", jsonContent);
+                setRatings(ratings);
+                setReview(review);
+                setRawText(review);
+                setShorten(shorten);
+                setTotal(parseFloat(total.replace(",", ".")));
             }
         };
 
         fetchRatings();
     }, [tracks]);
 
+    useEffect(() => {
+        setTotal(
+            ratings.reduce((acc, rating) => acc + rating.value, 0) /
+                ratings.length
+        );
+        console.log("total  updated:", total);
+    }, [ratings]);
+
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         console.log(ratings);
-
-        const {
-            data: { user },
-        } = await supabase.auth.getUser();
-        if (!user) {
-            console.error("User not logged in");
-            return;
-        }
 
         const cumulativeRating = ratings.reduce(
             (acc, rating) => acc + rating.value,
@@ -232,70 +229,78 @@ export default function Rater({
             finalRating = total;
         }
 
-        // verifica se o usuario já avaliou o album
-        const { data: ratingsData, error: ratingsError } = await supabase
-            .from("ratings")
-            .select("id")
-            .eq("user_id", user.id)
-            .eq("album_id", album.id);
 
-        if (ratingsError) {
-            console.error("Error fetching ratings", ratingsError);
+        const response = await axios.post(`/api/album/${album.id}/ratings`, {
+            albumId: album.id,
+            ratings,
+            review: rawText,
+            content: jsonContent,
+            total: finalRating,
+            published: true,
+        });
+
+        if (response.status !== 200 && response.status !== 201) {
+            console.error("Error saving ratings", response.data);
             return;
-        }
-
-        if (ratingsData.length > 0) {
-            console.log("User already rated this album", finalRating);
-            console.log("Ratings to update", jsonContent);
-
-            const { data, error } = await supabase
-                .from("ratings")
-                .update([
-                    {
-                        album_id: album.id,
-                        user_id: user.id,
-                        ratings,
-                        review: rawText,
-                        content: jsonContent,
-                        total: finalRating,
-                        is_published: true,
-                    },
-                ])
-                .eq("user_id", user.id)
-                .eq("album_id", album.id);
-
-            if (error) {
-                console.error("Error saving ratings", error);
-                return;
-            }
-
-            console.log("Ratings updated", data);
-            open();
         } else {
-            const shortened = getShorten();
-            setShorten(shortened);
-
-            const { data, error } = await supabase.from("ratings").insert([
-                {
-                    album_id: album.id,
-                    user_id: user.id,
-                    ratings,
-                    review: rawText,
-                    content: jsonContent,
-                    total: finalRating,
-                    shorten: shortened,
-                    is_published: true,
-                },
-            ]);
-
-            if (error) {
-                console.error("Error saving ratings", error);
-                return;
-            }
-
-            console.log("Ratings saved", data);
+            console.log("Ratings saved/updated", response.data);
+            setShorten(response.data.data.shorten);
             open();
         }
+
+
+        // if (ratingsData.length > 0) {
+        //     console.log("User already rated this album", finalRating);
+        //     console.log("Ratings to update", jsonContent);
+
+        //     const { data, error } = await supabase
+        //         .from("ratings")
+        //         .update([
+        //             {
+        //                 album_id: album.id,
+        //                 user_id: user.id,
+        //                 ratings,
+        //                 review: rawText,
+        //                 content: jsonContent,
+        //                 total: finalRating,
+        //                 is_published: true,
+        //             },
+        //         ])
+        //         .eq("user_id", user.id)
+        //         .eq("album_id", album.id);
+
+        //     if (error) {
+        //         console.error("Error saving ratings", error);
+        //         return;
+        //     }
+
+        //     console.log("Ratings updated", data);
+        //     open();
+        // } else {
+        //     const shortened = getShorten();
+        //     setShorten(shortened);
+
+        //     const { data, error } = await supabase.from("ratings").insert([
+        //         {
+        //             album_id: album.id,
+        //             user_id: user.id,
+        //             ratings,
+        //             review: rawText,
+        //             content: jsonContent,
+        //             total: finalRating,
+        //             shorten: shortened,
+        //             is_published: true,
+        //         },
+        //     ]);
+
+        //     if (error) {
+        //         console.error("Error saving ratings", error);
+        //         return;
+        //     }
+
+        //     console.log("Ratings saved", data);
+        //     open();
+        // }
         //limpar o session e evitar conflito
         tracks.forEach((track) => {
             sessionStorage.removeItem(track.id);
@@ -344,8 +349,93 @@ export default function Rater({
                     </Link>
                 </div>
             </Modal>
-            <div className="w-full flex px-4 pt-8">
-                <div className="w-full mx-auto max-w-2xl bg-shark-900 p-5 gap-4 rounded-xl">
+            <div className="w-full flex flex-col">
+                <RaterAlbumCover album={album} />
+                <div className="flex flex-col gap-4 mx-auto max-w-2xl w-full px-4">
+                    <div
+                        className={`
+                                    bg-shark-900
+                                    gap-2 p-4
+                                    rounded-xl
+                                    flex flex-col items- justify-center
+                                `}
+                    >
+                        <h2 className="font-medium">Nota do álbum</h2>
+                        <input
+                            type="number"
+                            name="total"
+                            id="total"
+                            className={`
+                                        bg-transparent outline-none
+                                        !font-semibold w-full !text-2xl
+                                    `}
+                            value={total === 0 ? "" : total}
+                            max={100}
+                            min={0}
+                            placeholder="0"
+                            onChange={(e) => setTotal(Number(e.target.value))}
+                            disabled={useMedia}
+                        />
+                        <Chip
+                            checked={useMedia}
+                            color="#fa805e"
+                            onChange={(useMedia) => {
+                                setUseMedia(useMedia);
+                                setTotal(
+                                    ratings.reduce(
+                                        (acc, rating) => acc + rating.value,
+                                        0
+                                    ) / ratings.length
+                                );
+                                console.log(useMedia);
+                            }}
+                            classNames={{
+                                label: classes.label,
+                            }}
+                        >
+                            Automático
+                        </Chip>
+                    </div>
+                    <div className="flex flex-col gap-2">
+                        {content && (
+                            <TextareaEditor
+                                content={content}
+                                setRawText={setRawText}
+                                setJsonContent={setJsonContent}
+                            />
+                        )}
+                    </div>
+                    <TrackStepper
+                        album={album}
+                        onRate={() => console.log("Rated")}
+                        setCurrentTrack={setCurrentTrack}
+                        setOnTracks={setOnTracks}
+                        setFinalRatings={setRatings}
+                        setFinalTotal={setTotal}
+                        active={active}
+                        setActive={setActive}
+                        ratings={ratings}
+                    />
+                    <div className="flex flex-row w-full gap-4 justify-end">
+                        <button
+                            className={`
+                                    py-2 px-3
+                                    flex justify-center items-center
+                                    bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600
+                                    text-white !font-semibold rounded-xl
+                                    cursor-pointer
+                                    transition-all duration-300
+                                    z-[500] w-full max-w-2xl mx-auto
+                                `}
+                            type="button"
+                            onClick={handleSubmit}
+                        >
+                            Publicar
+                        </button>
+                    </div>
+                </div>
+
+                {/* <div className="w-full mx-auto max-w-2xl bg-shark-900 p-5 gap-4 rounded-xl">
                     {onTracks ? (
                         <TrackStepper
                             album={album}
@@ -356,16 +446,17 @@ export default function Rater({
                             setFinalTotal={setTotal}
                             active={active}
                             setActive={setActive}
+                            ratings={ratings}
                         />
                     ) : (
                         <div className="flex flex-col gap-4 w-full">
                             <div
                                 className={`
-                            bg-shark-800
-                             gap-2 p-4
-                            rounded-xl
-                            flex flex-col items- justify-center
-                        `}
+                                    bg-shark-800
+                                    gap-2 p-4
+                                    rounded-xl
+                                    flex flex-col items- justify-center
+                                `}
                             >
                                 <h2 className="font-medium">Total do álbum</h2>
                                 <input
@@ -451,7 +542,7 @@ export default function Rater({
                         </div>
                     )}
                     
-                </div>
+                </div> */}
             </div>
         </>
     );

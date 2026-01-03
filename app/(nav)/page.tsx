@@ -11,16 +11,10 @@ export default async function Home() {
                     <div className="flex gap-2 flex-col">
 
                         <Link
-                            className="py-2 px-8 rounded-xl text-lg text-center font-semibold bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600 transition-all duration-200"
-                            href="/sign-up"
-                        >
-                            Cadastrar
-                        </Link>
-                        <Link
                             className="py-2 px-8 rounded-xl text-lg text-center font-semibold border-2 border-main-500 hover:bg-main-600 hover:border-main-600 transition-all duration-200"
-                            href="/sign-in"
+                            href="/login"
                         >
-                            Entrar
+                            Entrar ou se cadastrar
                         </Link>
                     </div>
                 </div>

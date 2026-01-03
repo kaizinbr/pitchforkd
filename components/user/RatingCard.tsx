@@ -94,48 +94,6 @@ export default function RatingCard({
         }
     }, [album]);
 
-
-    // useEffect(() => {
-    //     const verifyLike = async () => {
-    //         const {
-    //             data: { user },
-    //         } = await supabase.auth.getUser();
-    //         if (!user) {
-    //             console.error("User not logged in");
-    //             return;
-    //         }
-
-    //         const { data, error } = await supabase
-    //             .from("likes")
-    //             .select("*")
-    //             .eq("user_id", user.id)
-    //             .eq("rating_id", review.id);
-
-    //         if (error) {
-    //             console.error(error);
-    //             return;
-    //         }
-
-    //         if (data.length) {
-    //             setLiked(true);
-    //         }
-    //     };
-
-    //     verifyLike();
-    // }, [review.id]);
-
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         const response = await axios.get(
-    //             `/api/spot/album/${review.album_id}`
-    //         );
-    //         setAlbum(response.data);
-    //         setLoading(false);
-    //     };
-
-    //     fetchData();
-    // }, [review.album_id]);
-
     return (
         <>
             {loading ? (
@@ -247,13 +205,13 @@ export default function RatingCard({
                                         }}
                                     >
                                     {album && (
-                                        <picture className="relative size-36">
+                                        <picture className="relative size-30">
                                             <NextImage
                                                 src={album.images[1].url}
                                                 alt={album.name}
                                                 width={500}
                                                 height={500}
-                                                className="  object-cover z-10 size-36 max-h-[144px] rounded-lg opacity-"
+                                                className="  object-cover z-10 size-30 max-h-[124px] rounded-lg opacity-"
                                             />
 
                                         </picture>

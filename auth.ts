@@ -8,7 +8,9 @@ import { cookies } from "next/headers";
 
 import Resend from "next-auth/providers/resend";
 import Google from "next-auth/providers/google";
-import Spotify from "next-auth/providers/spotify";
+import Spotify from "next-auth/providers/spotify"
+import Twitter from "next-auth/providers/twitter"
+
 
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
@@ -38,6 +40,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
         theme: { logo: "https://authjs.dev/img/logo-sm.png" },
         adapter: PrismaAdapter(prisma),
         providers: [
+            Spotify,
+            Twitter,
             Resend({
                 from: "faleconosco@kaizin.com.br",
                 maxAge: 10 * 60, // 10 minutos
@@ -218,11 +222,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
         secret: process.env.AUTH_SECRET,
         callbacks: {
             authorized({ request, auth }) {
+                console.log("Authorized callback:", { request, auth });
                 const { pathname } = request.nextUrl;
                 if (pathname === "/middleware-example") return !!auth;
                 return true;
             },
             jwt({ token, trigger, session, account, user }) {
+                console.log("JWT callback:", { token, trigger, session, account, user });
                 if (user && (user as any).id) token.id = (user as any).id;
                 if (user && (user as any).newUser)
                     token.newUser = (user as any).newUser;
@@ -235,6 +241,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
                 return token;
             },
             async session({ session, token }) {
+                console.log("Session callback:", { session, token });
                 if (token?.accessToken) session.accessToken = token.accessToken;
 
                 const userId = (token as any).id ?? (token as any).sub;

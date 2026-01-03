@@ -95,11 +95,11 @@ export default function DisplayReviews({
             setRatingsApiPage(getRatings.data.next);
 
             // Atualizar cache
-            sessionStorage.setItem(
-                STORAGE_KEY,
-                JSON.stringify(newRatings)
-            );
-            sessionStorage.setItem(OFFSET_KEY, (offset + 20).toString());
+            // sessionStorage.setItem(
+            //     STORAGE_KEY,
+            //     JSON.stringify(newRatings)
+            // );
+            // sessionStorage.setItem(OFFSET_KEY, (offset + 20).toString());
 
             // Buscar álbuns das novas ratings
             const newAlbumIds = getRatings.data.ratings.map(
@@ -193,16 +193,6 @@ export default function DisplayReviews({
         await loadMoreData();
     };
 
-    // Função para limpar cache
-    const clearCache = () => {
-        // sessionStorage.removeItem(STORAGE_KEY);
-        // sessionStorage.removeItem(ALBUMS_STORAGE_KEY);
-        // sessionStorage.removeItem(OFFSET_KEY);
-        // // setAllReviews(ratings || []);
-        // setAllAlbums({});
-        // setOffset(20);
-    };
-
     // Função para obter álbum por ID
     const getAlbumById = (albumId: string) => {
         return allAlbums[albumId] || null;
@@ -251,15 +241,6 @@ export default function DisplayReviews({
                 </button>
             )}
 
-            {/* Botão para limpar cache (desenvolvimento) */}
-            {process.env.NODE_ENV === "development" && (
-                <button
-                    onClick={clearCache}
-                    className="mt-2 text-xs text-gray-500 hover:text-gray-300"
-                >
-                    Limpar Cache
-                </button>
-            )}
         </div>
     );
 }

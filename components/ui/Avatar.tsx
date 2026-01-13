@@ -144,7 +144,9 @@ export default function Avatar({
             alt="Avatar"
             className={`
                 ${className}
-                size-6 !rounded-(--icon) text-woodsmoke-700
+                ${isIcon ? "size-6" : ""}
+                !rounded-(--icon) text-woodsmoke-700
+                overflow-hidden
             `}
             size={size}
         />

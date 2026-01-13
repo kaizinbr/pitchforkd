@@ -1,16 +1,19 @@
 import { Work_Sans, Lora, Open_Sans } from "next/font/google";
 import "@/app/globals.css";
 import "@/app/embla.css";
-import "@mantine/core/styles.css";
-import "@mantine/carousel/styles.css";
-import "@mantine/tiptap/styles.css";
-import "@mantine/notifications/styles.css";
+
+
+// ✅ Import all global styles separately
+import '@mantine/core/styles/baseline.css';
+import '@mantine/core/styles/default-css-variables.css';
+import '@mantine/core/styles/global.css';
+
+import '@mantine/core/styles.css';
+
+import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/core';
+
+
 import localFont from "next/font/local";
-import {
-    ColorSchemeScript,
-    MantineProvider,
-    mantineHtmlProps,
-} from "@mantine/core";
 import { Notifications } from "@mantine/notifications";
 
 import Footer from "@/components/footer";

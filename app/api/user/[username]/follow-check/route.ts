@@ -44,6 +44,13 @@ export async function GET(
             },
         });
 
+        if (followCheck.length === 0) {
+            return NextResponse.json(
+                { isFollowing: false, follow: null },
+                { status: 200 }
+            );
+        }
+
         return NextResponse.json(
             {
                 isFollowing: followCheck.length > 0,

@@ -17,7 +17,7 @@ export default function DisplayReviews({
     ratingsLength: number;
 }) {
     
-    const [allReviews, setAllReviews] = useState<Review[]>([]);
+    const [allReviews, setAllReviews] = useState<Review[]>(ratings || []);
     const [allAlbums, setAllAlbums] = useState<{ [key: string]: any }>({});
     const [offset, setOffset] = useState(20);
     const [loading, setLoading] = useState(false);

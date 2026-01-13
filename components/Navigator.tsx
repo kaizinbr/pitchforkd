@@ -20,6 +20,7 @@ import useScrollDirection from "@/hooks/useScrollDirection";
 
 
 import { type User } from "@supabase/supabase-js";
+import NavMenu from "@/components/nav-menu";
 
 const FFDisplay = localFont({
     src: [
@@ -79,7 +80,7 @@ export default function Navigator({ profile }: { profile: Profile | null }) {
                 <button>
                     <Link
                         data-active={pathname === "/explore" || pathname === "/search"}
-                        href={`/explore`}
+                        href={`/search`}
                         className={`
                                 flex min-w-[70px] basis-0 cursor-pointer
                                 flex-col items-center gap-1 rounded-8 p-3
@@ -170,12 +171,6 @@ export function DesktopNavigator({ profile }: { profile: Profile | null }) {
                         flex flex-row items-center justify-evenly
                     `}
                     >
-                        {/* <Link
-                            href={`https://pitchforkd.me/`}
-                            className={FFDisplay.className + ` font-bold mr-8 text-xl`}
-                        >
-                            <Image src="/logo.svg" alt="LOOPI" width={64} height={32} />
-                        </Link> */}
                         <button>
                             <Link
                                 data-active={pathname === "/home"}
@@ -194,7 +189,7 @@ export function DesktopNavigator({ profile }: { profile: Profile | null }) {
                         <button>
                             <Link
                                 data-active={pathname === "/explore" || pathname === "/search"}
-                                href={`/explore`}
+                                href={`/search`}
                                 className={`
                                     flex  basis-0 cursor-pointer
                                     flex-col items-center gap-1 rounded-8 p-3
@@ -223,7 +218,7 @@ export function DesktopNavigator({ profile }: { profile: Profile | null }) {
                         </button>
                     </div>
 
-                    <button className="">
+                    {/* <button className="">
                         <Link
                             data-active={
                                 pathname === "/me" || pathname === `${username}`
@@ -258,7 +253,8 @@ export function DesktopNavigator({ profile }: { profile: Profile | null }) {
                                 <TbUserFilled className="size-6" />
                             )}
                         </Link>
-                    </button>
+                    </button> */}
+                    <NavMenu username={username} name={name} avatarUrl={avatarUrl} />
                 </div>
             </nav>
         </div>

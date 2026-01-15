@@ -15,6 +15,7 @@ import { Album } from "@/lib/utils/types";
 import axios from "axios";
 import Image from "next/image";
 import RaterAlbumCover from "@/components/rate/rater-album-cover";
+import { useRouter } from "next/navigation";
 
 const Track = ({
     track,
@@ -136,7 +137,7 @@ export default function Rater({
     active: number;
     setActive: React.Dispatch<React.SetStateAction<number>>;
 }) {
-    const supabase = createClient();
+    const router = useRouter();
 
     const [onTracks, setOnTracks] = useState<boolean>(false);
 
@@ -205,13 +206,13 @@ export default function Rater({
         fetchRatings();
     }, [tracks]);
 
-    useEffect(() => {
-        setTotal(
-            ratings.reduce((acc, rating) => acc + rating.value, 0) /
-                ratings.length
-        );
-        console.log("total  updated:", total);
-    }, [ratings]);
+    // useEffect(() => {
+    //     setTotal(
+    //         ratings.reduce((acc, rating) => acc + rating.value, 0) /
+    //             ratings.length
+    //     );
+    //     console.log("total  updated:", total);
+    // }, [ratings]);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -245,7 +246,7 @@ export default function Rater({
         } else {
             console.log("Ratings saved/updated", response.data);
             setShorten(response.data.data.shorten);
-            open();
+            router.push(`/r/${response.data.data.shorten}`);
         }
 
 
@@ -369,7 +370,7 @@ export default function Rater({
                                         bg-transparent outline-none
                                         !font-semibold w-full !text-2xl
                                     `}
-                            value={total === 0 ? "" : total}
+                            value={total === 0 ? "" : total.toFixed(1)}
                             max={100}
                             min={0}
                             placeholder="0"
@@ -381,13 +382,15 @@ export default function Rater({
                             color="#fa805e"
                             onChange={(useMedia) => {
                                 setUseMedia(useMedia);
-                                setTotal(
-                                    ratings.reduce(
-                                        (acc, rating) => acc + rating.value,
-                                        0
-                                    ) / ratings.length
-                                );
                                 console.log(useMedia);
+                                if (useMedia) {
+                                    setTotal(
+                                        ratings.reduce(
+                                            (acc, rating) => acc + rating.value,
+                                            0
+                                        ) / ratings.length
+                                    );
+                                }
                             }}
                             classNames={{
                                 label: classes.label,
@@ -412,6 +415,7 @@ export default function Rater({
                         setOnTracks={setOnTracks}
                         setFinalRatings={setRatings}
                         setFinalTotal={setTotal}
+                        useMedia={useMedia}
                         active={active}
                         setActive={setActive}
                         ratings={ratings}

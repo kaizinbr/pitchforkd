@@ -9,6 +9,7 @@ import '@mantine/core/styles/default-css-variables.css';
 import '@mantine/core/styles/global.css';
 
 import '@mantine/core/styles.css';
+import '@mantine/tiptap/styles.css';
 
 import { ColorSchemeScript, MantineProvider, mantineHtmlProps } from '@mantine/core';
 

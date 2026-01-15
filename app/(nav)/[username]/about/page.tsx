@@ -32,7 +32,7 @@ export default async function FavoritesPage({
             {profile?.favorites ? (
                 <div className="w-full">
                     <h2 className=" text-sm text-gray-300">Álbuns favoritos</h2>
-                    <div className="">
+                    {/* <div className="">
                         {Array.isArray(profile?.favorites) && profile.favorites.length > 0 && profile.favorites[0]?.albuns.map((album: any) => (
                             <div
                                 key={album.id}
@@ -55,7 +55,7 @@ export default async function FavoritesPage({
                                 </div>
                             </div>
                         ))}
-                    </div>
+                    </div> */}
                 </div>
             ) : (
                 <div className="w-full">

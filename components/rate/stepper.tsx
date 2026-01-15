@@ -152,7 +152,8 @@ export default function TrackStepper({
     setCurrentTrack,
     active,
     setActive,
-    ratings
+    ratings,
+    useMedia
 }: {
     album: Album;
     onRate: (trackId: string, rating: number) => void;
@@ -175,6 +176,7 @@ export default function TrackStepper({
         favorite: boolean;
         comment?: string;
     }[];
+    useMedia: boolean;
 }) {
     const supabase = createClient();
     const tracks = album.tracks.items;
@@ -214,12 +216,15 @@ export default function TrackStepper({
         }
 
         setFinalRatings(ratings2);
-        setTotal(
-            ratings.reduce((acc, rating) => acc + rating.value, 0) /
-                ratings.length
-        );
-        // console.log("Ratings:", ratings2);
-        // console.log("Total:", total);
+        if (useMedia) {
+            const soma = ratings2.reduce(
+                (acc, rating) => acc + rating.value,    
+                0
+            );
+            const finalTotal = soma / tracks.length;
+            setTotal(finalTotal);
+            setFinalTotal(finalTotal);
+        } 
 
         sessionStorage.setItem(
             id,

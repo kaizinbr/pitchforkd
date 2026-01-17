@@ -8,7 +8,6 @@ export const metadata = {
     description: "Avalie álbuns de música e veja o que a comunidade acha deles",
 };
 
-
 export default async function Page() {
     const session = await auth();
 
@@ -28,12 +27,11 @@ export default async function Page() {
 
     return (
         <div className="flex flex-col gap-4 items-center relative w-full pb-8">
-            {Array.isArray(profile.favorites) && profile.favorites.length > 0 ? (
-                <EditArtists profile={profile.favorites[0]} />
+            {profile.artists ? (
+                <EditArtists initialArtists={profile.artists} />
             ) : (
                 <div>User not found</div>
             )}
-
         </div>
-    )
+    );
 }

@@ -1,166 +1,165 @@
 generator client {
-    provider = "prisma-client-js"
-    output   = "../lib/generated/prisma"
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
 }
 
 datasource db {
-    provider = "postgresql"
+  provider = "postgresql"
 }
 
 model playing_with_neon {
-    id    Int     @id @default(autoincrement())
-    name  String
-    value Float?  @db.Real
-    teste String?
+  id    Int     @id @default(autoincrement())
+  name  String
+  value Float?  @db.Real
+  teste String?
 }
 
 model Account {
-    id                String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    userId            String  @db.Uuid @map("user_id")
-    type              String
-    provider          String
-    providerAccountId String  @map("provider_account_id")
-    refresh_token     String?
-    access_token      String?
-    expires_at        Int?
-    token_type        String?
-    scope             String?
-    id_token          String?
-    session_state     String?
+  userId            String  @map("user_id") @db.Uuid
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String?
+  access_token      String?
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String?
+  session_state     String?
+  id                String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
-    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    @@unique([provider, providerAccountId], name: "provider_providerAccountId")
+  @@unique([provider, providerAccountId], name: "provider_providerAccountId")
 }
 
 model Session {
-    id           String   @id
-    sessionToken String   @unique
-    userId       String   @db.Uuid
-    expires      DateTime @db.Timestamp(6)
-    user         User     @relation(fields: [userId], references: [id])
+  id           String   @id
+  sessionToken String   @unique
+  userId       String   @db.Uuid
+  expires      DateTime @db.Timestamp(6)
+  user         User     @relation(fields: [userId], references: [id])
 }
 
 model User {
-    id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    name              String?
-    email             String?   @unique
-    emailVerified     DateTime? @map("email_verified")
-    encryptedPassword String?   @map("encrypted_password") @db.VarChar(255)
-    image             String?
-    createdAt         DateTime? @map("created_at") @db.Timestamptz(6)
-    accounts          Account[]
-    sessions          Session[]
-    profiles          Profile[]
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name              String?
+  email             String?   @unique
+  emailVerified     DateTime? @map("email_verified")
+  image             String?
+  createdAt         DateTime? @map("created_at") @db.Timestamptz(6)
+  encryptedPassword String?   @map("encrypted_password") @db.VarChar(255)
+  accounts          Account[]
+  profiles          Profile?
+  sessions          Session[]
 }
 
 model Profile {
-    id        String   @id(map: "profiles_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    username  String?  @default(dbgenerated("gen_random_uuid()"))
-    name      String?
-    avatarUrl String?  @default("b62ffbe8-65b6-4c0f-85c3-8ddb41c1c1b2-0.9841619793258353.jpg") @map("avatar_url")
-    lowername String?
-    bio       String?
-    pronouns  String?
-    site      String?
-    color     String?  @default("#cb160f")
-    createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
-    public    Boolean  @default(false)
-    favorites Json     @default("[{\"albuns\": [], \"artists\": []}]")
-    verified  Boolean  @default(false)
-
-    Like                                        Like[]
-    Notification_Notification_senderIdToProfile Notification[] @relation("Notification_senderIdToProfile")
-    Notification_Notification_userIdToProfile   Notification[] @relation("Notification_userIdToProfile")
-    User                                        User           @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-    Rating                                      Rating[]
-
-    Followers Follow[] @relation("Followers")
-    Followed  Follow[] @relation("Followed")
+  id                                          String         @id(map: "profiles_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  username                                    String?        @default(dbgenerated("gen_random_uuid()"))
+  name                                        String?
+  lowername                                   String?
+  bio                                         String?
+  pronouns                                    String?
+  site                                        String?
+  color                                       String?        @default("#cb160f")
+  createdAt                                   DateTime       @default(now()) @map("created_at") @db.Timestamptz(6)
+  public                                      Boolean        @default(false)
+  favorites                                   Json           @default("[{\"albuns\": [], \"artists\": []}]")
+  verified                                    Boolean        @default(false)
+  avatarUrl                                   String?        @default("b62ffbe8-65b6-4c0f-85c3-8ddb41c1c1b2-0.9841619793258353.jpg") @map("avatar_url")
+  albuns                                      Json           @default("[]")
+  artists                                     Json           @default("[]")
+  location                                    String?
+  Followed                                    Follow[]       @relation("Followed")
+  Followers                                   Follow[]       @relation("Followers")
+  Like                                        Like[]
+  Notification_Notification_senderIdToProfile Notification[] @relation("Notification_senderIdToProfile")
+  Notification_Notification_userIdToProfile   Notification[] @relation("Notification_userIdToProfile")
+  User                                        User           @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  Rating                                      Rating[]
 }
 
 model Comment {
-    id        BigInt    @id(map: "comments_pkey") @default(autoincrement())
-    userId    String?   @db.Uuid
-    rating    Int
-    comment   String
-    createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  id        BigInt    @id(map: "comments_pkey") @default(autoincrement())
+  userId    String?   @db.Uuid
+  rating    Int
+  comment   String
+  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
 }
 
 model Follow {
-    id         String       @id(map: "follows_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    followerId String    @map("follower_id") @db.Uuid
-    followedId String    @map("followed_id") @db.Uuid
-    createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  createdAt  DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  followedId String    @map("followed_id") @db.Uuid
+  followerId String    @map("follower_id") @db.Uuid
+  id         String    @id(map: "follows_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  followed   Profile   @relation("Followed", fields: [followedId], references: [id], onDelete: Cascade)
+  follower   Profile   @relation("Followers", fields: [followerId], references: [id], onDelete: Cascade)
 
-    follower Profile @relation("Followers", fields: [followerId], references: [id], onDelete: Cascade)
-    followed Profile @relation("Followed", fields: [followedId], references: [id], onDelete: Cascade)
-
-    @@unique([followerId, followedId])
+  @@unique([followerId, followedId])
 }
 
 model Like {
-    id           BigInt   @id(map: "likes_pkey") @default(autoincrement())
-    userId       String?  @db.Uuid
-    ratingId     String?  @db.Uuid
-    inserted_at  DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
-    updated_at   DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
-    user_profile String?  @db.Uuid
-    Rating       Rating?  @relation(fields: [ratingId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "likes_ratingId_fkey")
-    Profile      Profile? @relation(fields: [user_profile], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "likes_user_profile_fkey")
+  id           BigInt   @id(map: "likes_pkey") @default(autoincrement())
+  userId       String?  @db.Uuid
+  ratingId     String?  @db.Uuid
+  inserted_at  DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  updated_at   DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
+  user_profile String?  @db.Uuid
+  Rating       Rating?  @relation(fields: [ratingId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "likes_ratingId_fkey")
+  Profile      Profile? @relation(fields: [user_profile], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "likes_user_profile_fkey")
 }
 
 model Notification {
-    id                                     String    @id(map: "notifications_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    ratingId                               String?   @db.Uuid
-    type                                   String?
-    seen                                   Boolean?  @default(false)
-    createdAt                              DateTime? @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @map("created_at") @db.Timestamptz(6)
-    senderId                               String?   @map("sender_id") @db.Uuid
-    userId                                 String?   @map("user_id") @db.Uuid
-    Rating                                 Rating?   @relation(fields: [ratingId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notifications_ratingId_fkey")
-    Profile_Notification_senderIdToProfile Profile?  @relation("Notification_senderIdToProfile", fields: [senderId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notifications_senderId_fkey")
-    Profile_Notification_userIdToProfile   Profile?  @relation("Notification_userIdToProfile", fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notifications_userId_fkey")
+  id                                     String    @id(map: "notifications_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ratingId                               String?   @db.Uuid
+  type                                   String?
+  seen                                   Boolean?  @default(false)
+  createdAt                              DateTime? @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @map("created_at") @db.Timestamptz(6)
+  senderId                               String?   @map("sender_id") @db.Uuid
+  userId                                 String?   @map("user_id") @db.Uuid
+  Rating                                 Rating?   @relation(fields: [ratingId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notifications_ratingId_fkey")
+  Profile_Notification_senderIdToProfile Profile?  @relation("Notification_senderIdToProfile", fields: [senderId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notifications_senderId_fkey")
+  Profile_Notification_userIdToProfile   Profile?  @relation("Notification_userIdToProfile", fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notifications_userId_fkey")
 }
 
 model Rating {
-    id           String         @id(map: "ratings_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    albumId      String?        @map("album_id") @db.VarChar
-    ratings      Json?
-    review       String?        @db.VarChar
-    userId       String?        @default(dbgenerated("gen_random_uuid()")) @map("user_id") @db.Uuid
-    total        Decimal        @default(0) @db.Decimal
-    shorten      String?        @unique(map: "ratings_shorten_key")
-    content      Json           @default("{\"type\": \"doc\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"text\": \"\", \"type\": \"text\"}]}]}")
-    published    Boolean        @default(false)
-    createdAt    DateTime       @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @map("created_at") @db.Timestamptz(6)
-    updatedAt    DateTime       @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @map("updated_at") @db.Timestamptz(6)
-    Like         Like[]
-    Notification Notification[]
-    Profile      Profile?       @relation(fields: [userId], references: [id], onDelete: Cascade, map: "ratings_userId_fkey")
+  id           String         @id(map: "ratings_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  ratings      Json?
+  review       String?        @db.VarChar
+  total        Decimal        @default(0) @db.Decimal
+  shorten      String?        @unique(map: "ratings_shorten_key")
+  content      Json           @default("{\"type\": \"doc\", \"content\": [{\"type\": \"paragraph\", \"content\": [{\"text\": \"\", \"type\": \"text\"}]}]}")
+  published    Boolean        @default(false)
+  createdAt    DateTime       @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @map("created_at") @db.Timestamptz(6)
+  updatedAt    DateTime       @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @map("updated_at") @db.Timestamptz(6)
+  albumId      String?        @map("album_id") @db.VarChar
+  userId       String?        @default(dbgenerated("gen_random_uuid()")) @map("user_id") @db.Uuid
+  Like         Like[]
+  Notification Notification[]
+  Profile      Profile?       @relation(fields: [userId], references: [id], onDelete: Cascade, map: "ratings_userId_fkey")
 }
 
 model VerificationToken {
-    id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    identifier String
-    token      String
-    expires    DateTime @db.Timestamp(6)
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  identifier String
+  token      String
+  expires    DateTime @db.Timestamp(6)
 }
 
 model TokenOTP {
-    id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    token      String    @unique
-    createdAt  DateTime? @map("created_at") @db.Timestamp(6)
-    expires    DateTime  @db.Timestamp(6)
-    identifier String    @unique
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  token      String    @unique
+  createdAt  DateTime? @map("created_at") @db.Timestamp(6)
+  expires    DateTime  @db.Timestamp(6)
+  identifier String    @unique
 }
 
 model temp_users_import {
-    id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-    name              String?
-    email             String?   @unique
-    emailVerified     DateTime? @map("email_verified")
-    encryptedPassword String?   @map("encrypted_password") @db.VarChar(255)
-    image             String?
-    createdAt         DateTime? @map("created_at") @db.Timestamptz(6)
+  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name              String?
+  email             String?   @unique
+  emailVerified     DateTime? @map("email_verified")
+  image             String?
+  createdAt         DateTime? @map("created_at") @db.Timestamptz(6)
+  encryptedPassword String?   @map("encrypted_password") @db.VarChar(255)
 }

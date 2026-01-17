@@ -1,7 +1,6 @@
 "use client";
 import { useCallback, useEffect, useState, ChangeEvent } from "react";
 import axios from "axios";
-import { createClient } from "@/utils/supabase/client";
 import Link from "next/link";
 import usernameAlreadyExists from "@/lib/utils/usernameAlreadyExists";
 import containsSpecialChars from "@/lib/utils/containsSpecialChars";
@@ -10,7 +9,6 @@ import Image from "next/image";
 import EditPfp from "@/components/user/edit/edit-pfp";
 
 export default function Edit({ profile }: { profile: any }) {
-    const supabase = createClient();
     const [loading, setLoading] = useState(false);
     const [disabled, setDisabled] = useState(false);
     const [name, setName] = useState<string | null>(profile.name);
@@ -23,6 +21,7 @@ export default function Edit({ profile }: { profile: any }) {
         profile.avatarUrl
     );
     const [pronouns, setPronouns] = useState<string | null>(profile.pronouns);
+    const [bio, setBio] = useState<string | null>(profile.bio);
     const [message, setMessage] = useState<string>("");
 
     const router = useRouter();
@@ -32,12 +31,14 @@ export default function Edit({ profile }: { profile: any }) {
         avatar_url,
         name,
         pronouns,
+        bio
     }: {
         username: string | null;
         name: string | null;
         site: string | null;
         avatar_url: string | null;
         pronouns: string | null;
+        bio: string | null;
     }) {
         try {
             setLoading(true);
@@ -49,7 +50,7 @@ export default function Edit({ profile }: { profile: any }) {
                 lowername: lowercasedUsername,
                 site: site,
                 name: name,
-                bio: profile.bio,
+                bio: bio,
                 pronouns: pronouns,
             });
 
@@ -66,8 +67,8 @@ export default function Edit({ profile }: { profile: any }) {
         }
     }
 
-    const album = profile.favorites[0].albuns;
-    const artists = profile.favorites[0].artists;
+    const album = profile.albuns;
+    const artists = profile.artists;
 
     return (
         <div className="form-widget flex flex-col justify-center w-full px-5 max-w-2xl pt-16 md:px-0 relative">
@@ -253,6 +254,34 @@ export default function Edit({ profile }: { profile: any }) {
                                     `}
                     ></input>
                 </div>
+                <div>
+                    <label
+                        htmlFor="bio"
+                        className={`
+                                    text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70
+                                    text-shark-300
+                                `}
+                    >
+                        Sobre mim
+                    </label>
+                    <textarea
+                        name="bio"
+                        value={bio || ""}
+                        onChange={(e) => setBio(e.target.value)}
+                        placeholder="Sobre mim"
+                        maxLength={400}
+                        rows={6}
+                        className={`
+                                        outline-none
+                                        transition duration-200 ease-in-out
+                                        text-sm! font-bold 
+                                        flex w-full rounded-xl 
+                                        border border-shark-700 bg-shark-700 px-3 py-2 
+                                        ring-offset-background 
+                                        placeholder:text-neutral-400 focus-visible:outline-none 
+                                    `}
+                    ></textarea>
+                </div>
             </form>
             {/* FAVORITOS */}
             <div className="flex flex-col w-full gap-3 mt-8">
@@ -331,13 +360,13 @@ export default function Edit({ profile }: { profile: any }) {
                 className={`
                             py-2 px-6
                             flex justify-center items-center
-                            text-white text-sm !font-semibold rounded-xl
+                            text-white text-sm font-semibold! rounded-xl
                             fixed right-4
                             max-w-2xl mx-auto top-4
                             cursor-pointer
                             transition-all duration-300
-                            z-[500]
-                            ${disabled ? "bg-gray-400 cursor-not-allowed" : " bg-green-pastel hover:bg-main-600 cursor-pointer"}
+                            z-500
+                            ${disabled ? "bg-gray-400 cursor-not-allowed" : " bg-main-500 hover:bg-main-600 cursor-pointer"}
                         `}
                 onClick={() =>
                     updateProfile({
@@ -346,6 +375,7 @@ export default function Edit({ profile }: { profile: any }) {
                         site,
                         avatar_url,
                         pronouns,
+                        bio
                     })
                 }
                 disabled={disabled}

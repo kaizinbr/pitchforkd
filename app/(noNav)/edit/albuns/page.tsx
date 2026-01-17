@@ -1,6 +1,4 @@
-import Edit from "@/components/user/edit/edit-page";
 import EditAlbuns from "@/components/user/edit/albuns/edit-albuns-page";
-import { createClient } from "@/utils/supabase/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/auth";
 
@@ -8,7 +6,6 @@ export const metadata = {
     title: "Editar perfil | Pitchforkd",
     description: "Avalie álbuns de música e veja o que a comunidade acha deles",
 };
-
 
 export default async function Page() {
     const session = await auth();
@@ -20,7 +17,7 @@ export default async function Page() {
 
     const profile = await prisma.profile.findFirst({
         where: { id: session.user.id },
-    });
+    }); 
 
     if (!profile) {
         console.error("Error fetching user");
@@ -29,12 +26,11 @@ export default async function Page() {
 
     return (
         <div className="flex flex-col gap-4 items-center relative w-full pb-8">
-            {Array.isArray(profile.favorites) && profile.favorites.length > 0 ? (
-                <EditAlbuns profile={profile.favorites[0]} />
+            {profile.albuns ? (
+                <EditAlbuns initialAlbuns={profile.albuns} />
             ) : (
                 <div>User not found</div>
             )}
-
         </div>
-    )
+    );
 }

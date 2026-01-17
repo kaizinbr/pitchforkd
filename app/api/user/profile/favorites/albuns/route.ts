@@ -17,28 +17,10 @@ export async function POST(
             );
         }
 
-        const artists = await prisma.profile.findFirst({
-            where: { id: session.user.id },
-            select: {
-                favorites: true,
-            },
-        });
-
-
-        console.log(artists);
-        const previousArtists = artists?.favorites && Array.isArray(artists.favorites) 
-            ? (artists.favorites[0] as any)?.artists || [] 
-            : [];
-        
         await prisma.profile.update({
             where: { id: session?.user!.id },
             data: {
-                favorites: [
-                    {
-                        albuns,
-                        artists: previousArtists,
-                    },
-                ],
+                albuns: albuns,
             },
         });
 
@@ -49,7 +31,7 @@ export async function POST(
     } catch (err) {
         console.error("fetch error", err);
         return NextResponse.json(
-            { error: "Failed to fetch profile" },
+            { error: "Failed to update profile" },
             { status: 500 }
         );
     }

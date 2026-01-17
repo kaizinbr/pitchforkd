@@ -17,26 +17,10 @@ export async function POST(
             );
         }
 
-        const albuns = await prisma.profile.findFirst({
-            where: { id: session.user.id },
-            select: {
-                favorites: true,
-            },
-        });
-
-        const previousAlbuns = albuns?.favorites && Array.isArray(albuns.favorites)
-            ? (albuns.favorites[0] as any)?.albuns || []
-            : [];
-
         await prisma.profile.update({
             where: { id: session?.user!.id },
             data: {
-                favorites: [
-                    {
-                        albuns: previousAlbuns,
-                        artists,
-                    },
-                ],
+                artists: artists,
             },
         });
 

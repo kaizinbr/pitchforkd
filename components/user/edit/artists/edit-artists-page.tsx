@@ -20,7 +20,7 @@ interface Album {
     artist: string;
 }
 
-export default function EditArtists({ profile }: { profile: any }) {
+export default function EditArtists({ initialArtists }: { initialArtists: any }) {
     const supabase = createClient();
     const [loading, setLoading] = useState(false);
     const [disabled, setDisabled] = useState(false);
@@ -31,7 +31,7 @@ export default function EditArtists({ profile }: { profile: any }) {
             src: string;
             name: string;
         }[]
-    >(profile.artists);
+    >(initialArtists || []);
 
     const router = useRouter();
     async function saveFavorites({
@@ -63,13 +63,13 @@ export default function EditArtists({ profile }: { profile: any }) {
                 className={`
                             py-2 px-6
                             flex justify-center items-center
-                            text-white text-sm !font-semibold rounded-xl
+                            text-white text-sm font-semibold! rounded-xl
                             fixed right-4
                             max-w-2xl mx-auto top-4
                             cursor-pointer
                             transition-all duration-300
-                            z-[500]
-                            ${disabled ? "bg-gray-400 cursor-not-allowed" : " bg-green-pastel hover:bg-main-600 cursor-pointer"}
+                            z-500
+                            ${disabled ? "bg-gray-400 cursor-not-allowed" : " bg-main-500 hover:bg-main-600 cursor-pointer"}
                         `}
                 onClick={() => {
                     saveFavorites({

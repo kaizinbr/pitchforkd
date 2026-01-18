@@ -36,7 +36,7 @@ export default function UserHeader({
         <>
             <div
                 className={`
-                    absolute h-[25rem] w-full -z-50 from-40 
+                    absolute h-100 w-full -z-50 from-40 
                     top-0
                     transition-all duration-200 ease-in-out overflow-hidden
                     bg-blend-screen

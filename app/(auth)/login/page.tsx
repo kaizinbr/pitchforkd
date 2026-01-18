@@ -9,6 +9,7 @@ import { PinInput } from "@mantine/core";
 import axios from "axios";
 import { useSession } from "next-auth/react";
 import { TbBrandGoogleFilled } from "react-icons/tb";
+import { Button } from "@/components/ui/button";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -125,7 +126,7 @@ export default function LoginPage() {
                             className="mt-8 flex flex-col gap-4"
                             onSubmit={sendOTP}
                         >
-                            <div className="rounded-md shadow-sm">
+                            <div className="rounded-lg shadow-sm">
                                 <div>
                                     <label
                                         htmlFor="email"
@@ -143,7 +144,7 @@ export default function LoginPage() {
                                         className={`
                                                 appearance-none relative block w-full px-3 py-2 
                                                 border border-gray-500 placeholder-gray-500 
-                                                rounded-md focus:outline-none focus:ring-main-500 focus:border-main-500 focus:z-10 
+                                                rounded-lg focus:outline-none focus:ring-main-500 focus:border-main-500 focus:z-10 
                                                 transition duration-200  text-white
                                                 sm:text-sm
                                             `}
@@ -161,20 +162,9 @@ export default function LoginPage() {
                             )}
 
                             <div>
-                                <button
-                                    type="submit"
-                                    className={`
-                                        group relative w-full flex justify-center border 
-                                        border-transparent 
-                                        text-white bg-main-500 hover:bg-main-600 
-                                        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-main-500 
-                                        
-                                        px-6 py-2 rounded-full text-sm font-semibold transition-colors duration-200
-                                        cursor-pointer
-                                    `}
-                                >
+                                <Button type="submit">
                                     Continuar
-                                </button>
+                                </Button>
                             </div>
                         </form>
                     </>
@@ -195,8 +185,8 @@ export default function LoginPage() {
                                     name="email"
                                     value={email}
                                 />
-                                <div className="rounded-md shadow-sm">
-                                    <div>
+                                <div className="rounded-lg shadow-sm">
+                                    <div className="mx-auto flex items-center justify-center">
                                         <label
                                             htmlFor="otp"
                                             className="sr-only"
@@ -211,6 +201,15 @@ export default function LoginPage() {
                                             size="md"
                                             length={6}
                                             type="number"
+                                            classNames={{
+                                                input: `
+                                                    mx-1 text-center 
+                                                    border border-gray-500 
+                                                    rounded-lg! 
+                                                    focus:outline-none! focus:ring-main-500! focus:border-main-500! 
+                                                    bg-shark-900! text-white! text-lg! font-semibold!
+                                                `,
+                                            }}
                                         />
                                     </div>
                                 </div>
@@ -229,18 +228,15 @@ export default function LoginPage() {
                                     </button>
                                 </div>
                                 <div>
-                                    <button
+                                    <Button
                                         type="submit"
                                         disabled={otp.length < 6}
                                         className={`
-                                                group relative w-full flex justify-center py-2 px-4 
-                                                border border-transparent text-sm font-medium rounded-md text-white 
-                                                bg-blue-500 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500
                                                 ${otp.length < 6 ? "opacity-50 cursor-not-allowed" : ""}
                                             `}
                                     >
                                         Verificar Código
-                                    </button>
+                                    </Button>
                                 </div>
 
                                 {error && (
@@ -273,8 +269,8 @@ export default function LoginPage() {
                             className="mt-8 space-y-6"
                             onSubmit={credentialsSubmit}
                         >
-                            <div className="rounded-md shadow-sm -space-y-px">
-                                <div className="rounded-md shadow-sm">
+                            <div className="rounded-lg shadow-sm -space-y-px">
+                                <div className="rounded-lg shadow-sm">
                                     <div>
                                         <label
                                             htmlFor="email"
@@ -302,7 +298,7 @@ export default function LoginPage() {
                                     </div>
                                 </div>
 
-                                <div className="rounded-md shadow-sm mt-3">
+                                <div className="rounded-lg shadow-sm mt-3">
                                     <div>
                                         <label
                                             htmlFor="password"
@@ -320,7 +316,7 @@ export default function LoginPage() {
                                             className={`
                                                 appearance-none relative block w-full px-3 py-2 
                                                 border border-gray-500 placeholder-gray-500 
-                                                rounded-md focus:outline-none focus:ring-main-500 focus:border-main-500 focus:z-10 
+                                                rounded-lg focus:outline-none focus:ring-main-500 focus:border-main-500 focus:z-10 
                                                 transition duration-200  text-white
                                                 sm:text-sm
                                             `}
@@ -337,20 +333,11 @@ export default function LoginPage() {
                             )}
 
                             <div>
-                                <button
+                                <Button
                                     type="submit"
-                                    className={`
-                                        group relative w-full flex justify-center border 
-                                        border-transparent 
-                                        text-white bg-main-500 hover:bg-main-600 
-                                        focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-main-500 
-                                        
-                                        px-6 py-2 rounded-full text-sm font-semibold transition-colors duration-200
-                                        cursor-pointer
-                                    `}
                                 >
                                     Entrar
-                                </button>
+                                </Button>
                             </div>
                         </form>
                         <div className="text-center flex flex-col gap-2">
@@ -374,25 +361,15 @@ export default function LoginPage() {
                     <>
                         <div className="mt-6 text-center">Ou entre com</div>
                         <div className="mt-2 flex justify-center gap-4">
-                            <button
+                            <Button
                                 onClick={() =>
                                     signIn("google", { redirectTo: "/home" })
                                 }
-                                className={`
-                        group relative w-full flex justify-center  items-center
-                        border border-gray-500 
-                        text-white bg-transparent hover:bg-main-600 hover:border-main-600
-                        focus:outline-none
-                        px-6 py-2 rounded-full text-sm font-semibold transition-colors duration-200
-                         cursor-pointer
-                    `}
+                                variant="outline"
                             >
                                 <TbBrandGoogleFilled className="size-5 mr-2" />
                                 Google
-                            </button>
-                            {/* <button onClick={() => signIn("twitter", {
-
-                    })}>tt</button> */}
+                            </Button>
                         </div>
                     </>
                 )}

@@ -125,6 +125,20 @@ body {
     padding: 0 10px;
     overflow: hidden;
     user-select: none;
+    opacity: 0.7;
+    transition: all 0.2s ease-in-out;
+}
+
+.embla__slide.slideAtivo {
+    opacity: 1;
+}
+
+.embla__slide:nth-child(1) {
+    margin-left: 20px;
+}
+
+.embla__slide:nth-last-child(1) {
+    margin-right: 20px;
 }
 
 .embla__slide__img {
@@ -191,7 +205,7 @@ body {
 
 @media (max-width: 768px) {
     .embla__slide {
-        max-width: 422px;
+        max-width: 192px;
     }
 }
 

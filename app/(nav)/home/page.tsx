@@ -1,9 +1,9 @@
-import { createClient } from "@/utils/supabase/server";
 import DisplayReviews from "@/components/display-reviews/main";
-import ImageCarousel from "@/components/carousel/carousel";
+import AlbunsCarousel from "@/components/carousel/carousel";
 import Link from "next/link";
 
 import { prisma } from "@/lib/prisma";
+import TopFeed from "@/components/home/top-feed";
 
 export default async function Home() {
     const reviews = await prisma.rating.findMany({
@@ -32,9 +32,9 @@ export default async function Home() {
                     href={`https://pitchforkd.me/`}
                     className="font-bold mb-4 pl-5 text-xl md:hidden w-full text-start"
                 >
-                    Pitchforkd
+                    Whistle
                 </Link>
-                <ImageCarousel />
+                <TopFeed />
                 {reviews && totalReviews ? (
                     <DisplayReviews
                         ratings={reviews}

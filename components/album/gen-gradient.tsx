@@ -48,6 +48,7 @@ export function reduceAlpha(color: string, alpha: number): string {
 
 export function darkenColor(color: string, amount: number): string {
     // If color is in rgb(x, x, x) format, sanitize and round values
+    console.log("DarkenColor input:", color);
     const rgbMatch = color.match(/^rgb\(([\d.]+),\s*([\d.]+),\s*([\d.]+)\)$/);
     let safeColor = color;
     if (rgbMatch) {

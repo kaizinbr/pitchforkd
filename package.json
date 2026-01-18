@@ -48,6 +48,7 @@
         "dotenv": "^17.2.3",
         "embla-carousel": "^8.6.0",
         "embla-carousel-autoplay": "^8.6.0",
+        "embla-carousel-class-names": "^8.6.0",
         "embla-carousel-react": "^8.6.0",
         "extract-colors": "^4.2.1",
         "framer-motion": "^12.26.2",

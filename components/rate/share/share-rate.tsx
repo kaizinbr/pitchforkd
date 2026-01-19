@@ -4,18 +4,24 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import ColorThief from "colorthief";
 import axios from "axios";
 import { toPng, getFontEmbedCSS, toJpeg } from "html-to-image";
-import html2canvas from 'html2canvas';
+import html2canvas from "html2canvas";
 import { AlbumRate, Review } from "@/lib/utils/types";
 import Card from "./card";
 import CopyText from "./copy-text";
 
-export default function ShareRate({ id, rate }: { id?: string; rate: Review | any }) {
+export default function ShareRate({
+    id,
+    rate,
+}: {
+    id?: string;
+    rate: Review | any;
+}) {
     const [album, setAlbum] = useState<any>();
     const [tracks, setTracks] = useState<any>([]);
     const [loading, setLoading] = useState(true);
     const [currentColor, setCurrentColor] = useState<string>("#4a6d73");
     const [colors, setColors] = useState<{ hex: string; rgb: string }[]>([]);
-    
+
     const [color1, setColor1] = useState<string>("#4a6d73");
     const [color2, setColor2] = useState<string>("#4a6d73");
     const [color3, setColor3] = useState<string>("#4a6d73");
@@ -34,15 +40,18 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review | an
     const ref = useRef<HTMLDivElement>(null);
 
     const handleCapture = async () => {
-      if (ref.current) {
-        const canvas = await html2canvas(ref.current, { allowTaint: true, useCORS: true });
-        // You can now use the 'canvas' object, for example, to download it as an image:
-        const dataURL = canvas.toDataURL('image/png');
-        const link = document.createElement('a');
-        link.href = dataURL;
-        link.download = 'captured_image.png';
-        link.click();
-      }
+        if (ref.current) {
+            const canvas = await html2canvas(ref.current, {
+                allowTaint: true,
+                useCORS: true,
+            });
+            // You can now use the 'canvas' object, for example, to download it as an image:
+            const dataURL = canvas.toDataURL("image/png");
+            const link = document.createElement("a");
+            link.href = dataURL;
+            link.download = "captured_image.png";
+            link.click();
+        }
     };
 
     const onButtonClick = useCallback(async () => {
@@ -53,6 +62,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review | an
         await document.fonts.ready;
 
         const fontEmbedCSS = await getFontEmbedCSS(ref.current);
+        console.log(fontEmbedCSS)
 
         toPng(ref.current, {
             canvasWidth: 1080,
@@ -78,9 +88,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review | an
 
     useEffect(() => {
         const fetchData = async () => {
-            const response = await axios.get(
-                `/api/spot/album/${rate.albumId}`
-            );
+            const response = await axios.get(`/api/spot/album/${rate.albumId}`);
             console.log(response.data);
             setAlbum(response.data);
             setTracks(response.data.tracks.items);
@@ -97,7 +105,7 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review | an
                         null;
                     } else {
                         const response = await axios.get(
-                            `/api/spot/album/${id}/tracks?offset=${i * 50}`
+                            `/api/spot/album/${id}/tracks?offset=${i * 50}`,
                         );
                         tracks2 = [...tracks2, ...response.data.items];
                         console.log("Offset:", i * 50);
@@ -201,10 +209,11 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review | an
                                             px-3 py-1.5 rounded-full text-xs font-medium
                                             transition-all duration-200 cursor-not-allowed
 
-                                            ${cardStyle === "dynamic"
-                                                ? "bg-main-500 text-white"
-                                                : "bg-shark-700 text-shark-300 hover:bg-shark-600"
-                                             }
+                                            ${
+                                                cardStyle === "dynamic"
+                                                    ? "bg-main-500 text-white"
+                                                    : "bg-shark-700 text-shark-300 hover:bg-shark-600"
+                                            }
                                         `}
                                         onClick={() => setCardStyle("dynamic")}
                                         // disabled
@@ -246,119 +255,152 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review | an
 
                             {cardStyle === "dynamic" ? (
                                 <>
-                                <div className="flex flex-col items-center bg-shark-700 rounded-md p-2 mb-2">
-                                    <p className="text-center text-sm mb-3">
-                                        Cor de fundo 1
-                                    </p>
-                                    <div className="flex flex-row flex-wrap gap-2 w-full max-w-2xl justify-center">
-                                        {colors.length > 0 &&
-                                            colors.map((color, index) => (
-                                                <button
-                                                    key={index}
-                                                    className={`
+                                    <div className="flex flex-col items-center bg-shark-700 rounded-md p-2 mb-2">
+                                        <p className="text-center text-sm mb-3">
+                                            Cor de fundo 1
+                                        </p>
+                                        <div className="flex flex-row flex-wrap gap-2 w-full max-w-2xl justify-center">
+                                            {colors.length > 0 &&
+                                                colors.map((color, index) => (
+                                                    <button
+                                                        key={index}
+                                                        className={`
                                                         size-8 rounded-xl
                                                         bg-[${color.rgb}] cursor-pointer
                                                     `}
-                                                    style={{
-                                                        backgroundColor:
-                                                            color.rgb,
-                                                    }}
-                                                    onClick={() =>
-                                                        setColor1(
-                                                            color.rgb
-                                                        )
-                                                    }
-                                                ></button>
-                                            ))}
-                                        <button className="size-8 rounded-xl bg-white cursor-pointer" onClick={() => setColor1("#ffffff")}></button>
-                                        <button className="size-8 rounded-xl bg-black cursor-pointer" onClick={() => setColor1("#000000")}></button>
+                                                        style={{
+                                                            backgroundColor:
+                                                                color.rgb,
+                                                        }}
+                                                        onClick={() =>
+                                                            setColor1(color.rgb)
+                                                        }
+                                                    ></button>
+                                                ))}
+                                            <button
+                                                className="size-8 rounded-xl bg-white cursor-pointer"
+                                                onClick={() =>
+                                                    setColor1("#ffffff")
+                                                }
+                                            ></button>
+                                            <button
+                                                className="size-8 rounded-xl bg-black cursor-pointer"
+                                                onClick={() =>
+                                                    setColor1("#000000")
+                                                }
+                                            ></button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="flex flex-col items-center bg-shark-700 rounded-md p-2 mb-2">
-                                    <p className="text-center text-sm mb-3">
-                                        Cor de fundo 2
-                                    </p>
-                                    <div className="flex flex-row flex-wrap gap-2 w-full max-w-2xl justify-center">
-                                        {colors.length > 0 &&
-                                            colors.map((color, index) => (
-                                                <button
-                                                    key={index}
-                                                    className={`
+                                    <div className="flex flex-col items-center bg-shark-700 rounded-md p-2 mb-2">
+                                        <p className="text-center text-sm mb-3">
+                                            Cor de fundo 2
+                                        </p>
+                                        <div className="flex flex-row flex-wrap gap-2 w-full max-w-2xl justify-center">
+                                            {colors.length > 0 &&
+                                                colors.map((color, index) => (
+                                                    <button
+                                                        key={index}
+                                                        className={`
                                                         size-8 rounded-xl
                                                         bg-[${color.rgb}] cursor-pointer
                                                     `}
-                                                    style={{
-                                                        backgroundColor:
-                                                            color.rgb,
-                                                    }}
-                                                    onClick={() =>
-                                                        setColor2(
-                                                            color.rgb
-                                                        )
-                                                    }
-                                                ></button>
-                                            ))}
-                                        <button className="size-8 rounded-xl bg-white cursor-pointer" onClick={() => setColor2("#ffffff")}></button>
-                                        <button className="size-8 rounded-xl bg-black cursor-pointer" onClick={() => setColor2("#000000")}></button>
+                                                        style={{
+                                                            backgroundColor:
+                                                                color.rgb,
+                                                        }}
+                                                        onClick={() =>
+                                                            setColor2(color.rgb)
+                                                        }
+                                                    ></button>
+                                                ))}
+                                            <button
+                                                className="size-8 rounded-xl bg-white cursor-pointer"
+                                                onClick={() =>
+                                                    setColor2("#ffffff")
+                                                }
+                                            ></button>
+                                            <button
+                                                className="size-8 rounded-xl bg-black cursor-pointer"
+                                                onClick={() =>
+                                                    setColor2("#000000")
+                                                }
+                                            ></button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="flex flex-col items-center bg-shark-700 rounded-md p-2 mb-2">
-                                    <p className="text-center text-sm mb-3">
-                                        Cor de fundo 3
-                                    </p>
-                                    <div className="flex flex-row flex-wrap gap-2 w-full max-w-2xl justify-center">
-                                        {colors.length > 0 &&
-                                            colors.map((color, index) => (
-                                                <button
-                                                    key={index}
-                                                    className={`
+                                    <div className="flex flex-col items-center bg-shark-700 rounded-md p-2 mb-2">
+                                        <p className="text-center text-sm mb-3">
+                                            Cor de fundo 3
+                                        </p>
+                                        <div className="flex flex-row flex-wrap gap-2 w-full max-w-2xl justify-center">
+                                            {colors.length > 0 &&
+                                                colors.map((color, index) => (
+                                                    <button
+                                                        key={index}
+                                                        className={`
                                                         size-8 rounded-xl
                                                         bg-[${color.rgb}] cursor-pointer
                                                     `}
-                                                    style={{
-                                                        backgroundColor:
-                                                            color.rgb,
-                                                    }}
-                                                    onClick={() =>
-                                                        setColor3(
-                                                            color.rgb
-                                                        )
-                                                    }
-                                                ></button>
-                                            ))}
-                                        <button className="size-8 rounded-xl bg-white cursor-pointer" onClick={() => setColor3("#ffffff")}></button>
-                                        <button className="size-8 rounded-xl bg-black cursor-pointer" onClick={() => setColor3("#000000")}></button>
+                                                        style={{
+                                                            backgroundColor:
+                                                                color.rgb,
+                                                        }}
+                                                        onClick={() =>
+                                                            setColor3(color.rgb)
+                                                        }
+                                                    ></button>
+                                                ))}
+                                            <button
+                                                className="size-8 rounded-xl bg-white cursor-pointer"
+                                                onClick={() =>
+                                                    setColor3("#ffffff")
+                                                }
+                                            ></button>
+                                            <button
+                                                className="size-8 rounded-xl bg-black cursor-pointer"
+                                                onClick={() =>
+                                                    setColor3("#000000")
+                                                }
+                                            ></button>
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="flex flex-col items-center bg-shark-700 rounded-md p-2">
-                                    <p className="text-center text-sm mb-3">
-                                        Cor de fundo 4
-                                    </p>
-                                    <div className="flex flex-row flex-wrap gap-2 w-full max-w-2xl justify-center">
-                                        {colors.length > 0 &&
-                                            colors.map((color, index) => (
-                                                <button
-                                                    key={index}
-                                                    className={`
+                                    <div className="flex flex-col items-center bg-shark-700 rounded-md p-2">
+                                        <p className="text-center text-sm mb-3">
+                                            Cor de fundo 4
+                                        </p>
+                                        <div className="flex flex-row flex-wrap gap-2 w-full max-w-2xl justify-center">
+                                            {colors.length > 0 &&
+                                                colors.map((color, index) => (
+                                                    <button
+                                                        key={index}
+                                                        className={`
                                                         size-8 rounded-xl
                                                         bg-[${color.rgb}] cursor-pointer
                                                     `}
-                                                    style={{
-                                                        backgroundColor:
-                                                            color.rgb,
-                                                    }}
-                                                    onClick={() =>
-                                                        setCurrentColor(
-                                                            color.rgb
-                                                        )
-                                                    }
-                                                ></button>
-                                            ))}
-                                        <button className="size-8 rounded-xl bg-white cursor-pointer" onClick={() => setCurrentColor("#ffffff")}></button>
-                                        <button className="size-8 rounded-xl bg-black cursor-pointer" onClick={() => setCurrentColor("#000000")}></button>
+                                                        style={{
+                                                            backgroundColor:
+                                                                color.rgb,
+                                                        }}
+                                                        onClick={() =>
+                                                            setCurrentColor(
+                                                                color.rgb,
+                                                            )
+                                                        }
+                                                    ></button>
+                                                ))}
+                                            <button
+                                                className="size-8 rounded-xl bg-white cursor-pointer"
+                                                onClick={() =>
+                                                    setCurrentColor("#ffffff")
+                                                }
+                                            ></button>
+                                            <button
+                                                className="size-8 rounded-xl bg-black cursor-pointer"
+                                                onClick={() =>
+                                                    setCurrentColor("#000000")
+                                                }
+                                            ></button>
+                                        </div>
                                     </div>
-                                </div>
-                                
                                 </>
                             ) : (
                                 <>
@@ -380,13 +422,23 @@ export default function ShareRate({ id, rate }: { id?: string; rate: Review | an
                                                     }}
                                                     onClick={() =>
                                                         setCurrentColor(
-                                                            color.rgb
+                                                            color.rgb,
                                                         )
                                                     }
                                                 ></button>
                                             ))}
-                                        <button className="size-8 rounded-xl bg-white cursor-pointer" onClick={() => setCurrentColor("#ffffff")}></button>
-                                        <button className="size-8 rounded-xl bg-black cursor-pointer" onClick={() => setCurrentColor("#000000")}></button>
+                                        <button
+                                            className="size-8 rounded-xl bg-white cursor-pointer"
+                                            onClick={() =>
+                                                setCurrentColor("#ffffff")
+                                            }
+                                        ></button>
+                                        <button
+                                            className="size-8 rounded-xl bg-black cursor-pointer"
+                                            onClick={() =>
+                                                setCurrentColor("#000000")
+                                            }
+                                        ></button>
                                     </div>
                                 </>
                             )}

@@ -128,10 +128,17 @@ export default function Rater({
         value: number;
         favorite: boolean;
         comment?: string;
+        skip?: boolean;
     }[];
     setRatings: React.Dispatch<
         React.SetStateAction<
-            { id: string; value: number; favorite: boolean; comment?: string }[]
+            {
+                id: string;
+                value: number;
+                favorite: boolean;
+                comment?: string;
+                skip?: boolean;
+            }[]
         >
     >;
     active: number;
@@ -206,13 +213,27 @@ export default function Rater({
         fetchRatings();
     }, [tracks]);
 
-    // useEffect(() => {
-    //     setTotal(
-    //         ratings.reduce((acc, rating) => acc + rating.value, 0) /
-    //             ratings.length
-    //     );
-    //     console.log("total  updated:", total);
-    // }, [ratings]);
+    useEffect(() => {
+        console.log("Ratings updated in Rater:", ratings);
+    }, [ratings]);
+
+    const handleTotalChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        if (e.target.value === "") {
+            setTotal(0);
+            return;
+        } else if (isNaN(Number(e.target.value))) {
+            return;
+        }
+
+        if (Number(e.target.value) > 100) {
+            setTotal(100);
+            return;
+        } else if (Number(e.target.value) < 0) {
+            setTotal(0);
+            return;
+        }
+        setTotal(Number(e.target.value));
+    };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -220,7 +241,7 @@ export default function Rater({
 
         const cumulativeRating = ratings.reduce(
             (acc, rating) => acc + rating.value,
-            0
+            0,
         );
 
         let finalRating;
@@ -230,13 +251,12 @@ export default function Rater({
             finalRating = total;
         }
 
-
         const response = await axios.post(`/api/album/${album.id}/ratings`, {
             albumId: album.id,
             ratings,
             review: rawText,
             content: jsonContent,
-            total: finalRating,
+            total: total,
             published: true,
         });
 
@@ -248,7 +268,6 @@ export default function Rater({
             setShorten(response.data.data.shorten);
             router.push(`/r/${response.data.data.shorten}`);
         }
-
 
         // if (ratingsData.length > 0) {
         //     console.log("User already rated this album", finalRating);
@@ -368,13 +387,13 @@ export default function Rater({
                             id="total"
                             className={`
                                         bg-transparent outline-none
-                                        !font-semibold w-full !text-2xl
+                                        font-semibold! w-full text-2xl!
                                     `}
-                            value={total === 0 ? "" : total.toFixed(1)}
+                            value={total === 0 ? "" : total}
                             max={100}
                             min={0}
                             placeholder="0"
-                            onChange={(e) => setTotal(Number(e.target.value))}
+                            onChange={handleTotalChange}
                             disabled={useMedia}
                         />
                         <Chip
@@ -384,12 +403,29 @@ export default function Rater({
                                 setUseMedia(useMedia);
                                 console.log(useMedia);
                                 if (useMedia) {
-                                    setTotal(
+                                    const finalTotal =
                                         ratings.reduce(
-                                            (acc, rating) => acc + rating.value,
-                                            0
-                                        ) / ratings.length
-                                    );
+                                            (acc, rating) =>
+                                                acc +
+                                                (rating.skip
+                                                    ? 0
+                                                    : rating.value),
+                                            0,
+                                        ) /
+                                        ratings.filter((r) => !r.skip).length;
+                                    if (finalTotal < 100 && finalTotal > 0) {
+                                        const formattedTotal =
+                                            finalTotal % 1 !== 0
+                                                ? finalTotal.toFixed(2)
+                                                : finalTotal;
+                                        setTotal(
+                                            formattedTotal as unknown as number,
+                                        );
+                                    } else {
+                                        setTotal(finalTotal);
+                                    }
+
+
                                 }
                             }}
                             classNames={{

@@ -62,26 +62,26 @@ export default function tracksTracksDisplay({
                                                 <>
                                                     <motion.div
                                                         key={track.id}
-                                                        className="bg-transparent hover:bg-shark-800/60 md:rounded-xl transition-all duration-200 ease-in-out grid grid-cols-6 gap-4 gap-y-2 cursor-pointer"
+                                                        className={`
+                                                                bg-transparent hover:bg-shark-800/60 md:rounded-xl transition-all duration-200 ease-in-out grid grid-cols-6 gap-4 gap-y-2 cursor-pointer
+                                                                
+                                                                ${ratings.find(
+                                                                    (rating) =>
+                                                                        rating.id ===
+                                                                        track.id,
+                                                                )?.skip ? "opacity-50" : "opacity-100"}
+                                                            `}
                                                         onClick={() =>
                                                             setOpenComment(
                                                                 openComment ===
                                                                     track.id
                                                                     ? null
-                                                                    : track.id
+                                                                    : track.id,
                                                             )
                                                         }
                                                         initial={{
                                                             height: "auto",
                                                         }}
-                                                        // animate={{
-                                                        //     height:
-                                                        //         openComment ===
-                                                        //         track.id
-                                                        //             ? "300px"
-                                                        //             : "auto",
-                                                        //     // opacity: isExpanded ? 1 : 0.9,
-                                                        // }}
                                                         transition={{
                                                             type: "spring", // Usa spring para um efeito mais fluido
                                                             stiffness: 200, // Controla a rigidez da mola
@@ -105,7 +105,7 @@ export default function tracksTracksDisplay({
                                                                     {track.artists.map(
                                                                         (
                                                                             artist: any,
-                                                                            index: number
+                                                                            index: number,
                                                                         ) => (
                                                                             <span
                                                                                 key={
@@ -122,7 +122,7 @@ export default function tracksTracksDisplay({
                                                                                         1 &&
                                                                                     ", "}
                                                                             </span>
-                                                                        )
+                                                                        ),
                                                                     )}
                                                                 </p>
                                                             </div>
@@ -132,7 +132,7 @@ export default function tracksTracksDisplay({
                                                                 ratings.find(
                                                                     (rating) =>
                                                                         rating.id ===
-                                                                        track.id
+                                                                        track.id,
                                                                 )?.value
                                                             }
                                                         </span>
@@ -143,7 +143,7 @@ export default function tracksTracksDisplay({
                                                                     (rating) =>
                                                                         rating.id ===
                                                                             track.id &&
-                                                                        rating.comment
+                                                                        rating.comment,
                                                                 ) && (
                                                                     <motion.div
                                                                         initial={{
@@ -211,11 +211,11 @@ export default function tracksTracksDisplay({
                                                                                     {
                                                                                         ratings.find(
                                                                                             (
-                                                                                                rating
+                                                                                                rating,
                                                                                             ) =>
                                                                                                 rating.id ===
                                                                                                     track.id &&
-                                                                                                rating.comment
+                                                                                                rating.comment,
                                                                                         )
                                                                                             ?.comment
                                                                                     }
@@ -227,12 +227,12 @@ export default function tracksTracksDisplay({
                                                         </AnimatePresence>
                                                     </motion.div>
                                                 </>
-                                            )
+                                            ),
                                         )}
                                     </div>
                                 </div>
                             </div>
-                        )
+                        ),
                     )}
                 </div>
             ) : null}

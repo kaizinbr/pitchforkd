@@ -5,6 +5,7 @@ export interface Rating {
     value: number;
     favorite: boolean;
     comment: string;
+    skip: boolean;
 }
 
 export interface Profile {

@@ -7,6 +7,7 @@ import TextareaEditor from "./textarea-editor";
 
 import { Album } from "@/lib/utils/types";
 import Image from "next/image";
+import { skip } from "@prisma/client/runtime/client";
 
 type Track2 = {
     id: string;
@@ -30,18 +31,21 @@ const Track = ({
         id: string,
         value: number,
         favorite: boolean,
-        comment: string
+        comment: string,
+        skip?: boolean,
     ) => void;
     ratings: {
         id: string;
         value: number;
         favorite: boolean;
         comment?: string;
+        skip?: boolean;
     }[];
 }) => {
     const [value, setValue] = useState<number>(0);
     const [favorite, setFavorite] = useState<boolean>(false);
     const [comment, setComment] = useState<string>("");
+    const [skip, setSkip] = useState<boolean>(false);
 
     useEffect(() => {
         const rating = ratings.find((rating) => rating.id === track.id);
@@ -49,21 +53,44 @@ const Track = ({
             setValue(rating.value);
             setFavorite(rating.favorite);
             setComment(rating.comment || "");
+            setSkip(rating.skip || false);
             console.log("Loaded rating for track:", track.id, rating);
         }
     }, [ratings, track.id]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const newValue = Number(e.target.value);
+
+        if (newValue > 100) {
+            setValue(100);
+            onValueChange(track.id, 100, favorite, comment, skip);
+            return;
+        }
+        if (newValue <= 0) {
+            setValue(0);
+            onValueChange(track.id, 0, favorite, comment, skip);
+            return;
+        }
         setValue(newValue);
-        onValueChange(track.id, newValue, favorite, comment);
+        console.log(newValue);
+        onValueChange(track.id, newValue, favorite, comment, skip);
         // console.log(favorite);
     };
 
     const handleSliderChange = (newValue: number) => {
+        if (newValue > 100) {
+            setValue(100);
+            onValueChange(track.id, 100, favorite, comment, skip);
+            return;
+        }
+        if (newValue < 0) {
+            setValue(0);
+            onValueChange(track.id, 0, favorite, comment, skip);
+            return;
+        }
         setValue(newValue);
         console.log(newValue);
-        onValueChange(track.id, newValue, favorite, comment);
+        onValueChange(track.id, newValue, favorite, comment, skip);
         // console.log(favorite, track.id);
     };
 
@@ -82,7 +109,7 @@ const Track = ({
                         id="value"
                         className={`
                                 bg-transparent outline-none
-                                !font-bold !text-3xl
+                                !font-bold! !text-3xl!
                                 
                             `}
                         value={value === 0 ? "" : value}
@@ -112,7 +139,7 @@ const Track = ({
                                 track.id,
                                 value,
                                 favorite,
-                                e.target.value
+                                e.target.value,
                             );
                         }}
                         placeholder="Deixe um comentário"
@@ -138,6 +165,26 @@ const Track = ({
                         }}
                     />
                 </div>
+                <Chip
+                    checked={skip}
+                    color="#fa805e"
+                    onChange={(checked) => {
+                        setSkip(checked);
+                        console.log("Skip:", checked);
+                        onValueChange(
+                            track.id,
+                            value,
+                            favorite,
+                            comment,
+                            checked,
+                        );
+                    }}
+                    classNames={{
+                        label: classes.label,
+                    }}
+                >
+                    Pular
+                </Chip>
             </div>
         </div>
     );
@@ -153,7 +200,7 @@ export default function TrackStepper({
     active,
     setActive,
     ratings,
-    useMedia
+    useMedia,
 }: {
     album: Album;
     onRate: (trackId: string, rating: number) => void;
@@ -164,7 +211,8 @@ export default function TrackStepper({
             value: number;
             favorite: boolean;
             comment?: string;
-        }[]
+            skip?: boolean;
+        }[],
     ) => void;
     setFinalTotal: (total: number) => void;
     setCurrentTrack: (track: string) => void;
@@ -175,56 +223,82 @@ export default function TrackStepper({
         value: number;
         favorite: boolean;
         comment?: string;
+        skip?: boolean;
     }[];
     useMedia: boolean;
 }) {
-    const supabase = createClient();
     const tracks = album.tracks.items;
 
     const [ratings2, setRatings] = useState<
-        { id: string; value: number; favorite: boolean; comment?: string }[]
+        {
+            id: string;
+            value: number;
+            favorite: boolean;
+            comment?: string;
+            skip?: boolean;
+        }[]
     >([]);
     const [total, setTotal] = useState<number>(0);
-
 
     const handleValueChange = (
         id: string,
         value: number,
         favorite: boolean,
-        comment: string
+        comment: string,
+        skip?: boolean,
     ) => {
-        setRatings((prevRatings => {
-            const existingRatingIndex = prevRatings.findIndex(rating => rating.id === id);
+        setRatings((prevRatings) => {
+            const existingRatingIndex = prevRatings.findIndex(
+                (rating) => rating.id === id,
+            );
             if (existingRatingIndex !== -1) {
                 const updatedRatings = [...prevRatings];
-                updatedRatings[existingRatingIndex] = { id, value, favorite, comment };
+                updatedRatings[existingRatingIndex] = {
+                    id,
+                    value,
+                    favorite,
+                    comment,
+                    skip,
+                };
                 return updatedRatings;
             } else {
-                return [...prevRatings, { id, value, favorite, comment }];
+                return [...prevRatings, { id, value, favorite, comment, skip }];
             }
-        }));
+        });
 
-         const ratings2 = [...ratings];
+        const ratings2 = [...ratings];
         const existingRatingIndex = ratings2.findIndex(
-            (rating) => rating.id === id
+            (rating) => rating.id === id,
         );
 
         if (existingRatingIndex !== -1) {
-            ratings2[existingRatingIndex] = { id, value, favorite, comment };
+            ratings2[existingRatingIndex] = {
+                id,
+                value,
+                favorite,
+                comment,
+                skip,
+            };
         } else {
-            ratings2.push({ id, value, favorite, comment });
+            ratings2.push({ id, value, favorite, comment, skip });
         }
 
         setFinalRatings(ratings2);
         if (useMedia) {
-            const soma = ratings2.reduce(
-                (acc, rating) => acc + rating.value,    
-                0
-            );
-            const finalTotal = soma / tracks.length;
-            setTotal(finalTotal);
-            setFinalTotal(finalTotal);
-        } 
+            const finalTotal =
+                ratings2.reduce(
+                    (acc, rating) => acc + (rating.skip ? 0 : rating.value),
+                    0,
+                ) / ratings2.filter((r) => !r.skip).length;
+            if (finalTotal < 100 && finalTotal > 0) {
+                const formattedTotal = finalTotal % 1 !== 0 ? finalTotal.toFixed(2) : finalTotal;
+                setTotal(formattedTotal as unknown as number);
+                setFinalTotal(formattedTotal as unknown as number);
+            } else {
+                setTotal(finalTotal);
+                setFinalTotal(finalTotal);
+            }
+        }
 
         sessionStorage.setItem(
             id,
@@ -233,13 +307,14 @@ export default function TrackStepper({
                 value: value,
                 favorite: favorite,
                 comment: comment,
-            })
+                skip: skip,
+            }),
         );
     };
 
     const nextStep = () =>
         setActive((current) =>
-            current < tracks.length - 1 ? current + 1 : current
+            current < tracks.length - 1 ? current + 1 : current,
         );
     const prevStep = () =>
         setActive((current) => (current > 0 ? current - 1 : current));
@@ -258,14 +333,16 @@ export default function TrackStepper({
     // console.log("Total:", total);
 
     return (
-        <div className={`
+        <div
+            className={`
             flex flex-col gap-4 items-center relative w-full max-w-2xl
             
                                     bg-shark-900
                                    p-4
                                     rounded-xl
                                    items- justify-center
-        `}>
+        `}
+        >
             <div className="flex flex-col gap-4 w-full">
                 <h2>Músicas</h2>
                 <div className="flex flex-row gap-2 w-full">
@@ -290,7 +367,7 @@ export default function TrackStepper({
                                             currentTrack.artists.length - 1 &&
                                             ", "}
                                     </span>
-                                )
+                                ),
                             )}
                         </p>
                     </div>
@@ -313,7 +390,7 @@ export default function TrackStepper({
                             disabled={active === 0}
                             className={`
                                     bg-shark-800 hover:bg-shark-800/80 transition-all duration-200
-                                    !font-semibold py-2 px-3 rounded-xl
+                                    !font-semibold! py-2 px-3 rounded-xl
                                     cursor-pointer disabled:cursor-not-allowed
                                     disabled:opacity-50 disabled:hover:bg-shark-800
                                 `}
@@ -328,7 +405,7 @@ export default function TrackStepper({
                                     const sessionRatings = tracks.map(
                                         (track) => {
                                             const item = sessionStorage.getItem(
-                                                track.id
+                                                track.id,
                                             );
                                             return item
                                                 ? JSON.parse(item)
@@ -338,17 +415,17 @@ export default function TrackStepper({
                                                       favorite: false,
                                                       comment: "",
                                                   };
-                                        }
+                                        },
                                     );
                                     console.log(
                                         "Session Ratings:",
-                                        sessionRatings
+                                        sessionRatings,
                                     );
                                     setFinalRatings(sessionRatings);
                                     setRatings(sessionRatings);
                                     const soma = sessionRatings.reduce(
                                         (acc, rating) => acc + rating.value,
-                                        0
+                                        0,
                                     );
                                     const finalTotal =
                                         soma / sessionRatings.length;

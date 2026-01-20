@@ -19,7 +19,7 @@ export default function RatePage({ id }: { id: string }) {
     const [album, setAlbum] = useState<Album>();
     const [tracks, setTracks] = useState<any[]>([]);
     const [ratings, setRatings] = useState<
-        { id: string; value: number; favorite: boolean; comment?: string }[]
+        { id: string; value: number; favorite: boolean; comment?: string; skip?: boolean }[]
     >([]);
     const [currentTrack, setCurrentTrack] = useState<string>("");
     const [active, setActive] = useState(0);

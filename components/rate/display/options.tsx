@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useRouter } from 'next/navigation'
 
 import axios from "axios";
+import { Button } from "@/components/ui/button";
 
 export default function DeleteBtn({ shorten }: { shorten: string }) {
     const supabase = createClient();
@@ -32,7 +33,7 @@ export default function DeleteBtn({ shorten }: { shorten: string }) {
 
         if (response.status == 200) {
             console.log("deletado com sucesso!");
-            router.push('/me')
+            router.push('/')
         }
 
         setLoading(false);
@@ -66,18 +67,19 @@ export default function DeleteBtn({ shorten }: { shorten: string }) {
                     <h2 className="text-xl w-full text-center">
                         Deseja excluir review?
                     </h2>
-                    <button
-                        className="bg-green-pastel cursor-pointer text-white rounded-xl py-2 px-6"
+                    <Button
+                        className=""
                         onClick={close}
+                        variant={"default"}
                     >
                         Cancelar
-                    </button>
-                    <button
-                        className="bg-red-500 cursor-pointer text-white rounded-xl py-2 px-6"
+                    </Button>
+                    <Button
+                        variant={"outline"}
                         onClick={() => handleDelete(shorten)}
                     >
                         Excluir
-                    </button>
+                    </Button>
                 </div>
             </Modal>
             <button
@@ -86,7 +88,7 @@ export default function DeleteBtn({ shorten }: { shorten: string }) {
                     p-3
                     flex justify-center items-center
                     bg-orange-safety border-2 border-orange-safety   text-white font-bold rounded-full
-                    fixed right-36
+                    fixed right-20
                     ${scrollDirection > "down" ? "bottom-20" : "bottom-4"}
                     md:bottom-4 shadow-md cursor-pointer
                     transition-all duration-300

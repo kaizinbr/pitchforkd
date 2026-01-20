@@ -151,7 +151,7 @@ export default function Rater({
     const [review, setReview] = useState<string>("");
     const [total, setTotal] = useState<number>(0);
     const [shorten, setShorten] = useState<string>("");
-    const [useMedia, setUseMedia] = useState<boolean>(false);
+    const [useMedia, setUseMedia] = useState<boolean>(true);
     const [opened, { open, close }] = useDisclosure(false);
     const [content, setContent] = useState<any>(null);
 

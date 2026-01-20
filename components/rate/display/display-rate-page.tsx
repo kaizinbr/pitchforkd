@@ -165,7 +165,7 @@ export default function DisplayRate({
                 <>
                     <div
                         className={`
-                            absolute h-64 w-full -z-50 from-40 
+                            absolute h-74 w-full -z-50 from-40 
                             top-0
                             transition-all duration-200 ease-in-out overflow-hidden
                             bg-blend-screen
@@ -230,7 +230,7 @@ export default function DisplayRate({
                     </div>
                     {canDelete ? <DeleteBtn shorten={rate.shorten} /> : null}
                     <ShareBtn shorten={rate.shorten} />
-                    <LikeBtn
+                    {/* <LikeBtn
                         rating_id={rate.id}
                         owner_id={rate.userId}
                         liked={liked}
@@ -250,7 +250,7 @@ export default function DisplayRate({
                             transition-all duration-300
                             shadow-md
                         `}
-                    />
+                    /> */}
                     <UserRate
                         review={rate}
                         loading={loading}

@@ -19,8 +19,13 @@ const buttonVariants = cva(
                     focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-main-500
                     px-6 py-2 rounded-xl text-base font-semibold! transition-all! duration-200!
                     cursor-pointer`,
-                destructive:
-                    "bg-destructive text-destructive-foreground hover:bg-destructive/90",
+                destructive:`
+                    group relative w-full flex justify-center border 
+                    border-transparent 
+                    text-white bg-red-600 hover:bg-red-700 
+                    focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-600
+                    px-6 py-2 rounded-xl text-base font-semibold! transition-all! duration-200!
+                    cursor-pointer`,
                 outline: `group relative w-full flex justify-center  items-center
                     border border-gray-500 
                     text-white bg-transparent hover:bg-main-600 hover:border-main-600

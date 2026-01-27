@@ -261,7 +261,7 @@ export default function RootLayout({
             </head>
             <body
                 className={
-                    walsheim.className + ` !bg-shark-950 !text-neutral-100 `
+                    walsheim.className + ` bg-shark-950! text-neutral-100! `
                 }
             >
                 <MantineProvider defaultColorScheme="dark">

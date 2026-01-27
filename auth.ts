@@ -43,7 +43,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
             Spotify,
             Twitter,
             Resend({
-                from: "faleconosco@kaizin.com.br",
+                from: "Whistle <onboarding@kaizin.com.br>",
                 maxAge: 10 * 60, // 10 minutos
                 generateVerificationToken: async () => {
                     return Math.floor(

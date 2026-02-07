@@ -5,6 +5,7 @@ export type IconType =
     | "calendar"
     | "close"
     | "comment"
+    | "community"
     | "csr"
     | "daum"
     | "discover"
@@ -128,9 +129,6 @@ export default function Icon({ type, ...props }: Props) {
             </svg>
         );
 
-
-
-
     if (type === "discover")
         return (
             <svg
@@ -162,6 +160,21 @@ export default function Icon({ type, ...props }: Props) {
                     fill="currentColor"
                     fillRule="evenodd"
                 />
+            </svg>
+        );
+
+    if (type === "community")
+        return (
+            <svg
+                className="_svg_1394i_1"
+                // style="width:24px;height:24px"
+                fill="none"
+                viewBox="0 0 24 24"
+                xmlns="http://www.w3.org/2000/svg"
+                {...props}
+                aria-label="Community"
+            >
+                <use href="#tabbar--people-solid-24"></use>
             </svg>
         );
 

@@ -1,4 +1,3 @@
-import { createClient } from "@/utils/supabase/server";
 import { notFound } from "next/navigation";
 import UserHeader from "@/components/user/Profile";
 import UserTabs from "@/components/user/UserTabs";
@@ -16,17 +15,15 @@ export async function generateMetadata({
     params: Promise<{ username: string }>;
 }) {
     const username = (await params).username;
-    const supabase = await createClient();
-
-    const { data } = await supabase
-        .from("profiles")
-        .select("username")
-        .eq("lowercased_username", username.toLowerCase())
-        .single();
+    
+    // Buscar dados do usuário
+    const profile = await prisma.profile.findFirst({
+        where: { lowername: username.toLowerCase() },
+    });
 
     return {
-        title: data?.username
-            ? `${data.username} | Pitchforkd`
+        title: profile?.username
+            ? `${profile.username} | Pitchforkd`
             : "Usuário não encontrado | Pitchforkd",
     };
 }
@@ -34,6 +31,7 @@ export async function generateMetadata({
 export default async function UserLayout({ params, children }: Props) {
     const username = (await params).username;
 
+    
     // Buscar dados do usuário
     const profile = await prisma.profile.findFirst({
         where: { lowername: username.toLowerCase() },

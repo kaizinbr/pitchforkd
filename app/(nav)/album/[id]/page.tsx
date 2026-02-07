@@ -1,6 +1,7 @@
 import AlbumPage from "@/components/album/AlbumPage";
 import AlbumMain from "@/components/album/album-main";
-import { createClient } from "@/utils/supabase/server";
+import { auth } from "@/auth";
+import { prisma } from "@/lib/prisma";
 
 export const metadata = {
     title: "Álbum | Pitchforkd",
@@ -13,28 +14,25 @@ export default async function Page({
     params: Promise<{ id: string }>;
 }) {
     const id = (await params).id;
-    const supabase = await createClient();
+    let profile = null;
 
-    const { data, error } = await supabase
-        .from("ratings")
-        .select(
-            `*,
-            profiles(
-                *
-            )`
-        )
-        .eq("album_id", id);
+    const session = await auth();
 
-    if (error) {
-        console.error("Error fetching album", error);
-        return <div>Error fetching album</div>;
+    console.log("Session:", session);
+
+    if (!session || !session.user) {
+        console.log("Usuário não autenticado");
+    } else {
+        profile = await prisma.profile.findUnique({
+            where: {
+                id: session?.user!.id,
+            },
+        });
     }
-
-    // console.log(data);
 
     return (
         <div className="flex flex-col gap-4 items-center relative">
-            <AlbumMain album_id={id} />
+            <AlbumMain album_id={id} profile={profile} />
         </div>
     );
 }

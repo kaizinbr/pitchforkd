@@ -6,12 +6,19 @@ import axios from "axios";
 import AlbumData from "./album-data";
 import AlbumTracks from "./album-tracks";
 import AlbumBtn from "./album-btn";
+import Avatar from "@/components/ui/Avatar";
 import { Vibrant } from "node-vibrant/browser";
-import {
-    darkenColor,
-} from "@/components/album/gen-gradient";
+import { darkenColor } from "@/components/album/gen-gradient";
+import Link from "next/link";
 
-export default function AlbumMain({ album_id }: { album_id: string | null }) {
+export default function AlbumMain({
+    album_id,
+    profile,
+}: {
+    album_id: string | null;
+    profile: any;
+}) {
+    console.log("Album ID:", profile);
     const [album, setAlbum] = useState<any>([]);
     const [tracks, setTracks] = useState<any>([]);
     const [loading, setLoading] = useState(true);
@@ -44,7 +51,7 @@ export default function AlbumMain({ album_id }: { album_id: string | null }) {
                         null;
                     } else {
                         const response = await axios.get(
-                            `/api/spot/album/${album_id}/tracks?offset=${i * 50}`
+                            `/api/spot/album/${album_id}/tracks?offset=${i * 50}`,
                         );
                         tracks2 = [...tracks2, ...response.data.items];
                         console.log("Offset:", i * 50);
@@ -78,25 +85,25 @@ export default function AlbumMain({ album_id }: { album_id: string | null }) {
                     if (palette.DarkVibrant) {
                         const rgb = palette.DarkVibrant.rgb;
                         setDarkVibrantColor(
-                            `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
+                            `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
                         );
                     }
                     if (palette.DarkMuted) {
                         const rgb = palette.DarkMuted.rgb;
                         setDarkMutedColor(
-                            `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
+                            `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
                         );
                     }
                     if (palette.LightVibrant) {
                         const rgb = palette.LightVibrant.rgb;
                         setLightVibrantColor(
-                            `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
+                            `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
                         );
                     }
                     if (palette.LightMuted) {
                         const rgb = palette.LightMuted.rgb;
                         setLightMutedColor(
-                            `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`
+                            `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`,
                         );
                     }
                 });
@@ -138,6 +145,37 @@ export default function AlbumMain({ album_id }: { album_id: string | null }) {
             </div>
             <AlbumCover album={album} loading={loading} />
             <AlbumData album={album} tracks={tracks} loading={loading} />
+            {profile && !loading ? (
+                <div className="flex flex-row gap-3 w-full max-w-2xl mx-auto items-start justify-start mt-4 px-5">
+                    <div className="flex relative flex-col justify-center items-center size-8 rounded-full mt-2">
+                        <Avatar
+                            size={32}
+                            src={profile.avatarUrl}
+                            className={"size-8"}
+                            isIcon
+                        />
+                    </div>
+                    <div className="bg-shark-900 w-full p-4 rounded-2xl">
+                        <p className="mb-2 text-sm text-gray-300">
+                            Deixe um comentário! Avalie <span className="font-bold">{album.name}</span> e compartilhe
+                            sua opinião na comunidade
+                        </p>
+                        <Link
+                            href={`/rate/${album.id}`}
+                            className={`
+                                py-2
+                                flex justify-center items-center
+                                bg-main-500 border-2 border-main-500 hover:bg-main-600 hover:border-main-600 
+                                text-white font-semibold rounded-xl
+                                md:bottom-4 cursor-pointer
+                                transition-all duration-300
+                            `}
+                        >
+                            Avaliar álbum
+                        </Link>
+                    </div>
+                </div>
+            ) : null}
             <AlbumBtn album={album} loading={loading} />
             {tracks.length > 0 ? (
                 <AlbumTracks tracks={tracks} loading={loading} />

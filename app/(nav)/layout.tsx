@@ -27,7 +27,7 @@ export default async function RootLayout({
     const cookieStore = await cookies();
 
     const isnewuser = cookieStore.get("new")?.value === "true" || false;
-    console.log("Is new user:", isnewuser);
+    // console.log("Is new user:", isnewuser);
     if (isnewuser) {
         redirect('/new-user', RedirectType.replace);
     }

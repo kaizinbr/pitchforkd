@@ -13,6 +13,7 @@ import {
     TbBellFilled,
     TbUsers,
 } from "react-icons/tb";
+import { HiUsers } from "react-icons/hi2";
 import localFont from "next/font/local";
 
 import useScrollDirection from "@/hooks/useScrollDirection";
@@ -90,30 +91,6 @@ export default function Navigator({ profile }: { profile: Profile | null }) {
                             `}
                     >
                         <Icon type="search" className="h-5" />
-                    </Link>
-                </button>
-                <button>
-                    <Link
-                        data-active={pathname === "/users"}
-                        href={`/users`}
-                        className={`
-                                flex min-w-[70px] basis-0 cursor-pointer
-                                flex-col items-center gap-1 rounded-8 p-3
-                                data-[active=true]:text-main-500
-                                hover:text-main-500
-                                transition-all duration-200 ease-in-out
-                            `}
-                    >
-                        <Indicator
-                            inline
-                            size={12}
-                            offset={7}
-                            position="top-end"
-                            color="#00ac1c"
-                            withBorder
-                        >
-                            <TbUsers className="size-6" />
-                        </Indicator>
                     </Link>
                 </button>
                 <button>
@@ -199,21 +176,6 @@ export function DesktopNavigator({ profile }: { profile: Profile | null }) {
                                 `}
                             >
                                 <Icon type="search" className="h-5" />
-                            </Link>
-                        </button>
-                        <button>
-                            <Link
-                                data-active={pathname === "/users"}
-                                href={`/users`}
-                                className={`
-                                    flex cursor-pointer
-                                    flex-col items-center gap-1 rounded-8 p-3
-                                    data-[active=true]:text-main-500
-                                    hover:text-main-500
-                                    transition-all duration-200 ease-in-out
-                                `}
-                            >
-                                <TbUsers className="size-6" />
                             </Link>
                         </button>
                     </div>

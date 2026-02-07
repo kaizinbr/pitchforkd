@@ -3,10 +3,13 @@
 import Avatar from "@/components/ui/Avatar";
 import { darkenColor } from "@/components/album/gen-gradient";
 import {
-    TbSettings2,
-    TbUserEdit,
+    TbSettingsFilled,
+    TbFlagFilled,
     TbRosetteDiscountCheckFilled,
+    TbDots
 } from "react-icons/tb";
+
+import { PiShareFatFill } from "react-icons/pi";
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
@@ -61,16 +64,24 @@ export default function UserHeader({
                     ></div>
                 </div>
             </div>
-            {isUser && (
+            {isUser ? (
                 <div className="absolute top-0 md:top-20 w-full max-w-2xl mx-auto flex flex-row justify-end gap-3 p-5 md:p-0">
                     <Link href={`/edit`} className="">
-                        <TbUserEdit className="size-6" />
+                        <PiShareFatFill className="size-6" />
                     </Link>
                     <Link href={`/settings`} className="">
-                        <TbSettings2 className="size-6" />
+                        <TbSettingsFilled className="size-6" />
                     </Link>
                 </div>
-            )}
+            ) : 
+                <div className="absolute top-0 md:top-20 w-full max-w-2xl mx-auto flex flex-row justify-end gap-3 p-5 md:p-0">
+                    <Link href={`#`} className="">
+                        <TbFlagFilled className="size-6" />
+                    </Link>
+                    <Link href={`#`} className="">
+                        <PiShareFatFill className="size-6" />
+                    </Link>
+                </div>}
             <div className="flex flex-col gap-4 items-center w-full mt-14 md:mt-24 px-5  max-w-2xl">
                 <picture className="flex items-center justify-center relative">
                     <Avatar

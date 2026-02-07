@@ -14,11 +14,11 @@ export default async function Home() {
     });
 
     return (
-        
-                <div className="flex-1 flex flex-col gap-6 pt-8 md:pt-20 h-lvh justify-center items-center w-full">
-                    {users && (
-                        <UserList users={users} />
-                    ) }
-                </div>
+        <div className="flex-1 flex flex-col gap-6 pt-8 md:pt-20 h-lvh justify-center items-center w-full">
+            <h2 className="text-xl text-left font-bold flex px-5 mb-3 w-full">
+                Conheça novas pessoas
+            </h2>
+            {users && <UserList users={users} />}
+        </div>
     );
 }

@@ -26,7 +26,7 @@ export default function tracksTracks({
                 <div className="flex flex-col gap-4">
                     {Object.values(discTracks).map(
                         (disc: any, index: number) => (
-                            <div className="mt-5" key={index}>
+                            <div className="" key={index}>
                                 {disc.length > 1 ? (
                                     <h2 className="text-lg font-bold w-full flex p-5">
                                         Disco {index + 1}

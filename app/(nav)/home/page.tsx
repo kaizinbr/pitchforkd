@@ -60,11 +60,29 @@ export default async function Home() {
                                         transition-all duration-200 ease-in-out
                                     `}
                         >
-                            <HiBell  className="size-6"/>
+                            <HiBell className="size-6" />
                         </Link>
                     </div>
                 </div>
                 <TopFeed />
+                <div className="w-full max-w-2xl px-4">
+                    <div className="rounded-lg text-sm p-4 bg-main-900/70 border border-main-600">
+                        <p className="">
+                            Esse serviço utiliza a base de dados do Spotify para
+                            prover um catálogo amplo de informações.
+                            Recentemente, em 11/02/2026, o Spotify implementou
+                            mudanças em sua API, limitando o acesso a dados e
+                            diminuindo a gama de serviços. Devido a essas
+                            mudanças, o serviço pode apresentar limitações na
+                            exibição de informações. Caso encontre algum
+                            problema, por favor nos informe{" "}
+                            <Link className="underline" href="/about#contato">
+                                aqui
+                            </Link>
+                            .
+                        </p>
+                    </div>
+                </div>
                 {reviews && totalReviews ? (
                     <DisplayReviews
                         ratings={reviews}

@@ -61,13 +61,13 @@ export default function TopFeed() {
                     <div className="absolute inset-0 max-w-sm m-auto flex items-center justify-center blur-3xl md:hidden">
                         <div
                             style={{ backgroundColor: lightenColor(topColor, 1) }}
-                            className={`absolute rounded-full h-80 w-98 -top-1/3 -left-1/2 blur-3xl`}
+                            className={`absolute rounded-full h-80 w-98 -top-1/3 -left-1/2 blur-3xl transition-all duration-300`}
                         ></div>
                     </div>
                 </div>
             )}
             <section className="w-full flex flex-col gap-6">
-                <h1 className="font-bold text-2xl md:text-3xl pl-5">
+                <h1 className="font-bold text-2xl md:text-3xl pl-5 max-w-2xl w-full mx-auto">
                     Destaques Recentes
                 </h1>
                 {loading ? (

@@ -35,11 +35,11 @@ function Item({ url, album }: { url: string; album: CarouselItem }) {
         <Link
             href={`/album/${album.album_id}`}
             className={`
-                flex md:flex-row flex-col-reverse 
+                flex flex-col-reverse 
                 rounded-2xl p-4 gap-3
                 ${album.text}
                 shadow-inner 
-                w-full max-w-48 md:max-w-187.5 lg:max-w-250
+                w-full max-w-48 md:max-w-64
                 h-full
                 transition-all duration-300 
 

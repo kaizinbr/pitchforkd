@@ -23,13 +23,13 @@ export async function proxy(req: NextRequest) {
     }
 
     // Define aqui as rotas que você quer proteger
-    const protectedPaths = ["/protected", "/dashboard"];
+    const protectedPaths = ["/protected", "/dashboard", "/settings", "/account", "/edit"];
     const isProtected = protectedPaths.some(
         (p) => pathname === p || pathname.startsWith(p + "/")
     );
 
     if (pathname === "/" && token) {
-        // console.log(pathname, token);
+        console.log(pathname, token);
         const homeUrl = new URL("/home", req.url);
         return NextResponse.redirect(homeUrl);
     }
@@ -44,5 +44,5 @@ export async function proxy(req: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/", "/protected/:path*", "/dashboard"],
+    matcher: ["/", "/protected/:path*", "/dashboard", "/settings", "/account", "/account/:path*", "/edit"],
 };

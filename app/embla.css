@@ -209,8 +209,8 @@ body {
     }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
     .embla__slide {
-        max-width: 1000px;
+        max-width: 300px;
     }
 }

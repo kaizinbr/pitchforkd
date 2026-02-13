@@ -50,7 +50,7 @@ export default function TopFeed() {
                     className={`
                     absolute h-100 w-full -z-50 from-40 
                     top-0
-                    transition-all duration-200 ease-in-out overflow-hidden
+                    transition-all duration-300 ease-in-out overflow-hidden
                     bg-blend-screen
                 `}
                     style={{
@@ -61,7 +61,7 @@ export default function TopFeed() {
                     <div className="absolute inset-0 max-w-sm m-auto flex items-center justify-center blur-3xl md:hidden">
                         <div
                             style={{ backgroundColor: lightenColor(topColor, 1) }}
-                            className={`absolute rounded-full h-80 w-98 -top-1/3 -left-1/2 blur-3xl transition-all duration-300`}
+                            className={`absolute rounded-full h-80 w-98 -top-1/3 -left-1/2 blur-3xl transition-all duration-200`}
                         ></div>
                     </div>
                 </div>

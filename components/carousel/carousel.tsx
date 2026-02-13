@@ -29,7 +29,7 @@ interface CarouselItem {
 
 function Item({ url, album }: { url: string; album: CarouselItem }) {
     const { darkVibrant, vibrant, titleTextColor } = useColors(url);
-    console.log(darkVibrant)
+    // console.log(darkVibrant)
 
     return (
         <Link
@@ -118,7 +118,7 @@ export default function ImageCarousel({
 
     const onSlideChange = useCallback(() => {
         if (!emblaApi) return;
-        console.log("Slide changed to index:", emblaApi.selectedScrollSnap());
+        // console.log("Slide changed to index:", emblaApi.selectedScrollSnap());
         setTopColor(bannerContent[emblaApi.selectedScrollSnap()]?.darkVibrant || "#1B3955");
     }, [emblaApi]);
 

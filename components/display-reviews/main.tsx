@@ -86,7 +86,7 @@ export default function DisplayReviews({
         if (getRatings) {
             const newRatings = [...allReviews, ...getRatings.data.ratings];
             setAllReviews(newRatings);
-            setOffset(offset + 20);
+            setOffset(offset + 15);
             
             // Verificar se há mais dados
             if (!getRatings.data.next) {
@@ -161,7 +161,7 @@ export default function DisplayReviews({
             if (ratings) {
                 console.log("Inicializando com dados do servidor");
                 setAllReviews(ratings);
-                setOffset(20);
+                setOffset(15);
 
                 
                 // Buscar álbuns das reviews iniciais

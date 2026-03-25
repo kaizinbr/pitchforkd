@@ -60,7 +60,7 @@ export default async function AccountPage() {
                                     w-full gap-2 flex flex-row items-center
                                 `}>
                             <span className="text-gray-400 text-sm">E-mail verificado:</span>
-                            <span className="text-gray-200 text-sm font-medium">{userData?.emailVerified ? userData.emailVerified.toLocaleDateString() : "Não"}</span>
+                            <span className="text-gray-200 text-sm font-medium">{userData?.emailVerified ? "Sim" : "Não"}</span>
                         </div>
                     </div>  
 

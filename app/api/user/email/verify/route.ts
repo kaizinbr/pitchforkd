@@ -57,7 +57,7 @@ export async function POST(request: NextRequest) {
             // Atualizar o e-mail do usuário
             await prisma.user.update({
                 where: { id: session.user.id },
-                data: { email: email, emailVerified: new Date() },
+                data: { email: email, email_verified_when: new Date(), emailVerified: true },
             });
 
             // Deletar o token OTP após o uso

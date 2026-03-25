@@ -32,25 +32,19 @@ model Account {
   @@unique([provider, providerAccountId], name: "provider_providerAccountId")
 }
 
-model Session {
-  id           String   @id
-  sessionToken String   @unique
-  userId       String   @db.Uuid
-  expires      DateTime @db.Timestamp(6)
-  user         User     @relation(fields: [userId], references: [id])
-}
-
 model User {
-  id                String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  name              String?
-  email             String?   @unique
-  emailVerified     DateTime? @map("email_verified")
-  image             String?
-  createdAt         DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  encryptedPassword String?   @map("encrypted_password") @db.VarChar(255)
-  accounts          Account[]
-  profiles          Profile?
-  sessions          Session[]
+  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name                String?
+  email               String?   @unique
+  email_verified_when DateTime?
+  image               String?
+  createdAt           DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  encryptedPassword   String?   @map("encrypted_password") @db.VarChar(255)
+  emailVerified       Boolean?  @map("email_verified")
+  updated_at          DateTime  @default(now()) @db.Timestamptz(6)
+  accounts            Account[]
+  profiles            Profile?
+  session             session[]
 }
 
 model Profile {
@@ -134,6 +128,7 @@ model Rating {
   updatedAt    DateTime       @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @map("updated_at") @db.Timestamptz(6)
   albumId      String?        @map("album_id") @db.VarChar
   userId       String?        @default(dbgenerated("gen_random_uuid()")) @map("user_id") @db.Uuid
+  html         String?
   Like         Like[]
   Notification Notification[]
   Profile      Profile?       @relation(fields: [userId], references: [id], onDelete: Cascade, map: "ratings_userId_fkey")
@@ -163,4 +158,46 @@ model temp_users_import {
   image             String?
   createdAt         DateTime? @map("created_at") @db.Timestamptz(6)
   encryptedPassword String?   @map("encrypted_password") @db.VarChar(255)
+}
+
+model ba_account {
+  userId                String    @db.Uuid
+  accountId             String    @id(map: "ba_account_pk")
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime? @db.Timestamptz(6)
+  refreshTokenExpiresAt DateTime? @db.Timestamptz(6)
+  password              String?
+  createdAt             DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt             DateTime  @default(now()) @db.Timestamptz(6)
+  id                    String?   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+
+  @@index([userId], map: "ba_account_userid_idx")
+}
+
+model session {
+  id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId    String   @db.Uuid
+  token     String   @unique
+  expiresAt DateTime @db.Timestamptz(6)
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now()) @db.Timestamptz(6)
+  updatedAt DateTime @default(now()) @db.Timestamptz(6)
+  User      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "session_user_fk")
+
+  @@index([userId], map: "session_userid_idx")
+}
+
+model verification {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime
+
+  @@index([identifier])
 }

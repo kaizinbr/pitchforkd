@@ -8,9 +8,8 @@ import { cookies } from "next/headers";
 
 import Resend from "next-auth/providers/resend";
 import Google from "next-auth/providers/google";
-import Spotify from "next-auth/providers/spotify"
-import Twitter from "next-auth/providers/twitter"
-
+import Spotify from "next-auth/providers/spotify";
+import Twitter from "next-auth/providers/twitter";
 
 import { PrismaAdapter } from "@auth/prisma-adapter";
 
@@ -38,7 +37,33 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
     return {
         debug: true,
         theme: { logo: "https://authjs.dev/img/logo-sm.png" },
-        adapter: PrismaAdapter(prisma),
+        adapter: {
+            ...PrismaAdapter(prisma),
+            // Sobrescreve o método que lê emailVerified
+            getUser: async (id) => {
+                const user = await prisma.user.findUnique({ where: { id } });
+                if (!user || !user.email) return null;
+                return {
+                    ...user,
+                    email: user.email,
+                    // Auth.js espera Date | null, converte o boolean
+                    emailVerified: user.emailVerified
+                        ? (user.email_verified_when ?? new Date())
+                        : null,
+                };
+            },
+            getUserByEmail: async (email) => {
+                const user = await prisma.user.findUnique({ where: { email } });
+                if (!user || !user.email) return null;
+                return {
+                    ...user,
+                    email: user.email,
+                    emailVerified: user.emailVerified
+                        ? (user.email_verified_when ?? new Date())
+                        : null,
+                };
+            }
+        },
         providers: [
             Spotify,
             Twitter,
@@ -47,7 +72,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
                 maxAge: 10 * 60, // 10 minutos
                 generateVerificationToken: async () => {
                     return Math.floor(
-                        100000 + Math.random() * 900000
+                        100000 + Math.random() * 900000,
                     ).toString();
                 },
                 sendVerificationRequest,
@@ -64,7 +89,6 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
                     password: { label: "Password", type: "password" },
                 },
                 async authorize(credentials) {
-
                     const creds = parseCredentials(credentials);
                     if (!creds?.email || !creds?.password) return null;
 
@@ -84,7 +108,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
                                 email: creds.email,
                                 encryptedPassword: await bcrypt.hash(
                                     creds.password,
-                                    10
+                                    10,
                                 ),
                                 profiles: {
                                     create: {
@@ -110,7 +134,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
                     }
                     const isCorrectPassword = await bcrypt.compare(
                         creds.password,
-                        user.encryptedPassword
+                        user.encryptedPassword,
                     );
 
                     if (!isCorrectPassword) {

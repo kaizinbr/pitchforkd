@@ -7,7 +7,7 @@ import { prisma } from "@/lib/prisma";
 import TopFeed from "@/components/home/top-feed";
 
 export default async function Home() {
-    const reviews = await prisma.rating.findMany({
+    const rawReviews = await prisma.rating.findMany({
         where: {
             published: true,
         },
@@ -25,6 +25,13 @@ export default async function Home() {
             published: true,
         },
     });
+
+    const reviews = rawReviews.map((review) => ({
+    ...review,
+    total: review.total ? Number(review.total) : null,
+    // se tiver outros campos Decimal, converte aqui também
+    ratings: review.ratings, // arrays JSON não precisam de conversão
+}));
 
     return (
         <>

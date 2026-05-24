@@ -141,7 +141,7 @@ export default function RegisterPage() {
                 </form>
                 <div className="text-center">
                     <Link
-                        href="/login"
+                        href="/sign-in"
                         className="text-blue-600 hover:underline"
                     >
                         Já possui uma conta? Entre aqui.

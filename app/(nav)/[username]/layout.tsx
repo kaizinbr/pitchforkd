@@ -2,7 +2,9 @@ import { notFound } from "next/navigation";
 import UserHeader from "@/components/user/Profile";
 import UserTabs from "@/components/user/UserTabs";
 import { prisma } from "@/lib/prisma";
-import { auth } from "@/auth";
+import { auth } from "@/lib/auth";
+import { cookies, headers } from "next/headers";
+import { redirect, RedirectType } from "next/navigation";
 
 type Props = {
     params: Promise<{ username: string }>;
@@ -44,7 +46,11 @@ export default async function UserLayout({ params, children }: Props) {
     }
 
     // Buscar usuário autenticado
-    const currentUser = await auth();
+    const currentUser = await auth.api.getSession({
+        headers: await headers(),
+    });
+
+    console.log("Current user session in UserLayout:", currentUser);
 
     // Buscar quantidade de avaliações
     const reviewCount = await prisma.rating.count({

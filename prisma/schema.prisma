@@ -14,35 +14,17 @@ model playing_with_neon {
   teste String?
 }
 
-model Account {
-  userId            String  @map("user_id") @db.Uuid
-  type              String
-  provider          String
-  providerAccountId String  @map("provider_account_id")
-  refresh_token     String?
-  access_token      String?
-  expires_at        Int?
-  token_type        String?
-  scope             String?
-  id_token          String?
-  session_state     String?
-  id                String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  @@unique([provider, providerAccountId], name: "provider_providerAccountId")
-}
-
 model User {
-  id                  String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  id                  String           @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   name                String?
-  email               String?   @unique
+  email               String?          @unique
   email_verified_when DateTime?
   image               String?
-  createdAt           DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
-  encryptedPassword   String?   @map("encrypted_password") @db.VarChar(255)
-  emailVerified       Boolean?  @map("email_verified")
-  updated_at          DateTime  @default(now()) @db.Timestamptz(6)
-  accounts            Account[]
+  createdAt           DateTime         @default(now()) @map("created_at") @db.Timestamptz(6)
+  encryptedPassword   String?          @map("encrypted_password") @db.VarChar(255)
+  emailVerified       Boolean?         @map("email_verified")
+  updated_at          DateTime         @default(now()) @db.Timestamptz(6)
+  Legacy_Account      Legacy_Account[]
   profiles            Profile?
   session             session[]
 }
@@ -60,10 +42,14 @@ model Profile {
   public                                      Boolean        @default(false)
   favorites                                   Json           @default("[{\"albuns\": [], \"artists\": []}]")
   verified                                    Boolean        @default(false)
-  avatarUrl                                   String?        @default("b62ffbe8-65b6-4c0f-85c3-8ddb41c1c1b2-0.9841619793258353.jpg") @map("avatar_url")
+  avatarUrl                                   String         @default("https://zf4goehfa7fevldb.public.blob.vercel-storage.com/default.jpg") @map("avatar_url")
   albuns                                      Json           @default("[]")
   artists                                     Json           @default("[]")
   location                                    String?
+  lyrics                                      Json?          @default("[]")
+  lastfm_username                             String?
+  Comment                                     Comment[]
+  CommentLike                                 CommentLike[]
   Followed                                    Follow[]       @relation("Followed")
   Followers                                   Follow[]       @relation("Followers")
   Like                                        Like[]
@@ -71,14 +57,26 @@ model Profile {
   Notification_Notification_userIdToProfile   Notification[] @relation("Notification_userIdToProfile")
   User                                        User           @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction)
   Rating                                      Rating[]
+  Wishlist                                    Wishlist[]
 }
 
 model Comment {
-  id        BigInt    @id(map: "comments_pkey") @default(autoincrement())
-  userId    String?   @db.Uuid
-  rating    Int
-  comment   String
-  createdAt DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+  id            String        @id(map: "comments_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  body          String
+  authorId      String        @db.Uuid
+  ratingId      String        @db.Uuid
+  parentId      String?       @db.Uuid
+  createdAt     DateTime      @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @map("created_at") @db.Timestamptz(6)
+  updated_at    DateTime      @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamptz(6)
+  Profile       Profile       @relation(fields: [authorId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "comments_authorId_fkey")
+  Comment       Comment?      @relation("CommentToComment", fields: [parentId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "comments_parentId_fkey")
+  other_Comment Comment[]     @relation("CommentToComment")
+  Rating        Rating        @relation(fields: [ratingId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "comments_ratingId_fkey")
+  CommentLike   CommentLike[]
+
+  @@index([authorId], map: "comments_authorId_idx")
+  @@index([parentId], map: "comments_parentId_idx")
+  @@index([ratingId], map: "comments_ratingId_idx")
 }
 
 model Follow {
@@ -93,27 +91,32 @@ model Follow {
 }
 
 model Like {
-  id           BigInt   @id(map: "likes_pkey") @default(autoincrement())
-  userId       String?  @db.Uuid
-  ratingId     String?  @db.Uuid
+  ratingId     String   @db.Uuid
   inserted_at  DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
   updated_at   DateTime @default(dbgenerated("timezone('utc'::text, now())")) @db.Timestamptz(6)
-  user_profile String?  @db.Uuid
-  Rating       Rating?  @relation(fields: [ratingId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "likes_ratingId_fkey")
-  Profile      Profile? @relation(fields: [user_profile], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "likes_user_profile_fkey")
+  user_profile String   @db.Uuid
+  id           String   @id(map: "likes_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  Rating       Rating   @relation(fields: [ratingId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "likes_ratingId_fkey")
+  Profile      Profile  @relation(fields: [user_profile], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "likes_user_profile_fkey")
+
+  @@unique([user_profile, ratingId], map: "likes_user_ratingid_unique")
+  @@index([ratingId], map: "likes_ratingid_idx")
 }
 
 model Notification {
   id                                     String    @id(map: "notifications_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   ratingId                               String?   @db.Uuid
-  type                                   String?
-  seen                                   Boolean?  @default(false)
+  type                                   String
+  seen                                   Boolean   @default(false)
   createdAt                              DateTime? @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @map("created_at") @db.Timestamptz(6)
-  senderId                               String?   @map("sender_id") @db.Uuid
-  userId                                 String?   @map("user_id") @db.Uuid
+  senderId                               String    @map("sender_id") @db.Uuid
+  userId                                 String    @map("user_id") @db.Uuid
   Rating                                 Rating?   @relation(fields: [ratingId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notifications_ratingId_fkey")
-  Profile_Notification_senderIdToProfile Profile?  @relation("Notification_senderIdToProfile", fields: [senderId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notifications_senderId_fkey")
-  Profile_Notification_userIdToProfile   Profile?  @relation("Notification_userIdToProfile", fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notifications_userId_fkey")
+  Profile_Notification_senderIdToProfile Profile   @relation("Notification_senderIdToProfile", fields: [senderId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notifications_senderId_fkey")
+  Profile_Notification_userIdToProfile   Profile   @relation("Notification_userIdToProfile", fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "notifications_userId_fkey")
+
+  @@index([userId, createdAt(sort: Desc)], map: "notifications_user_id_created_at_idx")
+  @@index([userId, seen], map: "notifications_user_id_seen_idx")
 }
 
 model Rating {
@@ -129,6 +132,7 @@ model Rating {
   albumId      String?        @map("album_id") @db.VarChar
   userId       String?        @default(dbgenerated("gen_random_uuid()")) @map("user_id") @db.Uuid
   html         String?
+  Comment      Comment[]
   Like         Like[]
   Notification Notification[]
   Profile      Profile?       @relation(fields: [userId], references: [id], onDelete: Cascade, map: "ratings_userId_fkey")
@@ -160,23 +164,6 @@ model temp_users_import {
   encryptedPassword String?   @map("encrypted_password") @db.VarChar(255)
 }
 
-model ba_account {
-  userId                String    @db.Uuid
-  accountId             String    @id(map: "ba_account_pk")
-  providerId            String
-  accessToken           String?
-  refreshToken          String?
-  idToken               String?
-  accessTokenExpiresAt  DateTime? @db.Timestamptz(6)
-  refreshTokenExpiresAt DateTime? @db.Timestamptz(6)
-  password              String?
-  createdAt             DateTime  @default(now()) @db.Timestamptz(6)
-  updatedAt             DateTime  @default(now()) @db.Timestamptz(6)
-  id                    String?   @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-
-  @@index([userId], map: "ba_account_userid_idx")
-}
-
 model session {
   id        String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   userId    String   @db.Uuid
@@ -200,4 +187,66 @@ model verification {
   updatedAt  DateTime
 
   @@index([identifier])
+}
+
+model CommentLike {
+  id         String   @id(map: "comment_likes_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  userId     String   @db.Uuid
+  commentId  String   @db.Uuid
+  created_at DateTime @default(dbgenerated("(now() AT TIME ZONE 'utc'::text)")) @db.Timestamptz(6)
+  Comment    Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "comment_likes_commentId_fkey")
+  Profile    Profile  @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "comment_likes_userId_fkey")
+
+  @@unique([userId, commentId], map: "comment_likes_user_comment_unique")
+  @@index([commentId], map: "comment_likes_commentId_idx")
+}
+
+model Legacy_Account {
+  user_id             String  @db.Uuid
+  type                String
+  provider            String
+  provider_account_id String
+  refresh_token       String?
+  access_token        String?
+  expires_at          Int?
+  token_type          String?
+  scope               String?
+  id_token            String?
+  session_state       String?
+  id                  String  @id(map: "Account_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  User                User    @relation(fields: [user_id], references: [id], onDelete: Cascade, map: "Account_user_id_fkey")
+
+  @@unique([provider, provider_account_id], map: "Account_provider_provider_account_id_key")
+}
+
+model Wishlist {
+  id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  profileId  String   @db.Uuid
+  albumId    String   @db.VarChar
+  albumName  String
+  artistName String
+  coverUrl   String?
+  addedAt    DateTime @default(now()) @db.Timestamptz(6)
+  Profile    Profile  @relation(fields: [profileId], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([profileId, albumId])
+  @@index([profileId])
+}
+
+model account {
+  userId                String    @db.Uuid
+  accountId             String    @id(map: "ba_account_pk")
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime? @db.Timestamptz(6)
+  refreshTokenExpiresAt DateTime? @db.Timestamptz(6)
+  password              String?
+  createdAt             DateTime  @default(now()) @db.Timestamptz(6)
+  updatedAt             DateTime  @default(now()) @db.Timestamptz(6)
+  id                    String    @unique(map: "Account_id_key") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  scope                 String?
+
+  @@index([userId], map: "ba_account_userid_idx")
 }

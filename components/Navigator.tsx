@@ -8,47 +8,28 @@ import Avatar from "@/components/ui/Avatar";
 import Icon from "@/components/ui/Icon";
 import { useState, useCallback, useEffect, useRef } from "react";
 import { createClient } from "@/utils/supabase/client";
-import {
-    TbUserFilled,
-    TbBellFilled,
-    TbUsers,
-} from "react-icons/tb";
+import { TbUserFilled, TbBellFilled, TbUsers } from "react-icons/tb";
 import { HiUsers } from "react-icons/hi2";
 import localFont from "next/font/local";
 
 import useScrollDirection from "@/hooks/useScrollDirection";
 
-
-
-import { type User } from "@supabase/supabase-js";
-import NavMenu from "@/components/nav-menu";
-
-const FFDisplay = localFont({
-    src: [
-        {
-            path: "../public/fonts/p/FeatureFlatDisplay-Bold-Web.woff2",
-            weight: "bold",
-            style: "normal",
-        },
-        {
-            path: "../public/fonts/p/FeatureFlatDisplay-BoldItalic-Web.woff2",
-            weight: "bold",
-            style: "italic",
-        },
-    ],
-});
+import { authClient } from "@/lib/auth-client";
 
 export default function Navigator({ profile }: { profile: Profile | null }) {
     const pathname = usePathname();
     const supabase = createClient();
 
-    const [username, setUsername] = useState<string | null>(profile?.username ?? null);
-    const [avatarUrl, setAvatarUrl] = useState<string | null>(profile?.avatarUrl ?? null);
+    const [username, setUsername] = useState<string | null>(
+        profile?.username ?? null,
+    );
+    const [avatarUrl, setAvatarUrl] = useState<string | null>(
+        profile?.avatarUrl ?? null,
+    );
     const [hasNotifications, setHasNotifications] = useState<boolean>(false);
     const scrollDirection = useScrollDirection();
 
     const [localNotifications, setLocalNotifications] = useState<any[]>([]);
-
 
     return (
         <div className="relative md:hidden">
@@ -80,7 +61,9 @@ export default function Navigator({ profile }: { profile: Profile | null }) {
                 </button>
                 <button>
                     <Link
-                        data-active={pathname === "/explore" || pathname === "/search"}
+                        data-active={
+                            pathname === "/explore" || pathname === "/search"
+                        }
                         href={`/search`}
                         className={`
                                 flex min-w-[70px] basis-0 cursor-pointer
@@ -119,15 +102,30 @@ export default function Navigator({ profile }: { profile: Profile | null }) {
     );
 }
 
-export function DesktopNavigator({ profile }: { profile: Profile | null }) {
+export function DesktopNavigator({
+    profile,
+}: {
+    profile: Profile | null;
+}) {
     const pathname = usePathname();
     const supabase = createClient();
 
     const [name, setName] = useState<string | null>(profile?.name ?? null);
-    const [username, setUsername] = useState<string | null>(profile?.username ?? null);
-    const [avatarUrl, setAvatarUrl] = useState<string | null>(profile?.avatarUrl ?? null);
+    const [username, setUsername] = useState<string | null>(
+        profile?.username ?? null,
+    );
+    const [avatarUrl, setAvatarUrl] = useState<string | null>(
+        profile?.avatarUrl ?? null,
+    );
     const scrollDirection = useScrollDirection();
 
+    // useEffect(() => {
+    //     const fetchSession = async () => {
+    //         const { data: session } = await authClient.getSession();
+    //         console.log("Session in DesktopNavigator:", session);
+    //     };
+    //     fetchSession();
+    // }, [profile]);
 
     return (
         <div className="relative hidden md:block">
@@ -165,7 +163,10 @@ export function DesktopNavigator({ profile }: { profile: Profile | null }) {
                         </button>
                         <button>
                             <Link
-                                data-active={pathname === "/explore" || pathname === "/search"}
+                                data-active={
+                                    pathname === "/explore" ||
+                                    pathname === "/search"
+                                }
                                 href={`/search`}
                                 className={`
                                     flex  basis-0 cursor-pointer
@@ -180,7 +181,7 @@ export function DesktopNavigator({ profile }: { profile: Profile | null }) {
                         </button>
                     </div>
 
-                    {/* <button className="">
+                    <button className="">
                         <Link
                             data-active={
                                 pathname === "/me" || pathname === `${username}`
@@ -215,8 +216,8 @@ export function DesktopNavigator({ profile }: { profile: Profile | null }) {
                                 <TbUserFilled className="size-6" />
                             )}
                         </Link>
-                    </button> */}
-                    <NavMenu username={username} name={name} avatarUrl={avatarUrl} />
+                    </button>
+                    {/* <NavMenu username={username} name={name} avatarUrl={avatarUrl} /> */}
                 </div>
             </nav>
         </div>

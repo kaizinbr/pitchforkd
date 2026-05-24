@@ -1,10 +1,11 @@
 import "@/app/globals.css";
 import Navigator, { DesktopNavigator } from "@/components/Navigator";
-import { cookies } from "next/headers";
-import { redirect, RedirectType } from 'next/navigation'
+import { auth } from "@/lib/auth";
+import { cookies, headers } from "next/headers";
+import { redirect, RedirectType } from "next/navigation";
 
 //migrando para neondb
-import { auth } from "@/auth";
+// import { auth } from "@/auth";
 
 import { prisma } from "@/lib/prisma";
 
@@ -23,13 +24,15 @@ export default async function RootLayout({
 }: Readonly<{
     children: React.ReactNode;
 }>) {
-    const session = await auth();
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
     const cookieStore = await cookies();
 
     const isnewuser = cookieStore.get("new")?.value === "true" || false;
     // console.log("Is new user:", isnewuser);
     if (isnewuser) {
-        redirect('/new-user', RedirectType.replace);
+        redirect("/new-user", RedirectType.replace);
     }
 
     let profile = null;

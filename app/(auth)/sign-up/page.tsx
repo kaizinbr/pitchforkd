@@ -1,6 +1,7 @@
 "use client";
 
-import { signIn } from "next-auth/react";
+// import { signIn } from "next-auth/react";
+import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import Link from "next/link";
@@ -22,16 +23,34 @@ export default function LoginPage() {
         try {
             event.preventDefault();
             const formData = new FormData(event.currentTarget);
-            const response = await signIn("resend", {
-                ...Object.fromEntries(formData),
-                redirect: false,
-                // redirectTo: "/",
-            });
+            const { data, error } = await authClient.signUp.email(
+            {
+                email: formData.get("email") as string, // user email address
+                password: formData.get("password") as string, // user password -> min 8 characters by default
+                name: formData.get("name") as string, // user display name
+                callbackURL: "/home", // A URL to redirect to after the user verifies their email (optional)
+            },
+            {
+                onRequest: (ctx) => {
+                    //show loading
+                },
+                onSuccess: (ctx) => {
+                    //redirect to the dashboard or sign in page
+                    router.push("/home");
+                },
+                onError: (ctx) => {
+                    // display the error message
+                    alert(ctx.error.message);
+                },
+            },
+        );
 
-            if (response?.error) {
+            if (error) {
                 setError("Failed to send magic link");
                 return;
             }
+
+            console.log("Magic link sent response:", data);
 
             setStep("otp");
             setEmail(formData.get("email") as string);
@@ -46,18 +65,17 @@ export default function LoginPage() {
             event.preventDefault();
             console.log("Verifying OTP:", otp, "for email:", email);
 
-            const response = await signIn("credentials-otp", {
+            const { data, error } = await authClient.signIn.emailOtp({
                 email,
                 otp: otp,
-                redirect: false,
             });
 
-            if (response?.error) {
+            if (error) {
                 setError("Código inválido ou expirado.");
                 return;
             }
 
-            console.log(response);
+            console.log(data);
             // Successful login
             router.push("/home");
             // router.refresh();
@@ -87,20 +105,22 @@ export default function LoginPage() {
                 return;
             }
 
-            const response = await signIn("credentials", {
-                ...Object.fromEntries(formData),
-                redirect: false,
+            const { data, error } = await authClient.signIn.email({
+                email: formData.get("email") as string,
+                password: formData.get("password") as string,
+                rememberMe: true,
+                // callbackURL: "https://example.com/callback",
             });
 
-            if (response?.error) {
-                if (response.error === "NO_PASSWORD_SET") {
-                    setError(
-                        'Esta conta foi criada com Google. Use o botão "Entrar com Google" ou cadastre uma senha.'
-                    );
-                    // setShowPasswordReset(true); // Opcional: mostrar opção de criar senha
-                } else if (response.error === "INVALID_CREDENTIALS") {
-                    setError("Email ou senha incorretos.");
-                }
+            if (error) {
+                // if (error === "NO_PASSWORD_SET") {
+                //     setError(
+                //         'Esta conta foi criada com Google. Use o botão "Entrar com Google" ou cadastre uma senha.',
+                //     );
+                //     // setShowPasswordReset(true); // Opcional: mostrar opção de criar senha
+                // } else if (error === "INVALID_CREDENTIALS") {
+                setError("Email ou senha incorretos.");
+                // }
                 return;
             }
 
@@ -112,6 +132,7 @@ export default function LoginPage() {
         }
     }
 
+
     return (
         <div className="min-h-screen flex items-center justify-center p-4 sm:px-6 lg:px-8 max-w-md w-full mx-auto">
             <div className="max-w-md w-full space-y-8">
@@ -119,7 +140,7 @@ export default function LoginPage() {
                     <>
                         <div>
                             <h2 className="mt-6 text-center text-3xl font-extrabold ">
-                                Entre ou cadastre-se
+                                Crie sua conta
                             </h2>
                         </div>
                         <form
@@ -152,6 +173,32 @@ export default function LoginPage() {
                                     />
                                 </div>
                             </div>
+                            <div className="rounded-lg shadow-sm">
+                                <div>
+                                    <label
+                                        htmlFor="password"
+                                        className={`
+                                            test-sm font-medium text-gray-300 mb-1 block
+                                        `}
+                                    >
+                                        Senha
+                                    </label>
+                                    <input
+                                        id="password"
+                                        name="password"
+                                        type="password"
+                                        required
+                                        className={`
+                                                appearance-none relative block w-full px-3 py-2 
+                                                border border-gray-500 placeholder-gray-500 
+                                                rounded-lg focus:outline-none focus:ring-main-500 focus:border-main-500 focus:z-10 
+                                                transition duration-200  text-white
+                                                sm:text-sm
+                                            `}
+                                        placeholder="********"
+                                    />
+                                </div>
+                            </div>
 
                             {error && (
                                 <>
@@ -162,9 +209,7 @@ export default function LoginPage() {
                             )}
 
                             <div>
-                                <Button type="submit">
-                                    Continuar
-                                </Button>
+                                <Button type="submit">Continuar</Button>
                             </div>
                         </form>
                     </>
@@ -247,18 +292,18 @@ export default function LoginPage() {
                                     </>
                                 )}
 
-                                <button
+                                {/* <button
                                     onClick={() => setStep("credentials")}
                                     className="text-gray-300 text-center hover:underline"
                                 >
                                     Prefiro entrar com senha.
-                                </button>
+                                </button> */}
                             </form>
                         </div>
                     </>
                 )}
 
-                {step === "credentials" && (
+                {/* {step === "credentials" && (
                     <div className="max-w-md w-full space-y-8">
                         <div>
                             <h2 className="mt-6 text-center text-3xl font-extrabold ">
@@ -333,11 +378,7 @@ export default function LoginPage() {
                             )}
 
                             <div>
-                                <Button
-                                    type="submit"
-                                >
-                                    Entrar
-                                </Button>
+                                <Button type="submit">Entrar</Button>
                             </div>
                         </form>
                         <div className="text-center flex flex-col gap-2">
@@ -355,18 +396,13 @@ export default function LoginPage() {
                             </Link>
                         </div>
                     </div>
-                )}
+                )} */}
 
                 {step !== "otp" && step !== "credentials" && (
                     <>
                         <div className="mt-6 text-center">Ou entre com</div>
                         <div className="mt-2 flex justify-center gap-4">
-                            <Button
-                                onClick={() =>
-                                    signIn("google", { redirectTo: "/home" })
-                                }
-                                variant="outline"
-                            >
+                            <Button onClick={() => signIn()} variant="outline">
                                 <TbBrandGoogleFilled className="size-5 mr-2" />
                                 Google
                             </Button>

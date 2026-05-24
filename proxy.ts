@@ -1,15 +1,9 @@
-import { NextResponse } from "next/server";
-import { getToken } from "next-auth/jwt";
-import type { NextRequest } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
+import { headers } from "next/headers";
+import { auth } from "@/lib/auth";
 
-// Edge-safe proxy that checks for a valid next-auth token and redirects
-// unauthenticated users to the sign-in page for protected routes.
-// This file must NOT import `auth` or other Node-only modules (like prisma)
-// because it runs in the Edge runtime.
-
-export async function proxy(req: NextRequest) {
-    const token = await getToken({ req, secret: process.env.AUTH_SECRET });
-    const { pathname } = req.nextUrl;
+export async function proxy(request: NextRequest) {
+    const { pathname } = request.nextUrl;
 
     // Allow next static, api, auth routes and assets through
     if (
@@ -22,21 +16,23 @@ export async function proxy(req: NextRequest) {
         return NextResponse.next();
     }
 
-    // Define aqui as rotas que você quer proteger
+    const session = await auth.api.getSession({
+        headers: await headers(),
+    });
+
     const protectedPaths = ["/protected", "/dashboard", "/settings", "/account", "/edit"];
     const isProtected = protectedPaths.some(
         (p) => pathname === p || pathname.startsWith(p + "/")
     );
 
-    if (pathname === "/" && token) {
-        console.log(pathname, token);
-        const homeUrl = new URL("/home", req.url);
+    if (pathname === "/" && session) {
+        const homeUrl = new URL("/home", request.url);
         return NextResponse.redirect(homeUrl);
     }
 
-    if (isProtected && !token) {
-        const signInUrl = new URL("/login", req.url);
-        signInUrl.searchParams.set("callbackUrl", req.nextUrl.pathname);
+    if (isProtected && !session) {
+        const signInUrl = new URL("/sign-in", request.url);
+        signInUrl.searchParams.set("callbackUrl", pathname);
         return NextResponse.redirect(signInUrl);
     }
 

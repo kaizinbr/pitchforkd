@@ -12,7 +12,7 @@ export default async function Home() {
 
                         <Link
                             className="py-2 px-8 rounded-xl text-lg text-center font-semibold border-2 border-main-500 hover:bg-main-600 hover:border-main-600 transition-all duration-200"
-                            href="/login"
+                            href="/sign-in"
                         >
                             Entrar ou se cadastrar
                         </Link>

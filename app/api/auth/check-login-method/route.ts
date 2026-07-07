@@ -18,7 +18,7 @@ export async function POST(req: Request) {
                 id: true,
                 email: true,
                 encryptedPassword: true,
-                accounts: {
+                Legacy_Account: {
                     select: {
                         provider: true,
                     },
@@ -34,7 +34,7 @@ export async function POST(req: Request) {
         }
 
         const hasPassword = !!user.encryptedPassword;
-        const oauthProviders = user.accounts.map((acc) => acc.provider);
+        const oauthProviders = user.Legacy_Account.map((acc) => acc.provider);
 
         if (!hasPassword && oauthProviders.length > 0) {
             return NextResponse.json({

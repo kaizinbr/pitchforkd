@@ -1,7 +1,7 @@
 import React, { useState, useCallback } from "react";
 import Cropper from "react-easy-crop";
 import getCroppedImg from "@/lib/utils/cropImage"; // Função para processar a imagem
-import { Area } from "react-easy-crop/types";
+import { Area } from "react-easy-crop";
 import { createClient } from "@/utils/supabase/client";
 
 import Avatar from "@/components/user/edit/avatar";

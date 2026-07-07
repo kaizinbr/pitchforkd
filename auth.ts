@@ -233,7 +233,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth(() => {
                 await prisma.profile.create({
                     data: {
                         id: user.id, // mesmo id do User
-                        avatarUrl: user.image,
+                        avatarUrl: user.image || "",
                         username: tempUsername,
                         lowername: tempUsername.toLowerCase(),
                         name: user.name || user.email || "Usuário",

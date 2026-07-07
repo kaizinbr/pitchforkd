@@ -1,5 +1,4 @@
 import { createClient } from "@/utils/supabase/server";
-import { identity } from "@mantine/core/lib/core/factory/factory";
 import { NextResponse } from "next/server";
 import { generateFromEmail, generateUsername } from "unique-username-generator";
 

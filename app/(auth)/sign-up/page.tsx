@@ -86,51 +86,63 @@ export default function LoginPage() {
         }
     }
 
-    async function credentialsSubmit(event: React.FormEvent<HTMLFormElement>) {
-        try {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
+    // async function credentialsSubmit(event: React.FormEvent<HTMLFormElement>) {
+    //     try {
+    //         event.preventDefault();
+    //         const formData = new FormData(event.currentTarget);
 
-            const checkRes = await axios.post("/api/auth/check-login-method", {
-                email: formData.get("email"),
+    //         const checkRes = await axios.post("/api/auth/check-login-method", {
+    //             email: formData.get("email"),
+    //         });
+
+    //         const checkData = checkRes.data;
+    //         console.log("Check login method response:", checkData);
+
+    //         if (!checkData.hasPassword) {
+    //             // Mostra mensagem informando o método correto
+    //             setError(checkData.message);
+    //             // setShowOAuthButtons(true); // Destaca os botões OAuth
+    //             return;
+    //         }
+
+    //         const { data, error } = await authClient.signIn.email({
+    //             email: formData.get("email") as string,
+    //             password: formData.get("password") as string,
+    //             rememberMe: true,
+    //             // callbackURL: "https://example.com/callback",
+    //         });
+
+    //         if (error) {
+    //             // if (error === "NO_PASSWORD_SET") {
+    //             //     setError(
+    //             //         'Esta conta foi criada com Google. Use o botão "Entrar com Google" ou cadastre uma senha.',
+    //             //     );
+    //             //     // setShowPasswordReset(true); // Opcional: mostrar opção de criar senha
+    //             // } else if (error === "INVALID_CREDENTIALS") {
+    //             setError("Email ou senha incorretos.");
+    //             // }
+    //             return;
+    //         }
+
+    //         router.push("/");
+    //         router.refresh();
+    //     } catch (error) {
+    //         setError("An error occurred during login");
+    //         console.error("Login error:", error);
+    //     }
+    // }
+
+    const signIn = async () => {
+            const data = await authClient.signIn.social({
+                provider: "google",
             });
-
-            const checkData = checkRes.data;
-            console.log("Check login method response:", checkData);
-
-            if (!checkData.hasPassword) {
-                // Mostra mensagem informando o método correto
-                setError(checkData.message);
-                // setShowOAuthButtons(true); // Destaca os botões OAuth
-                return;
+    
+            console.log("Google sign-in response:", data);
+    
+            if (data.error) {
+                setError("Failed to sign in with Google");
             }
-
-            const { data, error } = await authClient.signIn.email({
-                email: formData.get("email") as string,
-                password: formData.get("password") as string,
-                rememberMe: true,
-                // callbackURL: "https://example.com/callback",
-            });
-
-            if (error) {
-                // if (error === "NO_PASSWORD_SET") {
-                //     setError(
-                //         'Esta conta foi criada com Google. Use o botão "Entrar com Google" ou cadastre uma senha.',
-                //     );
-                //     // setShowPasswordReset(true); // Opcional: mostrar opção de criar senha
-                // } else if (error === "INVALID_CREDENTIALS") {
-                setError("Email ou senha incorretos.");
-                // }
-                return;
-            }
-
-            router.push("/");
-            router.refresh();
-        } catch (error) {
-            setError("An error occurred during login");
-            console.error("Login error:", error);
-        }
-    }
+        };
 
 
     return (

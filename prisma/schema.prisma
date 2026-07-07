@@ -48,6 +48,8 @@ model Profile {
   location                                    String?
   lyrics                                      Json?          @default("[]")
   lastfm_username                             String?
+  pushToken                                   String?
+  pushTokenUpdatedAt                          DateTime?      @db.Timestamptz(6)
   Comment                                     Comment[]
   CommentLike                                 CommentLike[]
   Followed                                    Follow[]       @relation("Followed")
@@ -132,6 +134,7 @@ model Rating {
   albumId      String?        @map("album_id") @db.VarChar
   userId       String?        @default(dbgenerated("gen_random_uuid()")) @map("user_id") @db.Uuid
   html         String?
+  manual       Boolean        @default(false)
   Comment      Comment[]
   Like         Like[]
   Notification Notification[]
